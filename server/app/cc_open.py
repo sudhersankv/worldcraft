@@ -101,43 +101,80 @@ async def open_ask(req: AskRequest) -> dict:
 
 
 # ------------------------------------------------------------------ dynamic Wonder Board starters (from the syllabus)
-_starter_cache: dict[str, list] = {}
+_starters_latest: dict[str, tuple[float, list]] = {}
+_refreshing: set[str] = set()
 
 
-@router.get('/starters')
-async def starters(lang: str = 'en'):
-    """6 fresh, varied wonder starters generated from the syllabus (refreshed every 90 s); static fallback."""
-    lang = _lang(lang)
-    key = f'{lang}:{int(time.time() // 90)}'
-    if key in _starter_cache:
-        return _starter_cache[key]
-    fallback = []
+def _static_starters() -> list:
+    out = []
     for b in biomes():
-        fallback += [{'id': s['id'], 'label': s['label'], 'emoji': '', 'questions': s['questions'][:3], 'area': b['id']}
-                     for s in b.get('starters', [])[:2]]
-    if not config.has_llm():
-        return fallback[:6]
+        out += [{'id': s['id'], 'label': s['label'], 'emoji': '', 'questions': s['questions'][:3], 'area': b['id']}
+                for s in b.get('starters', [])[:2]]
+    random.shuffle(out)
+    return out[:6]
+
+
+async def _generate_starters(lang: str) -> list | None:
     areas = ', '.join(f'{b["id"]} ({b.get("name")})' for b in biomes())
     syl = '\n'.join(f'[{b["id"]}] ' + ' | '.join(f['text'] for f in random.sample(b.get('facts', []), min(8, len(b.get('facts', [])))))
                     for b in biomes())
     prompt = (f'Suggest 6 surprising, varied things a curious 8-11 year old might wonder about while exploring an island with '
               f'these areas: {areas}. Every idea and question MUST be answerable from this syllabus; spread them across areas '
-              f'and topics:\n{syl}\nFor each: a 1-2 word label, one emoji, 3 short WHY/HOW questions (10 words or fewer), and the '
-              f'area id. Write labels and questions in {LANG_NAMES[lang]}. Variety seed: {random.randint(1, 10 ** 6)}.\n'
+              f'and topics:\n{syl}\nFor each: a 1-2 word label, ONE real emoji character (like 🌋 or 🐧, never a word), 3 short '
+              f'WHY/HOW questions (10 words or fewer), and the area id. Write labels and questions in {LANG_NAMES[lang]}. '
+              f'Variety seed: {random.randint(1, 10 ** 6)}.\n'
               'Reply with JSON only: {"starters":[{"label":str,"emoji":str,"questions":[3],"area":str}]}')
     try:
-        data = await llm.chat_json([{'role': 'user', 'content': prompt}], model='chat', max_tokens=1200, timeout=12)
+        data = await llm.chat_json([{'role': 'user', 'content': prompt}], model='chat', max_tokens=1200, timeout=25)
         ids = {b['id'] for b in biomes()}
-        out = [{'id': _slug(str(s['label'])), 'label': str(s['label'])[:24], 'emoji': str(s.get('emoji', ''))[:4],
-                'questions': [str(q) for q in s.get('questions', [])][:3], 'area': s.get('area') if s.get('area') in ids else 'beach'}
-               for s in data.get('starters', []) if s.get('label') and len(s.get('questions', [])) >= 3][:6]
-        if len(out) >= 4:
-            _starter_cache.clear()
-            _starter_cache[key] = out
-            return out
+        out = []
+        for s in data.get('starters', []):
+            if not s.get('label') or len(s.get('questions', [])) < 3:
+                continue
+            emo = str(s.get('emoji', ''))[:4]
+            if re.search(r'[A-Za-z]', emo):
+                emo = ''
+            out.append({'id': _slug(str(s['label'])), 'label': str(s['label'])[:24], 'emoji': emo,
+                        'questions': [str(q) for q in s.get('questions', [])][:3],
+                        'area': s.get('area') if s.get('area') in ids else 'beach'})
+        return out[:6] if len(out) >= 4 else None
     except Exception as e:
-        log.info('starters fallback: %s', str(e)[:200])
-    return fallback[:6]
+        log.info('starters generation failed: %s', str(e)[:200])
+        return None
+
+
+async def _refresh(lang: str) -> None:
+    if lang in _refreshing:
+        return
+    _refreshing.add(lang)
+    try:
+        out = await _generate_starters(lang)
+        if out:
+            _starters_latest[lang] = (time.time(), out)
+    finally:
+        _refreshing.discard(lang)
+
+
+@router.get('/starters')
+async def starters(lang: str = 'en'):
+    """6 AI-generated wonder starters from the syllabus. Always instant: serves the latest generated set and refreshes
+    it in the background (about every 60 s), so different kids see different ideas; static set until the first is ready."""
+    import asyncio
+    lang = _lang(lang)
+    if not config.has_llm():
+        return _static_starters()
+    got = _starters_latest.get(lang)
+    if not got or time.time() - got[0] > 60:
+        asyncio.get_running_loop().create_task(_refresh(lang))
+    return got[1] if got else _static_starters()
+
+
+@router.on_event('startup')
+async def _warm_starters() -> None:
+    import asyncio
+    if config.has_llm():
+        for lg in ('en', 'es', 'zh', 'hi'):
+            asyncio.get_running_loop().create_task(_refresh(lg))
 
 
 # ------------------------------------------------------------------ parents/teachers design the syllabus
