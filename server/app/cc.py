@@ -27,7 +27,7 @@ WORLDS_DIR = Path(__file__).resolve().parent.parent / 'cc_worlds'
 LANGS = ['en', 'es', 'zh', 'fr', 'pt', 'nl', 'hi', 'ta']
 LANG_NAMES = {'en': 'English', 'es': 'Spanish', 'zh': 'Simplified Chinese', 'fr': 'French', 'pt': 'Brazilian Portuguese',
               'nl': 'Dutch', 'hi': 'Hindi (Devanagari script)', 'ta': 'Tamil (Tamil script)'}
-WORLD_TAGS = ['beach', 'ice', 'volcano', 'space', 'forest', 'ocean', 'sky']
+WORLD_TAGS = ['beach', 'ice', 'volcano', 'jungle', 'space', 'forest', 'ocean', 'sky']
 _cache: dict[str, dict] = {}
 
 FALLBACK_BEACH = {
@@ -112,12 +112,24 @@ class WonderRequest(BaseModel):
     worldId: str = 'beach'
 
 
+def biomes() -> list[dict]:
+    """All biome areas on the island that have a fact sheet (beach always first)."""
+    out = [get_world('beach')]
+    for t in ('volcano', 'ice', 'jungle'):
+        if (WORLDS_DIR / f'{t}.json').exists():
+            w = get_world(t)
+            if w.get('id') == t:
+                out.append(w)
+    return out
+
+
 def _local_wonder(text: str, w: dict) -> dict:
     t = (text or '').lower()
-    for s in w.get('starters', []):
-        if s['id'] in t or s['label'].lower() in t:
-            return {'guess': s['label'], 'confidence': 0.9, 'guesses': [x['label'] for x in w['starters'][:3]],
-                    'questions': s['questions'][:3], 'worldTag': w.get('id', 'beach'), 'source': 'local'}
+    for b in biomes():
+        for s in b.get('starters', []):
+            if s['id'] in t or s['label'].lower() in t:
+                return {'guess': s['label'], 'confidence': 0.9, 'guesses': [x['label'] for x in b['starters'][:3]],
+                        'questions': s['questions'][:3], 'worldTag': b.get('id', 'beach'), 'source': 'local'}
     s0 = w.get('starters', FALLBACK_BEACH['starters'])
     return {'guess': '', 'confidence': 0.0, 'guesses': [x['label'] for x in s0[:3]],
             'questions': s0[0]['questions'][:3], 'worldTag': w.get('id', 'beach'), 'source': 'local'}
@@ -125,18 +137,22 @@ def _local_wonder(text: str, w: dict) -> dict:
 
 @router.post('/wonder')
 async def wonder(req: WonderRequest):
-    w = get_world(req.worldId)
+    w = get_world('beach')
     lang = _lang(req.lang)
     if not config.has_llm() or (not req.image and not (req.text or '').strip()):
         return _local_wonder(req.text or '', w)
+    bs = biomes()
+    tags = [b['id'] for b in bs]
+    sheets = '\n\n'.join(
+        f'AREA "{b["id"]}" ({b.get("name")}, guide {b.get("npc", {}).get("name")}):\n' + '\n'.join('- ' + f['text'] for f in b.get('facts', [])[:30])
+        for b in bs)
     content: list[dict] = [{'type': 'text', 'text': (
-        f'A child aged 8-11 is curious. They {"drew the picture below" if req.image else "did not draw"}'
+        f'A child aged 8-11 is curious about anything. They {"drew the picture below" if req.image else "did not draw"}'
         f'{" and wrote/said: " + json.dumps(req.text[:200]) if (req.text or "").strip() else ""}.\n'
-        'Guess what it is (be kind about messy drawings; at a beach, wavy or zigzag lines are usually waves). Then write 3 short, '
-        'concrete, kid-friendly WHY/HOW questions (10 words or fewer each) about it that can be answered from this '
-        'BEACH FACT SHEET (connect the drawing to the closest beach topic: waves, floating, surfboards, sand, sun, wind, fish, tides):\n'
-        + '\n'.join('- ' + f['text'] for f in w.get('facts', [])[:40]) +
-        f'\nWrite guess, guesses and questions in {LANG_NAMES[lang]}. worldTag must be "beach".\n'
+        'Guess what it is (be kind about messy drawings). Pick the island AREA whose fact sheet fits it best, then write 3 short, '
+        'concrete, kid-friendly WHY/HOW questions (10 words or fewer each) about the thing they wondered about that the chosen '
+        "area's facts can answer (connect it to the closest topic if needed). Areas and their facts:\n" + sheets +
+        f'\n\nWrite guess, guesses and questions in {LANG_NAMES[lang]}. worldTag must be one of: {", ".join(tags)}.\n'
         'Reply with JSON only: {"guess":str,"confidence":0-1,"guesses":[3 alternative guesses],"questions":[3],"worldTag":str}')}]
     if req.image and req.image.startswith('data:image/'):
         content.append({'type': 'image_url', 'image_url': {'url': req.image[:2_500_000]}})
@@ -145,10 +161,12 @@ async def wonder(req: WonderRequest):
         qs = [str(q).strip() for q in data.get('questions', []) if str(q).strip()][:3]
         if len(qs) < 3:
             raise ValueError('too few questions')
-        tag = 'beach'  # demo: one world only
-        guesses = [str(g) for g in data.get('guesses', [])][:3] or [s['label'] for s in w['starters'][:3]]
+        tag = data.get('worldTag') if data.get('worldTag') in tags else 'beach'
+        tw = get_world(tag)
+        guesses = [str(g) for g in data.get('guesses', [])][:3] or [s['label'] for s in tw['starters'][:3]]
         return {'guess': str(data.get('guess', '')), 'confidence': max(0.0, min(1.0, float(data.get('confidence', 0.5)))),
-                'guesses': guesses, 'questions': qs, 'worldTag': tag, 'source': 'llm'}
+                'guesses': guesses, 'questions': qs, 'worldTag': tag, 'npc': tw.get('npc', {}).get('name'),
+                'area': tw.get('name'), 'source': 'llm'}
     except Exception as e:
         log.info('wonder fallback: %s', str(e)[:200])
         return _local_wonder(req.text or '', w)
@@ -317,7 +335,10 @@ def build_report(s: dict) -> dict:
         for c in (e['data'].get('conceptIds') or ([e['data']['conceptId']] if e['data'].get('conceptId') else [])):
             if c not in cids:
                 cids.append(c)
-    cmap = {c['id']: c for c in w.get('concepts', [])}
+    cmap = {}
+    for b in biomes():
+        for c in b.get('concepts', []):
+            cmap.setdefault(c['id'], c)
     def rec(n):
         xs = by(n)
         return None if not xs else bool(xs[-1]['data'].get('correct'))
@@ -331,7 +352,7 @@ def build_report(s: dict) -> dict:
                 'kidWords': e['data'].get('kidWords')} for e in by('journal_card')] or \
               [{'question': str(e['data'].get('question', ''))[:200], 'level': int(e['data'].get('level', 0) or 0)} for e in asked]
     return {
-        'sessionId': s['sessionId'], 'lang': s.get('lang', 'en'), 'worldId': w.get('id', 'beach'), 'worldName': w.get('name'),
+        'sessionId': s['sessionId'], 'lang': s.get('lang', 'en'), 'worldId': w.get('id', 'beach'), 'worldName': 'Curiosity Island' if len(biomes()) > 1 else w.get('name'),
         'startedAt': t0, 'minutes': max(0, minutes),
         'questionsAsked': len(asked), 'deepestWhyLevel': max(levels) if levels else 0,
         'concepts': [cmap[c] for c in cids if c in cmap],

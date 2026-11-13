@@ -12,7 +12,7 @@ export const SPEECH_LOCALE: Record<Lang, string> = {
   en: 'en-US', es: 'es-ES', zh: 'zh-CN', fr: 'fr-FR', pt: 'pt-BR', nl: 'nl-NL', hi: 'hi-IN', ta: 'ta-IN',
 };
 
-export type WorldTag = 'beach' | 'ice' | 'volcano' | 'space' | 'forest' | 'ocean' | 'sky';
+export type WorldTag = 'beach' | 'ice' | 'volcano' | 'jungle' | 'space' | 'forest' | 'ocean' | 'sky';
 
 export interface Concept { id: string; name: string; plain: string }          // plain = parent-friendly one-liner
 
@@ -35,7 +35,8 @@ export interface WonderResponse {
   guess: string; confidence: number;         // 0..1
   guesses: string[];                          // 3 alternatives for "Is it a…?" when confidence < 0.5
   questions: string[];                        // 3 kid-friendly questions, ≤ 10 words
-  worldTag: WorldTag;                         // destination
+  worldTag: WorldTag;                         // destination biome on the island (beach / volcano / ice / jungle)
+  npc?: string; area?: string;                // e.g. "Rocky the Lava Golem", "Ember Peak"
   source: 'llm' | 'local';
 }
 
