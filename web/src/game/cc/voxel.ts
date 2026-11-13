@@ -693,6 +693,10 @@ export class Voxel {
       const bxz = [[18.5, 29.5], [16.5, 38], [20, 14]][i]; this.scene.add(c);
       this.anim.push({ obj: c, fn: (t, o) => { o.position.set(bxz[0] + Math.sin(t * 0.8 + i) * 1.2, this.groundY(bxz[0], bxz[1]) + 0.12, bxz[1]); o.rotation.y = Math.PI / 2; o.children[1].position.y = 0.12 + Math.abs(Math.sin(t * 6)) * 0.08; } });
     }
+    // kite on a string near the kite sparkle
+    { const kite = new THREE.Group(); const k1 = bx(0.9, 0.9, 0.06, '#ff5d8f'); k1.rotation.z = Math.PI / 4; kite.add(k1); const k2 = bx(0.5, 0.5, 0.07, '#ffd23c'); k2.rotation.z = Math.PI / 4; kite.add(k2); const tail = bx(0.06, 1.4, 0.06, '#5fd0ff'); tail.position.y = -1; kite.add(tail);
+      const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]), new THREE.LineBasicMaterial({ color: '#ffffff' })); this.scene.add(kite, line);
+      this.anim.push({ obj: kite, fn: (t, o) => { o.position.set(34.5 + Math.sin(t * 0.7) * 1.5, 12 + Math.sin(t * 1.3) * 0.8, 14.5 + Math.cos(t * 0.5)); o.rotation.z = Math.sin(t * 2) * 0.3; const pos = line.geometry.attributes.position as THREE.BufferAttribute; pos.setXYZ(0, 34.5, this.groundY(34.5, 14.5) + 0.5, 14.5); pos.setXYZ(1, o.position.x, o.position.y - 0.4, o.position.z); pos.needsUpdate = true; } }); }
     const boat = new THREE.Group(); boat.add(bx(3, 0.6, 1.2, '#ffffff')); const mast = bx(0.12, 3.5, 0.12, '#8d5a30'); mast.position.y = 1.9; boat.add(mast); const sail = bx(0.05, 2.6, 1.6, '#ff8a3c'); sail.position.set(0.1, 2.2, -0.2); boat.add(sail);
     this.scene.add(boat);
     this.anim.push({ obj: boat, fn: (t, o) => { o.position.set(-30, WATER_Y + Math.sin(t) * 0.15 + 0.2, (t * 0.6) % 90 - 20); o.rotation.z = Math.sin(t * 0.8) * 0.05; o.rotation.y = Math.PI / 2; } });
@@ -715,6 +719,8 @@ export class Voxel {
       s.b.legL.rotation.x = 0.3; s.b.legR.rotation.x = -0.3; s.b.armL.rotation.z = -1.0; s.b.armR.rotation.z = 1.0;
       this.surfers.push(s);
     }
+    // sunbathers on towels
+    for (const [x, z, sh] of [[29.6, 28.5, '#ff8a3c'], [27.6, 35.5, '#9be07a']] as const) { const g = this.actor({ skin: '#e8b088', shirt: sh, pants: '#3a8ad8', hair: '#5a3a20', hairStyle: 'short', shades: true, scale: 0.7 }, x, z); g.b.root.rotation.x = -Math.PI / 2; g.b.root.position.set(x, this.groundY(x, z) + 0.15, z - 0.6); g.b.armL.rotation.z = -2.6; g.b.armR.rotation.z = 2.6; }
     for (let i = 0; i < 2; i++) { const k = this.actor({ skin: ['#c8885a', '#f2c8a0'][i], shirt: ['#ff8a3c', '#5fd0ff'][i], pants: '#ffffff', hair: ['#1a1010', '#ffcf5a'][i], hairStyle: 'short', scale: 0.62 }, 27.2 + i * 1.6, 21.6 + i * 0.4); k.yaw = -0.6 + i * 1.6; this.kids.push(k); }
     // marker above the player's head
     this.marker = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.26, 4), new THREE.MeshBasicMaterial({ color: '#ffd23c', depthTest: false, transparent: true }));
