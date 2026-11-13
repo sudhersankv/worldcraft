@@ -17,6 +17,7 @@ import { renderWorlds } from './pages/worlds';
 import { renderAbout } from './pages/about';
 import './platform.css';
 import './hero3.css';
+import './wonder.css';
 
 type Cleanup = void | (() => void);
 const main = $('#main')!;

@@ -158,7 +158,7 @@ async def wonder(req: WonderRequest):
     if req.image and req.image.startswith('data:image/'):
         content.append({'type': 'image_url', 'image_url': {'url': req.image[:2_500_000]}})
     try:
-        data = await llm.chat_json([{'role': 'user', 'content': content}], model='chat', max_tokens=1200, timeout=18)
+        data = await llm.chat_json([{'role': 'user', 'content': content}], model='chat', max_tokens=900, timeout=11)
         qs = [str(q).strip() for q in data.get('questions', []) if str(q).strip()][:3]
         if len(qs) < 3:
             raise ValueError('too few questions')

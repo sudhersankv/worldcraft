@@ -27,6 +27,8 @@ export const AREAS = (): { k: Area; name: string; guide: string; about: string }
   { k: 'jungle', name: t('area.jungle', 'Whispering Jungle'), guide: t('area.jungle.g', 'Fern the Tree Frog'), about: t('area.jungle.d', 'Plants, rain, and creatures of the canopy.') },
 ];
 
+const PENS = ['#1d6fe0', '#ff3d7f', '#14b86a', '#ff8a00', '#8a4dff', '#1d1a3a'];
+
 type Doodle = 'wave' | 'sun' | 'surfboard' | 'fish' | 'sand' | 'wind';
 const WONDER = (): Record<Doodle, { label: string; a: string; qs: string[] }> => ({
   wave: { a: t('site.wb.wave.a', 'a wave'), label: t('site.wb.wave', 'Wave'), qs: [t('site.wb.wave.1', 'Why do waves crash?'), t('site.wb.wave.2', 'Where does a wave get its energy?'), t('site.wb.wave.3', 'Why are some waves bigger?')] },
@@ -106,21 +108,33 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
     <div class="strip-in">
       <header class="strip-head">
         <h2 id="wb-h" class="h2-title">${t('site.wb.title', 'The Wonder Board')}</h2>
-        <p>${t('site.wb.sub2', 'In the game, kids draw what they wonder about, and the board sends them to the right guide. Try it: doodle something, or tap a picture.')}</p>
+        <p>${t('site.wb.sub3', 'Draw anything you wonder about. A dinosaur, a rocket, your cat…')}</p>
+        <p class="wb-small">${t('site.wb.small', 'The island’s guides help with whatever they can. Parents decide what’s on the island.')}</p>
       </header>
       <div class="wb-grid">
-        <div class="wb-board">
-          <canvas id="wb-canvas" width="640" height="400" aria-label="${t('site.wb.canvas', 'Drawing board')}" role="img"></canvas>
-          <p class="wb-hint" id="wb-hint">${t('site.wb.hint', 'Draw here')}</p>
-          <button class="vbtn vbtn-white vbtn-sm wb-clear" id="wb-clear" type="button">${t('site.wb.clear', 'Clear')}</button>
+        <div class="wb-left">
+          <div class="wb-board">
+            <canvas id="wb-canvas" width="720" height="450" aria-label="${t('site.wb.canvas', 'Drawing board')}" role="img"></canvas>
+            <p class="wb-hint" id="wb-hint">${t('site.wb.hint', 'Draw here')}</p>
+          </div>
+          <div class="wb-tools">
+            <div class="swatches" role="radiogroup" aria-label="${t('site.wb.colour', 'Pen colour')}">
+              ${PENS.map((c, i) => `<button type="button" class="sw" role="radio" aria-checked="${i === 0}" style="--c:${c}" data-c="${c}" aria-label="${t('site.wb.colour', 'Pen colour')} ${i + 1}"></button>`).join('')}
+            </div>
+            <button type="button" class="vbtn vbtn-white vbtn-sm" id="wb-undo">${t('site.wb.undo', 'Undo')}</button>
+            <button type="button" class="vbtn vbtn-white vbtn-sm" id="wb-clear">${t('site.wb.clear', 'Clear')}</button>
+          </div>
+          <form class="wb-ask" id="wb-ask">
+            <label class="sr-only" for="wb-text">${t('site.wb.typeit', 'Or type what you wonder about')}</label>
+            <input id="wb-text" maxlength="120" placeholder="${t('site.wb.typeit.ph', 'Or type it: a volcano, penguins, rain…')}" autocomplete="off"/>
+            <button class="vbtn vbtn-gold" type="submit" id="wb-go">${t('site.wb.go', 'I wonder!')}</button>
+          </form>
         </div>
         <div class="wb-side">
-          <div class="chips6" role="group" aria-label="${t('site.wb.chips', 'Pick something to wonder about')}">
-            ${(Object.keys(wonder) as Doodle[]).map((k) => `<button type="button" class="chip6" data-k="${k}"><img src="${ART}/icons/${k}.webp" alt="" width="56" height="56" loading="lazy"/><span>${esc(wonder[k].label)}</span></button>`).join('')}
-          </div>
+          <div class="chips6" id="chips" role="group" aria-label="${t('site.wb.chips', 'Pick something to wonder about')}"></div>
           <div class="sam-asks" id="sam-asks" aria-live="polite">
             <img src="${ART}/sam-think.webp" alt="" width="64" height="64" loading="lazy"/>
-            <p>${t('site.wb.waiting', 'Draw something and Sam will wonder with you.')}</p>
+            <p>${t('site.wb.waiting2', 'Draw or type something, then press “I wonder!”')}</p>
           </div>
         </div>
       </div>
@@ -256,29 +270,51 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
   ['happy', 'laugh'].forEach((f) => { const i = new Image(); i.src = `${ART}/sam-${f}.webp`; });
   later(() => playTurn(0), 500);
 
-  // ---------------- Wonder Board: doodle -> a playful guess -> Sam's questions
+  // ---------------- Wonder Board: draw anything -> /api/cc/wonder -> guess, 3 questions and the right guide
   const canvas = $<HTMLCanvasElement>('#wb-canvas', main)!;
   const ctx = canvas.getContext('2d')!;
   const asks = $('#sam-asks', main)!;
   const hint = $('#wb-hint', main)!;
-  let pts: [number, number][] = [];
-  let drawing = false;
+  const goBtn = $<HTMLButtonElement>('#wb-go', main)!;
+  const textIn = $<HTMLInputElement>('#wb-text', main)!;
+  type Stroke = { c: string; pts: [number, number][] };
+  const strokes: Stroke[] = [];
+  let cur: Stroke | null = null;
+  let pen = PENS[0];
   const pos = (e: PointerEvent): [number, number] => { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) * canvas.width / r.width, (e.clientY - r.top) * canvas.height / r.height]; };
-  ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 12; ctx.strokeStyle = '#1d6fe0';
-  const colors = ['#1d6fe0', '#ff4f8b', '#11a86a', '#ff8a00'];
-  let stroke = 0;
-  canvas.addEventListener('pointerdown', (e) => {
-    drawing = true; canvas.setPointerCapture(e.pointerId); hint.hidden = true;
-    ctx.strokeStyle = colors[stroke++ % colors.length];
-    const [x, y] = pos(e); pts.push([x, y]); ctx.beginPath(); ctx.moveTo(x, y);
-  });
-  canvas.addEventListener('pointermove', (e) => { if (!drawing) return; const [x, y] = pos(e); pts.push([x, y]); ctx.lineTo(x, y); ctx.stroke(); });
-  const endStroke = () => { if (!drawing) return; drawing = false; if (pts.length > 6) show(guess(pts), true); };
+  const path = (pts: [number, number][], dx = 0, dy = 0) => {
+    ctx.beginPath(); ctx.moveTo(pts[0][0] + dx, pts[0][1] + dy);
+    if (pts.length === 1) ctx.lineTo(pts[0][0] + dx + .1, pts[0][1] + dy);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0] + dx, pts[i][1] + dy);
+  };
+  /** Gel pen: soft drop shadow, the colour, then a glossy highlight along the top edge. */
+  const drawStroke = (s: Stroke) => {
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    path(s.pts, 2, 3); ctx.strokeStyle = 'rgba(29,26,58,.18)'; ctx.lineWidth = 16; ctx.stroke();
+    path(s.pts); ctx.strokeStyle = s.c; ctx.lineWidth = 16; ctx.stroke();
+    path(s.pts, -2, -3); ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 4; ctx.stroke();
+  };
+  const redraw = () => {
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    strokes.forEach(drawStroke);
+    hint.hidden = strokes.length > 0;
+  };
+  redraw();
+  canvas.addEventListener('pointerdown', (e) => { canvas.setPointerCapture(e.pointerId); cur = { c: pen, pts: [pos(e)] }; strokes.push(cur); redraw(); });
+  canvas.addEventListener('pointermove', (e) => { if (!cur) return; cur.pts.push(pos(e)); redraw(); });
+  const endStroke = () => { cur = null; };
   canvas.addEventListener('pointerup', endStroke);
   canvas.addEventListener('pointercancel', endStroke);
-  $('#wb-clear', main)!.addEventListener('click', () => { ctx.clearRect(0, 0, canvas.width, canvas.height); pts = []; hint.hidden = false; asks.innerHTML = `<img src="${ART}/sam-think.webp" alt="" width="64" height="64"/><p>${t('site.wb.waiting', 'Draw something and Sam will wonder with you.')}</p>`; });
+  $('#wb-undo', main)!.addEventListener('click', () => { strokes.pop(); redraw(); blip(440); });
+  $('#wb-clear', main)!.addEventListener('click', () => { strokes.length = 0; redraw(); textIn.value = ''; blip(330); });
+  $$<HTMLButtonElement>('.sw', main).forEach((b) => b.addEventListener('click', () => {
+    pen = b.dataset.c!; $$('.sw', main).forEach((x) => x.setAttribute('aria-checked', String(x === b))); blip(700);
+  }));
 
-  function guess(p: [number, number][]): Doodle {
+  /** Rough local guess from the stroke shape, only used when the API can't answer. */
+  function localGuess(): Doodle {
+    const p = strokes.flatMap((s) => s.pts);
+    if (p.length < 4) return 'wave';
     const xs = p.map((q) => q[0]), ys = p.map((q) => q[1]);
     const w = Math.max(...xs) - Math.min(...xs), h = Math.max(...ys) - Math.min(...ys);
     let turns = 0;
@@ -291,16 +327,84 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
     if (w > h * 2.5) return 'wind';
     return 'sand';
   }
-  function show(k: Doodle, fromDoodle: boolean) {
-    const w = wonder[k];
-    blip(780);
-    $$<HTMLButtonElement>('.chip6', main).forEach((b) => b.classList.toggle('on', b.dataset.k === k));
-    asks.innerHTML = `<img src="${ART}/sam-happy.webp" alt="" width="64" height="64"/>
-      <div><p class="guess">${fromDoodle ? t('site.wb.guess2', 'Is it {thing}? Then Sam would ask:', { thing: esc(w.a) }) : t('site.wb.asks', 'Sam would ask:')}</p>
-      <ol>${w.qs.map((q) => `<li>${esc(q)}</li>`).join('')}</ol></div>`;
-    asks.classList.remove('pop'); void asks.offsetWidth; asks.classList.add('pop');
+
+  const guideFor = (area: string, npc?: string, areaName?: string) => {
+    const a = AREAS().find((x) => x.k === (area === 'ice' ? 'ice' : area)) ?? AREAS()[0];
+    return `<p class="guide-line"><span class="abadge ab-${a.k}">${esc(areaName || a.name)}</span>${t('site.wb.guide', '{npc} can help with this.', { npc: esc(npc || a.guide) })}</p>`;
+  };
+  const playLink = () => `/play.html?world=beach&lang=${getLang()}`;
+  const qCards = (qs: string[]) => `<ol class="qcards">${qs.slice(0, 3).map((q) => `<li><a href="${playLink()}"><span>${esc(q)}</span><small>${t('site.wb.askgame', 'Ask in the game')} ${I.arrow}</small></a></li>`).join('')}</ol>`;
+  const samImg = (f: string) => `<img src="${ART}/sam-${f}.webp" alt="" width="64" height="64"/>`;
+  const pop = () => { asks.classList.remove('pop'); void asks.offsetWidth; asks.classList.add('pop'); };
+
+  interface WonderRes { guess: string; confidence: number; guesses: string[]; questions: string[]; worldTag: string; npc?: string; area?: string; source: string }
+  function showResult(r: WonderRes) {
+    const unsure = !r.guess || r.confidence < .5;
+    asks.innerHTML = `${samImg(unsure ? 'think' : 'happy')}<div class="ask-body">
+      ${unsure && r.guesses?.length
+        ? `<p class="guess">${t('site.wb.isit', 'Is it a…?')}</p><div class="isit">${r.guesses.slice(0, 3).map((g) => `<button type="button" class="isit-chip">${esc(g)}</button>`).join('')}</div>`
+        : `<p class="guess">${t('site.wb.looks', 'Looks like {thing}!', { thing: esc(r.guess) })}</p>`}
+      ${qCards(r.questions)}${guideFor(r.worldTag, r.npc, r.area)}</div>`;
+    $$<HTMLButtonElement>('.isit-chip', asks).forEach((b) => b.addEventListener('click', () => {
+      $$('.isit-chip', asks).forEach((x) => x.classList.toggle('on', x === b));
+      asks.querySelector('.guess')!.textContent = t('site.wb.looks', 'Looks like {thing}!', { thing: b.textContent ?? '' });
+      blip(820);
+    }));
+    pop(); blip(880, .1);
   }
-  $$<HTMLButtonElement>('.chip6', main).forEach((b) => b.addEventListener('click', () => show(b.dataset.k as Doodle, false)));
+
+  let busy = false, lastSubmit = 0;
+  $<HTMLFormElement>('#wb-ask', main)!.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = textIn.value.trim();
+    if (busy || Date.now() - lastSubmit < 1500) return;          // debounce
+    if (!strokes.length && !text) { textIn.focus(); asks.innerHTML = `${samImg('think')}<p>${t('site.wb.empty', 'Draw something first, or type what you wonder about.')}</p>`; pop(); return; }
+    busy = true; lastSubmit = Date.now(); goBtn.disabled = true;
+    asks.innerHTML = `${samImg('think')}<div class="thinking"><span class="spin-q" aria-hidden="true">?</span><p>${t('site.wb.thinking', 'Hmm, let me look…')}</p></div>`;
+    pop(); blip(600);
+    const started = Date.now();
+    let res: WonderRes | null = null;
+    try {
+      const r = await fetch('/api/cc/wonder', {
+        method: 'POST', headers: { 'content-type': 'application/json' }, signal: AbortSignal.timeout(12000),
+        body: JSON.stringify({ image: strokes.length ? canvas.toDataURL('image/png') : undefined, text: text || undefined, lang: getLang(), worldId: 'beach' }),
+      });
+      if (r.ok) res = await r.json();
+    } catch { /* timeout or offline: local guess below */ }
+    if (!res || !res.questions?.length) {
+      const k = text ? 'wave' : localGuess();
+      res = { guess: text || wonder[k].a, confidence: text ? .9 : .6, guesses: [], questions: wonder[k].qs, worldTag: 'beach', source: 'local' };
+    }
+    const wait = Math.max(0, (reduced ? 0 : 1800) - (Date.now() - started)); // let the thinking moment land
+    later(() => { if (res) showResult(res); busy = false; goBtn.disabled = false; }, wait);
+  });
+
+  // ---------------- quick chips: fresh starters from the API, local beach chips as fallback
+  const chipsBox = $('#chips', main)!;
+  const isEmoji = (s?: string) => !!s && /\p{Extended_Pictographic}/u.test(s);
+  type Starter = { id: string; label: string; emoji?: string; questions: string[]; area: string };
+  const localStarters = (): Starter[] => (Object.keys(wonder) as Doodle[]).map((k) => ({ id: k, label: wonder[k].label, questions: wonder[k].qs, area: 'beach' }));
+  const renderChips = (list: Starter[]) => {
+    chipsBox.innerHTML = list.slice(0, 6).map((s, i) => {
+      const icon = isEmoji(s.emoji) ? `<span class="chip-emoji" aria-hidden="true">${s.emoji}</span>`
+        : `<img src="${ART}/icons/${(Object.keys(wonder) as string[]).includes(s.id) ? s.id : 'wave'}.webp" alt="" width="56" height="56" loading="lazy"/>`;
+      return `<button type="button" class="chip6 ca-${esc(s.area)}" data-i="${i}">${icon}<span>${esc(s.label)}</span></button>`;
+    }).join('');
+    $$<HTMLButtonElement>('.chip6', chipsBox).forEach((b) => b.addEventListener('click', () => {
+      const s = list[Number(b.dataset.i)];
+      $$('.chip6', chipsBox).forEach((x) => x.classList.toggle('on', x === b));
+      asks.innerHTML = `${samImg('happy')}<div class="ask-body"><p class="guess">${esc(s.label)}</p>${qCards(s.questions)}${guideFor(s.area)}</div>`;
+      pop(); blip(780);
+    }));
+  };
+  renderChips(localStarters());
+  const loadStarters = () => fetch(`/api/cc/starters?lang=${getLang()}`, { signal: AbortSignal.timeout(6000) })
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then((list: Starter[]) => { if (Array.isArray(list) && list.length && !chipsBox.querySelector('.chip6.on')) renderChips(list); })
+    .catch(() => { /* keep local chips */ });
+  loadStarters();
+  const starterTimer = window.setInterval(loadStarters, 60000);
+  timers.add(starterTimer);
 
   // ---------------- Fail freely: tap a board to drop it in the water
   $$<HTMLButtonElement>('.board', main).forEach((b) => b.addEventListener('click', () => {

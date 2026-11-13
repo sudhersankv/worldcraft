@@ -77,7 +77,7 @@
 .ccx-easel { position: relative; flex: 1; min-height: 240px; border-radius: 12px; padding: 12px 12px 22px; background: #b9773a linear-gradient(90deg, #a8672e 0 3%, #c88545 3% 50%, #b9773a 50% 97%, #a8672e 97%); border: var(--chunk); box-shadow: var(--stick); }
 .ccx-easel::after { /* chalk tray */ content: ''; position: absolute; left: 6%; right: 6%; bottom: 5px; height: 10px; border-radius: 4px; background: #8a5228; border: 2px solid var(--ink); }
 .ccx-board { position: relative; width: 100%; height: 100%; border-radius: 6px; border: var(--chunk); overflow: hidden; touch-action: none; cursor: crosshair;
-  background: #24443b radial-gradient(ellipse at 30% 25%, rgba(255,255,255,.08), transparent 55%), radial-gradient(ellipse at 75% 80%, rgba(255,255,255,.05), transparent 50%); }
+  background: radial-gradient(ellipse at 30% 25%, rgba(255,255,255,.08), transparent 55%), radial-gradient(ellipse at 75% 80%, rgba(255,255,255,.05), transparent 50%), #24443b; }
 .ccx-board canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
 .ccx-hint-draw { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; color: rgba(255,255,255,.55); font: 400 clamp(1.3rem, 4vw, 2rem)/1.1 var(--disp); text-align: center; padding: 1rem; transition: opacity .3s; }
 .ccx-hint-draw.gone { opacity: 0; }
@@ -127,7 +127,7 @@
 .ccx-wb-sam .ccx-speech { flex: 1; background: #fff; border: var(--chunk); border-radius: 14px 14px 14px 4px; padding: 8px 12px; font: 700 .98rem/1.3 var(--body); box-shadow: var(--stick-sm); }
 
 /* thinking + results stage (covers the whole body) */
-.ccx-stage { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 14px; padding: 18px 14px 24px; overflow: auto;
+.ccx-stage { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: safe center; gap: 14px; padding: 18px 14px 24px; overflow: auto;
   background: var(--sky) linear-gradient(180deg, #5cc8ff, #bfeaff); animation: ccx-fade .2s; }
 .ccx-stage.thinking { justify-content: center; }
 .ccx-think { position: relative; display: flex; align-items: center; justify-content: center; gap: 18px; }
@@ -158,8 +158,10 @@
 
 /* =================================================================== SURFBOARD LAB */
 .ccx-lab .ccx-body { display: grid; grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); gap: 14px; padding: 14px; background: #8fdcff linear-gradient(180deg, #8fdcff, #bfeaff); }
-.ccx-lab-ctrl { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.ccx-lab-main { display: flex; flex-direction: column; gap: 10px; min-width: 0; min-height: 0; }
+.ccx-lab .ccx-body { grid-template-rows: auto 1fr; }
+.ccx-lab-ctrl { display: flex; flex-direction: column; gap: 10px; min-width: 0; grid-column: 1; grid-row: 1; }
+.ccx-lab-notes { display: flex; flex-direction: column; gap: 8px; min-width: 0; grid-column: 1; grid-row: 2; }
+.ccx-lab-main { display: flex; flex-direction: column; gap: 10px; min-width: 0; min-height: 0; grid-column: 2; grid-row: 1 / span 2; }
 .ccx-steps { display: flex; gap: 4px; flex-wrap: nowrap; }
 .ccx-step { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; min-height: 34px; padding: 3px 6px; border: 2px solid var(--ink); border-radius: 999px; background: rgba(255,255,255,.6); font: 400 .9rem/1 var(--disp); white-space: nowrap; opacity: .6; transition: all .2s; }
 .ccx-step b { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 2px solid var(--ink); display: grid; place-items: center; font-size: .8rem; flex: none; }
@@ -198,7 +200,7 @@
 .ccx-wave { display: flex; align-items: center; gap: 8px; padding: 4px 12px; min-height: 48px; border: var(--chunk); border-radius: 999px; background: #fff; box-shadow: var(--stick-sm); font: 400 1rem var(--disp); flex: 1 1 200px; }
 .ccx-wave input { flex: 1; min-width: 80px; accent-color: var(--sea); height: 30px; }
 
-.ccx-res { position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 2; display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: var(--chunk); border-radius: 14px; background: #fff; box-shadow: var(--stick-sm); animation: ccx-up .45s cubic-bezier(.2, 1.4, .4, 1); }
+.ccx-res { position: relative; flex: none; display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: var(--chunk); border-radius: 14px; background: #fff; box-shadow: var(--stick-sm); animation: ccx-up .45s cubic-bezier(.2, 1.4, .4, 1); }
 .ccx-res img { width: 70px; height: 70px; object-fit: contain; flex: none; animation: ccx-sticker .6s cubic-bezier(.2, 1.8, .4, 1); filter: drop-shadow(2px 3px 0 rgba(29,26,58,.35)); }
 .ccx-res .tx { flex: 1; min-width: 0; }
 .ccx-res .big { font: 400 1.25rem/1.1 var(--disp); }
@@ -229,8 +231,19 @@
   .ccx-wb .ccx-body, .ccx-lab .ccx-body { grid-template-columns: 1fr; padding: 10px; gap: 10px; }
   .ccx-easel { flex: none; height: min(46dvh, 380px); min-height: 220px; padding: 8px 8px 18px; }
   .ccx-tool { min-width: 52px; height: 54px; }
-  .ccx-tankwrap { flex: none; height: min(44dvh, 360px); min-height: 250px; }
-  .ccx-lab-main { order: -1; }
+  .ccx-tankwrap { flex: none; height: min(40dvh, 340px); min-height: 230px; }
+  .ccx-steps { display: none; }
+  .ccx-lab .ccx-body { grid-template-rows: none; }
+  .ccx-lab-ctrl, .ccx-lab-notes, .ccx-lab-main { grid-column: 1; grid-row: auto; }
+  .ccx-lab-notes { order: 3; }
+  .ccx-mats { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .ccx-mat { padding: 5px 4px; gap: 2px; }
+  .ccx-mat canvas { height: 26px; }
+  .ccx-mat .nm { font-size: .84rem; }
+  .ccx-mat .tex { display: none; }
+  .ccx-mat .dens { font-size: .62rem; padding: 2px 4px; }
+  .ccx-predict .ccx-btn { min-height: 54px; font-size: 1.1rem; }
+  .ccx-lab-ctrl { gap: 8px; }
   .ccx-meter { width: 100px; }
   .ccx-tank-tip { font-size: .76rem; max-width: calc(100% - 120px); left: 8px; transform: none; }
   .ccx-res img { width: 52px; height: 52px; }
