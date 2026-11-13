@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CuriosityCraft 3D kit</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #f4ecd8; font: 12px system-ui, sans-serif; }
+  canvas { display: block; }
+  #hud { position: fixed; left: 8px; top: 8px; background: #fffc; padding: 6px 10px; border-radius: 8px; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="hud">loading…</div>
+<script type="module">
+// Dev-only contact sheet for the CuriosityCraft asset manifest.
+// Serve with `npx vite --port 5176` from the repo root and open /assets/3d/preview.html
+// ?filter=npc. shows only keys starting with that prefix.
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
+import { ASSETS3D } from '/src/shared/assets3d.ts';
+
+const q = new URLSearchParams(location.search);
+const filter = q.get('filter') || '';
+const entries = Object.entries(ASSETS3D).filter(([k]) => k.startsWith(filter));
+const cols = Math.ceil(Math.sqrt(entries.length * 1.6));
+const cell = +(q.get('cell') || 5);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#bfe3ff');
+scene.add(new THREE.HemisphereLight('#dff1ff', '#8a7a55', 1.6));
+const sun = new THREE.DirectionalLight('#fff1c9', 2.6);
+const W = cols * cell, H = Math.ceil(entries.length / cols) * cell;
+sun.position.set(W * 0.3, 40, H * 0.6 + 20);
+sun.target.position.set(W / 2, 0, H / 2);
+sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096);
+Object.assign(sun.shadow.camera, { left: -W, right: W, top: H, bottom: -H, far: 200 });
+scene.add(sun, sun.target);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(W + 10, H + 10), new THREE.MeshStandardMaterial({ color: '#8fcf5e' }));
+ground.rotation.x = -Math.PI / 2; ground.position.set(W / 2, 0, H / 2); ground.receiveShadow = true;
+scene.add(ground);
+
+const aspect = innerWidth / innerHeight;
+const half = Math.max(W / aspect, H) * 0.62;
+const cam = new THREE.OrthographicCamera(-half * aspect, half * aspect, half, -half, 0.1, 500);
+cam.position.set(W / 2 + 40, 55, H / 2 + 40);
+cam.lookAt(W / 2, 0, H / 2);
+
+const loader = new GLTFLoader();
+const cache = new Map();
+const mixers = [];
+const report = {};
+let done = 0;
+
+function makeLabel(text) {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 48;
+  const g = c.getContext('2d'); g.fillStyle = '#0008'; g.fillRect(0, 0, 256, 48);
+  g.fillStyle = '#fff'; g.font = 'bold 22px system-ui'; g.fillText(text, 8, 32);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false }));
+  s.scale.set(3, 0.56, 1); return s;
+}
+
+entries.forEach(async ([key, a], i) => {
+  const x = (i % cols) * cell + cell / 2, z = Math.floor(i / cols) * cell + cell / 2;
+  try {
+    if (!cache.has(a.url)) cache.set(a.url, loader.loadAsync(a.url));
+    const gltf = await cache.get(a.url);
+    const obj = SkeletonUtils.clone(gltf.scene);
+    for (const n of a.hide || []) { const o = obj.getObjectByName(n); if (o) o.visible = false; }
+    obj.traverse((o) => {
+      if (o.isMesh) {
+        o.castShadow = o.receiveShadow = true;
+        if (a.tint) { o.material = o.material.clone(); o.material.color.multiply(new THREE.Color(a.tint)); }
+      }
+    });
+    obj.scale.setScalar(a.scale);
+    obj.rotation.y = (a.rotY || 0) + Math.PI / 4;
+    obj.position.set(x, a.yOffset || 0, z);
+    scene.add(obj);
+    if (a.animations && gltf.animations.length) {
+      const m = new THREE.AnimationMixer(obj);
+      const clip = THREE.AnimationClip.findByName(gltf.animations, a.animations.idle);
+      if (clip) m.clipAction(clip).play(); else console.warn('missing clip', key, a.animations.idle);
+      for (const v of Object.values(a.animations)) if (!THREE.AnimationClip.findByName(gltf.animations, v)) console.warn('missing clip', key, v);
+      m.update(0.01); mixers.push(m);
+    }
+    obj.updateMatrixWorld(true);
+    const b = new THREE.Box3().setFromObject(obj, true);
+    report[key] = { h: +(b.max.y - b.min.y).toFixed(3), minY: +b.min.y.toFixed(3), w: +Math.max(b.max.x - b.min.x, b.max.z - b.min.z).toFixed(3) };
+    const l = makeLabel(key); l.position.set(x, Math.max(b.max.y, 0.5) + 0.5, z); scene.add(l);
+  } catch (e) { console.error(key, e); report[key] = { error: String(e) }; }
+  done++;
+  document.getElementById('hud').textContent = `${done}/${entries.length} loaded`;
+  if (done === entries.length) window.__report = report;
+});
+
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => { const dt = clock.getDelta(); mixers.forEach((m) => m.update(dt)); renderer.render(scene, cam); });
+</script>
+</body>
+</html>

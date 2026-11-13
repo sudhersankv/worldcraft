@@ -1,0 +1,31 @@
+/** Captures Curiosity Craft screenshots into screenshots/ (not part of CI). Run: npx playwright test tests/cc-shots.spec.ts */
+import { test, expect } from '@playwright/test';
+const BASE = process.env.BASE_URL ?? 'http://localhost:5174';
+test.use({ channel: process.env.CC_CHANNEL || undefined, viewport: { width: 1280, height: 760 } });
+test.setTimeout(120_000);
+test('shots', async ({ page }) => {
+  await page.goto(`${BASE}/play.html?demo=1&lang=en`);
+  await page.waitForTimeout(1500);
+  await page.screenshot({ path: 'screenshots/cc-1-beach.png' });
+  await page.getByTestId('recall-choice-1').click({ timeout: 20_000 });
+  const cv = page.getByTestId('wonder-canvas'); const b = (await cv.boundingBox())!;
+  await page.mouse.move(b.x + 40, b.y + b.height * 0.6); await page.mouse.down();
+  for (let i = 0; i < 30; i++) await page.mouse.move(b.x + 40 + i * 12, b.y + b.height * 0.6 - Math.sin(i / 4) * 50);
+  await page.mouse.up();
+  await page.getByTestId('wonder-text').fill('a big wave');
+  await page.screenshot({ path: 'screenshots/cc-2-wonder-board.png' });
+  await page.getByTestId('wonder-submit').click();
+  const guess = page.getByTestId('guess').first(), q0 = page.getByTestId('question-0');
+  await expect(guess.or(q0)).toBeVisible({ timeout: 20_000 });
+  if (await guess.isVisible()) await guess.click();
+  await page.screenshot({ path: 'screenshots/cc-3-questions.png' });
+  await page.getByTestId('question-0').click();
+  await expect(page.getByTestId('sam-answer')).not.toBeEmpty({ timeout: 20_000 });
+  await page.waitForTimeout(2500);
+  await page.screenshot({ path: 'screenshots/cc-4-sam.png' });
+  await page.evaluate(() => (document.querySelector('[data-testid="try-it"]') as HTMLElement).style.display = '');
+  await page.getByTestId('try-it').click();
+  await page.getByTestId('mat-stone').click(); await page.getByTestId('drop').click();
+  await page.waitForTimeout(3500);
+  await page.screenshot({ path: 'screenshots/cc-5-lab-stone.png' });
+});
