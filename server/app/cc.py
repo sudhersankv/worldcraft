@@ -149,9 +149,10 @@ async def wonder(req: WonderRequest):
     content: list[dict] = [{'type': 'text', 'text': (
         f'A child aged 8-11 is curious about anything. They {"drew the picture below" if req.image else "did not draw"}'
         f'{" and wrote/said: " + json.dumps(req.text[:200]) if (req.text or "").strip() else ""}.\n'
-        'Guess what it is (be kind about messy drawings). Pick the island AREA whose fact sheet fits it best, then write 3 short, '
-        'concrete, kid-friendly WHY/HOW questions (10 words or fewer each) about the thing they wondered about that the chosen '
-        "area's facts can answer (connect it to the closest topic if needed). Areas and their facts:\n" + sheets +
+        'They may draw ANYTHING (it does not have to fit the island). Guess what it is (be kind about messy drawings). '
+        'Write 3 short, concrete, kid-friendly WHY/HOW questions (10 words or fewer each) about THE THING THEY DREW OR SAID, '
+        'in their own spirit. Prefer questions the island syllabus below can help explain (at least one should connect '
+        'to a syllabus topic). Then pick the island AREA whose guide is best placed to help. Areas and their facts:\n' + sheets +
         f'\n\nWrite guess, guesses and questions in {LANG_NAMES[lang]}. worldTag must be one of: {", ".join(tags)}.\n'
         'Reply with JSON only: {"guess":str,"confidence":0-1,"guesses":[3 alternative guesses],"questions":[3],"worldTag":str}')}]
     if req.image and req.image.startswith('data:image/'):
