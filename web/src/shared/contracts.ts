@@ -1,5 +1,5 @@
 /**
- * CURIOSITYCRAFT shared contracts — the ONE source of truth between
+ * CURIOSITYCRAFT shared contracts â€” the ONE source of truth between
  *   server (FastAPI/Pydantic mirror in server/app/schemas.py),
  *   website (web/src/site), game runtime (web/src/game) and voice (web/src/voice).
  *
@@ -78,7 +78,7 @@ export interface NpcSpec {
   id: string;
   name: string;                // "Sunny"
   title: string;               // "the Sunflower"
-  /** Kit key for the body: 'sunflower'|'water-spirit'|'tree'|'astronaut'|'robot'|'alien'|'wizard'|'knight'|'merchant'|'scribe'|'builder'|'explorer'|'turtle'|'fish'|'coral'|'scientist'|'kid'. Unknown → 'kid'. */
+  /** Kit key for the body: 'sunflower'|'water-spirit'|'tree'|'astronaut'|'robot'|'alien'|'wizard'|'knight'|'merchant'|'scribe'|'builder'|'explorer'|'turtle'|'fish'|'coral'|'scientist'|'kid'. Unknown â†’ 'kid'. */
   archetype: string;
   persona: string;             // personality + speaking style, for the LLM
   voice: string;               // Deepgram Aura-2 model, e.g. "aura-2-thalia-en"
@@ -110,7 +110,7 @@ export interface PuzzleSpec {
  * Every objective runs the same mastery loop inside the world:
  *   STUDY (read a short, faithful, kid-level study card at the place)  ->
  *   CHECK (1-2 quick questions on what was just read)                  ->
- *   EXPLAIN (tell the NPC in your own words � graded against the objective rubric, Feynman style) ->
+ *   EXPLAIN (tell the NPC in your own words — graded against the objective rubric, Feynman style) ->
  *   PRACTICE (puzzle)  ->  RECALL later at the memory landmark (spaced retrieval).
  * Side quests add optional extra practice; review questions resurface earlier objectives while exploring.
  */
