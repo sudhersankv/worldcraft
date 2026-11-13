@@ -21,7 +21,7 @@ from . import config, llm, store
 from .goat import ask_goat
 from .heuristic import STOP, words
 from .referee import local_intent, local_match, referee
-from .schemas import (ExplainResult, LessonSpec, NpcReplyRequest, NpcReplyResponse, ObjectiveResult, Question,
+from .schemas import (ExplainResult, TeachResult, LessonSpec, NpcReplyRequest, NpcReplyResponse, ObjectiveResult, Question,
                       SessionEvent, SessionResults, WorldSpec)
 
 log = logging.getLogger('wc.services')
@@ -203,6 +203,8 @@ async def _npc_turn(req: NpcReplyRequest) -> NpcReplyResponse:
     mode = req.mode or ('answer' if req.question_id else 'chat')
     if mode == 'explain':
         return await _explain(world, sp, req, utter)
+    if mode == 'teach':
+        return await _teach(world, sp, req, utter)
     if mode == 'answer' and req.question_id:
         found = find_question(world, req.question_id)
         if found:
@@ -243,7 +245,7 @@ async def _chat(world, sp, req, utter, doubt: bool, question: Question | None = 
             + 'Facts you may use (the ONLY source of truth):\n- ' + '\n- '.join(knowledge[:14])
             + ('\nLesson text:\n' + '\n'.join(snippets) if snippets else '')
             + (f'\nThe question currently on the table (do NOT reveal its answer): {question.prompt}' if question else '')
-            + '\nRules: reply in at most 2 short sentences with simple words. Be a Socratic tutor: guide with a question, '
+            + '\nRules: you are TALKING out loud in a voice game. Reply in 2-3 short, lively spoken sentences with simple words and vivid analogies. Be a Socratic tutor: guide with a question, '
               'but if the child is stuck, says they do not know, or asks directly, explain clearly using the facts. '
               'Stay in character. Never claim the child completed a task. Never ask for personal information. '
               'If the facts cannot answer the child\'s question, say so kindly and set "grounded" to false. '
@@ -264,7 +266,7 @@ async def _chat(world, sp, req, utter, doubt: bool, question: Question | None = 
                 goat = await ask_goat(utter, world.subject if world else '') if (doubt and not grounded and config.has_exa()) else None
                 if goat:
                     reply = _first_sentences(reply, 1, 160) + " Let's ask Exa the goat!"
-                return NpcReplyResponse(reply=_first_sentences(reply, 3, 300), goat=goat, source='llm')
+                return NpcReplyResponse(reply=_first_sentences(reply, 4, 380), goat=goat, source='llm')
         except Exception as e:
             log.info('chat llm fallback: %s', str(e)[:160])
     return await _local_chat(world, sp, req, utter, doubt, question, knowledge)
@@ -325,11 +327,77 @@ def local_explain(utter: str, criteria: list[str]) -> ExplainResult:
     return ExplainResult(covered=covered, missing=missing, passed=passed)
 
 
+def _find_beat(world, beat_id):
+    if not world or not beat_id:
+        return None, None
+    for n in world.npcs:
+        for b in n.lesson_plan:
+            if b.id == beat_id:
+                return b, n
+    return None, None
+
+
+def _find_task(world, task_id):
+    if not world or not world.mission or not task_id:
+        return None
+    return next((t for t in world.mission.tasks if t.id == task_id), None)
+
+
+async def _teach(world, sp, req, utter) -> NpcReplyResponse:
+    """Grade a descriptive spoken answer to a TeachBeat question and reply conversationally."""
+    beat, _npc = _find_beat(world, req.beat_id)
+    if not beat:
+        return await _chat(world, sp, req, utter, doubt=local_intent(utter) == 'doubt')
+    criteria = list(beat.rubric) or ([f'Talks about: {beat.ask}'] if beat.ask else [])
+    misses = sum(1 for h in req.history if h.role == 'child')
+    if local_intent(utter) == 'doubt' and not local_explain(utter, criteria).covered:
+        # The child asked a question instead of answering: tutor first, keep the beat open.
+        r = await _chat(world, sp, req, utter, doubt=True)
+        r.teach = TeachResult(beat_id=beat.id, covered=[], missing=criteria, passed=False)
+        return r
+    if config.has_llm():
+        hist = '\n'.join(f'{"Child" if h.role == "child" else sp["name"]}: {h.text}' for h in req.history[-6:])
+        prompt = (f'You are {sp["name"]} {sp["title"]} ({sp["persona"]}), teaching a child aged 8-11 by TALKING in a voice game.\n'
+                  f'You just taught: "{beat.say}"\nYou asked: "{beat.ask}"\n'
+                  'Ideas a good answer mentions (judge generously on MEANING; speech-to-text may misspell):\n'
+                  + '\n'.join(f'- {c}' for c in criteria) +
+                  '\nFacts you may use (only source of truth):\n- ' + '\n- '.join(sp['knowledge'][:12]) +
+                  (f'\nEarlier in this chat:\n{hist}' if hist else '') +
+                  f'\nThe child answered out loud: "{utter}"\n'
+                  f'This is attempt number {misses + 1}.\n'
+                  'Reply with JSON only: {"covered":[ideas copied exactly],"missing":[ideas copied exactly],"passed":true|false,'
+                  '"reply":"spoken reply in character, 2-3 short sentences, warm and lively. Name exactly what they got right. '
+                  'If passed, add one fascinating extra detail. If not passed, give a concrete nudge or analogy for the missing idea '
+                  'and invite them to try again - do not give the whole answer unless this is attempt 3 or more."}')
+        try:
+            data = await llm.chat_json([{'role': 'user', 'content': prompt}], model='chat', max_tokens=500, temperature=0.5, timeout=12)
+            cov = [c for c in data.get('covered', []) if c in criteria]
+            passed = bool(data.get('passed')) or (criteria and len(cov) == len(criteria))
+            reply = str(data.get('reply', '')).strip()
+            if reply:
+                return NpcReplyResponse(reply=_first_sentences(reply, 4, 360), source='llm',
+                                        teach=TeachResult(beat_id=beat.id, covered=cov, missing=[c for c in criteria if c not in cov], passed=passed))
+        except Exception as e:
+            log.info('teach llm fallback: %s', str(e)[:160])
+    res = local_explain(utter, criteria)
+    if res.passed:
+        reply = random.choice(['Yes! That is exactly it!', 'Brilliant explaining!', 'Wow, you really get it!']) + (f' {beat.explain}' if beat.explain else '')
+    elif misses >= 1 and beat.explain:
+        reply = f'Good thinking! Let me help: {beat.explain}'
+    else:
+        reply = f'Ooh, close! {beat.hint or "Think about what I just told you."} Want to try again?'
+    return NpcReplyResponse(reply=_first_sentences(reply, 4, 360), source='local',
+                            teach=TeachResult(beat_id=beat.id, covered=res.covered, missing=res.missing, passed=res.passed))
+
+
 async def _explain(world, sp, req, utter) -> NpcReplyResponse:
     obj_id = req.objective_id or sp['objective_id']
     obj = _objective(world, obj_id)
     criteria = list(obj.rubric.criteria) if obj else []
     rule = obj.rubric.passing_rule if obj else ''
+    task = _find_task(world, req.task_id)
+    if task and task.rubric:
+        criteria, rule = list(task.rubric), 'covers most of the ideas'
     if world and not criteria:
         for sq in world.side_quests:
             if sq.objective_id == obj_id and sq.rubric:

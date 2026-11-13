@@ -74,6 +74,48 @@ export interface Zone {
   description: string;         // flavour text when inspected
 }
 
+/**
+ * CONVERSATION-FIRST TEACHING. Characters teach by talking, not by quizzes.
+ * A lesson plan is a list of beats. For each beat the NPC SAYS something (spoken aloud, short, vivid, grounded),
+ * then usually ASKS an open question. The child answers OUT LOUD in their own words; the server grades the
+ * descriptive answer against the beat rubric (generously, on meaning) and the NPC responds conversationally:
+ * praise the right part, then nudge/explain what's missing, then move on. The child may interrupt with their
+ * own questions at any time (mode 'chat'). Multiple-choice options appear ONLY as a fallback after two misses.
+ */
+export interface TeachBeat {
+  id: string;                  // "sunny-b1"
+  objectiveId: string;
+  say: string;                 // 1-3 short spoken sentences that TEACH (concrete, sensory, kid-level, faithful)
+  ask?: string;                // an open question ("Why do you think…", "Explain to me how…", "What would happen if…")
+  rubric?: string[];           // 1-3 ideas a good answer mentions (graded on meaning)
+  hint?: string;               // spoken nudge after a miss (never the full answer)
+  explain?: string;            // what the NPC says to wrap up the beat (fills any gap, reinforces)
+  fallback?: Question;         // multiple-choice rescue after 2 misses
+  show?: string;               // optional visual cue in the world: zone/object id to highlight or an effect key ('stomata-zoom','xylem-flow','sun-rays','cloud-form','rain')
+}
+
+/** The one real goal of the world. Learn from characters, then go DO it. */
+export interface MissionTask {
+  id: string;
+  title: string;               // "Wake the sleeping stomata"
+  description: string;         // what to physically do in the world
+  zoneId: string;
+  objectiveIds: string[];      // what knowledge it applies
+  action: 'arrange' | 'place' | 'activate' | 'explain'; // arrange = order things in the world; place = carry items to spots; activate = interact in correct order; explain = convince a character by explaining
+  steps?: string[];            // arrange/activate: correct order (object/zone labels)
+  pairs?: { item: string; spot: string }[]; // place: which item goes where
+  rubric?: string[];           // explain: ideas the explanation must contain
+  success: string;             // spoken/visible result ("Mist rises from the leaves…")
+  hint: string;
+}
+export interface Mission {
+  title: string;               // "Bring the Rain Back to Verdant Hollow"
+  problem: string;             // the story problem shown at the start
+  why: string;                 // why solving it needs the science
+  tasks: MissionTask[];        // done after (or while) learning; the final task is usually 'explain' to the guardian
+  finale: string;              // what happens when it's solved
+}
+
 export interface NpcSpec {
   id: string;
   name: string;                // "Sunny"
@@ -88,6 +130,7 @@ export interface NpcSpec {
   teach: string[];             // 2-3 short lines, grounded in the lesson
   knowledge: string[];         // lesson snippets this NPC may use (grounding for the LLM)
   check: Question;             // the NPC's spoken check question
+  lessonPlan?: TeachBeat[];    // conversation-first teaching script (preferred over teach/check when present)
 }
 
 export interface PuzzleSpec {
@@ -188,6 +231,7 @@ export interface WorldSpec {
   quests: Quest[];             // ordered; last quest ends with a recall step targeting memory
   memoryLandmarks: RecallSpec[]; // 3, one per landmark zone
   rewardEffects: RewardEffect[];
+  mission?: Mission;           // the one real goal of the world (demo world has it; generated worlds may)
   study: StudyCard[];          // >= 1 per objective (usually 2), placed in that objective's landmark zone
   sideQuests: SideQuest[];     // 2-4 optional
   glossary: GlossaryEntry[];   // all key terms; the in-game "Study Book"
@@ -220,8 +264,10 @@ export interface NpcReplyRequest {
   /** Question currently on the table (npc.check.id, study check id, puzzle question id, recall or review question id). */
   questionId?: string;
   /** chat = free talk/tutoring (Socratic: guide, don't just tell); explain = child is explaining objectiveId in own words; answer = answering questionId. */
-  mode?: 'chat' | 'explain' | 'answer';
+  mode?: 'chat' | 'explain' | 'answer' | 'teach';
   objectiveId?: string;        // for explain mode
+  beatId?: string;             // teach mode: the TeachBeat whose `ask` the child is answering
+  taskId?: string;             // explain-type MissionTask being attempted
 }
 export interface NpcReplyResponse {
   reply: string;               // <= 2 short sentences, kid-safe
@@ -229,6 +275,8 @@ export interface NpcReplyResponse {
   goat?: GoatClue;             // present when the child asked a doubt the lesson can't answer
   /** explain mode: which rubric criteria the explanation covered, and what to add. */
   explain?: { covered: string[]; missing: string[]; passed: boolean };
+  /** teach mode: grading of the descriptive answer to the beat question. */
+  teach?: { beatId: string; covered: string[]; missing: string[]; passed: boolean };
   source: 'llm' | 'local';
 }
 
@@ -241,7 +289,8 @@ export interface ServerConfig {
 export type EventType =
   | 'session_start' | 'npc_talk' | 'utterance' | 'question_answer' | 'puzzle_attempt'
   | 'hint' | 'collect' | 'visit' | 'quest_complete' | 'recall_attempt' | 'goat' | 'world_complete'
-  | 'study_open' | 'study_check' | 'explain_attempt' | 'review_attempt' | 'side_quest_complete';
+  | 'study_open' | 'study_check' | 'explain_attempt' | 'review_attempt' | 'side_quest_complete'
+  | 'teach_answer' | 'child_question' | 'mission_task';
 
 export interface SessionEvent {
   eventType: EventType;
@@ -286,8 +335,10 @@ export interface VoiceContext {
   npcId: string;               // or 'companion' / 'goat'
   sessionId?: string;
   questionId?: string;         // question currently asked by the NPC, if any
-  mode?: 'chat' | 'explain' | 'answer';
+  mode?: 'chat' | 'explain' | 'answer' | 'teach';
   objectiveId?: string;
+  beatId?: string;
+  taskId?: string;
 }
 export interface VoiceEvents {
   state: (s: 'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'error') => void;

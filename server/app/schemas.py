@@ -94,6 +94,45 @@ class Zone(Model):
     description: str = ''
 
 
+class TeachBeat(Model):
+    id: str
+    objective_id: str
+    say: str
+    ask: Optional[str] = None
+    rubric: list[str] = Field(default_factory=list)
+    hint: Optional[str] = None
+    explain: Optional[str] = None
+    fallback: Optional['Question'] = None
+    show: Optional[str] = None
+
+
+class MissionPair(Model):
+    item: str
+    spot: str
+
+
+class MissionTask(Model):
+    id: str
+    title: str
+    description: str
+    zone_id: str
+    objective_ids: list[str] = Field(default_factory=list)
+    action: Literal['arrange', 'place', 'activate', 'explain']
+    steps: list[str] = Field(default_factory=list)
+    pairs: list[MissionPair] = Field(default_factory=list)
+    rubric: list[str] = Field(default_factory=list)
+    success: str
+    hint: str
+
+
+class Mission(Model):
+    title: str
+    problem: str
+    why: str
+    tasks: list[MissionTask]
+    finale: str
+
+
 class NpcSpec(Model):
     id: str
     name: str
@@ -107,6 +146,7 @@ class NpcSpec(Model):
     teach: list[str]
     knowledge: list[str]
     check: Question
+    lesson_plan: list[TeachBeat] = Field(default_factory=list)
 
 
 class Pair(Model):
@@ -236,6 +276,7 @@ class WorldSpec(Model):
     quests: list[Quest]
     memory_landmarks: list[RecallSpec]
     reward_effects: list[RewardEffect] = Field(default_factory=list)
+    mission: Optional[Mission] = None
     study: list[StudyCard] = Field(default_factory=list)
     side_quests: list[SideQuest] = Field(default_factory=list)
     glossary: list[GlossaryEntry] = Field(default_factory=list)
@@ -287,11 +328,20 @@ class NpcReplyRequest(Model):
     utterance: str = ''
     history: list[HistoryItem] = Field(default_factory=list)
     question_id: Optional[str] = None
-    mode: Optional[Literal['chat', 'explain', 'answer']] = None
+    mode: Optional[Literal['chat', 'explain', 'answer', 'teach']] = None
     objective_id: Optional[str] = None
+    beat_id: Optional[str] = None
+    task_id: Optional[str] = None
 
 
 class ExplainResult(Model):
+    covered: list[str] = Field(default_factory=list)
+    missing: list[str] = Field(default_factory=list)
+    passed: bool = False
+
+
+class TeachResult(Model):
+    beat_id: str
     covered: list[str] = Field(default_factory=list)
     missing: list[str] = Field(default_factory=list)
     passed: bool = False
@@ -302,6 +352,7 @@ class NpcReplyResponse(Model):
     verdict: Optional[Verdict] = None
     goat: Optional[GoatClue] = None
     explain: Optional[ExplainResult] = None
+    teach: Optional[TeachResult] = None
     source: Literal['llm', 'local']
 
 
