@@ -5,6 +5,7 @@ Every number in the report is computed from the event log.
 """
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import re
@@ -13,6 +14,7 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
+import httpx
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
@@ -239,6 +241,36 @@ class CCEvent(BaseModel):
     ts: str | None = None
 
 
+# PostHog product analytics (server-side, so it also works inside the corvus.gent iframe).
+# Privacy: only the anonymous session id, the event name and non-free-text fields are sent. Never the kid's words.
+SAFE_KEYS = {'level', 'result', 'choice', 'challenge', 'conceptIds', 'conceptId', 'lang', 'worldId', 'correct', 'attempt',
+             'confidence', 'material', 'shape', 'xp', 'source', 'seconds', 'count', 'starter', 'wonderId'}
+_bg: set = set()
+
+
+def _posthog(session_id: str, name: str, data: dict) -> None:
+    key = config.env('POSTHOG_KEY')
+    if not key:
+        return
+    host = (config.env('POSTHOG_HOST') or 'https://eu.i.posthog.com').rstrip('/')
+    props = {k: v for k, v in (data or {}).items() if k in SAFE_KEYS}
+    props.update({'$process_person_profile': False, 'app': 'curiositycraft'})
+    body = {'api_key': key, 'event': f'cc_{name}', 'distinct_id': session_id, 'properties': props, 'timestamp': _now()}
+
+    async def send():
+        try:
+            async with httpx.AsyncClient(timeout=5) as c:
+                await c.post(f'{host}/i/v0/e/', json=body)
+        except Exception as e:  # analytics must never affect the game
+            log.info('posthog failed: %s', e)
+    try:
+        t = asyncio.get_running_loop().create_task(send())
+        _bg.add(t)
+        t.add_done_callback(_bg.discard)
+    except RuntimeError:
+        pass
+
+
 def _session(sid: str) -> dict:
     s = store.get('cc_sessions', sid)
     if not s:
@@ -260,9 +292,12 @@ async def event(ev: CCEvent):
     if not re.fullmatch(r'[A-Za-z0-9_-]{3,64}', ev.sessionId):
         raise HTTPException(422, 'bad sessionId')
     s = _session(ev.sessionId)
+    data = ev.data or {}
+    if len(json.dumps(data)) > 4000:
+        data = {k: v for k, v in data.items() if isinstance(v, (int, float, bool)) or (isinstance(v, str) and len(v) < 300)}
     if len(s['events']) < 2000:
-        s['events'].append({'name': ev.name[:40], 'data': json.loads(json.dumps(ev.data)[:4000]) if ev.data else {},
-                            'ts': ev.ts or _now()})
+        s['events'].append({'name': ev.name[:40], 'data': data, 'ts': ev.ts or _now()})
+    _posthog(ev.sessionId, ev.name, data)
     if ev.name == 'session_start':
         s['worldId'] = ev.data.get('worldId', s.get('worldId', 'beach'))
     if ev.name in ('session_start', 'lang') and ev.data.get('lang'):
