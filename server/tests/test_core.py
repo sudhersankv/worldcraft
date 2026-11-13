@@ -113,7 +113,7 @@ def test_npc_turn_offline():
 def test_api_smoke_no_keys():
     cfg = client.get('/api/config').json()
     assert cfg['llm'] is False and cfg['tts'] is False
-    assert len(client.get('/api/samples').json()) == 2
+    assert len(client.get('/api/samples').json()) == 3
     m = client.post('/api/materials/sample', json={'sampleId': 'solar-system'}).json()
     g = client.post('/api/lessons/generate', json={'materialId': m['materialId'], 'ageBand': '10-12'}).json()
     assert g['source'] == 'sample' and len(g['lesson']['objectives']) == 3

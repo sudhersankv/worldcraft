@@ -85,8 +85,8 @@ def validate_lesson(data: dict | LessonSpec) -> tuple[LessonSpec | None, list[st
     if not lesson.sections:
         d.append('lesson has no sections')
     secs = {s.id: s for s in lesson.sections}
-    if not (2 <= len(lesson.objectives) <= 5):
-        d.append(f'lesson needs 2-5 objectives, has {len(lesson.objectives)}')
+    if not (2 <= len(lesson.objectives) <= 8):
+        d.append(f'lesson needs 2-8 objectives, has {len(lesson.objectives)}')
     ids = [o.id for o in lesson.objectives]
     if len(set(ids)) != len(ids):
         d.append('duplicate objective ids')
@@ -143,6 +143,9 @@ def validate_world(data: dict | WorldSpec, lesson: LessonSpec | None = None) -> 
     questions: list[tuple[Question, str]] = []
     for n in w.npcs:
         questions.append((n.check, f'npc {n.id} check'))
+        for b in n.lesson_plan:
+            if b.fallback is not None:
+                questions.append((b.fallback, f'npc {n.id} beat {b.id} fallback'))
     for p in w.puzzles:
         for q in p.questions or []:
             questions.append((q, f'puzzle {p.id}'))
@@ -184,8 +187,8 @@ def validate_world(data: dict | WorldSpec, lesson: LessonSpec | None = None) -> 
         d.append(f'need exactly 1 hub zone, have {len(hubs)}')
     if len(goals) != 1:
         d.append(f'need exactly 1 goal zone, have {len(goals)}')
-    if not (3 <= len(lms) <= 5):
-        d.append(f'need 3 landmark zones, have {len(lms)}')
+    if not (3 <= len(lms) <= 8):
+        d.append(f'need 3-8 landmark zones, have {len(lms)}')
     for z in lms:
         if not z.objective_id:
             d.append(f'landmark zone {z.id} has no objectiveId')
@@ -194,8 +197,8 @@ def validate_world(data: dict | WorldSpec, lesson: LessonSpec | None = None) -> 
         if z.landmark not in LANDMARK_KITS:
             d.append(f'warn: zone {z.id}: unknown landmark kit "{z.landmark}" (renders as shrine)')
     # npcs
-    if len(w.npcs) != 3:
-        d.append(f'need 3 npcs, have {len(w.npcs)}')
+    if not (3 <= len(w.npcs) <= 8):
+        d.append(f'need 3-8 npcs, have {len(w.npcs)}')
     for n in w.npcs:
         if n.zone_id not in zones:
             d.append(f'npc {n.id}: unknown zone {n.zone_id}')
@@ -206,9 +209,37 @@ def validate_world(data: dict | WorldSpec, lesson: LessonSpec | None = None) -> 
             d.append(f'npc {n.id}: needs knowledge snippets')
         if not n.voice.startswith('aura-'):
             d.append(f'warn: npc {n.id}: voice "{n.voice}" is not an Aura model')
+        for b in n.lesson_plan:
+            obj(b.objective_id, f'npc {n.id} beat {b.id}')
+            if not b.say.strip():
+                d.append(f'npc {n.id} beat {b.id}: empty say')
+            if b.ask and not b.rubric:
+                d.append(f'warn: npc {n.id} beat {b.id}: ask without rubric')
+    beat_ids = [b.id for n in w.npcs for b in n.lesson_plan]
+    dup_b = {i for i in beat_ids if beat_ids.count(i) > 1}
+    if dup_b:
+        d.append(f'duplicate lesson plan beat ids: {sorted(dup_b)}')
+    # mission
+    if w.mission is not None:
+        tids = [t.id for t in w.mission.tasks]
+        if not tids:
+            d.append('mission has no tasks')
+        if len(set(tids)) != len(tids):
+            d.append('duplicate mission task ids')
+        for t in w.mission.tasks:
+            if t.zone_id not in zones:
+                d.append(f'mission task {t.id}: unknown zone {t.zone_id}')
+            for o in t.objective_ids:
+                obj(o, f'mission task {t.id}')
+            if t.action in ('arrange', 'activate') and len(t.steps) < 2:
+                d.append(f'mission task {t.id}: {t.action} needs at least 2 steps')
+            if t.action == 'place' and not t.pairs:
+                d.append(f'mission task {t.id}: place needs pairs')
+            if t.action == 'explain' and not t.rubric:
+                d.append(f'mission task {t.id}: explain needs a rubric')
     # puzzles
-    if len(w.puzzles) < 2:
-        d.append(f'need at least 2 puzzles, have {len(w.puzzles)}')
+    if not (2 <= len(w.puzzles) <= 12):
+        d.append(f'need 2-12 puzzles, have {len(w.puzzles)}')
     for p in w.puzzles:
         if p.zone_id not in zones:
             d.append(f'puzzle {p.id}: unknown zone {p.zone_id}')
@@ -273,8 +304,8 @@ def validate_world(data: dict | WorldSpec, lesson: LessonSpec | None = None) -> 
         if c.zone_id not in zones:
             d.append(f'collectible {c.id}: unknown zone {c.zone_id}')
     # memory landmarks
-    if len(w.memory_landmarks) != 3:
-        d.append(f'need 3 memoryLandmarks, have {len(w.memory_landmarks)}')
+    if not (3 <= len(w.memory_landmarks) <= 8):
+        d.append(f'need 3-8 memoryLandmarks, have {len(w.memory_landmarks)}')
     for m in w.memory_landmarks:
         z = zones.get(m.zone_id)
         if not z or z.kind != 'landmark':

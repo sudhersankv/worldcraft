@@ -33,6 +33,7 @@ export const api = {
   grade: (worldId: string, questionId: string, utterance: string) => post<Verdict>('/api/grade', { worldId, questionId, utterance }, 15000),
   goat: (question: string, worldId?: string) => post<GoatClue>('/api/goat', { question, worldId }, 15000),
   ttsUrl: (text: string, voice: string) => `/api/tts?voice=${encodeURIComponent(voice)}&text=${encodeURIComponent(text)}`,
+  homeworkCharacters: () => fetch('/api/homework/characters').then(j<import('./contracts').HomeworkCharacter[]>),
   startSession: (worldId: string) => post<{ sessionId: string }>('/api/sessions', { worldId }),
   event: (e: SessionEvent) => post<{ ok: true }>(`/api/sessions/${encodeURIComponent(e.sessionId)}/events`, e, 8000).catch(() => ({ ok: true as const })),
   results: (sessionId: string) => fetch(`/api/sessions/${encodeURIComponent(sessionId)}/results`).then(j<SessionResults>),

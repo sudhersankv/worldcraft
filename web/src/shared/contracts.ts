@@ -264,11 +264,19 @@ export interface NpcReplyRequest {
   /** Question currently on the table (npc.check.id, study check id, puzzle question id, recall or review question id). */
   questionId?: string;
   /** chat = free talk/tutoring (Socratic: guide, don't just tell); explain = child is explaining objectiveId in own words; answer = answering questionId. */
-  mode?: 'chat' | 'explain' | 'answer' | 'teach';
+  mode?: 'chat' | 'explain' | 'answer' | 'teach' | 'homework';
   objectiveId?: string;        // for explain mode
   beatId?: string;             // teach mode: the TeachBeat whose `ask` the child is answering
   taskId?: string;             // explain-type MissionTask being attempted
 }
+/**
+ * HOMEWORK HELP (website, voice-first). npcId may be any character id from any world ("<worldId>:<npcId>" or a plain
+ * npc id with worldId set), 'companion' or 'goat'. worldId may be '' for the general helper. The helper is Socratic:
+ * it breaks the problem into steps, asks the child to try each step, checks their reasoning, and never just hands over
+ * a full homework answer. It may use Exa kid-safe search for facts (returned in `goat`).
+ */
+export interface HomeworkCharacter { id: string; worldId: string; name: string; title: string; archetype: string; voice: string; persona: string; portrait?: string }
+
 export interface NpcReplyResponse {
   reply: string;               // <= 2 short sentences, kid-safe
   verdict?: Verdict;           // present when questionId was set and intent === 'answer'
@@ -335,7 +343,7 @@ export interface VoiceContext {
   npcId: string;               // or 'companion' / 'goat'
   sessionId?: string;
   questionId?: string;         // question currently asked by the NPC, if any
-  mode?: 'chat' | 'explain' | 'answer' | 'teach';
+  mode?: 'chat' | 'explain' | 'answer' | 'teach' | 'homework';
   objectiveId?: string;
   beatId?: string;
   taskId?: string;

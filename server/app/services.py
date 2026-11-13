@@ -197,6 +197,8 @@ async def _npc_turn(req: NpcReplyRequest) -> NpcReplyResponse:
         return NpcReplyResponse(reply=greet, source='local')
     if UNSAFE.search(utter):
         return NpcReplyResponse(reply="Let's keep our secrets safe and stick to our adventure! What would you like to learn about next?", source='local')
+    if (req.mode or '') == 'homework':
+        return await _homework(world, sp, req, utter)
     if req.npc_id == 'goat':
         clue = await ask_goat(utter, subject)
         return NpcReplyResponse(reply=_first_sentences(clue.text, 2, 300), goat=clue, source='local')
@@ -325,6 +327,44 @@ def local_explain(utter: str, criteria: list[str]) -> ExplainResult:
     n = len(covered) + len(missing)
     passed = n > 0 and len(covered) >= max(1, math.ceil(n * 0.6))
     return ExplainResult(covered=covered, missing=missing, passed=passed)
+
+
+HOMEWORK_RULES = (
+    'You are helping a child aged 8-12 with HOMEWORK, by voice. Be a Socratic tutor: never just hand over the final answer '
+    'to a homework problem. Find out what the question asks, break it into small steps, ask the child to try the next step, '
+    'check their reasoning kindly, and give a hint or a tiny worked example of a SIMILAR problem when they are stuck. '
+    'For facts (science, history, geography) you may explain clearly using the reference notes. Keep replies to 2-3 short '
+    'spoken sentences with simple words, end with one question that moves them forward. Stay in character. Kid-safe only; '
+    'never ask for personal information. If the reference notes do not cover a fact, say you will ask Exa the goat.')
+
+
+async def _homework(world, sp, req, utter) -> NpcReplyResponse:
+    clue = None
+    wants_fact = local_intent(utter) == 'doubt' or re.search(r'(what|who|when|where|why|how|which|define|meaning)', utter, re.I)
+    if config.has_exa() and wants_fact:
+        try:
+            clue = await asyncio.wait_for(ask_goat(utter, world.subject if world else 'homework'), timeout=7)
+        except Exception as e:
+            log.info('homework goat failed: %s', e)
+    if req.npc_id == 'goat' and clue:
+        return NpcReplyResponse(reply=_first_sentences(clue.text, 3, 360) + ' What part of your homework does this help with?', goat=clue, source='local')
+    if config.has_llm():
+        hist = '\n'.join(f'{"Child" if h.role == "child" else sp["name"]}: {h.text}' for h in req.history[-8:])
+        notes = (sp['knowledge'][:8] if sp['knowledge'] else []) + ([f'Exa found ({clue.source}): {clue.text}'] if clue else [])
+        system = f'You are {sp["name"]} {sp["title"]}. Persona: {sp["persona"]}\n{HOMEWORK_RULES}'
+        if notes:
+            system += '\nReference notes:\n- ' + '\n- '.join(notes)
+        user = (f'Conversation so far:\n{hist}\n\n' if hist else '') + f'Child: {utter}'
+        msgs = [{'role': 'system', 'content': system}, {'role': 'user', 'content': user}]
+        try:
+            reply = (await llm.chat(msgs, model='chat', max_tokens=350, timeout=12)).strip()
+            if reply:
+                return NpcReplyResponse(reply=_first_sentences(reply, 4, 420), goat=clue, source='llm')
+        except Exception as e:
+            log.info('homework llm fallback: %s', str(e)[:160])
+    if clue:
+        return NpcReplyResponse(reply=_first_sentences(clue.text, 2, 300) + ' Which step should we try first?', goat=clue, source='local')
+    return NpcReplyResponse(reply="Let's do it together! Read me the question, and tell me what you think the first step is.", source='local')
 
 
 def _find_beat(world, beat_id):

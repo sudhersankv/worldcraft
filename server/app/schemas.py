@@ -328,7 +328,7 @@ class NpcReplyRequest(Model):
     utterance: str = ''
     history: list[HistoryItem] = Field(default_factory=list)
     question_id: Optional[str] = None
-    mode: Optional[Literal['chat', 'explain', 'answer', 'teach']] = None
+    mode: Optional[Literal['chat', 'explain', 'answer', 'teach', 'homework']] = None
     objective_id: Optional[str] = None
     beat_id: Optional[str] = None
     task_id: Optional[str] = None

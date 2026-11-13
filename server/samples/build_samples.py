@@ -37,6 +37,15 @@ def check(lesson_d, world_d, name):
     print(f'{name}: ok ({len(warns)} warnings)', *warns[:5], sep='\n  ')
 
 
+def full_authored(text_name, module, world_name):
+    m = material(text_name)
+    L = dict(module.LESSON, sourceId=m.material_id, sections=[s.wire() for s in m.sections])
+    W = dict(module.WORLD)
+    check(L, W, world_name)
+    write('lessons', world_name, L)
+    write('worlds', world_name, W)
+
+
 def authored(text_name, module, world_name):
     m = material(text_name)
     L = dict(module.LESSON, schemaVersion='1', ageBand='7-9', sourceId=m.material_id,
@@ -121,8 +130,11 @@ def pdf(text_name, out_name):
 if __name__ == '__main__':
     import content_forest
     import content_space
+    import content_plants
+    full_authored('plants', content_plants, 'forest-plants')
     authored('photosynthesis', content_forest, 'forest-photosynthesis')
     authored('solar-system', content_space, 'space-solar-system')
     previews()
     pdf('photosynthesis', 'photosynthesis.pdf')
     pdf('solar-system', 'solar-system.pdf')
+    pdf('plants', 'plants.pdf')

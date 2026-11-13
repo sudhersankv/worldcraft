@@ -22,6 +22,8 @@ app = FastAPI(title='CuriosityCraft API', version='1.0')
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['*'], allow_headers=['*'])
 
 SAMPLES = [
+    dict(id='plants', title='How Plants Make Food, Drink Water and Help Make Rain', templateId='forest',
+         worldId='forest-plants', pdfUrl='/samples/plants.pdf', text='plants'),
     dict(id='photosynthesis', title='How Plants Make Food: Photosynthesis', templateId='forest',
          worldId='forest-photosynthesis', pdfUrl='/samples/photosynthesis.pdf', text='photosynthesis'),
     dict(id='solar-system', title='Our Solar System', templateId='space',
@@ -167,6 +169,25 @@ async def world_put(world_id: str, world: WorldSpec):
     return res.wire()
 
 
+@app.get('/api/homework/characters')
+async def homework_characters():
+    """Characters a child can pick for Homework Help: the demo world's cast first, then other sample worlds."""
+    out = [dict(id='goat', worldId='', name='Exa', title='the Goat', archetype='goat', voice=services.npc_voice(None, 'goat'),
+                persona='A curious library goat who looks things up in kid-safe books and websites.')]
+    order = ['forest-plants', 'forest-photosynthesis', 'space-solar-system']
+    ids = order + [w for w in store.samples('worlds').keys() if w not in order]
+    for wid in ids:
+        w = services.get_world(wid)
+        if not w:
+            continue
+        for n in w.npcs:
+            out.append(dict(id=n.id, worldId=w.world_id, name=n.name, title=n.title, archetype=n.archetype, voice=n.voice,
+                            persona=n.persona))
+        if len(out) > 14:
+            break
+    return out
+
+
 # ------------------------------------------------------------------ dialogue
 @app.post('/api/npc/reply')
 async def npc_reply(req: NpcReplyRequest):
@@ -259,6 +280,21 @@ async def sessions_list():
         except Exception as e:
             log.warning('bad session %s: %s', s.get('sessionId'), e)
     return out
+
+
+# ------------------------------------------------------------------ Curiosity Craft (/api/cc/*)
+from .cc import router as cc_router  # noqa: E402
+app.include_router(cc_router)
+
+
+@app.middleware('http')
+async def allow_corvus_iframe(request, call_next):
+    resp = await call_next(request)
+    resp.headers['Content-Security-Policy'] = "frame-ancestors 'self' https://corvus.gent https://*.corvus.gent"
+    if 'x-frame-options' in resp.headers:
+        del resp.headers['x-frame-options']
+    resp.headers['Permissions-Policy'] = 'microphone=(self "https://corvus.gent"), gamepad=(self "https://corvus.gent"), fullscreen=(self "https://corvus.gent")'
+    return resp
 
 
 # ------------------------------------------------------------------ realtime voice (owned by voice.py; included before the SPA catch-all)

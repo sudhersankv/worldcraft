@@ -1,0 +1,3509 @@
+{
+ "schemaVersion": "1",
+ "worldId": "forest-plants",
+ "lessonId": "lesson-plants",
+ "templateId": "forest",
+ "title": "Verdant Hollow: Bring the Rain Back",
+ "subject": "Plants, Transpiration and Rain",
+ "seed": 7311,
+ "source": "sample",
+ "story": {
+  "intro": [
+   "Welcome to Verdant Hollow, the most colourful forest in the world... or it used to be.",
+   "No rain has fallen for weeks. The pond is shrinking, the leaves have stopped breathing out mist, the Great Bloom is wilting, and the Cloudmother has fallen asleep on her peak.",
+   "Talk to the forest folk, learn how plants eat, drink and breathe out water, then bring the rain back!"
+  ],
+  "goal": "Learn how plants make food and move water, then use it to wake the Cloudmother and bring the rain back.",
+  "finale": "Rain pours over Verdant Hollow! The pond fills, mist curls from the canopy, and the Great Bloom bursts open in every colour."
+ },
+ "companion": {
+  "name": "Sprout",
+  "greeting": "Hi! I'm Sprout, a tiny seedling, and I'm SO thirsty. Let's visit Sunny in the Sunflower Meadow first. She knows how plants make food!"
+ },
+ "zones": [
+  {
+   "id": "hub",
+   "name": "Seedling Square",
+   "kind": "hub",
+   "landmark": "fountain",
+   "description": "A round square of mossy stones around a dry fountain. Six paths lead out into Verdant Hollow, and every plant here is drooping."
+  },
+  {
+   "id": "z-meadow",
+   "name": "Sunflower Meadow",
+   "kind": "landmark",
+   "landmark": "tower",
+   "objectiveId": "obj-1",
+   "description": "A golden meadow of giant sunflowers around a glass Sun-Catcher Tower. Sun motes float in the air like glitter."
+  },
+  {
+   "id": "z-leaflab",
+   "name": "Leaf Lab Treehouse",
+   "kind": "landmark",
+   "landmark": "console",
+   "objectiveId": "obj-2",
+   "description": "A treehouse laboratory built inside one enormous leaf, full of magnifying lenses and a giant model of a stoma with two green doors."
+  },
+  {
+   "id": "z-roots",
+   "name": "Rootdeep Caverns",
+   "kind": "landmark",
+   "landmark": "well",
+   "objectiveId": "obj-3",
+   "description": "Glowing caves under the forest where roots hang like curtains and clear pipes carry water upward and golden sugar around."
+  },
+  {
+   "id": "z-canopy",
+   "name": "Misty Canopy",
+   "kind": "landmark",
+   "landmark": "tree",
+   "objectiveId": "obj-4",
+   "description": "Rope bridges high in the treetops. On good days soft mist curls off millions of leaves, but today the air is hot and still."
+  },
+  {
+   "id": "z-pond",
+   "name": "Whispering Stream & Pond",
+   "kind": "landmark",
+   "landmark": "statue",
+   "objectiveId": "obj-5",
+   "description": "A babbling stream feeds a lily pond beside ancient Oakley. The pond is shrinking, and five water-cycle stones lie scattered in the reeds."
+  },
+  {
+   "id": "goal",
+   "name": "Cloudmother's Peak",
+   "kind": "goal",
+   "landmark": "obelisk",
+   "objectiveId": "obj-6",
+   "description": "A misty mountaintop with a silver obelisk where the Cloudmother sleeps on a bed of thin, pale clouds."
+  },
+  {
+   "id": "z-nook",
+   "name": "Fern Hollow Nook",
+   "kind": "wild",
+   "landmark": "shrine",
+   "description": "A shady, secret hollow full of wide ferns, curly moss and strange pitcher plants. Seeds hide under the leaves."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "npc-sunny",
+   "name": "Sunny",
+   "title": "the Sunflower",
+   "archetype": "sunflower",
+   "voice": "aura-2-thalia-en",
+   "zoneId": "z-meadow",
+   "objectiveId": "obj-1",
+   "persona": "Sunny is a bouncy, giggly giant sunflower who always turns her face toward the Sun. She talks fast, loves sunny puns (\"that is a bright idea!\"), calls the child \"sunshine\", and cheers loudly at every good answer. She explains with cooking and kitchen comparisons and never makes a child feel wrong.",
+   "greeting": "Hello, sunshine! I'm Sunny! Verdant Hollow is drooping and I'm feeling a bit floppy myself. Want to learn the secret recipe that every green plant cooks?",
+   "teach": [
+    "To make food, a plant needs three ingredients: water, carbon dioxide and light energy.",
+    "The leaf uses light energy to join water and carbon dioxide together into a sugar called glucose, and oxygen is made too.",
+    "The word equation is: carbon dioxide plus water turns into glucose plus oxygen."
+   ],
+   "knowledge": [
+    "To stay alive and grow, a plant needs light, water, air (carbon dioxide), and minerals from the soil, and space to grow.",
+    "Green plants make their own food inside their leaves using a process called photosynthesis.",
+    "The word photosynthesis means \"putting together with light.\"",
+    "A plant in a dark cupboard has water and air but no light, so it cannot make food and turns pale and weak.",
+    "To make food a plant needs three ingredients: water, carbon dioxide and light energy.",
+    "Water comes up from the roots, carbon dioxide comes in from the air, and light energy comes from the Sun.",
+    "The leaf uses light energy to join water and carbon dioxide together into a sugar called glucose, the plant's food.",
+    "Oxygen is made too, and the plant lets most of it out into the air.",
+    "Word equation: carbon dioxide + water → glucose + oxygen. The arrow means \"turns into\", and light energy powers the change.",
+    "Plants use glucose for energy and to build new leaves, stems, roots, flowers and fruit, and store extra sugar as starch.",
+    "Curiosity spark: Sunny often wonders why sunflowers turn to follow the Sun across the sky. Exa the goat might know!"
+   ],
+   "check": {
+    "id": "check-sunny",
+    "prompt": "Which of these is NOT an ingredient a plant uses to make food?",
+    "choices": [
+     "Water",
+     "Carbon dioxide",
+     "Chocolate",
+     "Light energy"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "chocolate"
+    ],
+    "explain": "The three ingredients are water, carbon dioxide and light energy. No chocolate in the leaf kitchen!",
+    "hints": [
+     "Think about the leaf kitchen.",
+     "One comes from roots, one from the air, one from the Sun.",
+     "Water, carbon dioxide, light... which is left?"
+    ]
+   },
+   "lessonPlan": [
+    {
+     "id": "sunny-b1",
+     "objectiveId": "obj-1",
+     "say": "Look around, sunshine: you have to go and find your lunch, but I make mine right here in my leaves! Plants are living things, and to grow we need light, water, air and minerals from the soil.",
+     "ask": "Can you tell me some things you think a plant needs to stay alive and grow?",
+     "rubric": [
+      "Mentions light or sunlight",
+      "Mentions water",
+      "Mentions air, carbon dioxide or soil minerals"
+     ],
+     "hint": "Think about what a sunflower gets from the sky, from the soil, and from the air around it.",
+     "explain": "Brilliant! Plants need light, water, air with carbon dioxide in it, and minerals from the soil. And unlike you, we cook our own food!",
+     "fallback": {
+      "id": "sunny-b1-fb",
+      "prompt": "Which list shows things a plant needs?",
+      "choices": [
+       "Light, water, air and minerals",
+       "Sand, toys and milk",
+       "Only darkness"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "light water air minerals"
+      ],
+      "explain": "Brilliant! Plants need light, water, air with carbon dioxide in it, and minerals from the soil. And unlike you, we cook our own food!",
+      "hints": [
+       "Think about what a sunflower gets from the sky, from the soil, and from the air around it."
+      ]
+     },
+     "show": "sun-rays"
+    },
+    {
+     "id": "sunny-b2",
+     "objectiveId": "obj-1",
+     "say": "Here's a sad story. Someone put a little plant in a dark cupboard. It had water and it had air, but after a while it went pale and weak and floppy.",
+     "ask": "Why do you think the cupboard plant got so pale and weak? What was it missing?",
+     "rubric": [
+      "Says it had no light",
+      "Says without light it cannot make food"
+     ],
+     "hint": "It had water and air. What does a cupboard keep out?",
+     "explain": "Exactly. With no light, the plant cannot make food, so it gets weak. Light is the power for the whole kitchen!",
+     "fallback": {
+      "id": "sunny-b2-fb",
+      "prompt": "What was the cupboard plant missing?",
+      "choices": [
+       "Light",
+       "Water",
+       "Air"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "light",
+       "sunlight"
+      ],
+      "explain": "Exactly. With no light, the plant cannot make food, so it gets weak. Light is the power for the whole kitchen!",
+      "hints": [
+       "It had water and air. What does a cupboard keep out?"
+      ]
+     }
+    },
+    {
+     "id": "sunny-b3",
+     "objectiveId": "obj-1",
+     "say": "Making food in a leaf is called photosynthesis. Photo means light and synthesis means putting together, so photosynthesis means putting together with light! My leaf is a tiny kitchen.",
+     "ask": "If my leaf is a kitchen, what do you think it is putting together, and what is giving it the power?",
+     "rubric": [
+      "Says light is the power or energy",
+      "Mentions putting ingredients together to make food"
+     ],
+     "hint": "Look at the name: photo means light. What might be powering the cooking?",
+     "explain": "Yes! Light energy powers the kitchen, and the leaf puts simple ingredients together to make food.",
+     "fallback": {
+      "id": "sunny-b3-fb",
+      "prompt": "What does photosynthesis mean?",
+      "choices": [
+       "Putting together with light",
+       "Eating in the dark",
+       "Growing in water"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "putting together with light"
+      ],
+      "explain": "Yes! Light energy powers the kitchen, and the leaf puts simple ingredients together to make food.",
+      "hints": [
+       "Look at the name: photo means light. What might be powering the cooking?"
+      ]
+     },
+     "show": "sun-rays"
+    },
+    {
+     "id": "sunny-b4",
+     "objectiveId": "obj-1",
+     "say": "Every recipe needs ingredients. My leaf kitchen needs exactly three: water, carbon dioxide and light energy. Water comes up from my roots, carbon dioxide drifts in from the air, and light energy beams down from the Sun.",
+     "ask": "Can you name the three ingredients and tell me where each one comes from?",
+     "rubric": [
+      "Water from the roots or soil",
+      "Carbon dioxide from the air",
+      "Light energy from the Sun"
+     ],
+     "hint": "One comes up from below, one floats in the air, and one shines from the sky.",
+     "explain": "What a bright idea! Water from the roots, carbon dioxide from the air, and light energy from the Sun.",
+     "fallback": {
+      "id": "sunny-b4-fb",
+      "prompt": "Where does carbon dioxide come from?",
+      "choices": [
+       "The air",
+       "The roots",
+       "The Sun"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "the air",
+       "air"
+      ],
+      "explain": "What a bright idea! Water from the roots, carbon dioxide from the air, and light energy from the Sun.",
+      "hints": [
+       "One comes up from below, one floats in the air, and one shines from the sky."
+      ]
+     },
+     "show": "z-meadow"
+    },
+    {
+     "id": "sunny-b5",
+     "objectiveId": "obj-1",
+     "say": "Now the magic part! The leaf uses light energy to join water and carbon dioxide together. They turn into a sugar called glucose. Glucose is my food, my lunchbox!",
+     "ask": "What do you think the plant does with the glucose it makes?",
+     "rubric": [
+      "Uses it for energy",
+      "Uses it to grow or build new parts (leaves, roots, flowers, fruit)",
+      "Can store it as starch"
+     ],
+     "hint": "Think about how you use your food. What does a plant need energy for?",
+     "explain": "Yes! Plants use glucose for energy and to build new leaves, stems, roots, flowers and fruit. Extra sugar is stored as starch for later.",
+     "fallback": {
+      "id": "sunny-b5-fb",
+      "prompt": "What is glucose?",
+      "choices": [
+       "A sugar that is the plant's food",
+       "A kind of rock",
+       "A type of rain"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "sugar",
+       "food"
+      ],
+      "explain": "Yes! Plants use glucose for energy and to build new leaves, stems, roots, flowers and fruit. Extra sugar is stored as starch for later.",
+      "hints": [
+       "Think about how you use your food. What does a plant need energy for?"
+      ]
+     }
+    },
+    {
+     "id": "sunny-b6",
+     "objectiveId": "obj-1",
+     "say": "There's a bonus! While the leaf makes sugar, oxygen is made too. The plant lets most of it out into the air. Take a big breath... some of that oxygen came from plants like me!",
+     "ask": "Why do you think that oxygen gift is so important for you and the animals?",
+     "rubric": [
+      "Says people and animals breathe oxygen",
+      "Says plants let oxygen out into the air"
+     ],
+     "hint": "What do you do with air every few seconds?",
+     "explain": "Exactly! People and animals breathe oxygen, and plants let it out into the air while they make sugar.",
+     "fallback": {
+      "id": "sunny-b6-fb",
+      "prompt": "What gas do plants let out that we breathe?",
+      "choices": [
+       "Oxygen",
+       "Carbon dioxide",
+       "Smoke"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "oxygen"
+      ],
+      "explain": "Exactly! People and animals breathe oxygen, and plants let it out into the air while they make sugar.",
+      "hints": [
+       "What do you do with air every few seconds?"
+      ]
+     }
+    },
+    {
+     "id": "sunny-b7",
+     "objectiveId": "obj-1",
+     "say": "Scientists write it as a word equation: carbon dioxide plus water turns into glucose plus oxygen. The arrow means turns into, and light energy powers the change.",
+     "ask": "Can you say the whole recipe back to me in your own words, from ingredients to what comes out?",
+     "rubric": [
+      "Inputs: carbon dioxide and water (with light energy)",
+      "Outputs: glucose (sugar) and oxygen"
+     ],
+     "hint": "Start with the two things that go in, then the power, then the two things that come out.",
+     "explain": "Sun-sational! Carbon dioxide plus water, powered by light energy, turns into glucose plus oxygen. You know the leaf kitchen recipe!",
+     "fallback": {
+      "id": "sunny-b7-fb",
+      "prompt": "Which is the photosynthesis word equation?",
+      "choices": [
+       "Carbon dioxide + water → glucose + oxygen",
+       "Oxygen + glucose → sand",
+       "Water → fire + rocks"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "carbon dioxide and water make glucose and oxygen"
+      ],
+      "explain": "Sun-sational! Carbon dioxide plus water, powered by light energy, turns into glucose plus oxygen. You know the leaf kitchen recipe!",
+      "hints": [
+       "Start with the two things that go in, then the power, then the two things that come out."
+      ]
+     },
+     "show": "sun-rays"
+    }
+   ]
+  },
+  {
+   "id": "npc-chloro",
+   "name": "Professor Chloro",
+   "title": "the Leaf Scientist",
+   "archetype": "scientist",
+   "voice": "aura-2-orpheus-en",
+   "zoneId": "z-leaflab",
+   "objectiveId": "obj-2",
+   "persona": "Professor Chloro is a dramatic, slightly absent-minded leaf scientist with enormous goggles. He says \"Fascinating!\" and \"Hypothesis!\" a lot, gasps theatrically at good ideas, and explains with gadgets: solar panels, doors, tiny mouths. He treats the child as his brilliant lab partner.",
+   "greeting": "Fascinating! A visitor! I'm Professor Chloro, and this treehouse is my Leaf Lab. Put on your imaginary goggles, lab partner, we are going INSIDE a leaf!",
+   "teach": [
+    "Leaves are green because they are full of chlorophyll, a green pigment that traps the energy in sunlight.",
+    "Chlorophyll lives inside tiny parts of leaf cells called chloroplasts, the leaf's little solar panels.",
+    "Stomata are tiny holes, mostly under the leaf. Two guard cells open and close each one, letting carbon dioxide in and oxygen and water vapour out."
+   ],
+   "knowledge": [
+    "Leaves are green because they are full of chlorophyll.",
+    "Chlorophyll is a green pigment that traps the energy in sunlight.",
+    "Chlorophyll is found inside tiny parts of the leaf cells called chloroplasts, like little solar panels. Each leaf cell can have many chloroplasts.",
+    "Leaves are usually wide and flat so they can catch as much light as possible, and many plants turn their leaves to face the light.",
+    "On the leaf surface, mostly on the underside, there are thousands of tiny holes called stomata. One hole is called a stoma.",
+    "Each stoma is like a tiny mouth with two doors: two bean-shaped guard cells that open and close it.",
+    "When the stomata are open, carbon dioxide comes into the leaf, and oxygen and water vapour go out.",
+    "Stomata usually open in the daytime when there is light, often close at night, and close when the plant is short of water.",
+    "Curiosity spark: the Professor dreams of studying leaves that change colour in autumn. Exa the goat could find out why!",
+    "Curiosity spark: he keeps a jar labelled \"plants that eat insects?!\" and would love someone to ask about them."
+   ],
+   "check": {
+    "id": "check-chloro",
+    "prompt": "What do guard cells do?",
+    "choices": [
+     "Open and close the stomata",
+     "Make the leaf taste sweet",
+     "Pull the roots down"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "open and close",
+     "open and close the stomata"
+    ],
+    "explain": "Guard cells are the two doors of each stoma. They open it and close it.",
+    "hints": [
+     "Think of the doors on the tiny mouth.",
+     "They are bean-shaped.",
+     "They open and... ?"
+    ]
+   },
+   "lessonPlan": [
+    {
+     "id": "chloro-b1",
+     "objectiveId": "obj-2",
+     "say": "Hypothesis! Leaves are green for a reason. They are packed with chlorophyll, a green pigment that traps the energy in sunlight, like a sponge soaking up light.",
+     "ask": "Why do you think it matters so much that a leaf can trap the energy in sunlight?",
+     "rubric": [
+      "Says light energy is needed to make food (photosynthesis)",
+      "Says chlorophyll traps or catches the light"
+     ],
+     "hint": "Remember Sunny's kitchen. What powered the cooking?",
+     "explain": "Fascinating! Chlorophyll traps light energy, and that energy powers photosynthesis, so the leaf can make sugar.",
+     "fallback": {
+      "id": "chloro-b1-fb",
+      "prompt": "What does chlorophyll do?",
+      "choices": [
+       "Traps the energy in sunlight",
+       "Stores rainwater",
+       "Makes the roots grow down"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "traps light",
+       "catches sunlight"
+      ],
+      "explain": "Fascinating! Chlorophyll traps light energy, and that energy powers photosynthesis, so the leaf can make sugar.",
+      "hints": [
+       "Remember Sunny's kitchen. What powered the cooking?"
+      ]
+     },
+     "show": "sun-rays"
+    },
+    {
+     "id": "chloro-b2",
+     "objectiveId": "obj-2",
+     "say": "Zoom in! Inside each leaf cell are tiny green parts called chloroplasts. That is where the chlorophyll lives. Think of them as the leaf's little solar panels, and one cell can have many of them!",
+     "ask": "If chloroplasts are like solar panels, can you describe what job they do for the leaf?",
+     "rubric": [
+      "Says they catch or collect light energy",
+      "Says they hold the chlorophyll or are where food is made"
+     ],
+     "hint": "What does a solar panel on a roof collect?",
+     "explain": "Exactly! Chloroplasts hold the chlorophyll and catch light energy, just like solar panels collect sunshine.",
+     "fallback": {
+      "id": "chloro-b2-fb",
+      "prompt": "Where is chlorophyll found?",
+      "choices": [
+       "Inside chloroplasts in leaf cells",
+       "In the soil",
+       "Inside raindrops"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "chloroplasts"
+      ],
+      "explain": "Exactly! Chloroplasts hold the chlorophyll and catch light energy, just like solar panels collect sunshine.",
+      "hints": [
+       "What does a solar panel on a roof collect?"
+      ]
+     },
+     "show": "stomata-zoom"
+    },
+    {
+     "id": "chloro-b3",
+     "objectiveId": "obj-2",
+     "say": "Look at the shape of this leaf: wide and flat, like a dinner plate. And watch the plants by the window, they turn their leaves to face the light.",
+     "ask": "Why do you think leaves are wide and flat instead of thin and curled up?",
+     "rubric": [
+      "Says to catch as much light as possible"
+     ],
+     "hint": "More surface means more of something hits it. More of what?",
+     "explain": "Yes! Wide, flat leaves catch as much light as possible, so more food can be made.",
+     "fallback": {
+      "id": "chloro-b3-fb",
+      "prompt": "Why are most leaves wide and flat?",
+      "choices": [
+       "To catch as much light as possible",
+       "To keep insects away",
+       "So they can float"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "catch light",
+       "more light"
+      ],
+      "explain": "Yes! Wide, flat leaves catch as much light as possible, so more food can be made.",
+      "hints": [
+       "More surface means more of something hits it. More of what?"
+      ]
+     }
+    },
+    {
+     "id": "chloro-b4",
+     "objectiveId": "obj-2",
+     "say": "Now flip the leaf over! The underside is covered in thousands of tiny holes called stomata. Just one is called a stoma. Each one is like a tiny mouth.",
+     "ask": "Carbon dioxide is one of the leaf's ingredients. How do you think it gets inside the leaf?",
+     "rubric": [
+      "Says it comes in through the stomata (tiny holes)",
+      "Says it comes from the air"
+     ],
+     "hint": "The leaf is not sealed shut. Where are the tiny openings?",
+     "explain": "Fascinating! Carbon dioxide from the air comes in through the stomata, the tiny holes mostly on the underside of the leaf.",
+     "fallback": {
+      "id": "chloro-b4-fb",
+      "prompt": "How does carbon dioxide get into a leaf?",
+      "choices": [
+       "Through the stomata",
+       "Through the flower petals",
+       "Up from the roots"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "stomata",
+       "tiny holes"
+      ],
+      "explain": "Fascinating! Carbon dioxide from the air comes in through the stomata, the tiny holes mostly on the underside of the leaf.",
+      "hints": [
+       "The leaf is not sealed shut. Where are the tiny openings?"
+      ]
+     },
+     "show": "stomata-zoom"
+    },
+    {
+     "id": "chloro-b5",
+     "objectiveId": "obj-2",
+     "say": "Every tiny mouth has two doors! They are two bean-shaped cells called guard cells. Guard cells open the stoma and close it, like a pair of very careful doorkeepers.",
+     "ask": "Can you describe what the guard cells do, and what might go in and out when the doors are open?",
+     "rubric": [
+      "Says guard cells open and close the stoma",
+      "Says carbon dioxide goes in",
+      "Says oxygen or water vapour goes out"
+     ],
+     "hint": "Think about the kitchen: one ingredient comes in through this door, and two things leave.",
+     "explain": "Superb! Guard cells open and close the stoma. When it is open, carbon dioxide comes in, and oxygen and water vapour go out.",
+     "fallback": {
+      "id": "chloro-b5-fb",
+      "prompt": "What goes OUT of an open stoma?",
+      "choices": [
+       "Oxygen and water vapour",
+       "Soil and stones",
+       "Sugar and roots"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "oxygen and water vapour"
+      ],
+      "explain": "Superb! Guard cells open and close the stoma. When it is open, carbon dioxide comes in, and oxygen and water vapour go out.",
+      "hints": [
+       "Think about the kitchen: one ingredient comes in through this door, and two things leave."
+      ]
+     },
+     "show": "stomata-zoom"
+    },
+    {
+     "id": "chloro-b6",
+     "objectiveId": "obj-2",
+     "say": "Stomata usually open in the daytime, when there is light for photosynthesis. They often close at night.",
+     "ask": "Why do you think the stomata bother to open in the day but close at night?",
+     "rubric": [
+      "Says in the day there is light so the plant can make food and needs carbon dioxide",
+      "Says at night there is no light so no need to open (saves water)"
+     ],
+     "hint": "When can the leaf kitchen cook? When is the kitchen closed?",
+     "explain": "Brilliant reasoning! In daylight the leaf can make food, so it opens up for carbon dioxide. At night there is no light, so the doors often close.",
+     "fallback": {
+      "id": "chloro-b6-fb",
+      "prompt": "When do stomata usually open?",
+      "choices": [
+       "In the daytime, when there is light",
+       "Only in the middle of the night",
+       "Never"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "daytime",
+       "day"
+      ],
+      "explain": "Brilliant reasoning! In daylight the leaf can make food, so it opens up for carbon dioxide. At night there is no light, so the doors often close.",
+      "hints": [
+       "When can the leaf kitchen cook? When is the kitchen closed?"
+      ]
+     }
+    },
+    {
+     "id": "chloro-b7",
+     "objectiveId": "obj-2",
+     "say": "Gasp! One more secret. When a plant is short of water, the guard cells close the stomata, like shutting the windows so the water cannot escape.",
+     "ask": "What would happen to a thirsty plant if its stomata stayed wide open all the time?",
+     "rubric": [
+      "Says it would lose too much water (water vapour escapes)",
+      "Says it might dry out or wilt"
+     ],
+     "hint": "What leaves through the open stomata besides oxygen?",
+     "explain": "Exactly! Water vapour escapes through open stomata, so a thirsty plant closes them to save water. Clever little doors!",
+     "fallback": {
+      "id": "chloro-b7-fb",
+      "prompt": "Why do stomata close when a plant is short of water?",
+      "choices": [
+       "To save water",
+       "To catch more rain",
+       "To grow taller"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "save water"
+      ],
+      "explain": "Exactly! Water vapour escapes through open stomata, so a thirsty plant closes them to save water. Clever little doors!",
+      "hints": [
+       "What leaves through the open stomata besides oxygen?"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "npc-rootie",
+   "name": "Rootie",
+   "title": "the Mole Explorer",
+   "archetype": "explorer",
+   "voice": "aura-2-apollo-en",
+   "zoneId": "z-roots",
+   "objectiveId": "obj-3",
+   "persona": "Rootie is an enthusiastic mole explorer with a tiny headlamp and a map of every root in Verdant Hollow. He talks like an adventure guide (\"Onward, explorer!\"), loves plumbing and straws, sniffs loudly when he is thinking, and gets a little muddled about directions on purpose so children can correct him.",
+   "greeting": "Onward, explorer! Rootie here, the best digger in Verdant Hollow. Down here the roots and pipes keep every plant alive, but the water is barely moving. Grab a headlamp!",
+   "teach": [
+    "Roots hold the plant in the ground and take in water and minerals. Tiny root hairs give them a huge surface for soaking up water.",
+    "Water travels up the plant through tubes called xylem, from the roots, up the stem and into every leaf.",
+    "Phloem carries sugar made in the leaves to all the other parts: down to the roots, up to buds, into fruits and seeds."
+   ],
+   "knowledge": [
+    "Roots hold the plant firmly in the ground and take in water and minerals from the soil.",
+    "Roots are covered in tiny root hairs. Lots of thin root hairs give the root a huge surface for soaking up water.",
+    "Water travels up the plant through tubes called xylem.",
+    "Xylem tubes run from the roots, up the stem and into every leaf, like a bundle of very thin straws.",
+    "A second set of tubes, called phloem, carries sugar made in the leaves to all the other parts of the plant.",
+    "Phloem takes sugar down to the roots, up to new buds, and into fruits and seeds.",
+    "Easy way to remember: xylem carries water up, phloem carries food around.",
+    "Water path: soil, root hairs, root, xylem in the stem, leaf.",
+    "Curiosity spark: Rootie wonders how deep the deepest roots in the world go. Exa the goat might know!"
+   ],
+   "check": {
+    "id": "check-rootie",
+    "prompt": "Which tubes carry water up from the roots?",
+    "choices": [
+     "Xylem",
+     "Phloem",
+     "Stomata"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "xylem"
+    ],
+    "explain": "Xylem carries water up. Phloem carries food around.",
+    "hints": [
+     "Think of the thin straws.",
+     "It starts with an X.",
+     "Xylem carries water up..."
+    ]
+   },
+   "lessonPlan": [
+    {
+     "id": "rootie-b1",
+     "objectiveId": "obj-3",
+     "say": "Sniff sniff! Feel these roots, explorer. They grip the soil so the plant does not topple over, and they take in water and minerals from the soil.",
+     "ask": "Can you describe two different jobs that roots do for a plant?",
+     "rubric": [
+      "Hold the plant in the ground",
+      "Take in water (and minerals) from the soil"
+     ],
+     "hint": "One job is about staying put in a storm. The other is about drinking.",
+     "explain": "Onward! Roots hold the plant firmly in the ground and take in water and minerals from the soil.",
+     "fallback": {
+      "id": "rootie-b1-fb",
+      "prompt": "Which is a job of roots?",
+      "choices": [
+       "Taking in water from the soil",
+       "Catching sunlight",
+       "Making flowers smell"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "take in water",
+       "hold the plant"
+      ],
+      "explain": "Onward! Roots hold the plant firmly in the ground and take in water and minerals from the soil.",
+      "hints": [
+       "One job is about staying put in a storm. The other is about drinking."
+      ]
+     }
+    },
+    {
+     "id": "rootie-b2",
+     "objectiveId": "obj-3",
+     "say": "Shine your headlamp on this root. See the fuzzy bits? Those are root hairs, super thin, and there are loads of them. Together they make a huge surface for soaking up water, like a fluffy towel soaks up more than a smooth plate.",
+     "ask": "Why do you think having lots of tiny root hairs helps a plant drink?",
+     "rubric": [
+      "Says they make a bigger surface",
+      "Says more surface means more water soaked up"
+     ],
+     "hint": "Think of the fluffy towel. Why does it soak up more?",
+     "explain": "Exactly! Lots of thin root hairs give a huge surface, so the root can soak up much more water.",
+     "fallback": {
+      "id": "rootie-b2-fb",
+      "prompt": "What do root hairs do?",
+      "choices": [
+       "Give a big surface to soak up water",
+       "Make the plant green",
+       "Let oxygen out"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "soak up water",
+       "bigger surface"
+      ],
+      "explain": "Exactly! Lots of thin root hairs give a huge surface, so the root can soak up much more water.",
+      "hints": [
+       "Think of the fluffy towel. Why does it soak up more?"
+      ]
+     },
+     "show": "z-roots"
+    },
+    {
+     "id": "rootie-b3",
+     "objectiveId": "obj-3",
+     "say": "Now the plumbing! Water travels up the plant through tubes called xylem. They run from the roots, up the stem and into every leaf, like a bundle of very thin straws.",
+     "ask": "If you were a drop of water just soaked up by a root hair, can you describe your journey to the leaf?",
+     "rubric": [
+      "Into the root (root hairs)",
+      "Up through the xylem in the stem",
+      "Into the leaf"
+     ],
+     "hint": "Start in the soil and travel up through the straws. Where do you end up?",
+     "explain": "What an expedition! Soil, root hairs, root, up the xylem in the stem, and into the leaf.",
+     "fallback": {
+      "id": "rootie-b3-fb",
+      "prompt": "Which way does water travel in the xylem?",
+      "choices": [
+       "Up from the roots to the leaves",
+       "Down from the flowers",
+       "Sideways into the soil"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "up"
+      ],
+      "explain": "What an expedition! Soil, root hairs, root, up the xylem in the stem, and into the leaf.",
+      "hints": [
+       "Start in the soil and travel up through the straws. Where do you end up?"
+      ]
+     },
+     "show": "xylem-flow"
+    },
+    {
+     "id": "rootie-b4",
+     "objectiveId": "obj-3",
+     "say": "Oops, I always mix this up! There is a SECOND set of tubes called phloem. The leaves make sugar, and the phloem carries that sugar to all the other parts of the plant.",
+     "ask": "Roots cannot catch sunlight down here in the dark. So how do you think the roots get food to grow?",
+     "rubric": [
+      "Says sugar is made in the leaves",
+      "Says phloem carries the sugar down to the roots"
+     ],
+     "hint": "Where is sugar made, and which tubes deliver it?",
+     "explain": "Yes! Sugar is made up in the leaves, and the phloem carries it down to the roots so they can grow too.",
+     "fallback": {
+      "id": "rootie-b4-fb",
+      "prompt": "What carries sugar to the roots?",
+      "choices": [
+       "Phloem",
+       "Xylem",
+       "Root hairs"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "phloem"
+      ],
+      "explain": "Yes! Sugar is made up in the leaves, and the phloem carries it down to the roots so they can grow too.",
+      "hints": [
+       "Where is sugar made, and which tubes deliver it?"
+      ]
+     },
+     "show": "xylem-flow"
+    },
+    {
+     "id": "rootie-b5",
+     "objectiveId": "obj-3",
+     "say": "Phloem is a delivery service. It takes sugar down to the roots, up to new buds, and into fruits and seeds. That is why a ripe apple tastes sweet!",
+     "ask": "Why do you think a strawberry or an apple tastes sweet?",
+     "rubric": [
+      "Says sugar is carried into the fruit",
+      "Says the phloem brings it from the leaves"
+     ],
+     "hint": "Where did the sugar come from, and how did it travel?",
+     "explain": "Delicious thinking! Sugar made in the leaves travels through the phloem into fruits and seeds.",
+     "fallback": {
+      "id": "rootie-b5-fb",
+      "prompt": "Where does phloem take sugar?",
+      "choices": [
+       "To roots, buds, fruits and seeds",
+       "Only out through the stomata",
+       "Into the clouds"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "roots buds fruits seeds"
+      ],
+      "explain": "Delicious thinking! Sugar made in the leaves travels through the phloem into fruits and seeds.",
+      "hints": [
+       "Where did the sugar come from, and how did it travel?"
+      ]
+     }
+    },
+    {
+     "id": "rootie-b6",
+     "objectiveId": "obj-3",
+     "say": "Here's my explorer's rhyme: xylem carries water up, phloem carries food around. Up and around, up and around!",
+     "ask": "Can you explain the difference between xylem and phloem in your own words?",
+     "rubric": [
+      "Xylem carries water (up)",
+      "Phloem carries sugar/food (around)"
+     ],
+     "hint": "One carries water, the other carries food. Which is which?",
+     "explain": "Onward and upward! Xylem carries water up, phloem carries food around. You could lead my next expedition!",
+     "fallback": {
+      "id": "rootie-b6-fb",
+      "prompt": "Which is right?",
+      "choices": [
+       "Xylem carries water up, phloem carries food around",
+       "Xylem carries food, phloem carries rocks",
+       "Both carry only air"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "xylem water phloem food"
+      ],
+      "explain": "Onward and upward! Xylem carries water up, phloem carries food around. You could lead my next expedition!",
+      "hints": [
+       "One carries water, the other carries food. Which is which?"
+      ]
+     }
+    },
+    {
+     "id": "rootie-b7",
+     "objectiveId": "obj-3",
+     "say": "Look, explorer: a rabbit nibbled this stem and cut some of the tubes. The leaves above are starting to droop.",
+     "ask": "What would happen to the leaves if the xylem in a stem got cut?",
+     "rubric": [
+      "Says water could not reach the leaves",
+      "Says the leaves would droop, wilt or dry out"
+     ],
+     "hint": "What do the xylem straws carry, and where to?",
+     "explain": "Right! With cut xylem, water cannot reach the leaves, so they wilt. Every pipe matters!",
+     "fallback": {
+      "id": "rootie-b7-fb",
+      "prompt": "If the xylem is cut, the leaves...",
+      "choices": [
+       "Cannot get water and wilt",
+       "Grow faster",
+       "Turn into roots"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "wilt",
+       "no water"
+      ],
+      "explain": "Right! With cut xylem, water cannot reach the leaves, so they wilt. Every pipe matters!",
+      "hints": [
+       "What do the xylem straws carry, and where to?"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "npc-misty",
+   "name": "Misty",
+   "title": "the Water Spirit",
+   "archetype": "water-spirit",
+   "voice": "aura-2-luna-en",
+   "zoneId": "z-canopy",
+   "objectiveId": "obj-4",
+   "persona": "Misty is a floaty, dreamy water spirit who lives in the treetops and is made of soft mist. She speaks gently and slowly, giggles when the breeze tickles her, pretends to sweat dramatically when it is hot, and uses whooshing sound effects. She is very encouraging and loves \"what if\" questions.",
+   "greeting": "Whoooosh... oh hello, little one. I'm Misty. Up here in the canopy the leaves usually breathe out soft mist, but today everything is hot and still. Will you help me understand why?",
+   "teach": [
+    "When the stomata are open, water evaporates from inside the leaf and escapes into the air as water vapour. This is transpiration.",
+    "As water leaves the top of the plant, more is pulled up through the xylem, like sipping through a straw. This is the transpiration pull.",
+    "Heat, wind and light speed transpiration up; humid air and darkness slow it down. It also cools the leaves, like sweat."
+   ],
+   "knowledge": [
+    "Most of the water a plant takes in does not stay inside it.",
+    "When the stomata are open, water evaporates from inside the leaf and escapes into the air as water vapour.",
+    "This loss of water from the leaves is called transpiration.",
+    "As water leaves the top of the plant, more water is pulled up through the xylem to take its place. This is the transpiration pull, like sipping through a straw.",
+    "The transpiration pull also carries minerals up from the roots.",
+    "Evaporation cools the leaves, just like sweat cooling your skin on a hot day.",
+    "Heat makes transpiration faster, because warm water evaporates more quickly.",
+    "Wind makes transpiration faster, because it blows the water vapour away from the leaf.",
+    "Humid air makes transpiration slower, because the air is already full of water vapour.",
+    "Light makes transpiration faster because the stomata open in the light; in the dark they close and transpiration slows right down.",
+    "When soil is very dry, a plant closes its stomata to save water, and it may start to wilt.",
+    "Curiosity spark: Misty wonders which plants can live in deserts with almost no water at all. Exa the goat might know!"
+   ],
+   "check": {
+    "id": "check-misty",
+    "prompt": "What is transpiration?",
+    "choices": [
+     "Water evaporating from leaves through the stomata",
+     "Roots growing deeper",
+     "Flowers making seeds"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "water evaporating from leaves",
+     "leaves losing water"
+    ],
+    "explain": "Transpiration is the loss of water vapour from the leaves through the stomata.",
+    "hints": [
+     "Think about mist rising from leaves.",
+     "It happens through the stomata.",
+     "Water leaves the leaf as water vapour..."
+    ]
+   },
+   "lessonPlan": [
+    {
+     "id": "misty-b1",
+     "objectiveId": "obj-4",
+     "say": "Here is a surprise: most of the water a plant drinks does not stay inside it! When the stomata are open, water evaporates from inside the leaf and floats out as invisible water vapour. Whoosh!",
+     "ask": "Where do you think all that water goes after it leaves the leaf?",
+     "rubric": [
+      "Says it goes into the air",
+      "Says it is water vapour (a gas, invisible)"
+     ],
+     "hint": "You cannot see it, but it floats away somewhere around us.",
+     "explain": "Yes! It goes into the air as invisible water vapour. A forest is breathing out water all the time.",
+     "fallback": {
+      "id": "misty-b1-fb",
+      "prompt": "How does water leave a leaf?",
+      "choices": [
+       "As water vapour through the stomata",
+       "As ice cubes",
+       "Down through the roots"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "water vapour",
+       "through the stomata"
+      ],
+      "explain": "Yes! It goes into the air as invisible water vapour. A forest is breathing out water all the time.",
+      "hints": [
+       "You cannot see it, but it floats away somewhere around us."
+      ]
+     },
+     "show": "stomata-zoom"
+    },
+    {
+     "id": "misty-b2",
+     "objectiveId": "obj-4",
+     "say": "This loss of water from the leaves has a special name: transpiration. Think of it as the plant breathing out water.",
+     "ask": "Can you explain transpiration to me as if I were a tiny seedling who had never heard of it?",
+     "rubric": [
+      "Water evaporates or escapes from the leaves",
+      "Through the stomata",
+      "As water vapour into the air"
+     ],
+     "hint": "Use three ideas: what leaves, where from, and in what form.",
+     "explain": "Lovely! Transpiration is water evaporating from the leaves through the stomata and escaping into the air as water vapour.",
+     "fallback": {
+      "id": "misty-b2-fb",
+      "prompt": "Transpiration is...",
+      "choices": [
+       "Loss of water from the leaves",
+       "Making sugar in the roots",
+       "Rain falling on the leaves"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "loss of water from the leaves"
+      ],
+      "explain": "Lovely! Transpiration is water evaporating from the leaves through the stomata and escaping into the air as water vapour.",
+      "hints": [
+       "Use three ideas: what leaves, where from, and in what form."
+      ]
+     }
+    },
+    {
+     "id": "misty-b3",
+     "objectiveId": "obj-4",
+     "say": "Have you ever sipped juice through a straw? As water leaves the top of the plant, more water is pulled up through the xylem to take its place. It is called the transpiration pull, and it even carries minerals up from the roots.",
+     "ask": "How is a plant drinking like you sipping through a straw? Describe what is pulling and what moves.",
+     "rubric": [
+      "Water leaving the leaves at the top pulls more water up",
+      "The water moves up through the xylem (the straw)"
+     ],
+     "hint": "In the straw, the drink moves up because of what happens at the top...",
+     "explain": "Perfect! Water leaving the leaves at the top pulls the whole line of water up the xylem, just like sipping through a straw.",
+     "fallback": {
+      "id": "misty-b3-fb",
+      "prompt": "What is the transpiration pull?",
+      "choices": [
+       "Water leaving leaves pulls more water up the xylem",
+       "Wind pulling leaves off trees",
+       "Roots pulling the plant down"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "pulls water up"
+      ],
+      "explain": "Perfect! Water leaving the leaves at the top pulls the whole line of water up the xylem, just like sipping through a straw.",
+      "hints": [
+       "In the straw, the drink moves up because of what happens at the top..."
+      ]
+     },
+     "show": "xylem-flow"
+    },
+    {
+     "id": "misty-b4",
+     "objectiveId": "obj-4",
+     "say": "Phew, I'm sweating! When you are hot you sweat, and as the sweat evaporates your skin cools down. Leaves do the same: evaporation cools them.",
+     "ask": "Why do you think transpiration is helpful for a leaf on a hot sunny day?",
+     "rubric": [
+      "Says evaporation cools the leaf",
+      "Compares it to sweating"
+     ],
+     "hint": "What does sweat do for you on a hot day?",
+     "explain": "Exactly! Evaporation cools the leaves, just like sweat cools your skin. That is why the forest feels cool.",
+     "fallback": {
+      "id": "misty-b4-fb",
+      "prompt": "How does transpiration help a leaf on a hot day?",
+      "choices": [
+       "It cools the leaf",
+       "It makes the leaf heavier",
+       "It turns the leaf blue"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "cools"
+      ],
+      "explain": "Exactly! Evaporation cools the leaves, just like sweat cools your skin. That is why the forest feels cool.",
+      "hints": [
+       "What does sweat do for you on a hot day?"
+      ]
+     }
+    },
+    {
+     "id": "misty-b5",
+     "objectiveId": "obj-4",
+     "say": "Transpiration changes speed! Heat makes it faster because warm water evaporates more quickly. Wind makes it faster because it blows the water vapour away from the leaf.",
+     "ask": "Think of wet washing on a line. Which day would it dry fastest, and why is that like a leaf?",
+     "rubric": [
+      "Says hot or warm makes it faster",
+      "Says windy makes it faster (blows vapour away)"
+     ],
+     "hint": "Think about temperature, and think about a breeze.",
+     "explain": "Whoosh, yes! Hot, windy days dry washing fast, and they make leaves transpire faster too.",
+     "fallback": {
+      "id": "misty-b5-fb",
+      "prompt": "Which makes transpiration faster?",
+      "choices": [
+       "A hot, windy day",
+       "A cold, still, damp day",
+       "A dark night"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "hot",
+       "windy"
+      ],
+      "explain": "Whoosh, yes! Hot, windy days dry washing fast, and they make leaves transpire faster too.",
+      "hints": [
+       "Think about temperature, and think about a breeze."
+      ]
+     }
+    },
+    {
+     "id": "misty-b6",
+     "objectiveId": "obj-4",
+     "say": "But humid air slows transpiration, because the air is already full of water vapour. And in the dark the stomata close, so transpiration slows right down. Light makes it faster again.",
+     "ask": "What would happen to transpiration on a damp, misty night? Explain why.",
+     "rubric": [
+      "Says it would be slow",
+      "Because humid air is already full of water vapour",
+      "Because stomata close in the dark"
+     ],
+     "hint": "Two things are slowing it: the wet air, and the darkness.",
+     "explain": "Wonderful! Humid air is already full of water vapour and the stomata close in the dark, so transpiration is very slow.",
+     "fallback": {
+      "id": "misty-b6-fb",
+      "prompt": "Why does humid air slow transpiration?",
+      "choices": [
+       "The air is already full of water vapour",
+       "Humid air is too bright",
+       "The roots fall asleep"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "already full of water vapour"
+      ],
+      "explain": "Wonderful! Humid air is already full of water vapour and the stomata close in the dark, so transpiration is very slow.",
+      "hints": [
+       "Two things are slowing it: the wet air, and the darkness."
+      ]
+     },
+     "show": "z-canopy"
+    },
+    {
+     "id": "misty-b7",
+     "objectiveId": "obj-4",
+     "say": "Today Verdant Hollow has very dry soil. When soil is very dry, a plant closes its stomata to save water, and it may start to wilt. That is why my canopy has stopped misting.",
+     "ask": "Why do you think there is no mist rising from the canopy today, and what would help it start again?",
+     "rubric": [
+      "Says the soil is dry so the stomata closed",
+      "Says less water evaporates so less vapour/mist",
+      "Says the plants need water at the roots"
+     ],
+     "hint": "Start with the dry soil, then think about the little doors.",
+     "explain": "Brilliant! The dry soil made the plants close their stomata to save water, so less vapour goes up. Water at the roots would get the mist flowing again.",
+     "fallback": {
+      "id": "misty-b7-fb",
+      "prompt": "What do plants do when the soil is very dry?",
+      "choices": [
+       "Close their stomata to save water",
+       "Open their stomata wider",
+       "Grow more flowers"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "close their stomata"
+      ],
+      "explain": "Brilliant! The dry soil made the plants close their stomata to save water, so less vapour goes up. Water at the roots would get the mist flowing again.",
+      "hints": [
+       "Start with the dry soil, then think about the little doors."
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "npc-oakley",
+   "name": "Oakley",
+   "title": "the Ancient Tree",
+   "archetype": "tree",
+   "voice": "aura-2-zeus-en",
+   "zoneId": "z-pond",
+   "objectiveId": "obj-5",
+   "persona": "Oakley is a very old, very slow, very kind oak tree beside the pond. He speaks in a deep rumbly voice, takes long thoughtful pauses (\"Hmmmm...\"), tells tiny stories from his three hundred summers, and makes gentle grandpa jokes. He praises patience and curiosity.",
+   "greeting": "Hmmmm... welcome, young one. I am Oakley. I have stood by this pond for three hundred summers, and I have never seen it so low. Sit with me, and I will tell you where the water goes.",
+   "teach": [
+    "Water leaves the land in two ways: evaporation from soil, ponds, rivers and lakes, and transpiration from plants.",
+    "Evapotranspiration is evaporation from soil and water plus transpiration from plants.",
+    "The water vapour rises with warm air, cools high up and condenses into tiny droplets that make clouds."
+   ],
+   "knowledge": [
+    "Water does not only leave the land through plants. Water also evaporates from soil, ponds, rivers, lakes and wet leaves.",
+    "Evapotranspiration is evaporation from soil and water plus transpiration from plants.",
+    "In a big forest, plants send a huge amount of water vapour into the air every day.",
+    "One large tree can release hundreds of litres of water on a hot summer day.",
+    "Water vapour rises with warm air.",
+    "High up, where the air is cooler, the water vapour cools and condenses into tiny droplets. This is called condensation.",
+    "Billions of droplets together make clouds.",
+    "When the droplets join and become heavy, they fall as rain. This is called precipitation.",
+    "The rain soaks into the soil, the roots drink it up, and the water cycle starts again.",
+    "Curiosity spark: Oakley loves to ask which is the biggest tree in the whole world, and how old the oldest tree is. Exa the goat could find out!"
+   ],
+   "check": {
+    "id": "check-oakley",
+    "prompt": "Evapotranspiration is evaporation from soil and water plus...",
+    "choices": [
+     "Transpiration from plants",
+     "Sugar from fruit",
+     "Light from the Sun"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "transpiration",
+     "transpiration from plants"
+    ],
+    "explain": "Evapotranspiration = evaporation from soil and water + transpiration from plants.",
+    "hints": [
+     "The name has two words squashed together.",
+     "Evapo... and ...transpiration.",
+     "Plus transpiration from..."
+    ]
+   },
+   "lessonPlan": [
+    {
+     "id": "oakley-b1",
+     "objectiveId": "obj-5",
+     "say": "Hmmmm... look at my pond, young one. On a hot day, water evaporates from the pond, from the stream, from the soil and from wet leaves. It rises into the air as invisible water vapour.",
+     "ask": "Why do you think my pond is shrinking on these hot days with no rain?",
+     "rubric": [
+      "Says water evaporates from the pond",
+      "Says heat makes it evaporate faster or no rain refills it"
+     ],
+     "hint": "Where does a puddle go on a sunny afternoon?",
+     "explain": "Wise answer. The heat makes the pond water evaporate into the air, and with no rain nothing fills it back up.",
+     "fallback": {
+      "id": "oakley-b1-fb",
+      "prompt": "Where does the pond water go on a hot day?",
+      "choices": [
+       "It evaporates into the air",
+       "It sinks to the centre of the Earth",
+       "Fish drink it all"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "evaporates"
+      ],
+      "explain": "Wise answer. The heat makes the pond water evaporate into the air, and with no rain nothing fills it back up.",
+      "hints": [
+       "Where does a puddle go on a sunny afternoon?"
+      ]
+     },
+     "show": "z-pond"
+    },
+    {
+     "id": "oakley-b2",
+     "objectiveId": "obj-5",
+     "say": "Water leaves the land in two ways. Evaporation from soil and water, like my pond. And transpiration from plants, like Misty's leaves. Scientists add them together and call it evapotranspiration. A big name for a big idea!",
+     "ask": "Can you explain what evapotranspiration means by breaking the big word into its two parts?",
+     "rubric": [
+      "Evaporation from soil or water (ponds, rivers)",
+      "Transpiration from plants (leaves)",
+      "Both added together"
+     ],
+     "hint": "Look at the word: evapo... and ...transpiration. What does each part come from?",
+     "explain": "Hmmm, splendid! Evapotranspiration is evaporation from soil and water plus transpiration from plants.",
+     "fallback": {
+      "id": "oakley-b2-fb",
+      "prompt": "What is evapotranspiration?",
+      "choices": [
+       "Evaporation from soil and water plus transpiration from plants",
+       "Only rain falling",
+       "Roots drinking from a pond"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "evaporation plus transpiration"
+      ],
+      "explain": "Hmmm, splendid! Evapotranspiration is evaporation from soil and water plus transpiration from plants.",
+      "hints": [
+       "Look at the word: evapo... and ...transpiration. What does each part come from?"
+      ]
+     }
+    },
+    {
+     "id": "oakley-b3",
+     "objectiveId": "obj-5",
+     "say": "In my three hundred summers I have learned this: one large tree like me can release hundreds of litres of water on a hot summer day. A whole forest sends a huge amount of water vapour into the air every day!",
+     "ask": "Imagine thousands of trees all doing that. What do you think happens to the air above a forest?",
+     "rubric": [
+      "Says the air fills with lots of water vapour",
+      "Says it could become moist or make clouds"
+     ],
+     "hint": "Think about all those leaves breathing out water at once.",
+     "explain": "Exactly. The air above a forest fills with water vapour, like an invisible river flowing upward.",
+     "fallback": {
+      "id": "oakley-b3-fb",
+      "prompt": "How much water can one large tree release on a hot day?",
+      "choices": [
+       "Hundreds of litres",
+       "One teaspoon",
+       "None at all"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "hundreds of litres"
+      ],
+      "explain": "Exactly. The air above a forest fills with water vapour, like an invisible river flowing upward.",
+      "hints": [
+       "Think about all those leaves breathing out water at once."
+      ]
+     }
+    },
+    {
+     "id": "oakley-b4",
+     "objectiveId": "obj-5",
+     "say": "That water vapour rises with warm air, up and up. High up, where the air is cooler, the water vapour cools and condenses into tiny droplets. That change is called condensation.",
+     "ask": "Have you seen water droplets appear on a cold glass of juice? How is that like what happens high in the sky?",
+     "rubric": [
+      "Says water vapour cools down",
+      "Says it turns back into tiny liquid droplets (condenses)"
+     ],
+     "hint": "Where did those droplets on the cold glass come from? They were in the air...",
+     "explain": "Splendid. On the cold glass and high in the sky, water vapour cools and condenses back into tiny droplets.",
+     "fallback": {
+      "id": "oakley-b4-fb",
+      "prompt": "What is condensation?",
+      "choices": [
+       "Water vapour cooling into tiny droplets",
+       "Water soaking into soil",
+       "Leaves making sugar"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "cools into droplets"
+      ],
+      "explain": "Splendid. On the cold glass and high in the sky, water vapour cools and condenses back into tiny droplets.",
+      "hints": [
+       "Where did those droplets on the cold glass come from? They were in the air..."
+      ]
+     },
+     "show": "cloud-form"
+    },
+    {
+     "id": "oakley-b5",
+     "objectiveId": "obj-5",
+     "say": "Billions of those tiny droplets together make clouds. When the droplets join and become heavy, they fall as rain. Scientists call falling rain precipitation.",
+     "ask": "Can you describe how a cloud turns into rain?",
+     "rubric": [
+      "Says the droplets join together",
+      "Says they get heavy and fall as rain (precipitation)"
+     ],
+     "hint": "Tiny droplets cannot fall. What has to happen to them first?",
+     "explain": "Hmmm, wonderful. The tiny droplets join, grow heavy, and fall as rain. That is precipitation.",
+     "fallback": {
+      "id": "oakley-b5-fb",
+      "prompt": "Why does rain fall from a cloud?",
+      "choices": [
+       "The droplets join and get heavy",
+       "The cloud gets bored",
+       "The Sun pushes it down"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "droplets join",
+       "get heavy"
+      ],
+      "explain": "Hmmm, wonderful. The tiny droplets join, grow heavy, and fall as rain. That is precipitation.",
+      "hints": [
+       "Tiny droplets cannot fall. What has to happen to them first?"
+      ]
+     },
+     "show": "rain"
+    },
+    {
+     "id": "oakley-b6",
+     "objectiveId": "obj-5",
+     "say": "And then? The rain soaks into the soil, the roots drink it up, and the water cycle starts again. Round and round, for millions of years.",
+     "ask": "Can you tell me the whole journey of a raindrop, from the soil, through a tree, and back into the sky as rain?",
+     "rubric": [
+      "Roots take up water and it goes up to the leaves",
+      "Water evaporates or transpires into the air as vapour",
+      "Vapour condenses into clouds",
+      "Rain falls back to the soil"
+     ],
+     "hint": "Start in the soil, go up the tree, out of the leaf, up to the sky, and back down.",
+     "explain": "You have the whole cycle, young one! Roots, xylem, leaves, water vapour, condensation, clouds, rain, and back to the soil.",
+     "fallback": {
+      "id": "oakley-b6-fb",
+      "prompt": "Which order is right?",
+      "choices": [
+       "Soil → tree → water vapour → cloud → rain",
+       "Rain → fire → rock → sand",
+       "Cloud → roots → Sun → soil"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "soil tree vapour cloud rain"
+      ],
+      "explain": "You have the whole cycle, young one! Roots, xylem, leaves, water vapour, condensation, clouds, rain, and back to the soil.",
+      "hints": [
+       "Start in the soil, go up the tree, out of the leaf, up to the sky, and back down."
+      ]
+     },
+     "show": "cloud-form"
+    },
+    {
+     "id": "oakley-b7",
+     "objectiveId": "obj-5",
+     "say": "Hmmm. Now look around Verdant Hollow. The soil is dry, the leaves have closed their stomata, and my pond is low.",
+     "ask": "Why do you think there are no rain clouds over Verdant Hollow right now?",
+     "rubric": [
+      "Says the plants are not transpiring much (stomata closed)",
+      "Says less water vapour goes into the air",
+      "Says so fewer clouds form and less rain falls"
+     ],
+     "hint": "Follow the water: if the leaves stop breathing out water, what happens to the clouds?",
+     "explain": "Wise beyond your years. Little transpiration means little water vapour, so few clouds form and little rain falls. We must get the water moving again!",
+     "fallback": {
+      "id": "oakley-b7-fb",
+      "prompt": "Why are there few rain clouds?",
+      "choices": [
+       "Less water vapour is going into the air",
+       "There is too much rain already",
+       "Clouds are scared of trees"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "less water vapour"
+      ],
+      "explain": "Wise beyond your years. Little transpiration means little water vapour, so few clouds form and little rain falls. We must get the water moving again!",
+      "hints": [
+       "Follow the water: if the leaves stop breathing out water, what happens to the clouds?"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "npc-cloud",
+   "name": "The Cloudmother",
+   "title": "Spirit of the Rain",
+   "archetype": "wizard",
+   "voice": "aura-2-athena-en",
+   "zoneId": "goal",
+   "objectiveId": "obj-6",
+   "persona": "The Cloudmother is an ancient, gentle rain spirit with a cloak of silver clouds. She is sleepy at first and yawns thunderously, then becomes warm and grand, speaking like a kind storyteller. She gives the mission and is the final judge: she only wakes fully when a child explains, in their own words, how a forest makes rain.",
+   "greeting": "Mmmmh... *a yawn like distant thunder* ...who climbs my peak? I am the Cloudmother. My clouds have grown thin, and I am so very sleepy. Only someone who understands how the forest makes rain can wake me.",
+   "teach": [
+    "Photosynthesis is the start of almost every food chain, and plants give us oxygen to breathe.",
+    "Forests are like giant water pumps: the water vapour they breathe out helps to make clouds and rain, sometimes far away.",
+    "When forests are cut down (deforestation), there is less transpiration and some places can get less rain."
+   ],
+   "knowledge": [
+    "Photosynthesis is the start of almost every food chain.",
+    "A rabbit eats grass, and a fox eats the rabbit, so the energy in the fox's food first came from sunlight caught by a plant.",
+    "Plants give us oxygen to breathe and take carbon dioxide out of the air.",
+    "Forests are like giant water pumps.",
+    "The water vapour forests breathe out helps to make clouds, and those clouds bring rain to the land, sometimes far away.",
+    "When large areas of forest are cut down, this is called deforestation.",
+    "With fewer trees there is less transpiration, so less water vapour goes into the air, and some places can get less rain.",
+    "Planting trees and caring for forests helps keep the water cycle turning and keeps the land green.",
+    "Water vapour cools and condenses into droplets; billions of droplets make clouds; heavy droplets fall as rain (precipitation)."
+   ],
+   "check": {
+    "id": "check-cloud",
+    "prompt": "Why can cutting down a big forest mean less rain?",
+    "choices": [
+     "Less transpiration, so less water vapour for clouds",
+     "Trees block the rain",
+     "Rain only falls on cities"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "less transpiration",
+     "less water vapour"
+    ],
+    "explain": "With fewer trees there is less transpiration, so less water vapour goes into the air to make clouds.",
+    "hints": [
+     "Think about what trees breathe out.",
+     "Water vapour makes clouds.",
+     "Fewer trees means less..."
+    ]
+   },
+   "lessonPlan": [
+    {
+     "id": "cloud-b1",
+     "objectiveId": "obj-6",
+     "say": "Listen, little one. A rabbit eats grass, and a fox eats the rabbit. So the energy in the fox's food first came from sunlight caught by a plant. Photosynthesis is the start of almost every food chain.",
+     "ask": "Can you explain why a fox, who never eats a single leaf, still depends on plants?",
+     "rubric": [
+      "Says the fox eats animals that eat plants",
+      "Says the energy first came from sunlight caught by plants (photosynthesis)"
+     ],
+     "hint": "Follow the food backwards: fox, rabbit, and then...?",
+     "explain": "Yes. The fox eats the rabbit, the rabbit eats grass, and the grass caught the sunlight. Plants start almost every food chain.",
+     "fallback": {
+      "id": "cloud-b1-fb",
+      "prompt": "Where did the energy in the fox's food first come from?",
+      "choices": [
+       "Sunlight caught by a plant",
+       "The fox's den",
+       "The moon"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "sunlight",
+       "plants"
+      ],
+      "explain": "Yes. The fox eats the rabbit, the rabbit eats grass, and the grass caught the sunlight. Plants start almost every food chain.",
+      "hints": [
+       "Follow the food backwards: fox, rabbit, and then...?"
+      ]
+     }
+    },
+    {
+     "id": "cloud-b2",
+     "objectiveId": "obj-6",
+     "say": "Plants give two more gifts. They give us oxygen to breathe, and they take carbon dioxide out of the air.",
+     "ask": "If all the plants on Earth disappeared, what problems do you think animals and people would have?",
+     "rubric": [
+      "No food (food chains start with plants)",
+      "Not enough oxygen to breathe"
+     ],
+     "hint": "Think about the fox's food, and think about your next breath.",
+     "explain": "Wisely said. Without plants there would be no food for animals and not enough oxygen to breathe.",
+     "fallback": {
+      "id": "cloud-b2-fb",
+      "prompt": "What do plants give us to breathe?",
+      "choices": [
+       "Oxygen",
+       "Smoke",
+       "Sand"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "oxygen"
+      ],
+      "explain": "Wisely said. Without plants there would be no food for animals and not enough oxygen to breathe.",
+      "hints": [
+       "Think about the fox's food, and think about your next breath."
+      ]
+     }
+    },
+    {
+     "id": "cloud-b3",
+     "objectiveId": "obj-6",
+     "say": "My clouds are born from the forest. Forests are like giant water pumps: roots drink from the soil, and leaves breathe the water out as vapour into my sky.",
+     "ask": "Why do you think I call the forest a giant water pump?",
+     "rubric": [
+      "Says trees pull water up from the soil (roots, xylem)",
+      "Says they push it out into the air as water vapour (transpiration)"
+     ],
+     "hint": "A pump moves water from one place to another. From where to where?",
+     "explain": "Beautiful. The forest pumps water from the soil, up through the trees, and out into the air as vapour.",
+     "fallback": {
+      "id": "cloud-b3-fb",
+      "prompt": "Why is a forest like a water pump?",
+      "choices": [
+       "It moves water from the soil into the air",
+       "It sprays water from a hose",
+       "It keeps all water inside the trunks"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "soil into the air"
+      ],
+      "explain": "Beautiful. The forest pumps water from the soil, up through the trees, and out into the air as vapour.",
+      "hints": [
+       "A pump moves water from one place to another. From where to where?"
+      ]
+     },
+     "show": "xylem-flow"
+    },
+    {
+     "id": "cloud-b4",
+     "objectiveId": "obj-6",
+     "say": "From that vapour I weave my clouds. The vapour cools, condenses into droplets, and the droplets gather into clouds. Those clouds can drift and bring rain to the land, sometimes far away.",
+     "ask": "How could a forest help bring rain to a farm that is far away from it?",
+     "rubric": [
+      "Says the forest puts water vapour in the air that forms clouds",
+      "Says the clouds move or drift and rain somewhere else"
+     ],
+     "hint": "Clouds do not stay still. Where can they float to?",
+     "explain": "Yes, yes. The forest's water vapour becomes clouds, and the wind carries them to rain on faraway land.",
+     "fallback": {
+      "id": "cloud-b4-fb",
+      "prompt": "How can a forest help rain fall far away?",
+      "choices": [
+       "Its water vapour makes clouds that drift away and rain",
+       "Trees throw water very far",
+       "It cannot"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "clouds drift"
+      ],
+      "explain": "Yes, yes. The forest's water vapour becomes clouds, and the wind carries them to rain on faraway land.",
+      "hints": [
+       "Clouds do not stay still. Where can they float to?"
+      ]
+     },
+     "show": "cloud-form"
+    },
+    {
+     "id": "cloud-b5",
+     "objectiveId": "obj-6",
+     "say": "Now a sad truth, told gently. When large areas of forest are cut down, this is called deforestation. With fewer trees there is less transpiration, so less water vapour goes into the air, and some places can get less rain.",
+     "ask": "Can you explain, step by step, why cutting down a forest might mean less rain?",
+     "rubric": [
+      "Fewer trees means less transpiration",
+      "So less water vapour goes into the air",
+      "So fewer clouds and less rain"
+     ],
+     "hint": "Follow the chain: trees, then transpiration, then vapour, then clouds.",
+     "explain": "You understand. Fewer trees, less transpiration, less water vapour, fewer clouds, and less rain.",
+     "fallback": {
+      "id": "cloud-b5-fb",
+      "prompt": "What is deforestation?",
+      "choices": [
+       "Cutting down large areas of forest",
+       "Planting new seeds",
+       "A kind of rain cloud"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "cutting down forests"
+      ],
+      "explain": "You understand. Fewer trees, less transpiration, less water vapour, fewer clouds, and less rain.",
+      "hints": [
+       "Follow the chain: trees, then transpiration, then vapour, then clouds."
+      ]
+     }
+    },
+    {
+     "id": "cloud-b6",
+     "objectiveId": "obj-6",
+     "say": "But there is hope, little one. Planting trees and caring for forests helps keep the water cycle turning and keeps the land green.",
+     "ask": "What could you and your friends do to help forests and the water cycle?",
+     "rubric": [
+      "Plant trees or care for plants",
+      "Look after forests (not cutting them down, protecting them)"
+     ],
+     "hint": "Think about what Sprout and the saplings need from you.",
+     "explain": "What a gift you are. Planting trees and caring for forests keeps the water cycle turning.",
+     "fallback": {
+      "id": "cloud-b6-fb",
+      "prompt": "Which helps keep the water cycle turning?",
+      "choices": [
+       "Planting trees and caring for forests",
+       "Cutting down more forests",
+       "Covering soil with plastic"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "planting trees"
+      ],
+      "explain": "What a gift you are. Planting trees and caring for forests keeps the water cycle turning.",
+      "hints": [
+       "Think about what Sprout and the saplings need from you."
+      ]
+     }
+    },
+    {
+     "id": "cloud-b7",
+     "objectiveId": "obj-6",
+     "say": "*The Cloudmother's eyes glow.* Now, show me you are ready to wake me fully. Tell me the whole story of the forest and the rain.",
+     "ask": "Explain to me, in your own words, how Verdant Hollow's forest makes rain.",
+     "rubric": [
+      "Roots take up water; it travels up the xylem",
+      "Water vapour leaves the leaves through stomata (transpiration) and evaporates from soil and ponds",
+      "Vapour rises, cools, condenses into clouds, and falls as rain"
+     ],
+     "hint": "Start with the roots drinking, then the leaves, then the sky.",
+     "explain": "My clouds are thickening! Water goes up through roots and xylem, out of the leaves as vapour, cools and condenses into clouds, and falls as rain. The rain is coming home!",
+     "fallback": {
+      "id": "cloud-b7-fb",
+      "prompt": "Which is the forest's rain story?",
+      "choices": [
+       "Roots drink, leaves transpire vapour, vapour condenses into clouds, rain falls",
+       "Clouds grow from the ground like mushrooms",
+       "Rain is made inside tree trunks"
+      ],
+      "answerIndex": 0,
+      "accept": [
+       "roots leaves vapour clouds rain"
+      ],
+      "explain": "My clouds are thickening! Water goes up through roots and xylem, out of the leaves as vapour, cools and condenses into clouds, and falls as rain. The rain is coming home!",
+      "hints": [
+       "Start with the roots drinking, then the leaves, then the sky."
+      ]
+     },
+     "show": "rain"
+    }
+   ]
+  }
+ ],
+ "collectibles": [
+  {
+   "id": "mote",
+   "name": "Sun Mote",
+   "zoneId": "z-meadow",
+   "count": 5,
+   "icon": "sun"
+  },
+  {
+   "id": "drop",
+   "name": "Water Droplet",
+   "zoneId": "z-pond",
+   "count": 6,
+   "icon": "drop"
+  },
+  {
+   "id": "seed",
+   "name": "Bloom Seed",
+   "zoneId": "z-nook",
+   "count": 3,
+   "icon": "seed"
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "pz-recipe",
+   "objectiveId": "obj-1",
+   "zoneId": "z-meadow",
+   "kind": "match",
+   "title": "Sunny's Recipe Match",
+   "prompt": "Match each part of photosynthesis to where it comes from or where it goes.",
+   "pairs": [
+    {
+     "left": "Water",
+     "right": "Comes up from the roots"
+    },
+    {
+     "left": "Carbon dioxide",
+     "right": "Comes in from the air"
+    },
+    {
+     "left": "Light energy",
+     "right": "Comes from the Sun"
+    },
+    {
+     "left": "Glucose",
+     "right": "The food the plant makes"
+    },
+    {
+     "left": "Oxygen",
+     "right": "Let out into the air"
+    }
+   ],
+   "hints": [
+    "Two things come from below and above, one floats in the air.",
+    "The plant makes one thing to eat and one gas to give away."
+   ],
+   "success": "The Sun-Catcher Tower flashes gold. Recipe complete!",
+   "evidenceSectionIds": [
+    "s2"
+   ]
+  },
+  {
+   "id": "pz-equation",
+   "objectiveId": "obj-1",
+   "zoneId": "z-meadow",
+   "kind": "sequence",
+   "title": "Build the Word Equation",
+   "prompt": "Put the word equation tiles in order: inputs, the arrow, then outputs.",
+   "items": [
+    "Carbon dioxide",
+    "+ water",
+    "→ (light energy)",
+    "glucose",
+    "+ oxygen"
+   ],
+   "hints": [
+    "The ingredients come before the arrow.",
+    "Carbon dioxide + water → glucose + oxygen."
+   ],
+   "success": "Carbon dioxide + water → glucose + oxygen. Perfect!",
+   "evidenceSectionIds": [
+    "s2"
+   ]
+  },
+  {
+   "id": "pz-leafparts",
+   "objectiveId": "obj-2",
+   "zoneId": "z-leaflab",
+   "kind": "match",
+   "title": "Professor Chloro's Leaf Parts",
+   "prompt": "Match each leaf part to its job.",
+   "pairs": [
+    {
+     "left": "Chlorophyll",
+     "right": "Green pigment that traps light energy"
+    },
+    {
+     "left": "Chloroplast",
+     "right": "Tiny solar panel inside a leaf cell"
+    },
+    {
+     "left": "Stoma",
+     "right": "Tiny hole in the leaf"
+    },
+    {
+     "left": "Guard cells",
+     "right": "Bean-shaped doors that open and close a stoma"
+    }
+   ],
+   "hints": [
+    "Two parts catch light, two parts are about holes.",
+    "The doors are bean-shaped."
+   ],
+   "success": "Fascinating! Every leaf part labelled correctly.",
+   "evidenceSectionIds": [
+    "s3",
+    "s4"
+   ]
+  },
+  {
+   "id": "pz-tubes",
+   "objectiveId": "obj-3",
+   "zoneId": "z-roots",
+   "kind": "match",
+   "title": "Rootie's Pipe Labels",
+   "prompt": "Match each plant part to its job.",
+   "pairs": [
+    {
+     "left": "Root hairs",
+     "right": "Soak up water from the soil"
+    },
+    {
+     "left": "Xylem",
+     "right": "Carries water up"
+    },
+    {
+     "left": "Phloem",
+     "right": "Carries sugar around"
+    },
+    {
+     "left": "Roots",
+     "right": "Hold the plant in the ground"
+    }
+   ],
+   "hints": [
+    "Xylem carries water up, phloem carries food around.",
+    "The tiny fuzzy parts do the soaking."
+   ],
+   "success": "Onward! Every pipe is labelled.",
+   "evidenceSectionIds": [
+    "s5"
+   ]
+  },
+  {
+   "id": "pz-waterpath",
+   "objectiveId": "obj-3",
+   "zoneId": "z-roots",
+   "kind": "sequence",
+   "title": "Soil to Sky",
+   "prompt": "Put a water drop's journey in order, from the soil to the air.",
+   "items": [
+    "Soil",
+    "Root hairs",
+    "Xylem in the stem",
+    "Leaf",
+    "Stomata",
+    "Water vapour in the air"
+   ],
+   "hints": [
+    "It starts in the soil and ends in the air.",
+    "It climbs the xylem straws before reaching the leaf."
+   ],
+   "success": "Whoosh! The drop made it all the way to the sky.",
+   "evidenceSectionIds": [
+    "s5",
+    "s6"
+   ]
+  },
+  {
+   "id": "pz-factors",
+   "objectiveId": "obj-4",
+   "zoneId": "z-canopy",
+   "kind": "match",
+   "title": "Misty's Faster or Slower",
+   "prompt": "Match each condition to what it does to transpiration.",
+   "pairs": [
+    {
+     "left": "Heat",
+     "right": "Faster: warm water evaporates more quickly"
+    },
+    {
+     "left": "Wind",
+     "right": "Faster: blows the water vapour away"
+    },
+    {
+     "left": "Humid air",
+     "right": "Slower: the air is already full of water vapour"
+    },
+    {
+     "left": "Darkness",
+     "right": "Slower: the stomata close"
+    }
+   ],
+   "hints": [
+    "Think of drying washing.",
+    "Damp air and night-time both slow things down."
+   ],
+   "success": "The canopy sighs a soft cloud of mist. You understand the weather of leaves!",
+   "evidenceSectionIds": [
+    "s7"
+   ]
+  },
+  {
+   "id": "pz-cycle",
+   "objectiveId": "obj-5",
+   "zoneId": "z-pond",
+   "kind": "sequence",
+   "title": "Oakley's Water Cycle",
+   "prompt": "Put the water cycle in order, starting at the ground.",
+   "items": [
+    "Water evaporates and transpires",
+    "Water vapour rises",
+    "Vapour cools and condenses",
+    "Droplets make clouds",
+    "Rain falls (precipitation)"
+   ],
+   "hints": [
+    "Water has to leave the ground before it can rise.",
+    "It cools into droplets before clouds form."
+   ],
+   "success": "Hmmmm, splendid. Round and round goes the water.",
+   "evidenceSectionIds": [
+    "s8"
+   ]
+  },
+  {
+   "id": "pz-forest",
+   "objectiveId": "obj-6",
+   "zoneId": "goal",
+   "kind": "choice",
+   "title": "The Cloudmother's Riddles",
+   "prompt": "Answer the Cloudmother's two riddles.",
+   "evidenceSectionIds": [
+    "s9"
+   ],
+   "questions": [
+    {
+     "id": "pz-forest-q1",
+     "prompt": "A fox eats a rabbit that ate grass. Where did the fox's energy first come from?",
+     "choices": [
+      "Sunlight caught by the grass",
+      "The fox's den",
+      "Rain"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "sunlight",
+      "the grass"
+     ],
+     "explain": "Photosynthesis starts almost every food chain.",
+     "hints": [
+      "Follow the food backwards.",
+      "The grass caught something.",
+      "Sunlight!"
+     ]
+    },
+    {
+     "id": "pz-forest-q2",
+     "prompt": "Why can cutting down a forest mean less rain?",
+     "choices": [
+      "Less transpiration, so less water vapour",
+      "Trees drink all the rain",
+      "Clouds need empty land"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "less transpiration",
+      "less water vapour"
+     ],
+     "explain": "Fewer trees, less transpiration, less vapour, fewer clouds.",
+     "hints": [
+      "Trees breathe out water.",
+      "Vapour makes clouds.",
+      "Less transpiration..."
+     ]
+    }
+   ],
+   "hints": [
+    "Think about food chains and water pumps."
+   ],
+   "success": "The Cloudmother hums, and the clouds above the peak grow thicker."
+  }
+ ],
+ "quests": [
+  {
+   "id": "q1",
+   "title": "The Leaf Kitchen",
+   "objectiveId": "obj-1",
+   "prerequisiteIds": [],
+   "steps": [
+    {
+     "id": "q1-s1",
+     "kind": "talk",
+     "targetId": "npc-sunny",
+     "text": "Talk to Sunny at Sunflower Meadow"
+    },
+    {
+     "id": "q1-st0",
+     "kind": "study",
+     "targetId": "study-1a",
+     "text": "Study \"What plants need\""
+    },
+    {
+     "id": "q1-st1",
+     "kind": "study",
+     "targetId": "study-1b",
+     "text": "Study \"The leaf kitchen recipe\""
+    },
+    {
+     "id": "q1-ex",
+     "kind": "explain",
+     "targetId": "npc-sunny",
+     "text": "Explain it to Sunny in your own words"
+    },
+    {
+     "id": "q1-col",
+     "kind": "collect",
+     "targetId": "mote",
+     "count": 3,
+     "text": "Collect 3 Sun Motes in the Sunflower Meadow"
+    },
+    {
+     "id": "q1-pz0",
+     "kind": "puzzle",
+     "targetId": "pz-recipe",
+     "text": "Solve \"Sunny's Recipe Match\""
+    },
+    {
+     "id": "q1-pz1",
+     "kind": "puzzle",
+     "targetId": "pz-equation",
+     "text": "Solve \"Build the Word Equation\""
+    }
+   ],
+   "rewardEffectId": "fx-meadow"
+  },
+  {
+   "id": "q2",
+   "title": "Inside a Leaf",
+   "objectiveId": "obj-2",
+   "prerequisiteIds": [
+    "q1"
+   ],
+   "steps": [
+    {
+     "id": "q2-s1",
+     "kind": "talk",
+     "targetId": "npc-chloro",
+     "text": "Talk to Professor Chloro at Leaf Lab Treehouse"
+    },
+    {
+     "id": "q2-st0",
+     "kind": "study",
+     "targetId": "study-2a",
+     "text": "Study \"Chlorophyll and chloroplasts\""
+    },
+    {
+     "id": "q2-st1",
+     "kind": "study",
+     "targetId": "study-2b",
+     "text": "Study \"Stomata and guard cells\""
+    },
+    {
+     "id": "q2-ex",
+     "kind": "explain",
+     "targetId": "npc-chloro",
+     "text": "Explain it to Professor Chloro in your own words"
+    },
+    {
+     "id": "q2-pz0",
+     "kind": "puzzle",
+     "targetId": "pz-leafparts",
+     "text": "Solve \"Professor Chloro's Leaf Parts\""
+    }
+   ],
+   "rewardEffectId": "fx-leaflab"
+  },
+  {
+   "id": "q3",
+   "title": "Pipes Under the Forest",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q2"
+   ],
+   "steps": [
+    {
+     "id": "q3-s1",
+     "kind": "talk",
+     "targetId": "npc-rootie",
+     "text": "Talk to Rootie at Rootdeep Caverns"
+    },
+    {
+     "id": "q3-st0",
+     "kind": "study",
+     "targetId": "study-3a",
+     "text": "Study \"Roots and root hairs\""
+    },
+    {
+     "id": "q3-st1",
+     "kind": "study",
+     "targetId": "study-3b",
+     "text": "Study \"Xylem and phloem\""
+    },
+    {
+     "id": "q3-ex",
+     "kind": "explain",
+     "targetId": "npc-rootie",
+     "text": "Explain it to Rootie in your own words"
+    },
+    {
+     "id": "q3-pz0",
+     "kind": "puzzle",
+     "targetId": "pz-tubes",
+     "text": "Solve \"Rootie's Pipe Labels\""
+    },
+    {
+     "id": "q3-pz1",
+     "kind": "puzzle",
+     "targetId": "pz-waterpath",
+     "text": "Solve \"Soil to Sky\""
+    }
+   ],
+   "rewardEffectId": "fx-roots"
+  },
+  {
+   "id": "q4",
+   "title": "The Breathing Canopy",
+   "objectiveId": "obj-4",
+   "prerequisiteIds": [
+    "q3"
+   ],
+   "steps": [
+    {
+     "id": "q4-s1",
+     "kind": "talk",
+     "targetId": "npc-misty",
+     "text": "Talk to Misty at Misty Canopy"
+    },
+    {
+     "id": "q4-st0",
+     "kind": "study",
+     "targetId": "study-4a",
+     "text": "Study \"Transpiration and the pull\""
+    },
+    {
+     "id": "q4-st1",
+     "kind": "study",
+     "targetId": "study-4b",
+     "text": "Study \"Faster or slower?\""
+    },
+    {
+     "id": "q4-ex",
+     "kind": "explain",
+     "targetId": "npc-misty",
+     "text": "Explain it to Misty in your own words"
+    },
+    {
+     "id": "q4-pz0",
+     "kind": "puzzle",
+     "targetId": "pz-factors",
+     "text": "Solve \"Misty's Faster or Slower\""
+    }
+   ],
+   "rewardEffectId": "fx-canopy"
+  },
+  {
+   "id": "q5",
+   "title": "Where the Water Goes",
+   "objectiveId": "obj-5",
+   "prerequisiteIds": [
+    "q4"
+   ],
+   "steps": [
+    {
+     "id": "q5-s1",
+     "kind": "talk",
+     "targetId": "npc-oakley",
+     "text": "Talk to Oakley at Whispering Stream & Pond"
+    },
+    {
+     "id": "q5-st0",
+     "kind": "study",
+     "targetId": "study-5a",
+     "text": "Study \"Evapotranspiration\""
+    },
+    {
+     "id": "q5-st1",
+     "kind": "study",
+     "targetId": "study-5b",
+     "text": "Study \"From vapour to rain\""
+    },
+    {
+     "id": "q5-ex",
+     "kind": "explain",
+     "targetId": "npc-oakley",
+     "text": "Explain it to Oakley in your own words"
+    },
+    {
+     "id": "q5-col",
+     "kind": "collect",
+     "targetId": "drop",
+     "count": 5,
+     "text": "Collect 5 Water Droplets around the pond"
+    },
+    {
+     "id": "q5-pz0",
+     "kind": "puzzle",
+     "targetId": "pz-cycle",
+     "text": "Solve \"Oakley's Water Cycle\""
+    }
+   ],
+   "rewardEffectId": "fx-pond"
+  },
+  {
+   "id": "q6",
+   "title": "The Sleeping Cloudmother",
+   "objectiveId": "obj-6",
+   "prerequisiteIds": [
+    "q5"
+   ],
+   "steps": [
+    {
+     "id": "q6-s1",
+     "kind": "talk",
+     "targetId": "npc-cloud",
+     "text": "Talk to The Cloudmother at Cloudmother's Peak"
+    },
+    {
+     "id": "q6-st0",
+     "kind": "study",
+     "targetId": "study-6a",
+     "text": "Study \"Food chains and oxygen\""
+    },
+    {
+     "id": "q6-st1",
+     "kind": "study",
+     "targetId": "study-6b",
+     "text": "Study \"Forests make rain\""
+    },
+    {
+     "id": "q6-ex",
+     "kind": "explain",
+     "targetId": "npc-cloud",
+     "text": "Explain it to The Cloudmother in your own words"
+    },
+    {
+     "id": "q6-pz0",
+     "kind": "puzzle",
+     "targetId": "pz-forest",
+     "text": "Solve \"The Cloudmother's Riddles\""
+    }
+   ],
+   "rewardEffectId": "fx-rain"
+  },
+  {
+   "id": "q-final",
+   "title": "Bring the Rain Back",
+   "objectiveId": "obj-6",
+   "prerequisiteIds": [
+    "q6"
+   ],
+   "rewardEffectId": "fx-final",
+   "steps": [
+    {
+     "id": "qf-s1",
+     "kind": "collect",
+     "targetId": "seed",
+     "count": 3,
+     "text": "Find 3 Bloom Seeds hidden in Fern Hollow Nook"
+    },
+    {
+     "id": "qf-s2",
+     "kind": "visit",
+     "targetId": "hub",
+     "text": "Plant the seeds around the fountain in Seedling Square"
+    },
+    {
+     "id": "qf-s3",
+     "kind": "recall",
+     "targetId": "memory",
+     "text": "Memory walk: visit each landmark and remember what you learned there"
+    }
+   ]
+  }
+ ],
+ "memoryLandmarks": [
+  {
+   "zoneId": "z-meadow",
+   "objectiveId": "obj-1",
+   "question": {
+    "id": "recall-meadow",
+    "prompt": "Back in the Sunflower Meadow: what three ingredients does a leaf use to make food, and what two things come out?",
+    "choices": [
+     "Water, carbon dioxide, light energy → glucose and oxygen",
+     "Sand, wind, rain → rocks and smoke",
+     "Oxygen and sugar → water"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "water carbon dioxide light glucose oxygen"
+    ],
+    "explain": "Carbon dioxide + water, powered by light energy, → glucose + oxygen.",
+    "hints": [
+     "Remember the leaf kitchen.",
+     "One from roots, one from air, one from the Sun.",
+     "Out come sugar and a gas we breathe."
+    ]
+   }
+  },
+  {
+   "zoneId": "z-leaflab",
+   "objectiveId": "obj-2",
+   "question": {
+    "id": "recall-leaflab",
+    "prompt": "In the Leaf Lab: what are stomata, and what opens and closes them?",
+    "choices": [
+     "Tiny holes in the leaf, opened and closed by guard cells",
+     "Roots, opened by rain",
+     "Flowers, opened by bees"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "tiny holes guard cells"
+    ],
+    "explain": "Stomata are tiny holes; two guard cells open and close each one.",
+    "hints": [
+     "Think of the tiny mouths.",
+     "They have two doors.",
+     "Guard..."
+    ]
+   }
+  },
+  {
+   "zoneId": "z-roots",
+   "objectiveId": "obj-3",
+   "question": {
+    "id": "recall-roots",
+    "prompt": "Deep in the caverns: what is the difference between xylem and phloem?",
+    "choices": [
+     "Xylem carries water up, phloem carries food around",
+     "Xylem carries food, phloem carries air",
+     "They are both roots"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "xylem water phloem food"
+    ],
+    "explain": "Xylem carries water up, phloem carries food around.",
+    "hints": [
+     "Rootie's rhyme!",
+     "Up and around.",
+     "Xylem water..."
+    ]
+   }
+  },
+  {
+   "zoneId": "z-canopy",
+   "objectiveId": "obj-4",
+   "question": {
+    "id": "recall-canopy",
+    "prompt": "High in the canopy: what is transpiration, and name one thing that makes it faster.",
+    "choices": [
+     "Water vapour escaping from leaves; heat, wind or light speed it up",
+     "Roots growing; darkness speeds it up",
+     "Rain falling; humid air speeds it up"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "water leaving leaves",
+     "heat",
+     "wind",
+     "light"
+    ],
+    "explain": "Transpiration is water evaporating from leaves through stomata. Heat, wind and light speed it up.",
+    "hints": [
+     "Think of the mist from the leaves.",
+     "Think of drying washing.",
+     "Hot and windy..."
+    ]
+   }
+  },
+  {
+   "zoneId": "z-pond",
+   "objectiveId": "obj-5",
+   "question": {
+    "id": "recall-pond",
+    "prompt": "By the pond: what is evapotranspiration, and how does water vapour become rain?",
+    "choices": [
+     "Evaporation plus transpiration; vapour condenses into clouds, then rain falls",
+     "Rain plus snow; clouds melt into rivers",
+     "Roots plus leaves; sugar turns to rain"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "evaporation plus transpiration",
+     "condenses clouds rain"
+    ],
+    "explain": "Evaporation + transpiration put vapour in the air; it cools, condenses into clouds and falls as rain.",
+    "hints": [
+     "Break the big word in two.",
+     "Vapour cools high up...",
+     "...condenses into clouds, then rain."
+    ]
+   }
+  }
+ ],
+ "rewardEffects": [
+  {
+   "id": "fx-meadow",
+   "kind": "bloom",
+   "zoneId": "z-meadow",
+   "text": "The sunflowers lift their heads and the meadow blazes gold!"
+  },
+  {
+   "id": "fx-leaflab",
+   "kind": "light",
+   "zoneId": "z-leaflab",
+   "text": "The Leaf Lab glows bright green as every chloroplast lights up!"
+  },
+  {
+   "id": "fx-roots",
+   "kind": "power",
+   "zoneId": "z-roots",
+   "text": "Water and golden sugar rush through the pipes of Rootdeep Caverns!"
+  },
+  {
+   "id": "fx-canopy",
+   "kind": "bloom",
+   "zoneId": "z-canopy",
+   "text": "Soft mist curls up from millions of leaves in the canopy!"
+  },
+  {
+   "id": "fx-pond",
+   "kind": "restore",
+   "zoneId": "z-pond",
+   "text": "The stream starts to babble and the lilies open on the pond!"
+  },
+  {
+   "id": "fx-rain",
+   "kind": "restore",
+   "zoneId": "goal",
+   "text": "Clouds gather over the peak and warm rain begins to fall on Verdant Hollow!"
+  },
+  {
+   "id": "fx-final",
+   "kind": "bloom",
+   "zoneId": "hub",
+   "text": "The fountain overflows, a rainbow appears, and the Great Bloom opens in every colour!"
+  }
+ ],
+ "mission": {
+  "title": "Bring the Rain Back",
+  "problem": "Verdant Hollow has not had rain in weeks. The pond is shrinking, the leaves have shut their stomata, the Great Bloom is wilting, and the Cloudmother has fallen into a deep sleep on her peak.",
+  "why": "Rain over a forest comes partly from the forest itself. To bring it back you must get the plants making food and moving water again, from roots to leaves to sky, and then explain the whole cycle to the Cloudmother so she can wake.",
+  "tasks": [
+   {
+    "id": "t-saplings",
+    "title": "Replant the three saplings",
+    "zoneId": "z-meadow",
+    "objectiveIds": [
+     "obj-1"
+    ],
+    "action": "place",
+    "description": "Carry each sapling to a spot where it will get everything it needs to make food: light, water and air. Avoid the Dark Cave Corner and the Dry Rock.",
+    "pairs": [
+     {
+      "item": "Sunflower sapling",
+      "spot": "Sunny Patch by the Brook"
+     },
+     {
+      "item": "Bean sapling",
+      "spot": "Bright Bed with Damp Soil"
+     },
+     {
+      "item": "Oak sapling",
+      "spot": "Open Clearing near the Spring"
+     }
+    ],
+    "success": "Three little saplings stretch their leaves toward the Sun. Sun motes swirl and the meadow glows gold!",
+    "hint": "A plant needs light energy, water and carbon dioxide from the air. Which spots give all three?"
+   },
+   {
+    "id": "t-stomata",
+    "title": "Open the leaf-gates",
+    "zoneId": "z-leaflab",
+    "objectiveIds": [
+     "obj-2"
+    ],
+    "action": "activate",
+    "description": "Wake the giant leaf in the right morning order so its stomata open and gases flow.",
+    "steps": [
+     "Morning Sun Crystal",
+     "Chlorophyll Panels",
+     "Guard Cell Doors",
+     "Carbon Dioxide Vent",
+     "Oxygen Chimney"
+    ],
+    "success": "The guard cells swing open! Carbon dioxide streams in, oxygen puffs out, and the giant leaf turns bright green.",
+    "hint": "Light comes first, then the chlorophyll catches it. The doors must open before carbon dioxide can come in and oxygen can go out."
+   },
+   {
+    "id": "t-pipes",
+    "title": "Reconnect the water pipes",
+    "zoneId": "z-roots",
+    "objectiveIds": [
+     "obj-3",
+     "obj-4"
+    ],
+    "action": "arrange",
+    "description": "Join the glowing pipes in the order water travels, from the soil all the way out into the air.",
+    "steps": [
+     "Soil",
+     "Root Hairs",
+     "Root",
+     "Xylem in the Stem",
+     "Leaf",
+     "Stomata"
+    ],
+    "success": "Gurgle-whoosh! Water rushes up the xylem, pulled by the leaves above. The drooping ferns spring upright.",
+    "hint": "Water starts in the soil, is soaked up by root hairs, climbs the xylem straws, and escapes through the stomata."
+   },
+   {
+    "id": "t-sugar",
+    "title": "Deliver the sugar",
+    "zoneId": "z-roots",
+    "objectiveIds": [
+     "obj-3"
+    ],
+    "action": "place",
+    "description": "The leaves have made sugar again! Ride the phloem lift and carry each sugar parcel to the part of the plant that needs it.",
+    "pairs": [
+     {
+      "item": "Sugar for growing",
+      "spot": "Root Tips"
+     },
+     {
+      "item": "Sugar for sweetness",
+      "spot": "Apple Bough"
+     },
+     {
+      "item": "Sugar for new leaves",
+      "spot": "Bud Tip"
+     }
+    ],
+    "success": "Golden sugar glows through the phloem. Roots stretch, buds open and apples blush red!",
+    "hint": "Phloem carries food around: down to the roots, up to new buds, and into fruits and seeds."
+   },
+   {
+    "id": "t-cycle",
+    "title": "Set the water-cycle stones",
+    "zoneId": "z-pond",
+    "objectiveIds": [
+     "obj-4",
+     "obj-5"
+    ],
+    "action": "arrange",
+    "description": "Five carved stones lie in the reeds. Stand them around the pond in the order water travels through the cycle.",
+    "steps": [
+     "Evaporation and Transpiration",
+     "Water Vapour Rises",
+     "Condensation",
+     "Clouds Gather",
+     "Rain Falls"
+    ],
+    "success": "The stones glow one after another. Mist rises from the pond and the leaves, and a soft cloud begins to swirl above the peak!",
+    "hint": "Water leaves the pond and leaves first, rises as vapour, cools into droplets, gathers as clouds, and then falls."
+   },
+   {
+    "id": "t-explain",
+    "title": "Wake the Cloudmother",
+    "zoneId": "goal",
+    "objectiveIds": [
+     "obj-4",
+     "obj-5",
+     "obj-6"
+    ],
+    "action": "explain",
+    "description": "Climb Cloudmother's Peak and explain to her, out loud and in your own words, how the forest makes rain.",
+    "rubric": [
+     "Roots take up water and it travels up the xylem to the leaves",
+     "Water evaporates out of the leaves through the stomata (transpiration), and from soil and ponds (evapotranspiration)",
+     "Water vapour rises, cools and condenses into droplets that form clouds",
+     "The droplets join, get heavy and fall as rain (precipitation)"
+    ],
+    "success": "The Cloudmother opens her eyes and spreads her silver cloak. Thunder rumbles softly, and warm rain begins to fall on Verdant Hollow!",
+    "hint": "Tell the water's journey: roots, xylem, leaves and stomata, water vapour, condensation, clouds, rain."
+   }
+  ],
+  "finale": "Rain patters over Verdant Hollow! The pond fills, the stream sings, mist curls from the canopy again, and the Great Bloom opens in a burst of colour. The Cloudmother smiles: \"A forest that breathes out water brings the rain home.\""
+ },
+ "study": [
+  {
+   "id": "study-1a",
+   "objectiveId": "obj-1",
+   "zoneId": "z-meadow",
+   "title": "What plants need",
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "body": [
+    "To stay alive and grow, a plant needs light, water, air (carbon dioxide) and minerals from the soil, and space to grow.",
+    "Animals must find their food, but green plants make their own inside their leaves. This is called photosynthesis, which means \"putting together with light.\""
+   ],
+   "keyTerms": [
+    {
+     "term": "photosynthesis",
+     "meaning": "How green plants make their own food using light."
+    },
+    {
+     "term": "minerals",
+     "meaning": "Useful substances in the soil that plants take in through their roots."
+    }
+   ],
+   "example": "A plant in a dark cupboard has water and air but no light. It cannot make food, so it turns pale and weak.",
+   "checks": [
+    {
+     "id": "study-1a-q1",
+     "prompt": "What does the word photosynthesis mean?",
+     "choices": [
+      "Putting together with light",
+      "Drinking from the soil",
+      "Sleeping at night"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "putting together with light"
+     ],
+     "explain": "Photo means light, synthesis means putting together.",
+     "hints": [
+      "Look at the first part: photo...",
+      "Photo means light.",
+      "Putting together with..."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-1b",
+   "objectiveId": "obj-1",
+   "zoneId": "z-meadow",
+   "title": "The leaf kitchen recipe",
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "body": [
+    "A leaf is like a tiny kitchen. Its three ingredients are water (from the roots), carbon dioxide (from the air) and light energy (from the Sun).",
+    "The leaf uses light energy to join water and carbon dioxide into a sugar called glucose, the plant's food. Oxygen is made too and let out into the air.",
+    "Word equation: carbon dioxide + water → glucose + oxygen. Extra sugar can be stored as starch."
+   ],
+   "keyTerms": [
+    {
+     "term": "glucose",
+     "meaning": "A sugar made in the leaf; the plant's food."
+    },
+    {
+     "term": "oxygen",
+     "meaning": "A gas the plant lets out that people and animals breathe."
+    },
+    {
+     "term": "starch",
+     "meaning": "Stored sugar the plant keeps for later."
+    }
+   ],
+   "example": "A potato is full of starch: sugar that the plant made in its leaves and stored underground for later.",
+   "checks": [
+    {
+     "id": "study-1b-q1",
+     "prompt": "What two things come OUT of photosynthesis?",
+     "choices": [
+      "Glucose and oxygen",
+      "Water and soil",
+      "Light and rocks"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "glucose and oxygen",
+      "sugar and oxygen"
+     ],
+     "explain": "Carbon dioxide + water → glucose + oxygen.",
+     "hints": [
+      "Look at the right side of the arrow.",
+      "One is food, one is a gas.",
+      "Glucose and..."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2a",
+   "objectiveId": "obj-2",
+   "zoneId": "z-leaflab",
+   "title": "Chlorophyll and chloroplasts",
+   "figure": "compare",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "body": [
+    "Leaves are green because they are full of chlorophyll, a green pigment that traps the energy in sunlight.",
+    "Chlorophyll is inside tiny parts of leaf cells called chloroplasts, the leaf's little solar panels. Wide, flat leaves catch as much light as possible."
+   ],
+   "keyTerms": [
+    {
+     "term": "chlorophyll",
+     "meaning": "A green pigment that traps the energy in sunlight."
+    },
+    {
+     "term": "chloroplasts",
+     "meaning": "Tiny parts of leaf cells where chlorophyll is found."
+    }
+   ],
+   "example": "House plants by a window slowly turn their leaves to face the light.",
+   "checks": [
+    {
+     "id": "study-2a-q1",
+     "prompt": "Why are leaves green?",
+     "choices": [
+      "They are full of chlorophyll",
+      "They are painted",
+      "They drink green water"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "chlorophyll"
+     ],
+     "explain": "Chlorophyll is a green pigment.",
+     "hints": [
+      "It is a green pigment.",
+      "It starts with chloro...",
+      "Chlorophyll!"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2b",
+   "objectiveId": "obj-2",
+   "zoneId": "z-leaflab",
+   "title": "Stomata and guard cells",
+   "figure": "compare",
+   "sourceSectionIds": [
+    "s4"
+   ],
+   "body": [
+    "Thousands of tiny holes called stomata cover the leaf, mostly on the underside. Each stoma is like a tiny mouth with two doors called guard cells.",
+    "Guard cells open and close the stoma. When open, carbon dioxide comes in and oxygen and water vapour go out.",
+    "Stomata usually open in the day, often close at night, and close when the plant is short of water."
+   ],
+   "keyTerms": [
+    {
+     "term": "stomata",
+     "meaning": "Tiny holes in a leaf (one is a stoma)."
+    },
+    {
+     "term": "guard cells",
+     "meaning": "Two bean-shaped cells that open and close a stoma."
+    }
+   ],
+   "example": "Peel a thin layer from the underside of a leaf and look through a microscope: you can see the little mouths and their bean-shaped doors.",
+   "checks": [
+    {
+     "id": "study-2b-q1",
+     "prompt": "What comes INTO a leaf through open stomata?",
+     "choices": [
+      "Carbon dioxide",
+      "Glucose",
+      "Soil"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "carbon dioxide"
+     ],
+     "explain": "Carbon dioxide comes in; oxygen and water vapour go out.",
+     "hints": [
+      "It is a gas from the air.",
+      "It is an ingredient for photosynthesis.",
+      "Carbon..."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3a",
+   "objectiveId": "obj-3",
+   "zoneId": "z-roots",
+   "title": "Roots and root hairs",
+   "figure": "ordered-list",
+   "sourceSectionIds": [
+    "s5"
+   ],
+   "body": [
+    "Roots hold the plant firmly in the ground and take in water and minerals from the soil.",
+    "Roots are covered in tiny root hairs. Lots of thin root hairs give the root a huge surface for soaking up water."
+   ],
+   "keyTerms": [
+    {
+     "term": "root hairs",
+     "meaning": "Tiny thin hairs on roots that soak up water."
+    }
+   ],
+   "example": "When you pull up a seedling gently, you can see a fuzzy beard of root hairs with soil stuck to them.",
+   "checks": [
+    {
+     "id": "study-3a-q1",
+     "prompt": "Why do roots have so many tiny root hairs?",
+     "choices": [
+      "To give a huge surface for soaking up water",
+      "To tickle worms",
+      "To catch sunlight"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "soak up water",
+      "bigger surface"
+     ],
+     "explain": "More surface means more water soaked up.",
+     "hints": [
+      "Think of a fluffy towel.",
+      "More surface...",
+      "More water soaked up."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3b",
+   "objectiveId": "obj-3",
+   "zoneId": "z-roots",
+   "title": "Xylem and phloem",
+   "figure": "compare",
+   "sourceSectionIds": [
+    "s5"
+   ],
+   "body": [
+    "Water travels up the plant through tubes called xylem, from the roots, up the stem and into every leaf, like very thin straws.",
+    "Phloem carries sugar made in the leaves to all the other parts: down to the roots, up to new buds, and into fruits and seeds.",
+    "Remember: xylem carries water up, phloem carries food around."
+   ],
+   "keyTerms": [
+    {
+     "term": "xylem",
+     "meaning": "Tubes that carry water up from the roots to the leaves."
+    },
+    {
+     "term": "phloem",
+     "meaning": "Tubes that carry sugar from the leaves to the rest of the plant."
+    }
+   ],
+   "example": "Put a white flower or celery stalk in coloured water. After a day the colour has climbed up the xylem into the petals or leaves.",
+   "checks": [
+    {
+     "id": "study-3b-q1",
+     "prompt": "What does phloem carry?",
+     "choices": [
+      "Sugar (food)",
+      "Water up from the roots",
+      "Air into the leaf"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "sugar",
+      "food"
+     ],
+     "explain": "Phloem carries food around; xylem carries water up.",
+     "hints": [
+      "Xylem water, phloem...",
+      "It is made in the leaves.",
+      "Sugar!"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-4a",
+   "objectiveId": "obj-4",
+   "zoneId": "z-canopy",
+   "title": "Transpiration and the pull",
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s6"
+   ],
+   "body": [
+    "Most water a plant takes in does not stay inside. When stomata are open, water evaporates from inside the leaf and escapes as water vapour. This is transpiration.",
+    "As water leaves the top of the plant, more is pulled up the xylem to take its place: the transpiration pull, like sipping through a straw.",
+    "Evaporation also cools the leaves, just like sweat cools your skin."
+   ],
+   "keyTerms": [
+    {
+     "term": "transpiration",
+     "meaning": "Loss of water vapour from the leaves through the stomata."
+    },
+    {
+     "term": "water vapour",
+     "meaning": "Water as an invisible gas in the air."
+    }
+   ],
+   "example": "Tie a clear plastic bag around a leafy branch on a sunny day. Soon the inside is misty with water from transpiration.",
+   "checks": [
+    {
+     "id": "study-4a-q1",
+     "prompt": "What does the transpiration pull do?",
+     "choices": [
+      "Pulls more water up the xylem",
+      "Pulls leaves off the tree",
+      "Pulls roots out of the soil"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "pulls water up"
+     ],
+     "explain": "Water leaving the leaves pulls more water up the xylem.",
+     "hints": [
+      "Think of a straw.",
+      "Water leaves the top...",
+      "More water is pulled up."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-4b",
+   "objectiveId": "obj-4",
+   "zoneId": "z-canopy",
+   "title": "Faster or slower?",
+   "figure": "compare",
+   "sourceSectionIds": [
+    "s7"
+   ],
+   "body": [
+    "Heat makes transpiration faster: warm water evaporates more quickly. Wind makes it faster: it blows water vapour away. Light makes it faster: the stomata open.",
+    "Humid air makes it slower, because the air is already full of water vapour. In the dark the stomata close, so it slows right down.",
+    "When soil is very dry, a plant closes its stomata to save water and may start to wilt."
+   ],
+   "keyTerms": [
+    {
+     "term": "humid",
+     "meaning": "Air that is already full of water vapour."
+    },
+    {
+     "term": "wilt",
+     "meaning": "When a plant droops because it is short of water."
+    }
+   ],
+   "example": "Wet washing dries fastest on a hot, sunny, windy day, and slowest on a cool, damp, still day. Leaves are just the same.",
+   "checks": [
+    {
+     "id": "study-4b-q1",
+     "prompt": "Which slows transpiration down?",
+     "choices": [
+      "Humid air",
+      "Wind",
+      "Heat"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "humid",
+      "humid air"
+     ],
+     "explain": "Humid air is already full of water vapour, so it slows transpiration.",
+     "hints": [
+      "Wind and heat speed it up.",
+      "Think of damp, misty air.",
+      "Humid..."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-5a",
+   "objectiveId": "obj-5",
+   "zoneId": "z-pond",
+   "title": "Evapotranspiration",
+   "figure": "compare",
+   "sourceSectionIds": [
+    "s8"
+   ],
+   "body": [
+    "Water also evaporates from soil, ponds, rivers, lakes and wet leaves. Evapotranspiration is evaporation from soil and water plus transpiration from plants.",
+    "A big forest sends a huge amount of water vapour into the air every day. One large tree can release hundreds of litres on a hot summer day."
+   ],
+   "keyTerms": [
+    {
+     "term": "evapotranspiration",
+     "meaning": "Evaporation from soil and water plus transpiration from plants."
+    },
+    {
+     "term": "evaporates",
+     "meaning": "Turns from liquid water into water vapour."
+    }
+   ],
+   "example": "After a summer shower, puddles on the path dry up (evaporation) while the trees beside them keep breathing out water (transpiration).",
+   "checks": [
+    {
+     "id": "study-5a-q1",
+     "prompt": "Evapotranspiration = evaporation from soil and water +",
+     "choices": [
+      "transpiration from plants",
+      "rain from clouds",
+      "sugar from leaves"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "transpiration"
+     ],
+     "explain": "It is evaporation plus transpiration.",
+     "hints": [
+      "Look at the end of the big word.",
+      "...transpiration",
+      "Transpiration from plants."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-5b",
+   "objectiveId": "obj-5",
+   "zoneId": "z-pond",
+   "title": "From vapour to rain",
+   "figure": "cycle",
+   "sourceSectionIds": [
+    "s8"
+   ],
+   "body": [
+    "Water vapour rises with warm air. High up, where the air is cooler, it cools and condenses into tiny droplets. This is condensation.",
+    "Billions of droplets together make clouds. When the droplets join and become heavy, they fall as rain. This is precipitation.",
+    "The rain soaks into the soil, the roots drink it up, and the water cycle starts again."
+   ],
+   "keyTerms": [
+    {
+     "term": "condensation",
+     "meaning": "Water vapour cooling into tiny liquid droplets."
+    },
+    {
+     "term": "precipitation",
+     "meaning": "Water falling from clouds, such as rain."
+    }
+   ],
+   "example": "Droplets appear on the outside of a cold glass of juice: water vapour from the air condenses on the cold surface.",
+   "checks": [
+    {
+     "id": "study-5b-q1",
+     "prompt": "What do we call water vapour cooling into tiny droplets?",
+     "choices": [
+      "Condensation",
+      "Precipitation",
+      "Photosynthesis"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "condensation"
+     ],
+     "explain": "Condensation makes the droplets that form clouds.",
+     "hints": [
+      "It happens high up where it is cool.",
+      "Think of the cold glass.",
+      "Conden..."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-6a",
+   "objectiveId": "obj-6",
+   "zoneId": "goal",
+   "title": "Food chains and oxygen",
+   "figure": "ordered-list",
+   "sourceSectionIds": [
+    "s9"
+   ],
+   "body": [
+    "Photosynthesis is the start of almost every food chain. A rabbit eats grass, a fox eats the rabbit, so the fox's energy first came from sunlight caught by a plant.",
+    "Plants also give us oxygen to breathe and take carbon dioxide out of the air."
+   ],
+   "keyTerms": [
+    {
+     "term": "food chain",
+     "meaning": "Who eats whom, starting with a plant that catches sunlight."
+    }
+   ],
+   "example": "Grass → rabbit → fox. Take away the grass and the whole chain falls down.",
+   "checks": [
+    {
+     "id": "study-6a-q1",
+     "prompt": "What is at the start of almost every food chain?",
+     "choices": [
+      "A plant",
+      "A fox",
+      "A rock"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "plant",
+      "plants"
+     ],
+     "explain": "Plants catch sunlight with photosynthesis and start food chains.",
+     "hints": [
+      "What does the rabbit eat?",
+      "It catches sunlight.",
+      "A plant!"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-6b",
+   "objectiveId": "obj-6",
+   "zoneId": "goal",
+   "title": "Forests make rain",
+   "figure": "cycle",
+   "sourceSectionIds": [
+    "s9"
+   ],
+   "body": [
+    "Forests are like giant water pumps. The water vapour they breathe out helps to make clouds, and those clouds bring rain to the land, sometimes far away.",
+    "When large areas of forest are cut down, this is called deforestation. With fewer trees there is less transpiration, less water vapour, and some places can get less rain.",
+    "Planting trees and caring for forests keeps the water cycle turning."
+   ],
+   "keyTerms": [
+    {
+     "term": "deforestation",
+     "meaning": "Cutting down large areas of forest."
+    }
+   ],
+   "example": "A school that plants a row of trees is adding a few more little water pumps to the water cycle.",
+   "checks": [
+    {
+     "id": "study-6b-q1",
+     "prompt": "Why can deforestation mean less rain?",
+     "choices": [
+      "Less transpiration, so less water vapour",
+      "Trees eat the clouds",
+      "Rain needs bare ground"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "less transpiration",
+      "less water vapour"
+     ],
+     "explain": "Fewer trees means less water vapour to make clouds.",
+     "hints": [
+      "What do trees breathe out?",
+      "Water vapour makes clouds.",
+      "Less transpiration..."
+     ]
+    }
+   ]
+  }
+ ],
+ "sideQuests": [
+  {
+   "id": "side-cupboard",
+   "title": "Sunny's Cupboard Mystery",
+   "giverNpcId": "npc-sunny",
+   "zoneId": "z-meadow",
+   "objectiveId": "obj-1",
+   "kind": "explain",
+   "prompt": "A seedling was left in a dark cupboard and turned pale. Explain to Sunny why, and what would help it.",
+   "rubric": [
+    "No light, so it cannot make food (photosynthesis)",
+    "Move it into the light"
+   ],
+   "reward": "a Sunbeam sticker"
+  },
+  {
+   "id": "side-flatleaf",
+   "title": "The Widest Leaf",
+   "giverNpcId": "npc-chloro",
+   "zoneId": "z-nook",
+   "objectiveId": "obj-2",
+   "kind": "find",
+   "targetId": "z-nook",
+   "prompt": "Find the giant fern in Fern Hollow Nook. Its leaves are huge, wide and flat. Tell the Professor why.",
+   "questions": [
+    {
+     "id": "side-flatleaf-q1",
+     "prompt": "Why are the fern's leaves so wide and flat?",
+     "choices": [
+      "To catch as much light as possible",
+      "To scare away birds",
+      "To hold rainwater for fish"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "catch light",
+      "more light"
+     ],
+     "explain": "Wide, flat leaves catch as much light as possible.",
+     "hints": [
+      "Think about solar panels.",
+      "More surface catches more...",
+      "Light!"
+     ]
+    }
+   ],
+   "reward": "a Golden Goggles badge"
+  },
+  {
+   "id": "side-droop",
+   "title": "Rootie's Drooping Fern",
+   "giverNpcId": "npc-rootie",
+   "zoneId": "z-roots",
+   "objectiveId": "obj-3",
+   "kind": "explain",
+   "prompt": "A fern above the caverns is drooping even though it gets plenty of sun. Explain to Rootie what might be wrong with its water supply.",
+   "rubric": [
+    "Water is not reaching the leaves",
+    "Mentions roots or root hairs not getting water, or xylem cut/blocked"
+   ],
+   "reward": "a Mini Headlamp"
+  },
+  {
+   "id": "side-thirsty",
+   "title": "Find the Thirstiest Plant",
+   "giverNpcId": "npc-misty",
+   "zoneId": "z-canopy",
+   "objectiveId": "obj-4",
+   "kind": "find",
+   "targetId": "z-meadow",
+   "prompt": "Go to the Sunflower Meadow on a hot, bright, windy afternoon. Which plant is losing water fastest?",
+   "questions": [
+    {
+     "id": "side-thirsty-q1",
+     "prompt": "Which plant is transpiring fastest?",
+     "choices": [
+      "A big leafy sunflower in hot sun and wind",
+      "A fern in a cool, damp, shady corner",
+      "A seed asleep in the dark soil"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "sunflower",
+      "the one in the sun and wind"
+     ],
+     "explain": "Heat, wind and light all make transpiration faster.",
+     "hints": [
+      "Think heat, wind and light.",
+      "Which one has all three?",
+      "The sunny, windy one!"
+     ]
+    }
+   ],
+   "reward": "a Dewdrop charm"
+  },
+  {
+   "id": "side-pond",
+   "title": "Why Is the Pond Shrinking?",
+   "giverNpcId": "npc-oakley",
+   "zoneId": "z-pond",
+   "objectiveId": "obj-5",
+   "kind": "explain",
+   "prompt": "Explain to Oakley why his pond keeps shrinking during the dry, hot weeks.",
+   "rubric": [
+    "Water evaporates from the pond in the heat",
+    "No rain is falling to fill it back up",
+    "Links rain to clouds / water vapour from the forest"
+   ],
+   "reward": "an Acorn of Wisdom"
+  },
+  {
+   "id": "side-cool",
+   "title": "The Cool Forest",
+   "giverNpcId": "npc-misty",
+   "zoneId": "z-canopy",
+   "objectiveId": "obj-4",
+   "kind": "explain",
+   "prompt": "On a hot day it feels cooler under the trees. Explain to Misty how the leaves help cool things down.",
+   "rubric": [
+    "Water evaporates from the leaves (transpiration)",
+    "Evaporation cools, like sweat"
+   ],
+   "reward": "a Mist Feather"
+  }
+ ],
+ "glossary": [
+  {
+   "term": "photosynthesis",
+   "meaning": "How green plants make their own food using light energy.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "carbon dioxide",
+   "meaning": "A gas in the air that plants take in to make food.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "light energy",
+   "meaning": "Energy from the Sun that powers photosynthesis.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "glucose",
+   "meaning": "A sugar made in the leaf; the plant's food.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "oxygen",
+   "meaning": "A gas plants let out; people and animals breathe it.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "starch",
+   "meaning": "Extra sugar stored by the plant for later.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "word equation",
+   "meaning": "Carbon dioxide + water → glucose + oxygen.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "chlorophyll",
+   "meaning": "A green pigment that traps the energy in sunlight.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "chloroplast",
+   "meaning": "A tiny part of a leaf cell where chlorophyll is found.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "stomata",
+   "meaning": "Tiny holes in a leaf; one is a stoma.",
+   "sectionId": "s4"
+  },
+  {
+   "term": "guard cells",
+   "meaning": "Two bean-shaped cells that open and close a stoma.",
+   "sectionId": "s4"
+  },
+  {
+   "term": "root hairs",
+   "meaning": "Tiny thin hairs on roots that soak up water.",
+   "sectionId": "s5"
+  },
+  {
+   "term": "xylem",
+   "meaning": "Tubes that carry water up from the roots.",
+   "sectionId": "s5"
+  },
+  {
+   "term": "phloem",
+   "meaning": "Tubes that carry sugar around the plant.",
+   "sectionId": "s5"
+  },
+  {
+   "term": "transpiration",
+   "meaning": "Loss of water vapour from leaves through the stomata.",
+   "sectionId": "s6"
+  },
+  {
+   "term": "transpiration pull",
+   "meaning": "Water leaving the leaves pulls more water up the xylem.",
+   "sectionId": "s6"
+  },
+  {
+   "term": "humid",
+   "meaning": "Air already full of water vapour.",
+   "sectionId": "s7"
+  },
+  {
+   "term": "evapotranspiration",
+   "meaning": "Evaporation from soil and water plus transpiration from plants.",
+   "sectionId": "s8"
+  },
+  {
+   "term": "condensation",
+   "meaning": "Water vapour cooling into tiny droplets.",
+   "sectionId": "s8"
+  },
+  {
+   "term": "precipitation",
+   "meaning": "Water falling from clouds, such as rain.",
+   "sectionId": "s8"
+  },
+  {
+   "term": "deforestation",
+   "meaning": "Cutting down large areas of forest.",
+   "sectionId": "s9"
+  }
+ ],
+ "reviewQuestions": [
+  {
+   "id": "rev-1",
+   "prompt": "Tell me the three ingredients a leaf needs to make its food.",
+   "choices": [
+    "Water, carbon dioxide and light energy",
+    "Soil, sand and rain",
+    "Oxygen, sugar and wind"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "water carbon dioxide light",
+    "water carbon dioxide sunlight"
+   ],
+   "explain": "Water, carbon dioxide and light energy.",
+   "hints": [
+    "Leaf kitchen!",
+    "Roots, air, Sun.",
+    "Water, carbon dioxide and..."
+   ]
+  },
+  {
+   "id": "rev-2",
+   "prompt": "What does chlorophyll do, and where is it found?",
+   "choices": [
+    "Traps light energy; inside chloroplasts",
+    "Stores water; inside roots",
+    "Makes rain; inside clouds"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "traps light",
+    "chloroplasts"
+   ],
+   "explain": "Chlorophyll traps the energy in sunlight and lives in chloroplasts.",
+   "hints": [
+    "It is green.",
+    "Little solar panels.",
+    "Traps light..."
+   ]
+  },
+  {
+   "id": "rev-3",
+   "prompt": "Describe what guard cells do.",
+   "choices": [
+    "Open and close the stomata",
+    "Guard the roots from moles",
+    "Carry sugar to fruit"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "open and close the stomata",
+    "open and close"
+   ],
+   "explain": "Guard cells open and close each stoma.",
+   "hints": [
+    "Two bean-shaped doors.",
+    "Doors of the tiny mouths.",
+    "Open and..."
+   ]
+  },
+  {
+   "id": "rev-4",
+   "prompt": "Explain how water gets from the soil up to a leaf.",
+   "choices": [
+    "Root hairs soak it up, then it climbs the xylem",
+    "It falls up from the clouds",
+    "Phloem carries it down"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "root hairs xylem",
+    "up the xylem"
+   ],
+   "explain": "Root hairs soak it up and the xylem carries it up the stem.",
+   "hints": [
+    "Start at the root hairs.",
+    "Which tubes go up?",
+    "Xylem!"
+   ]
+  },
+  {
+   "id": "rev-5",
+   "prompt": "What job does phloem do?",
+   "choices": [
+    "Carries sugar around the plant",
+    "Carries water up",
+    "Lets gases in"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "carries sugar",
+    "carries food"
+   ],
+   "explain": "Phloem carries food around.",
+   "hints": [
+    "Xylem water, phloem...",
+    "Made in the leaves.",
+    "Sugar!"
+   ]
+  },
+  {
+   "id": "rev-6",
+   "prompt": "In your own words, what is transpiration?",
+   "choices": [
+    "Water evaporating from leaves through stomata",
+    "Roots drinking from a pond",
+    "Rain falling on leaves"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "water evaporating from leaves",
+    "water leaving leaves"
+   ],
+   "explain": "Water evaporating from the leaves through the stomata as water vapour.",
+   "hints": [
+    "Mist from the canopy.",
+    "Through the tiny holes.",
+    "Water vapour leaves..."
+   ]
+  },
+  {
+   "id": "rev-7",
+   "prompt": "Why does a windy day make transpiration faster?",
+   "choices": [
+    "Wind blows the water vapour away from the leaf",
+    "Wind closes the stomata",
+    "Wind makes the air humid"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "blows the water vapour away",
+    "blows vapour away"
+   ],
+   "explain": "Wind blows the water vapour away from the leaf.",
+   "hints": [
+    "Think of drying washing.",
+    "What happens to the vapour?",
+    "Blown away!"
+   ]
+  },
+  {
+   "id": "rev-8",
+   "prompt": "Tell me how water vapour from a forest becomes rain.",
+   "choices": [
+    "It rises, cools, condenses into clouds, then falls",
+    "It sinks into the soil and freezes",
+    "It turns into sugar"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "condenses into clouds",
+    "cools condenses rain"
+   ],
+   "explain": "Vapour rises, cools, condenses into droplets that make clouds, and heavy droplets fall as rain.",
+   "hints": [
+    "Up it goes...",
+    "It cools high up.",
+    "Condensation, clouds, rain."
+   ]
+  }
+ ]
+}
