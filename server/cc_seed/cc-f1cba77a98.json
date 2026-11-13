@@ -1,0 +1,249 @@
+{
+ "sessionId": "cc-f1cba77a98",
+ "startedAt": "2026-11-13T17:49:30.811176+00:00",
+ "events": [
+  {
+   "name": "session_start",
+   "data": {
+    "worldId": "beach",
+    "lang": "hi"
+   },
+   "ts": "2026-11-13T17:49:30.811176+00:00"
+  },
+  {
+   "name": "spawn",
+   "data": {
+    "worldId": "beach"
+   },
+   "ts": "2026-11-13T17:50:02.954033+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "sandcastle",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T17:50:35.096890+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "shell",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T17:51:07.239747+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "lifeguard tower",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T17:51:39.382604+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "palm",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T17:52:11.525461+00:00"
+  },
+  {
+   "name": "roam_end",
+   "data": {},
+   "ts": "2026-11-13T17:52:43.668318+00:00"
+  },
+  {
+   "name": "recall_before",
+   "data": {
+    "correct": true
+   },
+   "ts": "2026-11-13T17:53:15.811175+00:00"
+  },
+  {
+   "name": "wonder_submit",
+   "data": {
+    "guess": "Sand",
+    "text": "sand castle",
+    "source": "local"
+   },
+   "ts": "2026-11-13T17:53:47.954032+00:00"
+  },
+  {
+   "name": "question_pick",
+   "data": {
+    "question": "Where does sand come from?",
+    "level": 0
+   },
+   "ts": "2026-11-13T17:54:20.096889+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Where does sand come from?",
+    "level": 0,
+    "conceptIds": [
+     "sand"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T17:54:52.239746+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "sand"
+   },
+   "ts": "2026-11-13T17:55:24.382603+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Where does sand come from?",
+    "level": 0
+   },
+   "ts": "2026-11-13T17:55:56.525460+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 1
+   },
+   "ts": "2026-11-13T17:56:28.668317+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Hmm, but why does rubbing and tumbling make big rocks turn into tiny bits?",
+    "level": 1,
+    "conceptIds": [
+     "sand"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T17:57:00.811174+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "sand"
+   },
+   "ts": "2026-11-13T17:57:32.954031+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Hmm, but why does rubbing and tumbling make big rocks turn into tiny bits?",
+    "level": 1
+   },
+   "ts": "2026-11-13T17:58:05.096888+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why do waves crash near the shore?",
+    "level": 0,
+    "conceptIds": [
+     "breaking-waves",
+     "waves"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T17:58:37.239745+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why do waves crash near the shore?",
+    "level": 0
+   },
+   "ts": "2026-11-13T17:59:09.382602+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why is the tide high sometimes?",
+    "level": 0,
+    "conceptIds": [
+     "density",
+     "board-design"
+    ],
+    "source": "local"
+   },
+   "ts": "2026-11-13T17:59:41.525459+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why is the tide high sometimes?",
+    "level": 0
+   },
+   "ts": "2026-11-13T18:00:13.668316+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "How do wetsuits keep you warm?",
+    "level": 0,
+    "conceptIds": [
+     "insulation"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T18:00:45.811173+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "How do wetsuits keep you warm?",
+    "level": 0
+   },
+   "ts": "2026-11-13T18:01:17.954030+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why swim between the flags?",
+    "level": 0,
+    "conceptIds": [
+     "safety"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T18:01:50.096887+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why swim between the flags?",
+    "level": 0
+   },
+   "ts": "2026-11-13T18:02:22.239744+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "foam-long",
+    "result": "floats"
+   },
+   "ts": "2026-11-13T18:02:54.382601+00:00"
+  },
+  {
+   "name": "recall_after",
+   "data": {
+    "correct": true
+   },
+   "ts": "2026-11-13T18:03:26.525458+00:00"
+  },
+  {
+   "name": "report_view",
+   "data": {},
+   "ts": "2026-11-13T18:03:58.668315+00:00"
+  }
+ ],
+ "worldId": "beach",
+ "lang": "hi",
+ "label": "Explorer #1187"
+}

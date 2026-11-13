@@ -340,7 +340,71 @@ def build_report(s: dict) -> dict:
         'recall': {'before': rec('recall_before'), 'after': rec('recall_after'), 'prompt': w.get('recall', {}).get('prompt', '')},
         'journal': journal, 'tryAtHome': w.get('tryAtHome', ''), 'realWorld': w.get('realWorld', {}),
         'wonder': [{'guess': e['data'].get('guess'), 'text': e['data'].get('text')} for e in by('wonder_submit')][:5],
+        'profile': _profile(s, evs, asked, levels, cids, cmap, minutes),
+        'label': s.get('label') or f'Explorer #{abs(hash(s["sessionId"])) % 9000 + 1000}',
     }
+
+
+def _profile(s, evs, asked, levels, cids, cmap, minutes) -> dict:
+    """Curiosity profile, computed deterministically from the event log (never by the LLM)."""
+    whys = [e for e in evs if e['name'] == 'why_level']
+    attempts = [e for e in evs if e['name'] == 'challenge_attempt']
+    # persistence: tried again after a sink / wobble
+    retries, after_fail = 0, False
+    for e in attempts:
+        if after_fail:
+            retries += 1
+        after_fail = str(e['data'].get('result', '')) in ('sinks', 'sank', 'wobbles')
+    wonders = len([e for e in evs if e['name'] in ('wonder_spot', 'journal_card') and e['data'].get('source') == 'wonder_spot']) or \
+        len([e for e in evs if e['name'] == 'wonder_spot'])
+    topic_count: dict[str, int] = {}
+    for e in asked + [e for e in evs if e['name'] == 'concept']:
+        for c in (e['data'].get('conceptIds') or ([e['data']['conceptId']] if e['data'].get('conceptId') else [])):
+            topic_count[c] = topic_count.get(c, 0) + 1
+    fav = max(topic_count, key=topic_count.get) if topic_count else None
+    qpm = round(len(asked) / minutes, 1) if minutes and minutes > 0.5 else None
+    follow = round(len(whys) / max(1, len(asked)), 2)
+    deepest = max(levels) if levels else 0
+    if deepest >= 3 and follow >= 0.6:
+        style, blurb = 'Deep Diver', 'Keeps asking "but why?" until reaching the root cause.'
+    elif len(cids) >= 4:
+        style, blurb = 'Explorer', 'Curious about many different things and connects ideas across topics.'
+    elif retries >= 1:
+        style, blurb = 'Experimenter', 'Learns by trying things, and tries again after a surprise.'
+    else:
+        style, blurb = 'Getting Started', 'Beginning to ask questions. Encourage one more "why?" at home.'
+    return {
+        'style': style, 'styleBlurb': blurb,
+        'questionsPerMinute': qpm, 'followUpRate': follow, 'deepestWhyLevel': deepest,
+        'conceptsExplored': len(cids), 'labAttempts': len(attempts), 'triedAgainAfterFail': retries,
+        'wondersFound': wonders, 'favoriteTopic': cmap.get(fav, {}).get('name') if fav else None,
+        'conversationStarter': (f'Ask: "What did you find out about {cmap[fav]["name"].lower()}? Can you show me?"' if fav in cmap else
+                                'Ask: "What did you wonder about today?"'),
+    }
+
+
+# ------------------------------------------------------------------ recorded playtest sessions
+# server/cc_seed/*.json are real event logs captured from scripted playtest runs of the full loop
+# (tools/record_playtests.py). They are loaded on startup so the parent dashboard has history to show.
+SEED_DIR = Path(__file__).resolve().parent.parent / 'cc_seed'
+
+
+def _load_recorded() -> None:
+    if not SEED_DIR.exists():
+        return
+    for f in sorted(SEED_DIR.glob('*.json')):
+        try:
+            s = json.loads(f.read_text(encoding='utf-8'))
+            if s.get('sessionId') and not store.get('cc_sessions', s['sessionId']):
+                store.put('cc_sessions', s['sessionId'], s)
+        except Exception as e:
+            log.warning('bad recorded session %s: %s', f.name, e)
+
+
+try:
+    _load_recorded()
+except Exception as e:  # never block startup
+    log.warning('recorded sessions not loaded: %s', e)
 
 
 @router.get('/report/{session_id}')
@@ -353,11 +417,18 @@ async def report(session_id: str):
 
 @router.get('/reports')
 async def reports():
-    out = []
-    for s in store.all_('cc_sessions')[-30:]:
+    rows = []
+    for s in store.all_('cc_sessions'):
         try:
+            if len(s.get('events', [])) < 4:
+                continue  # skip sessions that never got going
             r = build_report(s)
-            out.append({k: r[k] for k in ('sessionId', 'startedAt', 'questionsAsked', 'deepestWhyLevel', 'worldName')})
+            row = {k: r.get(k) for k in ('sessionId', 'startedAt', 'questionsAsked', 'deepestWhyLevel', 'worldName', 'minutes',
+                                         'lang', 'label')}
+            row['style'] = r['profile']['style']
+            row['conceptsExplored'] = r['profile']['conceptsExplored']
+            rows.append(row)
         except Exception:
             continue
-    return out[::-1]
+    rows.sort(key=lambda r: r.get('startedAt') or '', reverse=True)
+    return rows[:40]

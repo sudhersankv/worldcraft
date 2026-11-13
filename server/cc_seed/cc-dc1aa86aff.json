@@ -1,0 +1,211 @@
+{
+ "sessionId": "cc-dc1aa86aff",
+ "startedAt": "2026-11-13T18:57:30.811176+00:00",
+ "events": [
+  {
+   "name": "session_start",
+   "data": {
+    "worldId": "beach",
+    "lang": "es"
+   },
+   "ts": "2026-11-13T18:57:30.811176+00:00"
+  },
+  {
+   "name": "spawn",
+   "data": {
+    "worldId": "beach"
+   },
+   "ts": "2026-11-13T18:57:52.411176+00:00"
+  },
+  {
+   "name": "roam_end",
+   "data": {},
+   "ts": "2026-11-13T18:58:14.011176+00:00"
+  },
+  {
+   "name": "recall_before",
+   "data": {
+    "correct": false
+   },
+   "ts": "2026-11-13T18:58:35.611176+00:00"
+  },
+  {
+   "name": "wonder_submit",
+   "data": {
+    "guess": "una tabla de surf",
+    "text": "una tabla de surf",
+    "source": "llm"
+   },
+   "ts": "2026-11-13T18:58:57.211176+00:00"
+  },
+  {
+   "name": "question_pick",
+   "data": {
+    "question": "¿Por qué flota una tabla de surf?",
+    "level": 0
+   },
+   "ts": "2026-11-13T18:59:18.811176+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "¿Por qué flota una tabla de surf?",
+    "level": 0,
+    "conceptIds": [],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T18:59:40.411176+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "¿Por qué flota una tabla de surf?",
+    "level": 0
+   },
+   "ts": "2026-11-13T19:00:02.011176+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 1
+   },
+   "ts": "2026-11-13T19:00:23.611176+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "¿Por qué tener aire dentro hace que algo pese menos para su tamaño?",
+    "level": 1,
+    "conceptIds": [
+     "density",
+     "board-design",
+     "displacement"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T19:00:45.211176+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "density"
+   },
+   "ts": "2026-11-13T19:01:06.811176+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "board-design"
+   },
+   "ts": "2026-11-13T19:01:28.411176+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "displacement"
+   },
+   "ts": "2026-11-13T19:01:50.011176+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "¿Por qué tener aire dentro hace que algo pese menos para su tamaño?",
+    "level": 1
+   },
+   "ts": "2026-11-13T19:02:11.611176+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 2
+   },
+   "ts": "2026-11-13T19:02:33.211176+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "¿Por qué el agua empuja hacia arriba a las cosas que flotan?",
+    "level": 2,
+    "conceptIds": [
+     "buoyancy",
+     "displacement"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T19:02:54.811176+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "buoyancy"
+   },
+   "ts": "2026-11-13T19:03:16.411176+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "displacement"
+   },
+   "ts": "2026-11-13T19:03:38.011176+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "¿Por qué el agua empuja hacia arriba a las cosas que flotan?",
+    "level": 2
+   },
+   "ts": "2026-11-13T19:03:59.611176+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "stone-short",
+    "result": "sinks"
+   },
+   "ts": "2026-11-13T19:04:21.211176+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "stone-long",
+    "result": "sinks"
+   },
+   "ts": "2026-11-13T19:04:42.811176+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "wood-long",
+    "result": "floats"
+   },
+   "ts": "2026-11-13T19:05:04.411176+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "foam-short",
+    "result": "floats"
+   },
+   "ts": "2026-11-13T19:05:26.011176+00:00"
+  },
+  {
+   "name": "recall_after",
+   "data": {
+    "correct": true
+   },
+   "ts": "2026-11-13T19:05:47.611176+00:00"
+  },
+  {
+   "name": "report_view",
+   "data": {},
+   "ts": "2026-11-13T19:06:09.211176+00:00"
+  }
+ ],
+ "worldId": "beach",
+ "lang": "es",
+ "label": "Explorer #2093"
+}

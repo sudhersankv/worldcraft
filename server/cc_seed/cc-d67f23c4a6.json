@@ -1,0 +1,173 @@
+{
+ "sessionId": "cc-d67f23c4a6",
+ "startedAt": "2026-11-13T20:10:30.811176+00:00",
+ "events": [
+  {
+   "name": "session_start",
+   "data": {
+    "worldId": "beach",
+    "lang": "en"
+   },
+   "ts": "2026-11-13T20:10:30.811176+00:00"
+  },
+  {
+   "name": "spawn",
+   "data": {
+    "worldId": "beach"
+   },
+   "ts": "2026-11-13T20:10:51.811176+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "lifeguard tower",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T20:11:12.811176+00:00"
+  },
+  {
+   "name": "roam_end",
+   "data": {},
+   "ts": "2026-11-13T20:11:33.811176+00:00"
+  },
+  {
+   "name": "recall_before",
+   "data": {
+    "correct": false
+   },
+   "ts": "2026-11-13T20:11:54.811176+00:00"
+  },
+  {
+   "name": "wonder_submit",
+   "data": {
+    "guess": "Sun",
+    "text": "the sun",
+    "source": "local"
+   },
+   "ts": "2026-11-13T20:12:15.811176+00:00"
+  },
+  {
+   "name": "question_pick",
+   "data": {
+    "question": "Why do I need sunscreen at the beach?",
+    "level": 0
+   },
+   "ts": "2026-11-13T20:12:36.811176+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why do I need sunscreen at the beach?",
+    "level": 0,
+    "conceptIds": [
+     "safety"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T20:12:57.811176+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "safety"
+   },
+   "ts": "2026-11-13T20:13:18.811176+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why do I need sunscreen at the beach?",
+    "level": 0
+   },
+   "ts": "2026-11-13T20:13:39.811176+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 1
+   },
+   "ts": "2026-11-13T20:14:00.811176+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why do you think sunlight bounces off shiny water and bright sand more than it does off a dark green forest?",
+    "level": 1,
+    "conceptIds": [
+     "safety"
+    ],
+    "source": "local"
+   },
+   "ts": "2026-11-13T20:14:21.811176+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "safety"
+   },
+   "ts": "2026-11-13T20:14:42.811176+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why do you think sunlight bounces off shiny water and bright sand more than it does off a dark green forest?",
+    "level": 1
+   },
+   "ts": "2026-11-13T20:15:03.811176+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why is wet sand darker?",
+    "level": 0,
+    "conceptIds": [
+     "sand",
+     "safety"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T20:15:24.811176+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why is wet sand darker?",
+    "level": 0
+   },
+   "ts": "2026-11-13T20:15:45.811176+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "wood-long",
+    "result": "floats"
+   },
+   "ts": "2026-11-13T20:16:06.811176+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "foam-long",
+    "result": "floats"
+   },
+   "ts": "2026-11-13T20:16:27.811176+00:00"
+  },
+  {
+   "name": "recall_after",
+   "data": {
+    "correct": false
+   },
+   "ts": "2026-11-13T20:16:48.811176+00:00"
+  },
+  {
+   "name": "report_view",
+   "data": {},
+   "ts": "2026-11-13T20:17:09.811176+00:00"
+  }
+ ],
+ "worldId": "beach",
+ "lang": "en",
+ "label": "Explorer #3341"
+}

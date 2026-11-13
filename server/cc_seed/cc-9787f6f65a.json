@@ -1,0 +1,227 @@
+{
+ "sessionId": "cc-9787f6f65a",
+ "startedAt": "2026-11-13T20:31:30.811176+00:00",
+ "events": [
+  {
+   "name": "session_start",
+   "data": {
+    "worldId": "beach",
+    "lang": "zh"
+   },
+   "ts": "2026-11-13T20:31:30.811176+00:00"
+  },
+  {
+   "name": "spawn",
+   "data": {
+    "worldId": "beach"
+   },
+   "ts": "2026-11-13T20:31:55.255620+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "tide pool",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T20:32:19.700064+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "pier end",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T20:32:44.144508+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "shell",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T20:33:08.588952+00:00"
+  },
+  {
+   "name": "roam_end",
+   "data": {},
+   "ts": "2026-11-13T20:33:33.033396+00:00"
+  },
+  {
+   "name": "recall_before",
+   "data": {
+    "correct": false
+   },
+   "ts": "2026-11-13T20:33:57.477840+00:00"
+  },
+  {
+   "name": "wonder_submit",
+   "data": {
+    "guess": "鱼",
+    "text": "鱼",
+    "source": "llm"
+   },
+   "ts": "2026-11-13T20:34:21.922284+00:00"
+  },
+  {
+   "name": "question_pick",
+   "data": {
+    "question": "鱼为什么能在水里漂浮？",
+    "level": 0
+   },
+   "ts": "2026-11-13T20:34:46.366728+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "鱼为什么能在水里漂浮？",
+    "level": 0,
+    "conceptIds": [
+     "buoyancy",
+     "density"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T20:35:10.811172+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "buoyancy"
+   },
+   "ts": "2026-11-13T20:35:35.255616+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "density"
+   },
+   "ts": "2026-11-13T20:35:59.700060+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "鱼为什么能在水里漂浮？",
+    "level": 0
+   },
+   "ts": "2026-11-13T20:36:24.144504+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 1
+   },
+   "ts": "2026-11-13T20:36:48.588948+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "为什么装着气体的小袋子，能让鱼变得轻轻的、浮起来呢？",
+    "level": 1,
+    "conceptIds": [],
+    "source": "local"
+   },
+   "ts": "2026-11-13T20:37:13.033392+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "为什么装着气体的小袋子，能让鱼变得轻轻的、浮起来呢？",
+    "level": 1
+   },
+   "ts": "2026-11-13T20:37:37.477836+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 2
+   },
+   "ts": "2026-11-13T20:38:01.922280+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "可是为什么呢？",
+    "level": 2,
+    "conceptIds": [
+     "density",
+     "buoyancy"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T20:38:26.366724+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "density"
+   },
+   "ts": "2026-11-13T20:38:50.811168+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "buoyancy"
+   },
+   "ts": "2026-11-13T20:39:15.255612+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "可是为什么呢？",
+    "level": 2
+   },
+   "ts": "2026-11-13T20:39:39.700056+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "海浪是怎么形成的？",
+    "level": 0,
+    "conceptIds": [],
+    "source": "local"
+   },
+   "ts": "2026-11-13T20:40:04.144500+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "海浪是怎么形成的？",
+    "level": 0
+   },
+   "ts": "2026-11-13T20:40:28.588944+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "stone-long",
+    "result": "sinks"
+   },
+   "ts": "2026-11-13T20:40:53.033388+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "foam-long",
+    "result": "floats"
+   },
+   "ts": "2026-11-13T20:41:17.477832+00:00"
+  },
+  {
+   "name": "recall_after",
+   "data": {
+    "correct": true
+   },
+   "ts": "2026-11-13T20:41:41.922276+00:00"
+  },
+  {
+   "name": "report_view",
+   "data": {},
+   "ts": "2026-11-13T20:42:06.366720+00:00"
+  }
+ ],
+ "worldId": "beach",
+ "lang": "zh",
+ "label": "Explorer #5520"
+}

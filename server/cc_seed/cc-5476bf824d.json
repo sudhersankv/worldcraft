@@ -1,0 +1,237 @@
+{
+ "sessionId": "cc-5476bf824d",
+ "startedAt": "2026-11-13T17:09:30.811176+00:00",
+ "events": [
+  {
+   "name": "session_start",
+   "data": {
+    "worldId": "beach",
+    "lang": "en"
+   },
+   "ts": "2026-11-13T17:09:30.811176+00:00"
+  },
+  {
+   "name": "spawn",
+   "data": {
+    "worldId": "beach"
+   },
+   "ts": "2026-11-13T17:09:56.525462+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "tide pool",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T17:10:22.239748+00:00"
+  },
+  {
+   "name": "wonder_spot",
+   "data": {
+    "spot": "pier end",
+    "source": "wonder_spot"
+   },
+   "ts": "2026-11-13T17:10:47.954034+00:00"
+  },
+  {
+   "name": "roam_end",
+   "data": {},
+   "ts": "2026-11-13T17:11:13.668320+00:00"
+  },
+  {
+   "name": "recall_before",
+   "data": {
+    "correct": false
+   },
+   "ts": "2026-11-13T17:11:39.382606+00:00"
+  },
+  {
+   "name": "wonder_submit",
+   "data": {
+    "guess": "a big wave",
+    "text": "a big wave",
+    "source": "llm"
+   },
+   "ts": "2026-11-13T17:12:05.096892+00:00"
+  },
+  {
+   "name": "question_pick",
+   "data": {
+    "question": "What makes a wave?",
+    "level": 0
+   },
+   "ts": "2026-11-13T17:12:30.811178+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "What makes a wave?",
+    "level": 0,
+    "conceptIds": [
+     "waves"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T17:12:56.525464+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "waves"
+   },
+   "ts": "2026-11-13T17:13:22.239750+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "What makes a wave?",
+    "level": 0
+   },
+   "ts": "2026-11-13T17:13:47.954036+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 1
+   },
+   "ts": "2026-11-13T17:14:13.668322+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why do you think the wind has to blow for a long time to make a really big wave?",
+    "level": 1,
+    "conceptIds": [
+     "waves"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T17:14:39.382608+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "waves"
+   },
+   "ts": "2026-11-13T17:15:05.096894+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why do you think the wind has to blow for a long time to make a really big wave?",
+    "level": 1
+   },
+   "ts": "2026-11-13T17:15:30.811180+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 2
+   },
+   "ts": "2026-11-13T17:15:56.525466+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why do you think a wave can carry energy all the way across the ocean without carrying the water with it?",
+    "level": 2,
+    "conceptIds": [
+     "waves"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T17:16:22.239752+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "waves"
+   },
+   "ts": "2026-11-13T17:16:47.954038+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why do you think a wave can carry energy all the way across the ocean without carrying the water with it?",
+    "level": 2
+   },
+   "ts": "2026-11-13T17:17:13.668324+00:00"
+  },
+  {
+   "name": "why_level",
+   "data": {
+    "level": 3
+   },
+   "ts": "2026-11-13T17:17:39.382610+00:00"
+  },
+  {
+   "name": "question_asked",
+   "data": {
+    "question": "Why do you think the water just goes in little circles instead of being pushed along with the wave?",
+    "level": 3,
+    "conceptIds": [
+     "waves"
+    ],
+    "source": "llm"
+   },
+   "ts": "2026-11-13T17:18:05.096896+00:00"
+  },
+  {
+   "name": "concept",
+   "data": {
+    "conceptId": "waves"
+   },
+   "ts": "2026-11-13T17:18:30.811182+00:00"
+  },
+  {
+   "name": "journal_card",
+   "data": {
+    "question": "Why do you think the water just goes in little circles instead of being pushed along with the wave?",
+    "level": 3
+   },
+   "ts": "2026-11-13T17:18:56.525468+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "stone-long",
+    "result": "sinks"
+   },
+   "ts": "2026-11-13T17:19:22.239754+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "wood-short",
+    "result": "wobbles"
+   },
+   "ts": "2026-11-13T17:19:47.954040+00:00"
+  },
+  {
+   "name": "challenge_attempt",
+   "data": {
+    "challenge": "surfboard-lab",
+    "choice": "foam-long",
+    "result": "floats"
+   },
+   "ts": "2026-11-13T17:20:13.668326+00:00"
+  },
+  {
+   "name": "recall_after",
+   "data": {
+    "correct": true
+   },
+   "ts": "2026-11-13T17:20:39.382612+00:00"
+  },
+  {
+   "name": "report_view",
+   "data": {},
+   "ts": "2026-11-13T17:21:05.096898+00:00"
+  }
+ ],
+ "worldId": "beach",
+ "lang": "en",
+ "label": "Explorer #0412"
+}
