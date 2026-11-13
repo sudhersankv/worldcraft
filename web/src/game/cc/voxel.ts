@@ -27,6 +27,18 @@ const COLORS: Record<Block, { top: string; side: string; bottom?: string }> = {
 };
 
 export const W = 60, D = 60;
+/** Surfboard Lab dock (fixed spot by the shack, over the water). */
+export const LAB_DOCK = { x: 17.5, z: 16.5 };
+/** Wonder Board easel by Sam's shack. */
+export const BOARD = { x: 21.5, z: 26.5 };
+/** Investigation places (concept -> spot to look at). */
+export const PLACES: Record<string, { x: number; z: number; name: string }> = {
+  pier: { x: 2.5, z: 27, name: 'the end of the pier' },
+  dock: { x: LAB_DOCK.x, z: LAB_DOCK.z, name: 'the Lab dock' },
+  castle: { x: 28, z: 20.5, name: 'the sandcastle' },
+  tower: { x: 20.5, z: 31.5, name: 'the lifeguard tower' },
+  pool: { x: 13, z: 52.5, name: 'the tide pool' },
+};
 export const WATER_Y = 1.45;
 export const shoreAt = (z: number) => 15 + Math.sin(z * 0.35) * 1.8 + (fbm(z * 0.15, 3) - 0.5) * 3;
 
@@ -171,6 +183,11 @@ export class Voxel {
   private occluded = false;
   silhouette = false;
   private marker!: THREE.Mesh;
+  private beacon!: THREE.Group;
+  boardGlow = false;
+  labNear = false;
+  onFrame: (dt: number) => void = () => undefined;
+  private boardHalo!: THREE.Sprite;
   private home = new THREE.Vector3();
 
   constructor(host: HTMLElement, public input: Input) {
@@ -251,6 +268,10 @@ export class Voxel {
     this.lab.set(sx - 2, 0, sz + 9);
     this.structure((s) => this.buildLifeguard(19, 33, s));
     this.structure((s) => this.buildPier(10, 26, s));
+    // Wonder Board easel (chalkboard on legs)
+    { const by = this.heights[Math.floor(BOARD.x)][Math.floor(BOARD.z)];
+      this.deco.push({ x: BOARD.x - 0.6, y: by + 0.9, z: BOARD.z, sx: 0.1, sy: 1.8, sz: 0.1, c: '#8d5a30' }, { x: BOARD.x + 0.6, y: by + 0.9, z: BOARD.z, sx: 0.1, sy: 1.8, sz: 0.1, c: '#8d5a30' }, { x: BOARD.x, y: by + 1.45, z: BOARD.z + 0.05, sx: 1.6, sy: 1.1, sz: 0.1, c: '#2a5a3a' }, { x: BOARD.x, y: by + 1.45, z: BOARD.z + 0.02, sx: 1.75, sy: 1.25, sz: 0.06, c: '#c88a4c' }, { x: BOARD.x - 0.3, y: by + 1.6, z: BOARD.z + 0.11, sx: 0.5, sy: 0.06, sz: 0.02, c: '#ffffff' }, { x: BOARD.x + 0.2, y: by + 1.35, z: BOARD.z + 0.11, sx: 0.35, sy: 0.35, sz: 0.02, c: '#ffd23c' });
+      this.heights[Math.floor(BOARD.x)][Math.floor(BOARD.z)] = 99; }
     this.structure((s) => this.buildLighthouse(-14, 6, s));
     // palms in varied sizes
     const palms: [number, number][] = [];
@@ -535,6 +556,13 @@ export class Voxel {
     this.marker = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.26, 4), new THREE.MeshBasicMaterial({ color: '#ffd23c', depthTest: false, transparent: true }));
     this.marker.rotation.x = Math.PI; this.marker.renderOrder = 20; this.scene.add(this.marker);
     this.target.set(this.player.x, this.player.y + 1.1, this.player.z);
+    this.beacon = new THREE.Group();
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 14, 12, 1, true), new THREE.MeshBasicMaterial({ color: '#ffe27a', transparent: true, opacity: 0.28, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending }));
+    beam.position.y = 7; this.beacon.add(beam);
+    const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.35), new THREE.MeshBasicMaterial({ color: '#ffd23c' })); gem.position.y = 3; gem.name = 'gem'; this.beacon.add(gem);
+    this.beacon.visible = false; this.scene.add(this.beacon);
+    this.boardHalo = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow('#ffe27a'), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+    this.boardHalo.scale.setScalar(3.4); this.boardHalo.position.set(BOARD.x, this.groundY(BOARD.x, BOARD.z + 1) + 1.5, BOARD.z + 0.2); this.boardHalo.visible = false; this.scene.add(this.boardHalo);
   }
 
   private walkable(x: number, z: number, fromY: number) {
@@ -573,6 +601,9 @@ export class Voxel {
   followPlayer() { this.camGoal = null; }
   teleportNear(a: Actor) { this.player.x = a.x - 1.1; this.player.z = a.z + 1.3; this.player.y = this.groundY(this.player.x, this.player.z); this.player.yaw = Math.atan2(a.x - this.player.x, a.z - this.player.z); this.yaw = Math.atan2(this.player.x - a.x, this.player.z - a.z) + 0.6; }
   samSurf(on: boolean) { this.samRide = on ? { t: 0 } : null; if (!on) { this.sam.x = this.home.x; this.sam.z = this.home.z; } }
+  setBeacon(x: number | null, z = 0) { if (x === null) { this.beacon.visible = false; return; } this.beacon.visible = true; this.beacon.position.set(x, this.groundY(x, z), z); }
+  teleport(x: number, z: number) { this.player.x = x; this.player.z = z; this.player.y = this.groundY(x, z); this.target.set(x, this.player.y + 1.1, z); }
+  dist2(x: number, z: number) { return Math.hypot(this.player.x - x, this.player.z - z); }
   markEgg(id: string) { const g = this.eggs.find((e) => e.id === id); if (!g) return; g.found = true; g.obj.visible = false; }
 
   // ================================================================== loop
@@ -622,11 +653,13 @@ export class Voxel {
       s.b.armL.rotation.z = 0;
       const dSam = Math.hypot(p.x - s.x, p.z - s.z);
       if (dSam < 6) s.yaw = Math.atan2(p.x - s.x, p.z - s.z);
-      animateBlocky(s.b, t, false, s.talk, dSam > 2.5 && dSam < 8 && !s.talk);
+      animateBlocky(s.b, t, false, s.talk, (dSam > 2.5 && dSam < 8 && !s.talk) || !!s.wave);
     }
     // nearest interactable
     this.near = null;
     if (Math.hypot(p.x - s.x, p.z - s.z) < 2.3 && !this.samRide) this.near = 'sam';
+    else if (this.labNear) this.near = 'lab';
+    else if (Math.hypot(p.x - BOARD.x, p.z - BOARD.z) < 2.2) this.near = 'board';
     else for (const g of this.eggs) if (!g.found && Math.hypot(p.x - g.x, p.z - g.z) < 1.6) { this.near = `egg:${g.id}`; break; }
     for (const a of [p, s, ...this.kids]) { a.b.root.position.set(a.x, a.y, a.z); const d = Math.atan2(Math.sin(a.yaw - a.b.root.rotation.y), Math.cos(a.yaw - a.b.root.rotation.y)); a.b.root.rotation.y += d * 0.25; }
     animateBlocky(p.b, t, p.moving);
@@ -673,8 +706,11 @@ export class Voxel {
       if (Math.abs(st.fade - goal) > 0.01) { st.fade += (goal - st.fade) * Math.min(1, dt * 10); for (const m of st.mats) { (m as THREE.MeshLambertMaterial).opacity = st.fade; m.depthWrite = st.fade > 0.95; } }
     }
     if (this.canopyMesh) { const nearU = this.canopies.some((c) => Math.abs(c.x - p.x) < 1.6 && Math.abs(c.z - p.z) < 1.6); const m = this.canopyMesh.material as THREE.MeshLambertMaterial; const goal = nearU ? 0.3 : 1; m.opacity += (goal - m.opacity) * Math.min(1, dt * 8); m.depthWrite = m.opacity > 0.95; }
+    if (this.beacon.visible) { this.beacon.children[1].rotation.y = t * 2; this.beacon.children[1].position.y = 3 + Math.sin(t * 3) * 0.2; }
+    this.boardHalo.visible = this.boardGlow; if (this.boardGlow) this.boardHalo.material.opacity = 0.6 + Math.sin(t * 4) * 0.3;
     this.marker.position.set(p.x, p.y + 2.05 + Math.sin(t * 4) * 0.06, p.z); this.marker.rotation.y = t * 2;
     this.sun.position.set(this.target.x - 12, this.target.y + 22, this.target.z - 6); this.sun.target.position.copy(this.target);
+    this.onFrame(dt);
     this.onTick(dt);
     this.renderer.clear();
     this.renderer.render(this.scene, this.camera);

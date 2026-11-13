@@ -7,7 +7,8 @@ import { Audio } from './core/audio';
 import { BEACH, EGGS, LANG, LANG_NAMES, localAsk, localWonder, questionsForGuess, setLang, t } from './cc/data';
 import { ask, emit, fetchWorld, SESSION, startSession, wonder } from './cc/net';
 import { HandsFree, Listener, setMuted, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
-import { Voxel } from './cc/voxel';
+import { BOARD, LAB_DOCK, PLACES, Voxel } from './cc/voxel';
+import { createLab3D, type Lab3D } from './cc/lab3d';
 import { ART_CC } from '../shared/art';
 
 const params = new URLSearchParams(location.search);
@@ -36,7 +37,11 @@ const S = {
   journal: [] as { icon: string; question: string; level: number }[],
   history: [] as { role: 'kid' | 'npc'; text: string }[],
   lastFact: null as string | null,
-  phase: 'roam' as 'roam' | 'wonder' | 'sam' | 'lab' | 'end',
+  phase: 'roam' as 'roam' | 'board' | 'wonder' | 'sam' | 'lab' | 'end',
+  pendingQ: null as string | null,
+  labArrived: false,
+  visited: new Set<string>(),
+  lastConcepts: [] as string[],
   recallBefore: null as boolean | null, recallAfter: null as boolean | null,
   topicIcon: '❓',
   labDone: false,
@@ -49,13 +54,17 @@ W8.__CCboot = (W8.__CCboot ?? 0) + 1;
 const ui = document.getElementById('ui')!;
 const input = new Input();
 let vox!: Voxel;
+let lab3d: Lab3D | null = null;
+const labPanelBtn = h('button', { class: 'btn mint', 'data-testid': 'lab-panel', style: 'display:none', onclick: () => openLab() }, '🧪 ', 'Lab panel');
 
 // ------------------------------------------------------------------ HUD
 const xpChip = h('div', { class: 'chip panel', 'data-testid': 'xp' });
 const ladder = h('div', { id: 'ladder', class: 'panel', 'data-testid': 'ladder' });
 const conceptsEl = h('div', { id: 'concepts' });
 const wondersChip = h('div', { class: 'chip panel', 'data-testid': 'wonders' });
-const hud = h('div', { id: 'hud' }, xpChip, wondersChip, ladder, conceptsEl);
+const questEl = h('div', { class: 'quest panel', 'data-testid': 'quest', style: 'display:none' });
+const qArrow = h('div', { id: 'qarrow' }, '➤');
+const hud = h('div', { id: 'hud' }, questEl, labPanelBtn, xpChip, wondersChip, ladder, conceptsEl);
 const timer = h('div', { id: 'timer', class: 'panel passive', 'data-testid': 'timer' });
 const toastEl = h('div', { id: 'toast', class: 'panel' });
 const prompt = h('div', { id: 'prompt', class: 'panel' });
@@ -72,7 +81,7 @@ const muteBtn = h('button', { class: 'btn', title: 'Sound', 'aria-label': 'Sound
 muteBtn.onclick = () => { const m = muteBtn.textContent === '🔊'; muteBtn.textContent = m ? '🔇' : '🔊'; setMuted(m); Audio.setVolumes(m ? 0 : 0.5, m ? 0 : 0.7); };
 const topright = h('div', { id: 'topright' }, journalBtn, muteBtn, h('div', {}, langSel, lucky), qualSel);
 const hint = h('div', { id: 'hint' });
-ui.append(hud, timer, toastEl, prompt, topright, hint);
+ui.append(hud, timer, toastEl, prompt, topright, hint, qArrow);
 
 function renderHud() {
   xpChip.replaceChildren('✦ ', h('span', { class: 'xp' }, `${S.xp}`), ' curiosity XP');
@@ -127,6 +136,48 @@ async function sayLine(el: HTMLElement, text: string) {
   clearTimeout(fallback); if (!shown) reveal(text.length * 20);
 }
 
+// ------------------------------------------------------------------ quests (walk there yourself; no teleports)
+type Quest = { text: string; x: number; z: number; kind: 'board' | 'sam' | 'place' | 'lab'; place?: string } | null;
+let quest: Quest = null;
+function setQuest(q: Quest, say = true) {
+  quest = q;
+  vox.setBeacon(q ? q.x : null, q ? q.z : 0);
+  questEl.style.display = q ? '' : 'none';
+  if (q) { questEl.replaceChildren(h('div', { class: 'kicker' }, t('quest.title', 'Quest')), h('div', { class: 'qtext' }, q.text)); if (say) toast(`🧭 ${q.text}`, 3200); }
+}
+function placeFor(concepts: string[]): string {
+  const order: [string, string][] = [['wave-breaking', 'pier'], ['waves-wind', 'pier'], ['density', 'dock'], ['buoyancy', 'dock'], ['materials', 'dock'], ['erosion', 'castle'], ['sun-wind', 'tower'], ['tides', 'pool']];
+  for (const [c, pl] of order) if (concepts.includes(c) && !S.visited.has(pl)) return pl;
+  return ['pier', 'tower', 'castle', 'pool', 'dock'].find((pl) => !S.visited.has(pl)) ?? 'pier';
+}
+function nextStep(res?: { suggestChallenge?: string; conceptIds?: string[]; whyHook?: string }) {
+  if (S.labDone && S.level >= 2) { setQuest(null); vox.sam.wave = true; toast(`🎉 ${t('quest.done', 'Amazing curiosity! Sam is cheering!')}`); setTimeout(() => { vox.sam.wave = false; closeSam(); finale(); }, 1800); return; }
+  if (!S.labDone && (res?.suggestChallenge || S.level >= 2)) { setQuest({ text: t('quest.lab', 'Try it! Build a surfboard at the Lab dock'), x: LAB_DOCK.x, z: LAB_DOCK.z, kind: 'lab' }); return; }
+  const pk = placeFor(res?.conceptIds ?? S.lastConcepts); const P = PLACES[pk];
+  setQuest({ text: `${t('quest.investigate', 'Go look at')} ${P.name}${res?.whyHook ? ': ' + res.whyHook : ''}`, x: P.x, z: P.z, kind: 'place', place: pk });
+}
+function arrive() {
+  if (!quest || modal || samBox) return;
+  const q = quest;
+  if (q.kind === 'place' && vox.dist2(q.x, q.z) < 2.6) {
+    S.visited.add(q.place!);
+    setQuest(null, false);
+    vox.flyTo(q.x, q.z);
+    toast(`👀 ${t('quest.look', 'Look closely…')}`, 1800);
+    setTimeout(() => { vox.followPlayer(); openSam(true); void askSam(t('npc.why', 'Why?'), true); }, 1700);
+  } else if (q.kind === 'lab' && vox.dist2(q.x, q.z) < 3.5 && !S.labArrived) {
+    S.labArrived = true;
+    if (lab3d) { toast(`🧪 ${t('quest.labHow', 'Pick up a board (E), walk to the end of the dock and throw it in (E)!')}`, 5000); void speak(t('quest.labSam', 'Pick a board, throw it off the dock, and see what floats!'), LANG, S.world.npc.voice, () => undefined); }
+    else openLab();
+  }
+}
+function interactBoard() { if (S.phase !== 'board' && S.phase !== 'wonder') return; S.phase = 'wonder'; if (S.recallBefore === null) recall('before', () => wonderBoard()); else wonderBoard(); }
+function interactSam() {
+  if (S.phase === 'roam' || S.phase === 'board' || S.phase === 'wonder') { toast(t('quest.boardFirst', 'Sam: “Draw your wonder on the board first, dude!”')); return; }
+  openSam();
+  if (S.pendingQ) { const q = S.pendingQ; S.pendingQ = null; setQuest(null, false); vox.sam.wave = false; void askSam(q, false); }
+}
+
 // ------------------------------------------------------------------ 1) roam
 function roam() {
   S.phase = 'roam';
@@ -136,7 +187,12 @@ function roam() {
   const iv = setInterval(() => {
     if (left <= 0 && (modal || samBox)) return; // let the kid finish what they are reading
     left--; render();
-    if (left <= 0) { clearInterval(iv); timer.remove(); emit('roam_end', { seconds: ROAM_S }); recall('before', () => wonderBoard()); }
+    if (left <= 0) {
+      clearInterval(iv); timer.remove(); emit('roam_end', { seconds: ROAM_S });
+      S.phase = 'board'; vox.boardGlow = true; vox.sam.wave = true;
+      setQuest({ text: t('quest.board', 'Walk to the glowing Wonder Board by the surf shack'), x: BOARD.x, z: BOARD.z + 1.3, kind: 'board' });
+      void speak(t('quest.samCall', 'Hey dude! Come draw what you wonder about on my Wonder Board!'), LANG, S.world.npc.voice, () => undefined);
+    }
   }, 1000);
 }
 
@@ -214,22 +270,20 @@ function wonderBoard() {
   void speak(t('wonder.title', 'What do you wonder about?'), LANG, S.world.npc.voice, () => undefined);
   function showQuestions(qs: string[]) {
     body.replaceChildren(h('div', { style: 'grid-column:1/-1' }, h('h2', {}, t('wonder.pickQuestion', 'Pick a question to explore!')),
-      h('div', { class: 'qcards' }, ...qs.slice(0, 3).map((q, i) => h('button', { class: 'btn qcard', 'data-testid': `question-${i}`, onclick: () => { emit('question_pick', { question: q, index: i }); close(); travelToSam(q); } }, q)))));
+      h('div', { class: 'qcards' }, ...qs.slice(0, 3).map((q, i) => h('button', { class: 'btn qcard', 'data-testid': `question-${i}`, onclick: () => { emit('question_pick', { question: q, index: i }); close(); pickQuestion(q); } }, q)))));
   }
 }
 
 // ------------------------------------------------------------------ 3) Why Ladder with Sam
 let samBox: HTMLElement | null = null;
 let handsFree: HandsFree | null = null;
-let samRefs: { say: HTMLElement; hook: HTMLElement; kid: HTMLElement; tryBtn: HTMLButtonElement; whyBtn: HTMLButtonElement; face: HTMLImageElement } | null = null;
-function travelToSam(q: string) {
-  S.phase = 'sam';
-  vox.teleportNear(vox.sam);
-  vox.flyTo(vox.sam.x, vox.sam.z);
-  toast(`🏄 ${t('wonder.goTo', 'To Surfer Sam!')}`);
-  setTimeout(() => { vox.followPlayer(); openSam(); void askSam(q, false); }, 900);
+let samRefs: { say: HTMLElement; hook: HTMLElement; kid: HTMLElement; tryBtn: HTMLButtonElement; whyBtn: HTMLButtonElement; face: HTMLImageElement; goBtn: HTMLButtonElement } | null = null;
+function pickQuestion(q: string) {
+  S.phase = 'sam'; S.pendingQ = q; vox.boardGlow = false; vox.sam.wave = true;
+  setQuest({ text: `${t('quest.ask', 'Ask Surfer Sam')}: “${q}”`, x: vox.sam.x, z: vox.sam.z + 1.2, kind: 'sam' });
 }
-function openSam() {
+function travelToSam(q: string) { pickQuestion(q); }
+function openSam(remote = false) {
   if (samBox) return;
   vox.frozen = true;
   const say = h('div', { class: 'say', 'data-testid': 'sam-answer', 'aria-live': 'polite' });
@@ -240,7 +294,8 @@ function openSam() {
   const send = () => { const v = txt.value.trim(); if (v) { txt.value = ''; void askSam(v, /^(why|por qu|pourquoi|waarom|为什么|क्यों|ஏன்)/i.test(v) && v.split(/\s+/).length <= 3); } };
   txt.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter') send(); });
   const whyBtn = h('button', { class: 'btn why', 'data-testid': 'why', onclick: () => void askSam(t('npc.why', 'Why?'), true) }, t('npc.why', 'Why?')) as HTMLButtonElement;
-  const tryBtn = h('button', { class: 'btn mint big', 'data-testid': 'try-it', style: 'display:none', onclick: () => { closeSam(); openLab(); } }, '🧪 ', t('tryit.button', 'Try it!')) as HTMLButtonElement;
+  const tryBtn = h('button', { class: 'btn mint big', 'data-testid': 'try-it', style: 'display:none', onclick: () => { closeSam(); setQuest({ text: t('quest.lab', 'Try it! Build a surfboard at the Lab dock'), x: LAB_DOCK.x, z: LAB_DOCK.z, kind: 'lab' }); } }, '🧪 ', t('tryit.button', 'Try it!')) as HTMLButtonElement;
+  const goBtn = h('button', { class: 'btn gold', 'data-testid': 'go-investigate', style: 'display:none', onclick: () => closeSam() }, '🧭 ', t('quest.go', 'Go investigate!')) as HTMLButtonElement;
   const isWhyText = (s: string) => /^(why|por qu|pourquoi|waarom|为什么|क्यों|ஏன்)/i.test(s.trim()) && s.trim().split(/\s+/).length <= 3;
   const mic = micButton((s) => void askSam(s, isWhyText(s)), interim);
   const hfBtn = h('button', { class: 'btn', 'data-testid': 'handsfree', title: t('npc.handsFree', 'Hands-free: just talk') }, '🎧 ', t('npc.handsFree', 'Hands-free')) as HTMLButtonElement;
@@ -248,9 +303,9 @@ function openSam() {
   hfBtn.onclick = () => { if (handsFree?.active) handsFree.stop(); else handsFree?.start(); };
   const face = h('img', { class: 'samface', src: ART_CC.sam.happy, alt: 'Surfer Sam' }) as HTMLImageElement;
   samBox = h('div', { id: 'sam', class: 'panel', 'data-testid': 'sam-panel' }, face,
-    h('div', { class: 'name' }, S.world.npc.name), kid, say, hook,
-    h('div', { class: 'ctrl' }, whyBtn, mic, hfBtn, interim, txt, h('button', { class: 'btn sky', onclick: send }, t('npc.ask', 'Ask')), tryBtn, h('button', { class: 'btn ghost', 'data-testid': 'sam-close', onclick: () => closeSam() }, '✕')));
-  samRefs = { say, hook, kid, tryBtn, whyBtn, face };
+    h('div', { class: 'name' }, remote ? `📻 ${S.world.npc.name}` : S.world.npc.name), kid, say, hook,
+    h('div', { class: 'ctrl' }, whyBtn, mic, hfBtn, interim, txt, h('button', { class: 'btn sky', onclick: send }, t('npc.ask', 'Ask')), goBtn, tryBtn, h('button', { class: 'btn ghost', 'data-testid': 'sam-close', onclick: () => closeSam() }, '✕')));
+  samRefs = { say, hook, kid, tryBtn, whyBtn, face, goBtn };
   if (S.level >= 2 || S.labDone) tryBtn.style.display = '';
   ui.append(samBox);
 }
@@ -283,6 +338,7 @@ async function askSam(question: string, isWhy: boolean) {
   S.lastFact = local.factId || S.lastFact;
   S.history.push({ role: 'kid', text: question }, { role: 'npc', text: `${res.answer} ${res.whyHook}` });
   for (const c of res.conceptIds ?? []) if (!S.concepts.has(c)) { S.concepts.add(c); emit('concept', { id: c }); }
+  if (res.conceptIds?.length) S.lastConcepts = res.conceptIds;
   if (isWhy && S.journal.length) S.journal[S.journal.length - 1].level = S.level;
   else { S.journal.push({ icon: S.topicIcon, question, level: S.level }); emit('journal_card', { question, level: S.level }); }
   renderHud();
@@ -296,6 +352,7 @@ async function askSam(question: string, isWhy: boolean) {
   R.whyBtn.disabled = false;
   if (samRefs === R) asking = false;
   handsFree?.resume();
+  if (samRefs === R) { nextStep(res); if (quest?.kind === 'place') R.goBtn.style.display = ''; }
 }
 
 // ------------------------------------------------------------------ 4) Surfboard Lab (pure client buoyancy sim)
@@ -363,7 +420,7 @@ function openLab() {
       if (outcome === 'sank') void sayLine(result, `🫧 ${t('lab.fail.1', 'BLOOP! Stone is denser than water, 2.6 times! What is lighter for its size?')}`);
       else if (outcome === 'floated') void sayLine(result, `🪵 ${t('lab.result.wobbles', 'It floats, but sits low. Can you find something even lighter for its size?')}`);
       else {
-        S.labDone = true;
+        void 0;
         void sayLine(result, `🏄 ${t('lab.success', 'It floats high! Foam is full of air bubbles, so it is super light for its size. Sam can surf!')}${shape === 'long' ? ' ' + t('lab.hint.shape', 'And the long board is extra steady!') : ''}`);
         Audio.play('jingle-success');
         doneRow.style.display = '';
@@ -371,8 +428,8 @@ function openLab() {
     }
   };
   const doneRow = h('div', { class: 'row', style: 'display:none' },
-    h('button', { class: 'btn sky big', 'data-testid': 'watch-surf', onclick: () => { close(); vox.samSurf(true); vox.flyTo(8, 22); toast(t('lab.watch', 'Go Sam, go!'), 4000); setTimeout(() => { vox.samSurf(false); vox.followPlayer(); finale(); }, 6500); } }, t('lab.watchBtn', 'Watch Sam surf!')),
-    h('button', { class: 'btn gold big', 'data-testid': 'lab-finish', onclick: () => { cancelAnimationFrame(raf); close(); finale(); } }, t('lab.finish', 'Finish')));
+    h('button', { class: 'btn sky big', 'data-testid': 'watch-surf', onclick: () => { close(); vox.samSurf(true); vox.flyTo(8, 22); toast(t('lab.watch', 'Go Sam, go!'), 4000); setTimeout(() => { vox.samSurf(false); vox.followPlayer(); afterLab(); }, 6500); } }, t('lab.watchBtn', 'Watch Sam surf!')),
+    h('button', { class: 'btn gold big', 'data-testid': 'lab-finish', onclick: () => { cancelAnimationFrame(raf); close(); afterLab(); } }, t('lab.finish', 'Finish')));
   const card = h('div', { class: 'card panel lab', 'data-testid': 'lab' },
     h('div', { class: 'kicker' }, t('tryit.button', 'Try it!')), h('h2', {}, t('lab.title', 'Surfboard Lab: what floats?')),
     h('div', { class: 'kicker', style: 'margin-top:4px' }, t('lab.materials', 'Material')), matRow,
@@ -382,6 +439,13 @@ function openLab() {
     h('div', { class: 'row' }, sticker, result), doneRow);
   open(card);
   void speak(t('lab.predict', 'Pick a material and drop it in. Guess first: will it float?'), LANG, S.world.npc.voice, () => undefined);
+}
+
+function afterLab() {
+  if (S.labDone) return;
+  S.labDone = true; xpFly(10); labPanelBtn.style.display = 'none';
+  if (S.level >= 2) nextStep();
+  else { S.pendingQ = t('quest.whyFoam', 'Why did the foam board float?'); setQuest({ text: t('quest.tellSam', 'Tell Sam what you found!'), x: vox.sam.x, z: vox.sam.z + 1.2, kind: 'sam' }); }
 }
 
 // ------------------------------------------------------------------ 5) end: recall again + report
@@ -409,7 +473,7 @@ function openEgg(id: string) {
   emit('journal_card', { question: e.wonder, level: 0, egg: id });
   renderHud();
   Audio.play('jingle-item', { volume: 0.7 });
-  const canAsk = S.phase === 'sam' || S.phase === 'end';
+  const canAsk = S.phase === 'sam' || S.phase === 'end' || S.phase === 'lab';
   const card = h('div', { class: 'card panel egg', 'data-testid': 'egg-card' },
     h('div', { class: 'kicker' }, `✨ ${e.label}`), h('h2', {}, e.wonder),
     h('p', { style: 'font-size:18px' }, canAsk ? t('egg.ask', 'Curious? Ask Sam and climb the Why ladder!') : t('egg.saved', 'Saved to your Journal! You can ask Sam about it soon.')),
@@ -432,22 +496,48 @@ async function boot() {
   const [remote] = await Promise.all([fetchWorld('beach'), startSession(LANG)]);
   if (remote?.facts?.length && remote.starters?.length) S.world = { ...BEACH, ...remote };
   vox = new Voxel(document.getElementById('game')!, input);
-  vox.onInteract = (what) => { if (what.startsWith('egg:')) openEgg(what.slice(4)); else if (S.phase === 'sam' || S.phase === 'end') openSam(); };
+  vox.onInteract = (what) => { if (what.startsWith('egg:')) openEgg(what.slice(4)); else if (what === 'sam') interactSam(); else if (what === 'board') interactBoard(); };
   vox.onTick = () => {
     for (const a of input.take()) {
       if (a === 'book') toggleJournal();
+      if (a === 'interact' && !modal && !samBox && lab3d && (() => { try { return lab3d!.interact(); } catch { return false; } })()) continue;
       if (a === 'interact' && !modal && !samBox && vox.near?.startsWith('egg:')) openEgg(vox.near.slice(4));
-      else if (a === 'interact' && !modal && !samBox && vox.near === 'sam' && (S.phase === 'sam' || S.phase === 'end')) openSam();
+      else if (a === 'interact' && !modal && !samBox && vox.near === 'sam') interactSam();
+      else if (a === 'interact' && !modal && !samBox && vox.near === 'board') interactBoard();
       if (a === 'voice') activeMic?.start();
       if (a === 'pause' && samBox && !asking) closeSam();
     }
     for (const r of input.takeReleased()) if (r === 'voice') activeMic?.stop();
     const egg = vox.near?.startsWith('egg:') ? vox.eggs.find((g) => `egg:${g.id}` === vox.near) : null;
-    if (!samBox && !modal && (egg || (vox.near === 'sam' && (S.phase === 'sam' || S.phase === 'end')))) {
-      const p = egg ? vox.screen(egg.x, egg.y + 1.3, egg.z) : vox.screen(vox.sam.x, vox.sam.y + 2.1, vox.sam.z);
-      prompt.innerHTML = egg ? `<kbd>E</kbd> ✨ ${t('ui.wonder', 'Wonder')}` : `<kbd>E</kbd> ${t('ui.talkSam', 'Talk to Sam')}`; prompt.style.left = `${p.x}px`; prompt.style.top = `${p.y}px`; prompt.classList.add('show');
+    const labHint = !modal && !samBox && lab3d ? lab3d.prompt() : null;
+    if (labHint) { const pp = vox.screen(vox.player.x, vox.player.y + 2.4, vox.player.z); prompt.innerHTML = `<kbd>E</kbd> ${labHint}`; prompt.style.left = `${pp.x}px`; prompt.style.top = `${pp.y}px`; prompt.classList.add('show'); arrive(); return; }
+    labPanelBtn.style.display = (quest?.kind === 'lab' || S.labArrived) && !S.labDone ? '' : 'none';
+    const board = vox.near === 'board' && (S.phase === 'board' || S.phase === 'wonder');
+    if (!samBox && !modal && (egg || board || vox.near === 'sam')) {
+      const p = egg ? vox.screen(egg.x, egg.y + 1.3, egg.z) : board ? vox.screen(BOARD.x, 3.4, BOARD.z) : vox.screen(vox.sam.x, vox.sam.y + 2.1, vox.sam.z);
+      prompt.innerHTML = egg ? `<kbd>E</kbd> ✨ ${t('ui.lookCloser', 'Look closer')}` : board ? `<kbd>E</kbd> 🎨 ${t('ui.board', 'Open the Wonder Board')}` : `<kbd>E</kbd> ${t('ui.talkSam', 'Talk to Sam')}`; prompt.style.left = `${p.x}px`; prompt.style.top = `${p.y}px`; prompt.classList.add('show');
     } else prompt.classList.remove('show');
+    arrive();
+    if (quest && !modal) {
+      const sp = vox.screen(quest.x, vox.groundY(quest.x, quest.z) + 1, quest.z);
+      const m = 60, Wd = innerWidth, Hd = innerHeight;
+      const off = sp.behind || sp.x < m || sp.y < m || sp.x > Wd - m || sp.y > Hd - m;
+      if (off) {
+        let dx = sp.x - Wd / 2, dy = sp.y - Hd / 2; if (sp.behind) { dx = -dx; dy = -dy; }
+        const a = Math.atan2(dy, dx), k = Math.min((Wd / 2 - m) / Math.abs(Math.cos(a) || 1e-6), (Hd / 2 - m) / Math.abs(Math.sin(a) || 1e-6));
+        qArrow.style.display = 'block'; qArrow.style.left = `${Wd / 2 + Math.cos(a) * k}px`; qArrow.style.top = `${Hd / 2 + Math.sin(a) * k}px`; qArrow.style.transform = `translate(-50%,-50%) rotate(${a}rad)`;
+      } else qArrow.style.display = 'none';
+    } else qArrow.style.display = 'none';
   };
+  try {
+    lab3d = createLab3D({ scene: vox.scene, camera: vox.camera, vox, player: () => ({ x: vox.player.x, z: vox.player.z }), lang: LANG,
+      onAttempt: (e) => {
+        emit('challenge_attempt', { ...e }); xpFly(5);
+        if (e.result === 'floats' && /foam/.test(e.choice)) setTimeout(() => afterLab(), 2500);
+      },
+      onSpeak: (text) => { void speak(text, LANG, S.world.npc.voice, () => undefined); } }, LAB_DOCK);
+  } catch (err) { console.warn('[curiosity-craft] lab3d unavailable, using the lab panel', err); lab3d = null; }
+  vox.onFrame = (dt) => { try { lab3d?.update(dt); vox.labNear = !!lab3d?.prompt(); } catch { /* */ } };
   vox.start();
   let audioOn = false;
   const startAudio = () => { if (audioOn) return; audioOn = true; Audio.init(); Audio.setVolumes(0.45, 0.7); Audio.playMusic({ root: 62, scale: [0, 2, 4, 7, 9], tempo: 76, lead: 'triangle', pad: 'sine', mood: 'wonder' }, 7); };
@@ -456,10 +546,16 @@ async function boot() {
   renderHud();
   document.getElementById('loading')?.classList.add('gone');
   setTimeout(() => document.getElementById('loading')?.remove(), 500);
+  try { const k = 'cc.sessions'; const arr = JSON.parse(localStorage.getItem(k) ?? '[]') as string[]; if (!arr.includes(SESSION)) arr.push(SESSION); localStorage.setItem(k, JSON.stringify(arr.slice(-20))); } catch { /* */ }
   emit('session_start', { lang: LANG, worldId: 'beach', demo: DEMO });
   emit('spawn', { worldId: 'beach' });
   emit('lang', { lang: LANG });
   roam();
   (window as unknown as Record<string, unknown>).__CCvox = vox;
+  (window as unknown as Record<string, unknown>).__CCgo = (where: 'board' | 'sam' | 'quest') => {
+    if (where === 'board') { vox.teleport(BOARD.x, BOARD.z + 1.4); interactBoard(); }
+    else if (where === 'sam') { vox.teleport(vox.sam.x - 0.9, vox.sam.z + 1.1); interactSam(); }
+    else if (quest) vox.teleport(quest.x, quest.z + 0.3);
+  };
 }
 boot().catch((e) => { console.error(e); const l = document.getElementById('loading'); if (l) l.textContent = 'Oops! Reload to try again.'; });

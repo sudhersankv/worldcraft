@@ -13,6 +13,8 @@ test('curiosity loop: >=3 questions and why-level >= 2', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(String(e)));
   await page.goto(`${BASE}/play.html?demo=1&world=beach&lang=en`);
+  await expect(page.getByTestId('quest')).toBeVisible({ timeout: 20_000 });
+  await page.evaluate(() => (window as unknown as { __CCgo: (w: string) => void }).__CCgo('board'));
   await expect(page.getByTestId('recall-before')).toBeVisible({ timeout: 20_000 });
   await page.getByTestId('recall-choice-1').click();
   await expect(page.getByTestId('wonder-board')).toBeVisible();
@@ -23,6 +25,8 @@ test('curiosity loop: >=3 questions and why-level >= 2', async ({ page }) => {
   await expect(guess.or(q0)).toBeVisible({ timeout: 20_000 });
   if (await guess.isVisible()) await guess.click();
   await page.getByTestId('question-0').click();
+  await expect(page.getByTestId('quest')).toContainText('Sam');
+  await page.evaluate(() => (window as unknown as { __CCgo: (w: string) => void }).__CCgo('sam'));
   await expect(page.getByTestId('sam-panel')).toBeVisible({ timeout: 10_000 });
   await expect(page.getByTestId('sam-answer')).not.toBeEmpty({ timeout: 20_000 });
   for (let i = 0; i < 2; i++) {
@@ -34,7 +38,9 @@ test('curiosity loop: >=3 questions and why-level >= 2', async ({ page }) => {
   const boots = await page.evaluate(() => (window as unknown as { __CCboot: number }).__CCboot);
   const url = page.url();
   await page.getByTestId('try-it').click();
-  await expect(page.getByTestId('lab')).toBeVisible();
+  await page.evaluate(() => (window as unknown as { __CCgo: (w: string) => void }).__CCgo('quest'));
+  await page.getByTestId('lab-panel').click({ timeout: 10_000 });
+  await expect(page.getByTestId('lab')).toBeVisible({ timeout: 10_000 });
   expect(page.url()).toBe(url);
   expect(await page.evaluate(() => (window as unknown as { __CCboot: number }).__CCboot)).toBe(boots);
   await page.getByTestId('mat-stone').click();
