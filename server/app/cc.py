@@ -218,6 +218,11 @@ def _local_ask(req: AskRequest, w: dict) -> dict:
 
 @router.post('/ask')
 async def ask(req: AskRequest):
+    from .cc_open import open_ask  # syllabus-grounded dynamic brain
+    return await open_ask(req)
+
+
+async def _old_ask(req: AskRequest):
     w = get_world(req.worldId)
     lang = _lang(req.lang)
     concept_ids = {c['id'] for c in w.get('concepts', [])}

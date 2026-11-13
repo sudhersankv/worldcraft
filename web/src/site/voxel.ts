@@ -65,3 +65,18 @@ export function beachSVG(): string {
 export function blockIcon(color: string, glyph: string): string {
   return `<svg class="blockicon" viewBox="-30 -18 60 62" aria-hidden="true">${cube({ x: 0, y: 0, z: 0, c: color }, 0, 0)}<text x="-12" y="20" class="glyph">${glyph}</text></svg>`;
 }
+
+export type Area = 'beach' | 'volcano' | 'ice' | 'jungle';
+/** A tiny voxel diorama for each area of Curiosity Island. */
+export function areaSVG(kind: Area): string {
+  const v: Vox[] = [];
+  const pal: Record<Area, [string, string]> = { beach: ['#ffe3a3', '#3ec6ff'], volcano: ['#6b5a66', '#ff7a2f'], ice: ['#dff4ff', '#8fd8ff'], jungle: ['#4fc24c', '#2f9e5a'] };
+  const [g, a] = pal[kind];
+  for (let x = 0; x < 4; x++) for (let y = 0; y < 4; y++) v.push({ x, y, z: 0, c: kind === 'beach' && x + y > 4 ? a : (x + y) % 2 ? g : shade(g, .94) });
+  if (kind === 'beach') { for (let z = 1; z <= 2; z++) v.push({ x: 0, y: 0, z, c: '#b07a4f' }); v.push({ x: 0, y: 0, z: 3, c: '#3fc25a' }); v.push({ x: 1, y: 0, z: 3, c: '#3fc25a' }); v.push({ x: 0, y: 1, z: 3, c: '#3fc25a' }); v.push({ x: 2, y: 1, z: 1, c: '#ff4f9a' }); v.push({ x: 2, y: 1, z: 2, c: '#ffffff' }); }
+  if (kind === 'volcano') { [[1, 1], [2, 1], [1, 2], [2, 2]].forEach(([x, y]) => { v.push({ x, y, z: 1, c: '#5a4a55' }); }); v.push({ x: 1, y: 1, z: 2, c: '#4a3b46' }); v.push({ x: 2, y: 1, z: 2, c: '#4a3b46' }); v.push({ x: 1, y: 2, z: 2, c: '#4a3b46' }); v.push({ x: 2, y: 2, z: 2, c: '#ff7a2f', cls: 'lava' }); v.push({ x: 3, y: 3, z: 1, c: '#ffb12f' }); }
+  if (kind === 'ice') { [[0, 0], [1, 0], [0, 1]].forEach(([x, y]) => v.push({ x, y, z: 1, c: '#b8e6ff' })); v.push({ x: 0, y: 0, z: 2, c: '#cdeeff' }); v.push({ x: 2, y: 2, z: 1, c: '#1d1a3a' }); v.push({ x: 2, y: 2, z: 2, c: '#f4f4f4', face: true }); v.push({ x: 3, y: 1, z: 1, c: '#8fd8ff' }); }
+  if (kind === 'jungle') { for (let z = 1; z <= 3; z++) v.push({ x: 0, y: 1, z, c: '#8a5a37' }); [[0, 0], [0, 1], [0, 2], [1, 1]].forEach(([x, y]) => v.push({ x, y, z: 4, c: '#2f9e5a' })); v.push({ x: 2, y: 2, z: 1, c: '#7fe05a', face: true }); v.push({ x: 3, y: 0, z: 1, c: '#ff5d8f' }); v.push({ x: 1, y: 3, z: 1, c: '#3ec6ff' }); }
+  v.sort((p, q) => (p.x + p.y) - (q.x + q.y) || p.z - q.z);
+  return `<svg class="area-svg" viewBox="-110 -110 220 200" aria-hidden="true">${v.map((b) => cube(b, -0, -10)).join('')}</svg>`;
+}

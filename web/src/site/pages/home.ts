@@ -1,8 +1,10 @@
 import { LANGS, type Lang } from '../../shared/curiosity';
+import { ART_CC } from '../../shared/art';
 import { I } from '../art';
 import { getLang, LANG_NAMES, setLang, t } from '../i18n';
 import { blip } from '../sfx';
 import { $, $$, esc } from '../ui';
+import { areaSVG, type Area } from '../voxel';
 
 export const PLAY_URL = '/play.html?world=beach';
 const ART = '/art/cc';
@@ -18,12 +20,19 @@ const SCRIPT = (): Turn[] => [
   { who: 'sam', face: 'laugh', level: 3, text: t('site.chat.s3', 'Nothing slows the top, so it runs ahead and topples. Crash!'), hook: t('site.chat.h3', 'Want to test it in the Wave Maker?') },
 ];
 
+export const AREAS = (): { k: Area; name: string; guide: string; about: string }[] => [
+  { k: 'beach', name: t('area.beach', 'Sunny Surf Beach'), guide: t('area.beach.g', 'Surfer Sam'), about: t('area.beach.d', 'Waves, wind, and what floats.') },
+  { k: 'volcano', name: t('area.volcano', 'Ember Peak'), guide: t('area.volcano.g', 'Rocky the Lava Golem'), about: t('area.volcano.d', 'Lava, rocks, and the heat inside the Earth.') },
+  { k: 'ice', name: t('area.ice', 'Frostbite Cave'), guide: t('area.ice.g', 'Penny the Penguin'), about: t('area.ice.d', 'Ice, cold, and animals that keep warm.') },
+  { k: 'jungle', name: t('area.jungle', 'Whispering Jungle'), guide: t('area.jungle.g', 'Fern the Tree Frog'), about: t('area.jungle.d', 'Plants, rain, and creatures of the canopy.') },
+];
+
 type Doodle = 'wave' | 'sun' | 'surfboard' | 'fish' | 'sand' | 'wind';
 const WONDER = (): Record<Doodle, { label: string; a: string; qs: string[] }> => ({
   wave: { a: t('site.wb.wave.a', 'a wave'), label: t('site.wb.wave', 'Wave'), qs: [t('site.wb.wave.1', 'Why do waves crash?'), t('site.wb.wave.2', 'Where does a wave get its energy?'), t('site.wb.wave.3', 'Why are some waves bigger?')] },
   sun: { a: t('site.wb.sun.a', 'the sun'), label: t('site.wb.sun', 'Sun'), qs: [t('site.wb.sun.1', 'Why is the sand hot but the sea cool?'), t('site.wb.sun.2', 'Why does the sun make wind?'), t('site.wb.sun.3', 'Why is the sea blue?')] },
   surfboard: { a: t('site.wb.surfboard.a', 'a surfboard'), label: t('site.wb.surfboard', 'Surfboard'), qs: [t('site.wb.surfboard.1', 'Why does a surfboard float?'), t('site.wb.surfboard.2', 'Would a stone board float?'), t('site.wb.surfboard.3', 'Why are boards long and flat?')] },
-  fish: { a: t('site.wb.fish.a', 'a fish'), label: t('site.wb.fish', 'Fish'), qs: [t('site.wb.fish.1', 'How do fish breathe underwater?'), t('site.wb.fish.2', 'Why don\'t fish sink?'), t('site.wb.fish.3', 'Why do fish swim in groups?')] },
+  fish: { a: t('site.wb.fish.a', 'a fish'), label: t('site.wb.fish', 'Fish'), qs: [t('site.wb.fish.1', 'How do fish breathe underwater?'), t('site.wb.fish.2b', 'Why don’t fish sink?'), t('site.wb.fish.3', 'Why do fish swim in groups?')] },
   sand: { a: t('site.wb.sand.a', 'sand'), label: t('site.wb.sand', 'Sand'), qs: [t('site.wb.sand.1', 'Where does sand come from?'), t('site.wb.sand.2', 'Why is wet sand darker?'), t('site.wb.sand.3', 'Why do sandcastles need water?')] },
   wind: { a: t('site.wb.wind.a', 'wind'), label: t('site.wb.wind', 'Wind'), qs: [t('site.wb.wind.1', 'Where does wind come from?'), t('site.wb.wind.2', 'Why is it windier at the beach?'), t('site.wb.wind.3', 'How does wind make waves?')] },
 });
@@ -31,7 +40,7 @@ const WONDER = (): Record<Doodle, { label: string; a: string; qs: string[] }> =>
 const LAB = () => [
   { id: 'stone', name: t('site.lab.stone', 'Stone board'), verdict: t('site.lab.stone.v', 'Sank!'), line: t('site.lab.stone.l', 'Glub glub. Stone is heavier than the water it pushes away. A crab is using it as a sofa now.') },
   { id: 'wood', name: t('site.lab.wood', 'Wood board'), verdict: t('site.lab.wood.v', 'Floats, just'), line: t('site.lab.wood.l', 'It floats, but low and wobbly. Wood is lighter than water, but not by much.') },
-  { id: 'foam', name: t('site.lab.foam', 'Foam board'), verdict: t('site.lab.foam.v', 'Floats high!'), line: t('site.lab.foam.l', 'Foam is mostly trapped air, so it sits right on top. Surf\'s up!') },
+  { id: 'foam', name: t('site.lab.foam', 'Foam board'), verdict: t('site.lab.foam.v', 'Floats high!'), line: t('site.lab.foam.l2', 'Foam is mostly trapped air, so it sits right on top. Surf’s up!') },
 ];
 
 export function renderHome(main: HTMLElement, rerender: () => void): () => void {
@@ -41,23 +50,40 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
   const wonder = WONDER();
   const lab = LAB();
   main.innerHTML = `
-  <section class="h2-hero" aria-labelledby="hook">
-    <img class="h2-key" src="${ART}/keyart.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async"/>
-    <div class="h2-shade" aria-hidden="true"></div>
-    <div class="h2-inner">
-      <div class="h2-copy">
-        <h1 id="hook" class="h2-hook">
-          <span class="vx vx-gold">${t('site.hook.ask', 'Ask why.')}</span>
-          <span class="vx vx-pink">${t('site.hook.fail', 'Fail freely.')}</span>
-          <span class="vx vx-sky">${t('site.hook.teach', 'Learn by teaching.')}</span>
-        </h1>
-        <p class="h2-lede">${t('site.lede2', 'A blocky beach where kids win points for asking, not for being right. Surfer Sam answers every question and always asks one back.')}</p>
-        <div class="h2-ctas">
-          <a class="vbtn vbtn-gold" href="${play}">${I.play}<span>${t('site.cta.start', 'Start exploring')}</span></a>
-          <a class="vbtn vbtn-white" href="#parents">${t('site.cta.parents', 'What parents see')}</a>
-        </div>
+  <section class="hero3" aria-labelledby="hero-h">
+    <img class="h3-key" src="${ART}/keyart.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async"/>
+    <div class="h3-shade" aria-hidden="true"></div>
+    <div class="h3-blocks" aria-hidden="true">
+      ${[[8, 22, 1.1, 0], [86, 18, .8, 1.2], [78, 64, 1.3, .6], [16, 70, .7, 1.8], [52, 12, .6, 2.4]].map(([x, y, sc, d]) => `<span class="qcube" style="--x:${x}%;--y:${y}%;--s:${sc};--d:${d}s" data-depth="${sc}"><i>?</i></span>`).join('')}
+    </div>
+    <div class="h3-inner">
+      <h1 id="hero-h" class="h3-logo"><img id="logo-img" alt="Curiosity Craft" hidden/><span class="wordmark" id="wordmark"><span class="wm1">Curiosity</span><span class="wm2">Craft</span></span></h1>
+      <p class="h3-tag">${t('site.hook.all', 'Ask why. Fail freely. Learn by teaching.')}</p>
+      <p class="h3-sub">${t('site.hero.sub', 'An island where kids win points for asking, not for being right.')}</p>
+      <div class="h3-ctas">
+        <a class="vbtn vbtn-gold vbtn-huge" href="${play}">${I.play}<span>${t('site.cta.playnow', 'Play now')}</span></a>
+        <a class="vbtn vbtn-white" href="#parents">${t('site.cta.forparents', 'For parents')}</a>
       </div>
+    </div>
+    <button class="h3-cue" type="button" id="cue">${t('site.hero.cue', 'See how it works')}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </section>
 
+  <section class="strip island" id="island" aria-labelledby="isl-h">
+    <div class="strip-in">
+      <header class="strip-head">
+        <h2 id="isl-h" class="h2-title">${t('site.island.title', 'Curiosity Island')}</h2>
+        <p>${t('site.island.sub', 'Wonder about anything. The Wonder Board sends you to the right corner of the island, and its guide answers your whys.')}</p>
+      </header>
+      <ul class="areas">${AREAS().map((x) => `<li class="area a-${x.k}">${areaSVG(x.k)}${x.k === 'beach' ? `<img class="area-guide" src="${ART}/sam-happy.webp" alt="" width="96" height="96" loading="lazy"/>` : ''}<h3>${x.name}</h3><p class="area-who"><b>${x.guide}</b></p><p>${x.about}</p></li>`).join('')}</ul>
+    </div>
+  </section>
+
+  <section class="strip whys" aria-labelledby="whys-h">
+    <div class="strip-in whys-grid">
+      <header class="strip-head">
+        <h2 id="whys-h" class="h2-title">${t('site.whys.title', 'Every answer ends with a why')}</h2>
+        <p>${t('site.whys.sub', 'Guides answer in a sentence or two, then ask one back. Each follow-up climbs the Why Ladder and earns curiosity points.')}</p>
+      </header>
       <div class="chatbox" aria-label="${t('site.chat.aria', 'Example: Surfer Sam answering why, three levels deep')}">
         <div class="chat-top">
           <img class="sam-face" id="sam-face" src="${ART}/sam-think.webp" alt="Surfer Sam" width="72" height="72"/>
@@ -80,7 +106,7 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
     <div class="strip-in">
       <header class="strip-head">
         <h2 id="wb-h" class="h2-title">${t('site.wb.title', 'The Wonder Board')}</h2>
-        <p>${t('site.wb.sub', 'In the game, kids draw what they wonder about. Try it: doodle something from the beach, or tap a picture.')}</p>
+        <p>${t('site.wb.sub2', 'In the game, kids draw what they wonder about, and the board sends them to the right guide. Try it: doodle something, or tap a picture.')}</p>
       </header>
       <div class="wb-grid">
         <div class="wb-board">
@@ -119,7 +145,7 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
     </div>
   </section>
 
-  <section class="strip parents" id="parents" aria-labelledby="par-h">
+  <section class="strip parents" id="parents-see" aria-labelledby="par-h">
     <div class="strip-in par-grid">
       <header class="strip-head">
         <h2 id="par-h" class="h2-title">${t('site.parents.title', 'What parents see')}</h2>
@@ -128,7 +154,7 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
       </header>
       <article class="mini-report" aria-label="${t('site.mr.aria', 'Example report')}">
         <span class="example-tag">${t('site.mr.example', 'Example')}</span>
-        <h3>${t('site.mr.title', 'Maya\'s 12 minutes at Sunny Surf Beach')}</h3>
+        <h3>${t('site.mr.title2', 'Maya, 12 minutes on Curiosity Island')}</h3>
         <div class="mr-stats">
           <div class="mr-stat"><b>9</b><span>${t('site.mr.q', 'questions asked')}</span></div>
           <div class="mr-stat mr-why"><img src="${ART}/why-ladder.webp" alt="" width="80" height="120" loading="lazy"/><div><b>3</b><span>${t('site.mr.why', 'deepest why-level')}</span></div></div>
@@ -151,7 +177,7 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
       <ul class="safe3">
         <li><b>${t('site.safe.web', 'No open web')}</b><span>${t('site.safe.web.s', 'No search results, no links out.')}</span></li>
         <li><b>${t('site.safe.data', 'No kid data')}</b><span>${t('site.safe.data.s', 'No accounts or names. Voice is never stored.')}</span></li>
-        <li><b>${t('site.safe.facts', 'Answers from a fact sheet')}</b><span>${t('site.safe.facts.s', 'Sam only answers from checked beach facts.')}</span></li>
+        <li><b>${t('site.safe.facts', 'Answers from a fact sheet')}</b><span>${t('site.safe.facts.s2', 'Guides only answer from checked fact sheets.')}</span></li>
       </ul>
     </div>
   </section>
@@ -168,6 +194,25 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
   const timers = new Set<number>();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const later = (fn: () => void, ms: number) => { const id = window.setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); };
+
+  // ---------------- logo: use the generated wordmark when it exists, else the text wordmark stays
+  const logoUrl = (ART_CC as unknown as { logo?: string }).logo ?? `${ART}/logo.webp`;
+  const li = $<HTMLImageElement>('#logo-img', main)!;
+  li.onload = () => { if (li.naturalWidth > 1) { li.hidden = false; $('#wordmark', main)!.classList.add('sr-only'); } };
+  li.src = logoUrl;
+  $('#cue', main)!.addEventListener('click', () => $('#island', main)!.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }));
+  // gentle pointer parallax on the floating ? blocks (one rAF per move, desktop only)
+  const cubes = $$('.qcube', main);
+  let praf = 0;
+  const onMove = (e: PointerEvent) => {
+    if (reduced || e.pointerType !== 'mouse') return;
+    cancelAnimationFrame(praf);
+    praf = requestAnimationFrame(() => {
+      const dx = e.clientX / innerWidth - .5, dy = e.clientY / innerHeight - .5;
+      cubes.forEach((c) => { const k = Number(c.dataset.depth) * 18; c.style.translate = `${(-dx * k).toFixed(1)}px ${(-dy * k).toFixed(1)}px`; });
+    });
+  };
+  addEventListener('pointermove', onMove, { passive: true });
 
   // ---------------- hero chat: Sam goes three whys deep, the ladder climbs, then it loops
   const log = $('#chat-log', main)!;
@@ -273,5 +318,5 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
     $<HTMLButtonElement>(`.l8[data-lang="${b.dataset.lang}"]`, main)?.focus();
   }));
 
-  return () => { timers.forEach(clearTimeout); };
+  return () => { timers.forEach(clearTimeout); removeEventListener('pointermove', onMove); cancelAnimationFrame(praf); };
 }

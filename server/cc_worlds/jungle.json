@@ -1,0 +1,362 @@
+{
+ "id": "jungle",
+ "name": "Whispering Jungle",
+ "npc": {
+  "id": "fern",
+  "name": "Fern the Tree Frog",
+  "voice": "aura-2-thalia-en",
+  "persona": "Fern is a bright green, curious little tree frog who hops from leaf to leaf in the Whispering Jungle. She talks to 8 to 11 year olds in short, simple sentences, says things like 'Ribbit!', 'Hop-tastic!' and 'Leaf me amazed!', and loves it when kids ask why. A wrong guess is just 'a missed hop, and every hop makes your legs stronger!' She only uses facts from her fact sheet and ends every answer with a new why question.",
+  "greeting": "Ribbit! Hi there! I'm Fern the Tree Frog. The Whispering Jungle is full of secrets. Leaves, flowers, frogs, rain... What do you wonder about?"
+ },
+ "concepts": [
+  {
+   "id": "photosynthesis",
+   "name": "How plants make food",
+   "plain": "Plants use sunlight, water and air to make their own sugar food, and give off oxygen."
+  },
+  {
+   "id": "chlorophyll",
+   "name": "Why leaves are green",
+   "plain": "Leaves are full of green chlorophyll, which soaks up red and blue light and bounces back green."
+  },
+  {
+   "id": "rainforest-water",
+   "name": "Rainforests and rain",
+   "plain": "Trees pull up water and breathe it out through their leaves, which helps make clouds and rain."
+  },
+  {
+   "id": "food-chains",
+   "name": "Food chains",
+   "plain": "Energy passes from plants to the animals that eat them, and on to the animals that eat those."
+  },
+  {
+   "id": "camouflage",
+   "name": "Camouflage and warning colours",
+   "plain": "Some animals blend in to hide; others wear bright colours to warn they are dangerous."
+  },
+  {
+   "id": "frog-skin",
+   "name": "Frog skin",
+   "plain": "Frogs have thin, slimy skin that stays wet so they can take in oxygen through it."
+  },
+  {
+   "id": "pollination",
+   "name": "Pollination",
+   "plain": "Bees, butterflies and birds carry pollen between flowers so the plants can make seeds."
+  },
+  {
+   "id": "seed-travel",
+   "name": "How seeds travel",
+   "plain": "Seeds travel by wind, water, popping pods, or inside and on the fur of animals."
+  },
+  {
+   "id": "rainforest-layers",
+   "name": "Rainforest layers",
+   "plain": "From top to bottom: emergent layer, canopy, understory and forest floor."
+  },
+  {
+   "id": "insects",
+   "name": "Insects",
+   "plain": "Insects have six legs and three body parts: head, thorax and abdomen."
+  }
+ ],
+ "facts": [
+  {
+   "id": "f1",
+   "text": "Plants make their own food. They use sunlight, water from the soil and a gas from the air called carbon dioxide. This is called photosynthesis.",
+   "conceptIds": [
+    "photosynthesis"
+   ]
+  },
+  {
+   "id": "f2",
+   "text": "The food plants make is a kind of sugar. They use it to grow leaves, stems, roots, flowers and fruit.",
+   "conceptIds": [
+    "photosynthesis"
+   ]
+  },
+  {
+   "id": "f3",
+   "text": "While plants make food, they give off oxygen, the gas we need to breathe.",
+   "conceptIds": [
+    "photosynthesis"
+   ]
+  },
+  {
+   "id": "f4",
+   "text": "Leaves are green because they are full of chlorophyll. Chlorophyll soaks up red and blue light and bounces green light back to our eyes.",
+   "conceptIds": [
+    "chlorophyll"
+   ]
+  },
+  {
+   "id": "f5",
+   "text": "Chlorophyll is the part of the leaf that catches sunlight to make food.",
+   "conceptIds": [
+    "chlorophyll",
+    "photosynthesis"
+   ]
+  },
+  {
+   "id": "f6",
+   "text": "In some places, leaves turn yellow and orange in autumn. The green chlorophyll breaks down, and the other colours that were hiding show through.",
+   "conceptIds": [
+    "chlorophyll"
+   ]
+  },
+  {
+   "id": "f7",
+   "text": "Rainforest plants give off huge amounts of oxygen, but the animals, fungi and tiny living things in the forest use up much of it too.",
+   "conceptIds": [
+    "photosynthesis",
+    "rainforest-water"
+   ]
+  },
+  {
+   "id": "f8",
+   "text": "Lots of the oxygen we breathe also comes from tiny ocean plants called phytoplankton.",
+   "conceptIds": [
+    "photosynthesis"
+   ]
+  },
+  {
+   "id": "f9",
+   "text": "Trees pull water up from their roots and let it out as water vapour through tiny holes in their leaves.",
+   "conceptIds": [
+    "rainforest-water"
+   ]
+  },
+  {
+   "id": "f10",
+   "text": "All that water vapour rises and helps make clouds, so rainforests help make a lot of their own rain.",
+   "conceptIds": [
+    "rainforest-water"
+   ]
+  },
+  {
+   "id": "f11",
+   "text": "Rainforests get lots of rain, often more than 2 metres in a year. That is taller than a grown-up!",
+   "conceptIds": [
+    "rainforest-water"
+   ]
+  },
+  {
+   "id": "f12",
+   "text": "A food chain shows who eats what. For example: a leaf is eaten by a caterpillar, the caterpillar by a frog, and the frog by a snake.",
+   "conceptIds": [
+    "food-chains"
+   ]
+  },
+  {
+   "id": "f13",
+   "text": "Every food chain starts with plants, because plants make food from sunlight. Animals get their energy by eating plants or other animals.",
+   "conceptIds": [
+    "food-chains",
+    "photosynthesis"
+   ]
+  },
+  {
+   "id": "f14",
+   "text": "Camouflage means blending in. Stick insects look like twigs, and some frogs look just like leaves, so hungry animals do not spot them.",
+   "conceptIds": [
+    "camouflage"
+   ]
+  },
+  {
+   "id": "f15",
+   "text": "Some animals do the opposite. Poison dart frogs have bright colours that warn birds and snakes: do not eat me, I am poisonous!",
+   "conceptIds": [
+    "camouflage",
+    "food-chains"
+   ]
+  },
+  {
+   "id": "f16",
+   "text": "Frogs have thin skin that oxygen can pass through, so they can breathe partly through their skin.",
+   "conceptIds": [
+    "frog-skin"
+   ]
+  },
+  {
+   "id": "f17",
+   "text": "Frog skin makes slippery mucus that keeps it wet. The skin must stay moist for breathing through it to work.",
+   "conceptIds": [
+    "frog-skin"
+   ]
+  },
+  {
+   "id": "f18",
+   "text": "Frogs also drink through their skin. They soak up water instead of sipping it.",
+   "conceptIds": [
+    "frog-skin"
+   ]
+  },
+  {
+   "id": "f19",
+   "text": "Tree frogs have sticky toe pads that help them climb leaves and branches without slipping.",
+   "conceptIds": [
+    "frog-skin",
+    "rainforest-layers"
+   ]
+  },
+  {
+   "id": "f20",
+   "text": "Flowers make a powder called pollen. To make seeds, pollen must get from one flower to another flower of the same kind. This is called pollination.",
+   "conceptIds": [
+    "pollination"
+   ]
+  },
+  {
+   "id": "f21",
+   "text": "Bees and butterflies visit flowers to drink sweet nectar. Pollen sticks to them and they carry it to the next flower.",
+   "conceptIds": [
+    "pollination"
+   ]
+  },
+  {
+   "id": "f22",
+   "text": "Bright colours and sweet smells help flowers get noticed by bees, butterflies, birds and bats.",
+   "conceptIds": [
+    "pollination"
+   ]
+  },
+  {
+   "id": "f23",
+   "text": "Seeds travel to find new places to grow. Some fly on the wind, like dandelion fluff and spinning maple seeds.",
+   "conceptIds": [
+    "seed-travel"
+   ]
+  },
+  {
+   "id": "f24",
+   "text": "Animals eat fruit and drop the seeds far away in their poop. Some seeds have hooks that stick to fur.",
+   "conceptIds": [
+    "seed-travel"
+   ]
+  },
+  {
+   "id": "f25",
+   "text": "Coconuts can float across the sea to new beaches, and some seed pods burst open and fling their seeds out.",
+   "conceptIds": [
+    "seed-travel"
+   ]
+  },
+  {
+   "id": "f26",
+   "text": "A rainforest has layers. The tallest trees poke out at the top in the emergent layer. Below is the canopy, a thick roof of leaves.",
+   "conceptIds": [
+    "rainforest-layers"
+   ]
+  },
+  {
+   "id": "f27",
+   "text": "Under the canopy is the understory, then the forest floor. Only a tiny bit of sunlight reaches the floor, so it is dark and damp.",
+   "conceptIds": [
+    "rainforest-layers"
+   ]
+  },
+  {
+   "id": "f28",
+   "text": "Most rainforest animals live up in the canopy, where there is lots of food and sunlight.",
+   "conceptIds": [
+    "rainforest-layers",
+    "food-chains"
+   ]
+  },
+  {
+   "id": "f29",
+   "text": "All insects have six legs and three body parts: a head, a thorax in the middle, and an abdomen at the back. All six legs join the thorax.",
+   "conceptIds": [
+    "insects"
+   ]
+  },
+  {
+   "id": "f30",
+   "text": "Insects often walk with three legs on the ground at a time, making a steady triangle like a camera stand. Spiders have eight legs, so they are not insects.",
+   "conceptIds": [
+    "insects"
+   ]
+  }
+ ],
+ "starters": [
+  {
+   "id": "leaf",
+   "label": "Leaf",
+   "icon": "leaf",
+   "questions": [
+    "Why are most leaves green?",
+    "How do leaves make food?",
+    "Why do leaves let out water?"
+   ]
+  },
+  {
+   "id": "frog",
+   "label": "Frog",
+   "icon": "frog",
+   "questions": [
+    "Why are frogs slimy?",
+    "Can frogs breathe through their skin?",
+    "Why are some frogs so colourful?"
+   ]
+  },
+  {
+   "id": "flower",
+   "label": "Flower",
+   "icon": "flower",
+   "questions": [
+    "Why do flowers have bright colours?",
+    "How do bees help flowers?",
+    "What is pollen for?"
+   ]
+  },
+  {
+   "id": "tree",
+   "label": "Tree",
+   "icon": "tree",
+   "questions": [
+    "How do trees make oxygen?",
+    "Why is the jungle floor so dark?",
+    "What are the rainforest layers?"
+   ]
+  },
+  {
+   "id": "butterfly",
+   "label": "Butterfly",
+   "icon": "butterfly",
+   "questions": [
+    "Why do insects have six legs?",
+    "Why do butterflies visit flowers?",
+    "How do bugs hide from birds?"
+   ]
+  },
+  {
+   "id": "rain",
+   "label": "Rain",
+   "icon": "rain",
+   "questions": [
+    "Why does it rain so much here?",
+    "How do trees help make rain?",
+    "Can seeds float away in water?"
+   ]
+  }
+ ],
+ "recall": {
+  "prompt": "Why are most leaves green?",
+  "choices": [
+   "Chlorophyll in leaves bounces back green light",
+   "Leaves soak up green rainwater",
+   "The sun paints leaves green"
+  ],
+  "answerIndex": 0,
+  "conceptId": "chlorophyll"
+ },
+ "challenges": [
+  "seed-lab"
+ ],
+ "tryAtHome": "On a sunny morning, ask a grown-up to help you slip a clear plastic bag over a leafy branch of a plant outside (keep the leaves on the plant). Tie it closed. Come back after a few hours: you will see water drops inside the bag! The plant pulled water up from its roots and let it out through tiny holes in its leaves. That is how rainforest trees help make clouds and rain. Bonus: try a bag on a plant in the shade. Which one makes more drops?",
+ "realWorld": {
+  "book": "The Great Kapok Tree: A Tale of the Amazon Rain Forest, by Lynne Cherry (Harcourt, 1990)",
+  "job": "Botanist: a scientist who studies plants, from tiny mosses to giant rainforest trees, and how they grow, feed and spread their seeds.",
+  "person": "Jane Goodall, a British scientist who spent years watching wild chimpanzees in the forests of Gombe, Tanzania. She discovered that chimps make and use tools, and she worked to protect forests and animals."
+ }
+}

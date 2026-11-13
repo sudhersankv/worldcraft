@@ -1,0 +1,56 @@
+/* ============================================================ full-viewport hero, Curiosity Island areas, whys strip */
+.hero3 { position: relative; min-height: calc(100svh - 72px); display: grid; place-items: center; overflow: hidden; border-bottom: 3px solid #1d1a3a; text-align: center; }
+.h3-key { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transform: scale(1.04); animation: key-drift 24s ease-in-out infinite alternate; }
+@keyframes key-drift { to { transform: scale(1.09) translateY(-1%); } }
+.h3-shade { position: absolute; inset: 0; background: radial-gradient(60% 55% at 50% 55%, rgba(11, 30, 70, .55), rgba(11, 30, 70, .15) 70%, transparent), linear-gradient(0deg, rgba(11, 40, 80, .55), transparent 35%); }
+.h3-inner { position: relative; z-index: 2; padding: 2rem var(--gut) 5rem; display: grid; justify-items: center; gap: .6rem; max-width: 60rem; }
+.h3-logo { margin: 0; }
+.h3-logo img { width: min(640px, 86vw); height: auto; filter: drop-shadow(0 10px 0 rgba(29, 26, 58, .35)); animation: logo-pop 700ms cubic-bezier(.2, .9, .3, 1.25) both; }
+.wordmark { display: grid; justify-items: center; font: 400 clamp(4rem, 11vw, 9rem)/.88 var(--font-logo); animation: logo-pop 700ms cubic-bezier(.2, .9, .3, 1.25) both; }
+.wordmark > span { -webkit-text-stroke: 5px #1d1a3a; paint-order: stroke fill; text-shadow: 2px 2px 0 #1d1a3a, 4px 4px 0 #1d1a3a, 6px 6px 0 #1d1a3a, 8px 8px 0 #1d1a3a, 10px 10px 0 #1d1a3a; }
+.wm1 { color: #fff; } .wm2 { color: #ffc928; transform: rotate(-3deg); margin-top: -.05em; }
+@keyframes logo-pop { from { transform: scale(.7) translateY(30px); opacity: 0; } }
+.h3-tag { margin: .6rem 0 0; font: 400 clamp(1.6rem, 3.4vw, 2.6rem)/1.1 var(--font-logo); color: #fff; -webkit-text-stroke: 2.5px #1d1a3a; paint-order: stroke fill; text-shadow: 3px 3px 0 #1d1a3a; }
+.h3-sub { margin: 0; font-size: 1.25rem; color: #fff; text-shadow: 0 2px 6px rgba(0, 0, 0, .6); font-weight: 700; }
+.h3-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 1.2rem; margin-top: 1.2rem; align-items: center; }
+.vbtn-huge { min-height: 76px; font-size: 2.1rem; padding: .5em 1.4em; box-shadow: 8px 8px 0 #1d1a3a; }
+.vbtn-huge .ic { width: .9em; height: .9em; }
+.h3-cue { position: absolute; z-index: 2; bottom: 1.2rem; left: 50%; translate: -50% 0; display: grid; justify-items: center; background: none; border: 0; color: #fff; font: 400 1.15rem var(--font-logo); cursor: pointer; text-shadow: 0 2px 0 #1d1a3a; }
+.h3-cue svg { width: 30px; animation: cue 1.6s ease-in-out infinite; }
+@keyframes cue { 50% { transform: translateY(6px); } }
+.h3-blocks { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.qcube { position: absolute; left: var(--x); top: var(--y); width: calc(58px * var(--s)); height: calc(58px * var(--s)); display: grid; place-items: center; background: #ffc928; border: 3px solid #1d1a3a; border-radius: 6px; box-shadow: inset -8px -8px 0 #e0a400, inset 6px 6px 0 #ffe27a, 5px 6px 0 rgba(29, 26, 58, .6); transition: translate 300ms ease-out; animation: qfloat 5s ease-in-out infinite; animation-delay: var(--d); }
+.qcube i { font: 400 calc(34px * var(--s)) var(--font-logo); font-style: normal; color: #6b3a00; }
+@keyframes qfloat { 50% { transform: translateY(-14px) rotate(6deg); } }
+
+.island { background: linear-gradient(180deg, #8fdcff, #5cc8ff); --edge: #8fdcff; }
+.island .strip-head p, .whys .strip-head p { color: #1d1a3a; }
+.areas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+.area { position: relative; display: grid; align-content: start; gap: .3rem; padding: 1rem 1.1rem 1.2rem; background: #fff; border: 3px solid #1d1a3a; border-radius: 6px; box-shadow: 6px 6px 0 var(--ac); }
+.a-beach { --ac: #19c3d6; } .a-volcano { --ac: #ff7a2f; } .a-ice { --ac: #7fcfff; } .a-jungle { --ac: #2fc46a; }
+.area-svg { width: 100%; height: 150px; margin-bottom: .2rem; background: color-mix(in srgb, var(--ac) 18%, #fff); border-radius: 4px; }
+.lava { animation: qfloat 2.4s ease-in-out infinite; }
+.area-guide { position: absolute; right: 8px; top: 70px; width: 84px; height: 84px; object-fit: contain; filter: drop-shadow(2px 3px 0 rgba(29, 26, 58, .35)); }
+.area h3 { margin: 0; font: 400 1.55rem/1.1 var(--font-logo); }
+.area-who { margin: 0; }
+.area-who b { display: inline-block; font-size: .95rem; background: var(--ac); border: 2px solid #1d1a3a; border-radius: 4px; padding: .05em .5em; }
+.area p:last-child { margin: 0; font-size: 1.02rem; }
+.areas-w { margin-top: 1.6rem; }
+
+.whys { background: #ffd2e6; --edge: #ffd2e6; }
+.whys-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 28rem); gap: 2.4rem; align-items: center; }
+.whys .chatbox { max-width: none; }
+
+@media (max-width: 960px) {
+  .areas { grid-template-columns: repeat(2, 1fr); }
+  .whys-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .hero3 { min-height: calc(100svh - 72px); }
+  .wordmark > span { -webkit-text-stroke: 4px #1d1a3a; }
+  .vbtn-huge { font-size: 1.7rem; width: 100%; justify-content: center; }
+  .h3-ctas .vbtn-white { width: 100%; justify-content: center; }
+  .qcube:nth-child(n+4) { display: none; }
+  .areas { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .h3-key, .qcube, .lava { animation: none; } }

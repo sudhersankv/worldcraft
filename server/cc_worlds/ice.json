@@ -1,0 +1,374 @@
+{
+ "id": "ice",
+ "name": "Frostbite Cave",
+ "npc": {
+  "id": "penny",
+  "name": "Penny the Penguin",
+  "voice": "aura-2-luna-en",
+  "persona": "Penny is a cheerful, bouncy little penguin who waddles around Frostbite Cave and slides on her tummy whenever she can. She talks to 8 to 11 year olds in short, simple sentences, says things like 'Brrr-illiant!', 'Cool!' and 'Ice one!', and loves it when kids ask why. A wrong guess is just 'a little slip on the ice, and slips help you learn to slide!' She only uses facts from her fact sheet and ends every answer with a new why question.",
+  "greeting": "Brrr, hello! I'm Penny the Penguin. Frostbite Cave is full of icy mysteries. Ice, snowflakes, icebergs... What do you wonder about?"
+ },
+ "concepts": [
+  {
+   "id": "density",
+   "name": "Why ice floats",
+   "plain": "Water spreads out when it freezes, so ice is less dense than liquid water and floats."
+  },
+  {
+   "id": "freezing",
+   "name": "Freezing and melting",
+   "plain": "Pure water freezes into ice at 0 degrees Celsius and ice melts above it."
+  },
+  {
+   "id": "slippery-ice",
+   "name": "Why ice is slippery",
+   "plain": "The top of ice has a super-thin wet layer that lets things slide."
+  },
+  {
+   "id": "icebergs",
+   "name": "Icebergs",
+   "plain": "Huge chunks of ice that break off glaciers; about nine tenths is hidden underwater."
+  },
+  {
+   "id": "glaciers",
+   "name": "Glaciers",
+   "plain": "Rivers of ice made from snow packed down over many years; they move slowly and carve valleys."
+  },
+  {
+   "id": "snowflakes",
+   "name": "Snowflakes",
+   "plain": "Ice crystals with six sides that grow in clouds; each one takes its own path, so each is different."
+  },
+  {
+   "id": "penguin-warmth",
+   "name": "How penguins stay warm",
+   "plain": "Thick overlapping feathers, a layer of fat and huddling together keep penguins warm."
+  },
+  {
+   "id": "cave-formations",
+   "name": "Stalactites and stalagmites",
+   "plain": "Dripping water leaves tiny bits of mineral that slowly build stone icicles in caves."
+  },
+  {
+   "id": "cave-temperature",
+   "name": "Why caves stay cool",
+   "plain": "Thick rock keeps a cave at nearly the same temperature all year."
+  },
+  {
+   "id": "polar-light",
+   "name": "Polar day and night",
+   "plain": "Because Earth is tilted, the poles get months of daylight in summer and months of darkness in winter."
+  }
+ ],
+ "facts": [
+  {
+   "id": "f1",
+   "text": "Most things shrink when they get colder, but water is special. When water freezes, it spreads out and takes up about one tenth more space.",
+   "conceptIds": [
+    "density",
+    "freezing"
+   ]
+  },
+  {
+   "id": "f2",
+   "text": "Because ice takes up more space for the same weight, it is less dense than liquid water. That is why ice floats.",
+   "conceptIds": [
+    "density"
+   ]
+  },
+  {
+   "id": "f3",
+   "text": "Ice is about 0.9 times as dense as water, so a floating ice cube sits mostly under the surface.",
+   "conceptIds": [
+    "density",
+    "icebergs"
+   ]
+  },
+  {
+   "id": "f4",
+   "text": "Floating ice is great for fish. Ice forms on top of ponds and lakes, and the water underneath stays liquid so fish can live through winter.",
+   "conceptIds": [
+    "density",
+    "freezing"
+   ]
+  },
+  {
+   "id": "f5",
+   "text": "If you freeze a full, closed bottle of water, it can crack, because the ice needs more room than the water did.",
+   "conceptIds": [
+    "density",
+    "freezing"
+   ]
+  },
+  {
+   "id": "f6",
+   "text": "Pure water freezes at 0 degrees Celsius, which is 32 degrees Fahrenheit. Above that, ice melts.",
+   "conceptIds": [
+    "freezing"
+   ]
+  },
+  {
+   "id": "f7",
+   "text": "Salt makes water freeze at a lower temperature. That is why people sprinkle salt on icy roads.",
+   "conceptIds": [
+    "freezing"
+   ]
+  },
+  {
+   "id": "f8",
+   "text": "Sea water has salt in it, so it freezes at about minus 2 degrees Celsius instead of 0.",
+   "conceptIds": [
+    "freezing",
+    "icebergs"
+   ]
+  },
+  {
+   "id": "f9",
+   "text": "Frost is made when water vapour in the air freezes straight onto a very cold surface, like grass or a car window.",
+   "conceptIds": [
+    "freezing"
+   ]
+  },
+  {
+   "id": "f10",
+   "text": "The surface of ice has a super-thin layer that acts like water. It makes ice slippery, so skates and penguin tummies can slide.",
+   "conceptIds": [
+    "slippery-ice"
+   ]
+  },
+  {
+   "id": "f11",
+   "text": "Ice is most slippery when it is close to melting. Very, very cold ice is actually less slippery.",
+   "conceptIds": [
+    "slippery-ice",
+    "freezing"
+   ]
+  },
+  {
+   "id": "f12",
+   "text": "An iceberg is a giant chunk of ice that has broken off a glacier or ice shelf and floats in the sea.",
+   "conceptIds": [
+    "icebergs",
+    "glaciers"
+   ]
+  },
+  {
+   "id": "f13",
+   "text": "About nine tenths of an iceberg is hidden underwater. Only the tip shows, which is why people say 'the tip of the iceberg'.",
+   "conceptIds": [
+    "icebergs",
+    "density"
+   ]
+  },
+  {
+   "id": "f14",
+   "text": "Icebergs are made from snow, not sea water, so they are frozen fresh water.",
+   "conceptIds": [
+    "icebergs",
+    "glaciers"
+   ]
+  },
+  {
+   "id": "f15",
+   "text": "A glacier is a huge river of ice made from snow that piled up and was pressed into ice over many, many years.",
+   "conceptIds": [
+    "glaciers"
+   ]
+  },
+  {
+   "id": "f16",
+   "text": "Glaciers move very slowly downhill, often just a few centimetres to a few metres a day.",
+   "conceptIds": [
+    "glaciers"
+   ]
+  },
+  {
+   "id": "f17",
+   "text": "As glaciers slide, they scrape and grind the rock. Over thousands of years they carve wide U-shaped valleys.",
+   "conceptIds": [
+    "glaciers"
+   ]
+  },
+  {
+   "id": "f18",
+   "text": "A snowflake starts as a tiny drop of water freezing onto a speck of dust high in a cold cloud.",
+   "conceptIds": [
+    "snowflakes",
+    "freezing"
+   ]
+  },
+  {
+   "id": "f19",
+   "text": "Snowflakes have six sides or six arms because of the way water molecules hook together when they freeze.",
+   "conceptIds": [
+    "snowflakes"
+   ]
+  },
+  {
+   "id": "f20",
+   "text": "Each snowflake falls a different path through different air, so it grows its own shape. That is why no two look exactly alike.",
+   "conceptIds": [
+    "snowflakes"
+   ]
+  },
+  {
+   "id": "f21",
+   "text": "Penguins have short, stiff feathers packed tightly together and overlapping like roof tiles. They keep out wind and water.",
+   "conceptIds": [
+    "penguin-warmth"
+   ]
+  },
+  {
+   "id": "f22",
+   "text": "Penguins have a thick layer of fat under their skin, a bit like a warm blanket inside their body.",
+   "conceptIds": [
+    "penguin-warmth"
+   ]
+  },
+  {
+   "id": "f23",
+   "text": "Emperor penguins huddle in big groups in winter storms. They take turns moving from the cold outside to the warm middle.",
+   "conceptIds": [
+    "penguin-warmth"
+   ]
+  },
+  {
+   "id": "f24",
+   "text": "Not all penguins live on ice. Some live on warm beaches, like the Galapagos penguin near the equator.",
+   "conceptIds": [
+    "penguin-warmth"
+   ]
+  },
+  {
+   "id": "f25",
+   "text": "Water dripping through a cave leaves behind tiny bits of a mineral called calcite. Over a very long time they build stone shapes.",
+   "conceptIds": [
+    "cave-formations"
+   ]
+  },
+  {
+   "id": "f26",
+   "text": "Stalactites hang down from the ceiling. Stalagmites grow up from the ground. Remember: c for ceiling, g for ground!",
+   "conceptIds": [
+    "cave-formations"
+   ]
+  },
+  {
+   "id": "f27",
+   "text": "Stalactites and stalagmites grow very slowly. A big one can take thousands of years to form.",
+   "conceptIds": [
+    "cave-formations"
+   ]
+  },
+  {
+   "id": "f28",
+   "text": "Caves deep underground stay at nearly the same temperature all year, because thick rock keeps out summer heat and winter cold.",
+   "conceptIds": [
+    "cave-temperature"
+   ]
+  },
+  {
+   "id": "f29",
+   "text": "Some caves, called ice caves, stay icy all year because heavy cold air sinks into them in winter and gets trapped.",
+   "conceptIds": [
+    "cave-temperature",
+    "freezing"
+   ]
+  },
+  {
+   "id": "f30",
+   "text": "Earth is tilted. So near the North and South Poles, the Sun stays up for months in summer and stays down for months in winter.",
+   "conceptIds": [
+    "polar-light"
+   ]
+  },
+  {
+   "id": "f31",
+   "text": "At the South Pole there is about six months of daylight and then about six months of darkness each year.",
+   "conceptIds": [
+    "polar-light"
+   ]
+  }
+ ],
+ "starters": [
+  {
+   "id": "ice",
+   "label": "Ice",
+   "icon": "ice",
+   "questions": [
+    "Why does ice float on water?",
+    "Why is ice so slippery?",
+    "Why does a frozen bottle crack?"
+   ]
+  },
+  {
+   "id": "snowflake",
+   "label": "Snowflake",
+   "icon": "snowflake",
+   "questions": [
+    "Why do snowflakes have six sides?",
+    "Are two snowflakes ever exactly the same?",
+    "How does a snowflake form?"
+   ]
+  },
+  {
+   "id": "penguin",
+   "label": "Penguin",
+   "icon": "penguin",
+   "questions": [
+    "How do penguins stay warm?",
+    "Why do penguins huddle together?",
+    "Do all penguins live on ice?"
+   ]
+  },
+  {
+   "id": "cave",
+   "label": "Cave",
+   "icon": "cave",
+   "questions": [
+    "Why do caves stay cool?",
+    "What is a stalactite?",
+    "How do stone icicles grow in caves?"
+   ]
+  },
+  {
+   "id": "iceberg",
+   "label": "Iceberg",
+   "icon": "iceberg",
+   "questions": [
+    "Why is most of an iceberg hidden?",
+    "Where do icebergs come from?",
+    "How do glaciers move?"
+   ]
+  },
+  {
+   "id": "cold",
+   "label": "Cold",
+   "icon": "cold",
+   "questions": [
+    "When does water turn into ice?",
+    "What is frost?",
+    "Why is it dark all winter at the poles?"
+   ]
+  }
+ ],
+ "recall": {
+  "prompt": "Why does ice float on water?",
+  "choices": [
+   "Water spreads out when it freezes, so ice is less dense",
+   "Cold things are always lighter than warm things",
+   "The water is too cold to let ice sink"
+  ],
+  "answerIndex": 0,
+  "conceptId": "density"
+ },
+ "challenges": [
+  "ice-lab"
+ ],
+ "tryAtHome": "Fill a plastic cup halfway with water and mark the water level with a pen. Put it in the freezer overnight. In the morning, look: the ice is higher than your line! Water spreads out when it freezes. Now drop an ice cube into a glass of water. It floats, with most of it under the surface, just like an iceberg. Bonus: sprinkle salt on an ice cube and watch it melt faster.",
+ "realWorld": {
+  "book": "Snowflake Bentley, by Jacqueline Briggs Martin, illustrated by Mary Azarian (Houghton Mifflin, 1998)",
+  "job": "Glaciologist: a scientist who studies glaciers and ice sheets, how they move, and how they are changing.",
+  "person": "Ann Bancroft, an American polar explorer and the first woman known to reach the North Pole on foot and by dogsled. Later she and Liv Arnesen became the first women to ski across Antarctica."
+ }
+}

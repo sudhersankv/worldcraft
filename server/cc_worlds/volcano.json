@@ -1,0 +1,366 @@
+{
+ "id": "volcano",
+ "name": "Ember Peak",
+ "npc": {
+  "id": "rocky",
+  "name": "Rocky the Lava Golem",
+  "voice": "aura-2-zeus-en",
+  "persona": "Rocky is a gentle, slow-talking rock giant who has slept on the side of Ember Peak for thousands of years. He talks to 8 to 11 year olds in short, simple sentences, rumbles things like 'Rumble rumble!', 'Rock solid!' and 'Hot stuff!', and loves it when kids ask why. A wrong guess is just 'a little pebble on the path, and every pebble teaches you something!' He only uses facts from his fact sheet and ends every answer with a new why question.",
+  "greeting": "Rumble rumble! Hello, little explorer. I'm Rocky the Lava Golem. Ember Peak is full of fiery secrets. Lava, rocks, smoke... What do you wonder about?"
+ },
+ "concepts": [
+  {
+   "id": "magma-lava",
+   "name": "Magma and lava",
+   "plain": "Melted rock underground is magma. When it comes out of the ground, it is called lava."
+  },
+  {
+   "id": "eruption",
+   "name": "Why volcanoes erupt",
+   "plain": "Gas trapped in magma builds up pressure, like a shaken soda, and pushes the magma up and out."
+  },
+  {
+   "id": "volcano-types",
+   "name": "Kinds of volcanoes",
+   "plain": "Shield volcanoes are wide and gentle; composite volcanoes are tall and steep. They can be active, dormant or extinct."
+  },
+  {
+   "id": "volcanic-rock",
+   "name": "Rock from lava",
+   "plain": "Lava cools into new rock: basalt, glassy obsidian, and bubbly pumice that can float."
+  },
+  {
+   "id": "plates",
+   "name": "Tectonic plates",
+   "plain": "Earth's outer shell is cracked into giant pieces called plates that move very slowly."
+  },
+  {
+   "id": "ring-of-fire",
+   "name": "The Ring of Fire",
+   "plain": "A giant horseshoe of volcanoes and earthquakes around the edge of the Pacific Ocean."
+  },
+  {
+   "id": "volcanic-islands",
+   "name": "Volcanic islands",
+   "plain": "Volcanoes under the sea can pile up lava until it pokes out as an island, like Hawaii."
+  },
+  {
+   "id": "geothermal",
+   "name": "Earth's heat",
+   "plain": "Heat from magma warms hot springs and can be used to make electricity."
+  },
+  {
+   "id": "fertile-soil",
+   "name": "Rich volcanic soil",
+   "plain": "Old volcanic ash and rock break down into soil full of minerals that plants love."
+  },
+  {
+   "id": "volcano-safety",
+   "name": "Volcano safety",
+   "plain": "Volcanologists watch volcanoes for warning signs so people can get away in time."
+  }
+ ],
+ "facts": [
+  {
+   "id": "f1",
+   "text": "Deep under the ground it is so hot that some rock melts. Melted rock underground is called magma.",
+   "conceptIds": [
+    "magma-lava"
+   ]
+  },
+  {
+   "id": "f2",
+   "text": "When magma comes out of the ground, we call it lava. It is the same melted rock with a new name.",
+   "conceptIds": [
+    "magma-lava"
+   ]
+  },
+  {
+   "id": "f3",
+   "text": "Fresh lava is super hot, about 700 to 1,200 degrees Celsius. That is many times hotter than a kitchen oven.",
+   "conceptIds": [
+    "magma-lava"
+   ]
+  },
+  {
+   "id": "f4",
+   "text": "Lava is not fire. It glows red and orange because it is so hot, just like a hot piece of metal glows.",
+   "conceptIds": [
+    "magma-lava"
+   ]
+  },
+  {
+   "id": "f5",
+   "text": "Magma has gases mixed into it, like the bubbles in a fizzy drink.",
+   "conceptIds": [
+    "eruption",
+    "magma-lava"
+   ]
+  },
+  {
+   "id": "f6",
+   "text": "As magma rises, the gas bubbles grow and push harder and harder. When the pressure is too big, the volcano erupts.",
+   "conceptIds": [
+    "eruption"
+   ]
+  },
+  {
+   "id": "f7",
+   "text": "Shaking a soda bottle and opening it is a bit like an eruption: trapped gas rushes out and pushes liquid with it.",
+   "conceptIds": [
+    "eruption"
+   ]
+  },
+  {
+   "id": "f8",
+   "text": "Runny magma lets gas escape easily, so lava flows out gently. Thick, sticky magma traps gas, so it can explode.",
+   "conceptIds": [
+    "eruption",
+    "volcano-types"
+   ]
+  },
+  {
+   "id": "f9",
+   "text": "The dark cloud above an erupting volcano is mostly steam, gases and ash. Volcanic ash is tiny bits of rock and glass, not soft like campfire ash.",
+   "conceptIds": [
+    "eruption",
+    "volcano-safety"
+   ]
+  },
+  {
+   "id": "f10",
+   "text": "A shield volcano is wide with gentle slopes, made by lots of runny lava flows. Mauna Loa in Hawaii is one.",
+   "conceptIds": [
+    "volcano-types",
+    "volcanic-islands"
+   ]
+  },
+  {
+   "id": "f11",
+   "text": "A composite volcano is tall and steep, built from layers of lava and ash. Mount Fuji in Japan is one.",
+   "conceptIds": [
+    "volcano-types"
+   ]
+  },
+  {
+   "id": "f12",
+   "text": "An active volcano has erupted not long ago or may erupt soon. A dormant volcano is sleeping but could wake up. An extinct volcano is not expected to erupt again.",
+   "conceptIds": [
+    "volcano-types"
+   ]
+  },
+  {
+   "id": "f13",
+   "text": "A volcano grows taller each time new lava and ash pile up on its sides.",
+   "conceptIds": [
+    "volcano-types",
+    "volcanic-rock"
+   ]
+  },
+  {
+   "id": "f14",
+   "text": "Before an eruption, magma pushing up can crack rock and cause lots of small earthquakes, so the ground may rumble and shake.",
+   "conceptIds": [
+    "eruption",
+    "volcano-safety"
+   ]
+  },
+  {
+   "id": "f15",
+   "text": "When lava cools, it hardens into new rock. Basalt is a dark, heavy rock made from cooled lava. Much of the ocean floor is basalt.",
+   "conceptIds": [
+    "volcanic-rock"
+   ]
+  },
+  {
+   "id": "f16",
+   "text": "Obsidian is black volcanic glass. It forms when lava cools so fast that crystals have no time to grow, so it looks shiny like glass.",
+   "conceptIds": [
+    "volcanic-rock"
+   ]
+  },
+  {
+   "id": "f17",
+   "text": "Pumice is a rock full of tiny gas holes, like a sponge. Many pieces are so light for their size that they float on water!",
+   "conceptIds": [
+    "volcanic-rock"
+   ]
+  },
+  {
+   "id": "f18",
+   "text": "Earth's outer shell is broken into giant pieces called tectonic plates. They move about as fast as your fingernails grow.",
+   "conceptIds": [
+    "plates"
+   ]
+  },
+  {
+   "id": "f19",
+   "text": "Most volcanoes are found where plates pull apart or where one plate slides under another.",
+   "conceptIds": [
+    "plates",
+    "ring-of-fire"
+   ]
+  },
+  {
+   "id": "f20",
+   "text": "The Ring of Fire is a huge horseshoe shape around the Pacific Ocean. Most of the world's active volcanoes are there.",
+   "conceptIds": [
+    "ring-of-fire",
+    "plates"
+   ]
+  },
+  {
+   "id": "f21",
+   "text": "Lots of earthquakes happen along the Ring of Fire too, because the plates there push and grind against each other.",
+   "conceptIds": [
+    "ring-of-fire",
+    "plates"
+   ]
+  },
+  {
+   "id": "f22",
+   "text": "The islands of Hawaii were made by volcanoes on the sea floor. Lava piled up for a very long time until it rose above the water.",
+   "conceptIds": [
+    "volcanic-islands"
+   ]
+  },
+  {
+   "id": "f23",
+   "text": "Hawaii sits over a hot spot, a place where hot rock rises from deep inside Earth. As the plate slowly moves, new islands form in a line.",
+   "conceptIds": [
+    "volcanic-islands",
+    "plates"
+   ]
+  },
+  {
+   "id": "f24",
+   "text": "Most volcanoes on Earth are under the ocean, hidden from view.",
+   "conceptIds": [
+    "volcanic-islands"
+   ]
+  },
+  {
+   "id": "f25",
+   "text": "Hot springs are pools of water warmed by hot rock and magma underground.",
+   "conceptIds": [
+    "geothermal"
+   ]
+  },
+  {
+   "id": "f26",
+   "text": "Geothermal power plants use steam heated by Earth to make electricity. Iceland gets lots of its electricity and heating this way.",
+   "conceptIds": [
+    "geothermal"
+   ]
+  },
+  {
+   "id": "f27",
+   "text": "Old volcanic ash and rock slowly break down into soil full of minerals. Plants grow very well in it, so farmers often live near volcanoes.",
+   "conceptIds": [
+    "fertile-soil"
+   ]
+  },
+  {
+   "id": "f28",
+   "text": "Scientists who study volcanoes are called volcanologists. They watch for small earthquakes, rising ground and new gases that warn an eruption may be coming.",
+   "conceptIds": [
+    "volcano-safety"
+   ]
+  },
+  {
+   "id": "f29",
+   "text": "When volcanologists see warning signs, people living nearby can be told to leave before the volcano erupts.",
+   "conceptIds": [
+    "volcano-safety"
+   ]
+  },
+  {
+   "id": "f30",
+   "text": "Never go near lava or a steaming vent. Hot gases and ash can be very dangerous, so only trained scientists get close.",
+   "conceptIds": [
+    "volcano-safety"
+   ]
+  }
+ ],
+ "starters": [
+  {
+   "id": "volcano",
+   "label": "Volcano",
+   "icon": "volcano",
+   "questions": [
+    "Why does a volcano erupt?",
+    "Is this volcano asleep or awake?",
+    "Where do volcanoes come from?"
+   ]
+  },
+  {
+   "id": "lava",
+   "label": "Lava",
+   "icon": "lava",
+   "questions": [
+    "What is lava made of?",
+    "How hot is lava?",
+    "What happens when lava cools down?"
+   ]
+  },
+  {
+   "id": "rock",
+   "label": "Rock",
+   "icon": "rock",
+   "questions": [
+    "Can a rock float on water?",
+    "Why does obsidian look like glass?",
+    "How does lava turn into rock?"
+   ]
+  },
+  {
+   "id": "smoke",
+   "label": "Smoke",
+   "icon": "smoke",
+   "questions": [
+    "What is in a volcano's dark cloud?",
+    "Is volcanic ash like campfire ash?",
+    "Why do volcanoes rumble before erupting?"
+   ]
+  },
+  {
+   "id": "mountain",
+   "label": "Mountain",
+   "icon": "mountain",
+   "questions": [
+    "How does a volcano grow so tall?",
+    "Why are some volcanoes wide and flat?",
+    "Are there volcanoes under the sea?"
+   ]
+  },
+  {
+   "id": "fire",
+   "label": "Fire",
+   "icon": "fire",
+   "questions": [
+    "Is lava the same as fire?",
+    "Why does lava glow?",
+    "Can volcano heat make electricity?"
+   ]
+  }
+ ],
+ "recall": {
+  "prompt": "Why does a volcano erupt?",
+  "choices": [
+   "Gas trapped in magma pushes it up and out",
+   "The mountain gets too heavy and cracks",
+   "A big fire burns inside the mountain"
+  ],
+  "answerIndex": 0,
+  "conceptId": "eruption"
+ },
+ "challenges": [
+  "eruption-lab"
+ ],
+ "tryAtHome": "Make a baking soda volcano with a grown-up, outdoors or on a big tray. Put 2 spoons of baking soda in a small cup and build a sand or play-dough mountain around it. Add a squirt of dish soap and a drop of red food colouring. Now pour in some vinegar and stand back! The vinegar and baking soda make carbon dioxide gas, and the gas bubbles push the foam up and out, just like gas pushes magma out of a real volcano. Try more vinegar or less: what changes?",
+ "realWorld": {
+  "book": "Volcanoes, by Seymour Simon (HarperCollins)",
+  "job": "Volcanologist: a scientist who studies volcanoes, measures their gases and ground shaking, and warns people when an eruption may be coming.",
+  "person": "Katia Krafft, a French volcanologist who, with her husband Maurice, filmed and photographed erupting volcanoes up close. Their films helped teach the world how dangerous eruptions are and helped keep people safe."
+ }
+}

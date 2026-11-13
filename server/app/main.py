@@ -284,6 +284,7 @@ async def sessions_list():
 
 # ------------------------------------------------------------------ Curiosity Craft (/api/cc/*)
 from .cc import router as cc_router  # noqa: E402
+from . import cc_open  # noqa: E402,F401  (registers /starters and /syllabus on the cc router)
 app.include_router(cc_router)
 
 
