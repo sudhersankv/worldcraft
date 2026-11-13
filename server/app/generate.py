@@ -214,8 +214,11 @@ async def _llm_world(lesson: LessonSpec, t: str, deadline: float, feedback: str 
         objectives='; '.join(f'{i + 1}. {o.text}' for i, o in enumerate(objs)), places=', '.join(th['place']),
         npcs=', '.join(f'{n} {tt}' for n, tt in th['names']), goal=th['goal'][0], companion=th['companion'],
         sections=_sections_text(lesson.sections, 9000)) + extra
-    results = await asyncio.gather(*[_call(p, deadline, 3000) for p in part_prompts], _call(frame_prompt, deadline, 2500))
+    results = await asyncio.gather(*[_call(p, deadline, 7000) for p in part_prompts], _call(frame_prompt, deadline, 5000))
     parts, frame = results[:3], results[3]
+    for p in parts:
+        if not isinstance(p, dict) or not isinstance(p.get('npc'), dict):
+            raise llm.LLMError('model returned an incomplete place: keys=%s' % (list(p.keys())[:6] if isinstance(p, dict) else type(p).__name__))
     seed = int(time.time()) % 100000
     voices = VOICES[:]
     landmarks, npcs, study, puzzles, recall = [], [], [], [], []

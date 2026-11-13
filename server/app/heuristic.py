@@ -349,7 +349,7 @@ def assemble_world(p: dict) -> dict:
             steps.append(dict(kind='puzzle', targetId=pz['id'], text=f'Solve "{pz["title"]}"'))
         for k, s in enumerate(steps, 1):
             s['id'] = f'q{i + 1}-s{k}'
-        quests.append(dict(id=f'q{i + 1}', title=p.get('questTitles', [None] * 3)[i] or f'{n["name"]}\'s Lesson',
+        quests.append(dict(id=f'q{i + 1}', title=((p.get('questTitles') or []) + [None] * 3)[i] or f'{n["name"]}\'s Lesson',
                            objectiveId=objs[i], prerequisiteIds=[f'q{i}'] if i else [], steps=steps,
                            rewardEffectId=f'fx-{i + 1}'))
     quests.append(dict(id='q-final', title=p.get('finalQuestTitle') or f'Wake the {p["goal"]["name"]}',

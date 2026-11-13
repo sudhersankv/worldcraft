@@ -252,12 +252,14 @@ async def _chat(world, sp, req, utter, doubt: bool, question: Question | None = 
         msgs = [{'role': 'system', 'content': sys_prompt},
                 {'role': 'user', 'content': (f'Conversation so far:\n{hist}\n\n' if hist else '') + f'Child: {utter}'}]
         try:
-            raw = await llm.chat(msgs, model='chat', max_tokens=150, temperature=0.6, timeout=6)
+            raw = await llm.chat(msgs, model='chat', max_tokens=400, temperature=0.6, timeout=12)
             try:
                 data = llm.extract_json(raw)
                 reply, grounded = str(data.get('reply', '')).strip(), bool(data.get('grounded', True))
             except ValueError:
-                reply, grounded = raw.strip().strip('"'), True
+                m = re.search(r'"reply"\s*:\s*"((?:[^"\\]|\\.)*)', raw)
+                reply = (m.group(1).replace('\\"', '"').replace('\\n', ' ') if m else raw).strip().strip('"{} ')
+                grounded = '"grounded": false' not in raw and '"grounded":false' not in raw
             if reply:
                 goat = await ask_goat(utter, world.subject if world else '') if (doubt and not grounded and config.has_exa()) else None
                 if goat:
@@ -344,7 +346,7 @@ async def _explain(world, sp, req, utter) -> NpcReplyResponse:
                   '"missing":[criteria copied exactly],"passed":true|false,"reply":"warm, specific feedback in character, max 2 short '
                   'sentences: praise what they got right and, if not passed, ask them to add the missing idea without giving the full answer"}')
         try:
-            data = await llm.chat_json([{'role': 'user', 'content': prompt}], model='chat', max_tokens=220, temperature=0.3, timeout=7)
+            data = await llm.chat_json([{'role': 'user', 'content': prompt}], model='chat', max_tokens=500, temperature=0.3, timeout=12)
             cov = [c for c in data.get('covered', []) if c in criteria]
             mis = [c for c in criteria if c not in cov]
             res = ExplainResult(covered=cov, missing=mis, passed=bool(data.get('passed')))
