@@ -688,5 +688,12 @@
   "ui.welcomeBack": "Que bom ter você de volta! Sua aventura continua.",
   "ui.wonderSpot": "Cantinho das curiosidades ✨",
   "worlds.beta.sub2": "Professores e pais: adicionem seu próprio PDF ou colem uma lição. A IA transforma o conteúdo no programa de estudos da ilha, para que os guias ensinem a SUA lição e as crianças a explorem como um mundo interativo. Vocês decidem o que vai estar na ilha.",
-  "worlds.beta.title2": "Transforme sua própria lição em um mundo como este"
+  "worlds.beta.title2": "Transforme sua própria lição em um mundo como este",
+  "site.safe.syl": "Os pais definem o conteúdo",
+  "site.safe.syl.s": "Os guias só respondem com base no conteúdo escrito por pais e professores. Envie um PDF para adicionar uma lição.",
+  "site.nav.home": "Início",
+  "report.wonder.title": "Sobre o que eles ficaram curiosos",
+  "report.wonder.note": "Desenhos e palavras do Quadro das Descobertas, com o que a IA viu e as perguntas que surgiram.",
+  "report.wonder.looks": "Parece com: {g}",
+  "site.wb.open": "Abrir o Quadro das Descobertas"
 }

@@ -194,7 +194,7 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
       <ul class="safe3">
         <li><b>${t('site.safe.web', 'No open web')}</b><span>${t('site.safe.web.s', 'No search results, no links out.')}</span></li>
         <li><b>${t('site.safe.data', 'No kid data')}</b><span>${t('site.safe.data.s', 'No accounts or names. Voice is never stored.')}</span></li>
-        <li><b>${t('site.safe.facts', 'Answers from a fact sheet')}</b><span>${t('site.safe.facts.s2', 'Guides only answer from checked fact sheets.')}</span></li>
+        <li><b>${t('site.safe.syl', 'Parents set the syllabus')}</b><span>${t('site.safe.syl.s', 'Guides only answer from the syllabus parents and teachers write. Drop in a PDF to add a lesson.')}</span></li>
       </ul>
     </div>
   </section>

@@ -688,5 +688,12 @@
   "ui.welcomeBack": "¡Qué bueno verte de nuevo! Tu aventura continúa.",
   "ui.wonderSpot": "Rincón de maravillas ✨",
   "worlds.beta.sub2": "Docentes y familias: suban su propio PDF o peguen una lección. La IA la convierte en el plan de estudios de la isla, así los guías enseñan SU lección y los niños la exploran como un mundo interactivo. Ustedes deciden qué hay en la isla.",
-  "worlds.beta.title2": "Convierte tu propia lección en un mundo como este"
+  "worlds.beta.title2": "Convierte tu propia lección en un mundo como este",
+  "site.safe.syl": "Los padres eligen el temario",
+  "site.safe.syl.s": "Los guías solo responden con lo que escriben los padres y los profesores en el temario. Sube un PDF para añadir una lección.",
+  "site.nav.home": "Inicio",
+  "report.wonder.title": "Lo que les dio curiosidad",
+  "report.wonder.note": "Dibujos y palabras del Tablero de Preguntas, con lo que vio la IA y las preguntas que surgieron.",
+  "report.wonder.looks": "Parece: {g}",
+  "site.wb.open": "Abre el Tablero de Preguntas"
 }

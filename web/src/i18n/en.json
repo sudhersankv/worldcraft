@@ -688,5 +688,12 @@
   "ui.welcomeBack": "Welcome back! Your adventure continues.",
   "ui.wonderSpot": "Wonder spot ✨",
   "worlds.beta.sub2": "Teachers and parents: drop in your own PDF or paste a lesson. The AI turns it into the island’s syllabus, so the guides teach YOUR lesson and kids explore it as an interactive world. You decide what is on the island.",
-  "worlds.beta.title2": "Turn your own lesson into a world like this"
+  "worlds.beta.title2": "Turn your own lesson into a world like this",
+  "site.safe.syl": "Parents set the syllabus",
+  "site.safe.syl.s": "Guides only answer from the syllabus parents and teachers write. Drop in a PDF to add a lesson.",
+  "site.nav.home": "Home",
+  "report.wonder.title": "What they wondered about",
+  "report.wonder.note": "Drawings and words from the Wonder Board, with what the AI saw and the questions it opened up.",
+  "report.wonder.looks": "Looks like: {g}",
+  "site.wb.open": "Open the Wonder Board"
 }

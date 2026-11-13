@@ -688,5 +688,12 @@
   "ui.welcomeBack": "Welkom terug! Je avontuur gaat verder.",
   "ui.wonderSpot": "Wonderplek ✨",
   "worlds.beta.sub2": "Leraren en ouders: upload je eigen pdf of plak een les. De AI maakt er het lesprogramma van het eiland van, zodat de gidsen JOUW les geven en kinderen die ontdekken als een interactieve wereld. Jij bepaalt wat er op het eiland te vinden is.",
-  "worlds.beta.title2": "Maak van je eigen les een wereld zoals deze"
+  "worlds.beta.title2": "Maak van je eigen les een wereld zoals deze",
+  "site.safe.syl": "Ouders bepalen de leerstof",
+  "site.safe.syl.s": "Gidsen antwoorden alleen op basis van de leerstof die ouders en leraren schrijven. Voeg een pdf toe voor een nieuwe les.",
+  "site.nav.home": "Home",
+  "report.wonder.title": "Waar ze zich over verwonderden",
+  "report.wonder.note": "Tekeningen en woorden van het Wonderbord, met wat de AI zag en de vragen die daaruit ontstonden.",
+  "report.wonder.looks": "Lijkt op: {g}",
+  "site.wb.open": "Open het Wonderbord"
 }

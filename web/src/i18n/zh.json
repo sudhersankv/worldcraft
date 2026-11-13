@@ -688,5 +688,12 @@
   "ui.welcomeBack": "欢迎回来!你的冒险继续啦。",
   "ui.wonderSpot": "奇思点 ✨",
   "worlds.beta.sub2": "老师和家长们:上传你自己的 PDF,或粘贴一段课文内容。AI 会把它变成小岛的课程,让向导们讲解你的课程,孩子们则在互动世界里自由探索。小岛上有什么,由你来决定。",
-  "worlds.beta.title2": "把你自己的课程变成这样的世界"
+  "worlds.beta.title2": "把你自己的课程变成这样的世界",
+  "site.safe.syl": "课程由家长来定",
+  "site.safe.syl.s": "向导只会根据家长和老师编写的课程内容来回答。放入一份 PDF,就能添加一节新课。",
+  "site.nav.home": "首页",
+  "report.wonder.title": "他们好奇的事",
+  "report.wonder.note": "这里有孩子在“奇思板”上的涂鸦和文字,还有 AI 看到的内容,以及由此引出的问题。",
+  "report.wonder.looks": "看起来像:{g}",
+  "site.wb.open": "打开奇思板"
 }
