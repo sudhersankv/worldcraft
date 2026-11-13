@@ -141,7 +141,7 @@ async def wonder(req: WonderRequest):
         qs = [str(q).strip() for q in data.get('questions', []) if str(q).strip()][:3]
         if len(qs) < 3:
             raise ValueError('too few questions')
-        tag = data.get('worldTag') if data.get('worldTag') in WORLD_TAGS else w.get('id', 'beach')
+        tag = 'beach'  # demo: one world only
         guesses = [str(g) for g in data.get('guesses', [])][:3] or [s['label'] for s in w['starters'][:3]]
         return {'guess': str(data.get('guess', '')), 'confidence': max(0.0, min(1.0, float(data.get('confidence', 0.5)))),
                 'guesses': guesses, 'questions': qs, 'worldTag': tag, 'source': 'llm'}

@@ -14,6 +14,5 @@ primary_region = "sjc"
   min_machines_running = 1
 
 [[vm]]
-  memory = "1gb"
-  cpu_kind = "shared"
-  cpus = 1
+  size = "performance-4x"
+  memory = "8gb"
