@@ -1,0 +1,401 @@
+{
+ "id": "beach",
+ "name": "Sunny Surf Beach",
+ "npc": {
+  "id": "sam",
+  "name": "Surfer Sam",
+  "voice": "aura-2-arcas-en",
+  "persona": "Sam is a super friendly, laid-back surfer dude who has surfed this beach since he was a kid. He talks to 8 to 11 year olds in short, simple sentences, says things like 'Whoa!', 'Gnarly!' and 'Totally!', and loves it when kids ask why. A wrong guess is just 'a wipeout, and wipeouts teach you stuff!' He only uses facts from his fact sheet and ends every answer with a new why question.",
+  "greeting": "Hey there, dude! I'm Surfer Sam. This beach is full of mysteries. Waves, boards, sand, fish... What do you wonder about?"
+ },
+ "concepts": [
+  {
+   "id": "buoyancy",
+   "name": "Buoyancy",
+   "plain": "Water pushes up on things. That upward push is called buoyancy."
+  },
+  {
+   "id": "density",
+   "name": "Density",
+   "plain": "How heavy something is for its size. Less dense than water floats; denser than water sinks."
+  },
+  {
+   "id": "displacement",
+   "name": "Displacement",
+   "plain": "An object pushes water aside; the upward push equals the weight of that water."
+  },
+  {
+   "id": "waves",
+   "name": "How waves form",
+   "plain": "Wind blowing over the sea makes waves; waves carry energy, not the water itself."
+  },
+  {
+   "id": "breaking-waves",
+   "name": "Why waves break",
+   "plain": "Near the shore the sea floor slows the bottom of a wave, so the top tips over."
+  },
+  {
+   "id": "tides",
+   "name": "Tides",
+   "plain": "The Moon's pull makes the sea rise and fall, usually about twice a day."
+  },
+  {
+   "id": "board-design",
+   "name": "Surfboard design",
+   "plain": "Longer boards are more stable; fins help the surfer steer and go straight."
+  },
+  {
+   "id": "insulation",
+   "name": "Staying warm",
+   "plain": "Wetsuits slow heat loss with bubble-filled rubber and a thin layer of body-warmed water."
+  },
+  {
+   "id": "sand",
+   "name": "Where sand comes from",
+   "plain": "Sand is rock and shell broken into tiny pieces by waves over a very long time."
+  },
+  {
+   "id": "safety",
+   "name": "Sun and surf safety",
+   "plain": "Sunscreen, swimming between the flags, a leash and never surfing alone keep kids safe."
+  }
+ ],
+ "facts": [
+  {
+   "id": "f1",
+   "text": "Water pushes up on everything you put in it. This upward push is called buoyancy.",
+   "conceptIds": [
+    "buoyancy"
+   ]
+  },
+  {
+   "id": "f2",
+   "text": "If the water pushes up as hard as the object pulls down, the object floats.",
+   "conceptIds": [
+    "buoyancy"
+   ]
+  },
+  {
+   "id": "f3",
+   "text": "Density means how heavy something is for its size. Fresh water has a density of 1 gram per cubic centimetre.",
+   "conceptIds": [
+    "density"
+   ]
+  },
+  {
+   "id": "f4",
+   "text": "Things that are less dense than water float. Things that are denser than water sink.",
+   "conceptIds": [
+    "density",
+    "buoyancy"
+   ]
+  },
+  {
+   "id": "f5",
+   "text": "Stone is about 2.6 times as dense as water, so a stone sinks.",
+   "conceptIds": [
+    "density"
+   ]
+  },
+  {
+   "id": "f6",
+   "text": "Most wood is about 0.6 times as dense as water, so wood floats with part of it underwater.",
+   "conceptIds": [
+    "density"
+   ]
+  },
+  {
+   "id": "f7",
+   "text": "Foam is full of tiny pockets of air. It is very light for its size, so it floats high on the water.",
+   "conceptIds": [
+    "density",
+    "board-design"
+   ]
+  },
+  {
+   "id": "f8",
+   "text": "Most surfboards have a light foam core covered by a hard shell of fiberglass and resin. That makes them strong and very floaty.",
+   "conceptIds": [
+    "board-design",
+    "density"
+   ]
+  },
+  {
+   "id": "f9",
+   "text": "When something goes into water, it pushes some water out of the way. This is called displacement.",
+   "conceptIds": [
+    "displacement"
+   ]
+  },
+  {
+   "id": "f10",
+   "text": "The upward push on an object equals the weight of the water it pushes aside. A Greek thinker called Archimedes figured this out long ago.",
+   "conceptIds": [
+    "displacement",
+    "buoyancy"
+   ]
+  },
+  {
+   "id": "f11",
+   "text": "A huge steel ship floats because its hollow shape pushes aside lots of water, and inside it is mostly air.",
+   "conceptIds": [
+    "displacement",
+    "density"
+   ]
+  },
+  {
+   "id": "f12",
+   "text": "Salt water is a little denser than fresh water, so things float a bit more easily in the sea.",
+   "conceptIds": [
+    "density",
+    "buoyancy"
+   ]
+  },
+  {
+   "id": "f13",
+   "text": "Most ocean waves are made by wind blowing over the water. Stronger wind blowing for longer makes bigger waves.",
+   "conceptIds": [
+    "waves"
+   ]
+  },
+  {
+   "id": "f14",
+   "text": "A wave moves energy, not water. The water mostly goes round in little circles, up and down, as the wave passes.",
+   "conceptIds": [
+    "waves"
+   ]
+  },
+  {
+   "id": "f15",
+   "text": "A floating ball bobs up and down when a wave passes, but it mostly stays in the same place.",
+   "conceptIds": [
+    "waves"
+   ]
+  },
+  {
+   "id": "f16",
+   "text": "Waves can travel across a whole ocean before they reach a beach.",
+   "conceptIds": [
+    "waves"
+   ]
+  },
+  {
+   "id": "f17",
+   "text": "Near the shore the water gets shallow. The sea floor slows the bottom of the wave, but the top keeps going.",
+   "conceptIds": [
+    "breaking-waves"
+   ]
+  },
+  {
+   "id": "f18",
+   "text": "The wave gets taller and steeper until the top tips over and crashes. That is a breaking wave, and surfers ride it.",
+   "conceptIds": [
+    "breaking-waves",
+    "waves"
+   ]
+  },
+  {
+   "id": "f19",
+   "text": "Tides are the slow rise and fall of the sea. Most beaches get two high tides and two low tides each day.",
+   "conceptIds": [
+    "tides"
+   ]
+  },
+  {
+   "id": "f20",
+   "text": "Tides happen mainly because the Moon's gravity pulls on the ocean. The Sun pulls a little too.",
+   "conceptIds": [
+    "tides"
+   ]
+  },
+  {
+   "id": "f21",
+   "text": "A longer, wider surfboard is more stable and easier to balance and paddle. That is why beginners use big soft boards.",
+   "conceptIds": [
+    "board-design"
+   ]
+  },
+  {
+   "id": "f22",
+   "text": "A shorter surfboard is harder to balance but easier to turn quickly.",
+   "conceptIds": [
+    "board-design"
+   ]
+  },
+  {
+   "id": "f23",
+   "text": "Fins under the back of a surfboard help the surfer steer and stop the board sliding sideways.",
+   "conceptIds": [
+    "board-design"
+   ]
+  },
+  {
+   "id": "f24",
+   "text": "Wetsuits are made of neoprene, a rubber full of tiny gas bubbles that slow down heat escaping from your body.",
+   "conceptIds": [
+    "insulation"
+   ]
+  },
+  {
+   "id": "f25",
+   "text": "A wetsuit lets in a thin layer of water. Your body warms that water, and the suit helps keep the warmth in.",
+   "conceptIds": [
+    "insulation"
+   ]
+  },
+  {
+   "id": "f26",
+   "text": "Water takes heat away from your body much faster than air does. That is why you get cold quickly in the sea.",
+   "conceptIds": [
+    "insulation"
+   ]
+  },
+  {
+   "id": "f27",
+   "text": "Sunlight bounces off water and sand, so you can get sunburned faster at the beach.",
+   "conceptIds": [
+    "safety"
+   ]
+  },
+  {
+   "id": "f28",
+   "text": "Wear sunscreen, a hat and a rash vest, and put on more sunscreen after you swim.",
+   "conceptIds": [
+    "safety"
+   ]
+  },
+  {
+   "id": "f29",
+   "text": "Most sand is tiny pieces of rock and shell, broken down by waves rubbing and tumbling them for a very long time.",
+   "conceptIds": [
+    "sand"
+   ]
+  },
+  {
+   "id": "f30",
+   "text": "Lots of beach sand is quartz, a hard mineral that does not wear away easily.",
+   "conceptIds": [
+    "sand"
+   ]
+  },
+  {
+   "id": "f31",
+   "text": "Always swim and surf between the red and yellow flags. That is where lifeguards are watching.",
+   "conceptIds": [
+    "safety"
+   ]
+  },
+  {
+   "id": "f32",
+   "text": "A leash is a cord that ties the surfboard to your ankle, so the board does not float away when you fall off.",
+   "conceptIds": [
+    "safety",
+    "board-design"
+   ]
+  },
+  {
+   "id": "f33",
+   "text": "Never surf alone. Always go with a buddy or a grown-up who can help.",
+   "conceptIds": [
+    "safety"
+   ]
+  },
+  {
+   "id": "f34",
+   "text": "Many fish have a swim bladder, a little bag of gas inside them that helps them float at just the right depth.",
+   "conceptIds": [
+    "buoyancy",
+    "density"
+   ]
+  },
+  {
+   "id": "f35",
+   "text": "On sunny days the land warms up faster than the sea. Warm air over the land rises, and cooler air from the sea blows in. That is a sea breeze.",
+   "conceptIds": [
+    "waves"
+   ]
+  }
+ ],
+ "starters": [
+  {
+   "id": "wave",
+   "label": "Wave",
+   "icon": "wave",
+   "questions": [
+    "How do waves start?",
+    "Why do waves crash on the beach?",
+    "Does the water travel with the wave?"
+   ]
+  },
+  {
+   "id": "surfboard",
+   "label": "Surfboard",
+   "icon": "surfboard",
+   "questions": [
+    "Why does a surfboard float?",
+    "What are surfboards made of?",
+    "What do the fins do?"
+   ]
+  },
+  {
+   "id": "sun",
+   "label": "Sun",
+   "icon": "sun",
+   "questions": [
+    "Why do I burn faster at the beach?",
+    "Why does the land warm up first?",
+    "How can I stay safe in the sun?"
+   ]
+  },
+  {
+   "id": "fish",
+   "label": "Fish",
+   "icon": "fish",
+   "questions": [
+    "How do fish float without sinking?",
+    "Why do things float better in the sea?",
+    "What is a swim bladder?"
+   ]
+  },
+  {
+   "id": "sand",
+   "label": "Sand",
+   "icon": "sand",
+   "questions": [
+    "Where does sand come from?",
+    "Why is sand so tiny?",
+    "What is sand made of?"
+   ]
+  },
+  {
+   "id": "wind",
+   "label": "Wind",
+   "icon": "wind",
+   "questions": [
+    "How does wind make waves?",
+    "Why does wind blow from the sea?",
+    "Does stronger wind make bigger waves?"
+   ]
+  }
+ ],
+ "recall": {
+  "prompt": "Why does a foam surfboard float?",
+  "choices": [
+   "Foam is lighter than water for its size",
+   "Waves hold it up from below",
+   "It is heavy, so it sits on top"
+  ],
+  "answerIndex": 0,
+  "conceptId": "density"
+ },
+ "challenges": [
+  "surfboard-lab",
+  "wave-maker"
+ ],
+ "tryAtHome": "Fill a big bowl with water. Get a cork, a coin and an apple. Before you drop each one in, guess: float or sink? Then test it! The cork and the apple float because they are lighter than water for their size (an apple has lots of air inside). The coin sinks because metal is much denser than water. Bonus: stir lots of salt into the water and try again.",
+ "realWorld": {
+  "book": "Surfer of the Century: The Life of Duke Kahanamoku, by Ellie Crowe (Lee & Low Books, 2007)",
+  "job": "Oceanographer: a scientist who studies the ocean, its waves, tides and creatures. Or a surfboard shaper, who designs and builds boards.",
+  "person": "Duke Kahanamoku, a Hawaiian Olympic champion swimmer who shared surfing with the world. He is called the father of modern surfing."
+ }
+}
