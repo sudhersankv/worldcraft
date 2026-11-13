@@ -765,6 +765,27 @@ export class Voxel {
   followPlayer() { this.camGoal = null; }
   teleportNear(a: Actor) { this.player.x = a.x - 1.1; this.player.z = a.z + 1.3; this.player.y = this.groundY(this.player.x, this.player.z); this.player.yaw = Math.atan2(a.x - this.player.x, a.z - this.player.z); this.yaw = Math.atan2(this.player.x - a.x, this.player.z - a.z) + 0.6; }
   samSurf(on: boolean) { this.samRide = on ? { t: 0 } : null; if (!on) { this.sam.x = this.home.x; this.sam.z = this.home.z; } }
+  private portraits = new Map<string, string>();
+  /** Big 3D portrait snapshot of an NPC (rendered once with the main renderer into a render target). */
+  portraitURL(id: string): string | null {
+    const hit = this.portraits.get(id); if (hit) return hit;
+    const a = id === 'sam' ? this.sam : this.npcs[id]; if (!a) return null;
+    try {
+      const S = 256, rt = new THREE.WebGLRenderTarget(S, S); rt.texture.colorSpace = THREE.SRGBColorSpace;
+      const sc = new THREE.Scene(); sc.add(new THREE.HemisphereLight('#ffffff', '#c8b080', 2.2)); const dl = new THREE.DirectionalLight('#fff0d8', 2.2); dl.position.set(-2, 3, 4); sc.add(dl);
+      const clone = a.b.root.clone(true); clone.position.set(0, 0, 0); clone.rotation.set(0, -0.35, 0); clone.traverse((o) => { if ((o as THREE.Mesh).isMesh && ((o as THREE.Mesh).geometry as THREE.BufferGeometry).type === 'CircleGeometry') o.visible = false; }); sc.add(clone);
+      const box = new THREE.Box3().setFromObject(clone); const hgt = box.max.y - box.min.y;
+      const cam = new THREE.PerspectiveCamera(28, 1, 0.1, 50); const fy = box.min.y + hgt * 0.62; cam.position.set(0, fy + 0.1, hgt * 1.9 + 0.5); cam.lookAt(0, fy, 0);
+      const prevT = this.renderer.getRenderTarget(); const prevC = new THREE.Color(); this.renderer.getClearColor(prevC); const prevA = this.renderer.getClearAlpha();
+      this.renderer.setRenderTarget(rt); this.renderer.setClearColor('#000000', 0); this.renderer.clear(); this.renderer.render(sc, cam);
+      const px = new Uint8Array(S * S * 4); this.renderer.readRenderTargetPixels(rt, 0, 0, S, S, px);
+      this.renderer.setRenderTarget(prevT); this.renderer.setClearColor(prevC, prevA); rt.dispose();
+      const c = document.createElement('canvas'); c.width = c.height = S; const g = c.getContext('2d')!; const img = g.createImageData(S, S);
+      for (let y = 0; y < S; y++) img.data.set(px.subarray((S - 1 - y) * S * 4, (S - y) * S * 4), y * S * 4);
+      g.putImageData(img, 0, 0);
+      const url = c.toDataURL('image/png'); this.portraits.set(id, url); return url;
+    } catch { return null; }
+  }
   setBeacon(x: number | null, z = 0) { if (x === null) { this.beacon.visible = false; return; } this.beacon.visible = true; this.beacon.position.set(x, this.groundY(x, z), z); }
   teleport(x: number, z: number) { this.player.x = x; this.player.z = z; this.player.y = this.groundY(x, z); this.target.set(x, this.player.y + 1.1, z); }
   dist2(x: number, z: number) { return Math.hypot(this.player.x - x, this.player.z - z); }

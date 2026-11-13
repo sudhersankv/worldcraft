@@ -366,7 +366,9 @@ function openSam(remote = false) {
   handsFree = new HandsFree(LANG, (s) => (interim.textContent = s), (s) => void askSam(s, isWhyText(s)), (on) => { hfBtn.classList.toggle('gold', on); if (!on && !sttSupported) interim.textContent = t('npc.micError', 'Mic not available, type instead!'); });
   hfBtn.onclick = () => { if (handsFree?.active) handsFree.stop(); else handsFree?.start(); };
   const face = h('img', { class: 'samface', src: ART_CC.sam.happy, alt: curWorld().npc.name }) as HTMLImageElement;
-  const badge = S.biome === 'beach' ? null : h('div', { class: 'npcbadge' }, BIOMES[S.biome].emoji);
+  const shot = S.biome === 'beach' ? null : vox.portraitURL(BIOMES[S.biome].npc);
+  if (shot) face.src = shot;
+  const badge = S.biome === 'beach' || shot ? null : h('div', { class: 'npcbadge' }, BIOMES[S.biome].emoji);
   if (badge) face.style.display = 'none';
   samBox = h('div', { id: 'sam', class: 'panel', 'data-testid': 'sam-panel' }, face, badge,
     h('div', { class: 'name' }, remote ? `📻 ${curWorld().npc.name}` : curWorld().npc.name), kid, say, hook,
