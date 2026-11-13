@@ -1,3 +1,4 @@
+import { openSiteWonder } from '../wonderSite';
 import { LANGS, type Lang } from '../../shared/curiosity';
 import { ART_CC } from '../../shared/art';
 import { I } from '../art';
@@ -110,7 +111,9 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
         <h2 id="wb-h" class="h2-title">${t('site.wb.title', 'The Wonder Board')}</h2>
         <p>${t('site.wb.sub3', 'Draw anything you wonder about. A dinosaur, a rocket, your cat…')}</p>
         <p class="wb-small">${t('site.wb.small', 'The island’s guides help with whatever they can. Parents decide what’s on the island.')}</p>
+        <p><button type="button" class="btn btn-gold btn-xl" id="wb-open">✏️ ${t('site.wb.open', 'Open the Wonder Board')}</button></p>
       </header>
+      <style>.strip.wonder .wb-grid{display:none}</style>
       <div class="wb-grid">
         <div class="wb-left">
           <div class="wb-board">
@@ -270,7 +273,9 @@ export function renderHome(main: HTMLElement, rerender: () => void): () => void 
   ['happy', 'laugh'].forEach((f) => { const i = new Image(); i.src = `${ART}/sam-${f}.webp`; });
   later(() => playTurn(0), 500);
 
-  // ---------------- Wonder Board: draw anything -> /api/cc/wonder -> guess, 3 questions and the right guide
+  // Same Wonder Board as the game
+  $('#wb-open', main)?.addEventListener('click', () => { openSiteWonder(); });
+  // ---------------- (legacy inline board, hidden) draw anything -> /api/cc/wonder -> guess, 3 questions and the right guide
   const canvas = $<HTMLCanvasElement>('#wb-canvas', main)!;
   const ctx = canvas.getContext('2d')!;
   const asks = $('#sam-asks', main)!;

@@ -15,6 +15,7 @@ import { renderReport } from './pages/report';
 import { renderParents } from './pages/parents';
 import { renderWorlds } from './pages/worlds';
 import { renderAbout } from './pages/about';
+import { renderStage } from './pages/stage';
 import './platform.css';
 import './hero3.css';
 import './wonder.css';
@@ -90,6 +91,7 @@ function route(keepScroll = false) {
   else if (page === 'parents') { key = 'parents'; cleanup = renderParents(main); }
   else if (page === 'worlds') { key = 'worlds'; cleanup = renderWorlds(main); }
   else if (page === 'about' || page === 'pitch') { key = 'about'; renderAbout(main); }
+  else if (page === 'stage') { key = 'about'; cleanup = renderStage(main); }
   else { cleanup = renderHome(main, () => route(true)); }
   document.body.dataset.page = key === 'parents' && page === 'report' ? 'report' : key;
   header(key);
