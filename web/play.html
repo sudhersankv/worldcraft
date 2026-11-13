@@ -7,6 +7,39 @@
   <meta name="theme-color" content="#4fb4ff" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap" />
+  <script>
+  /* Compatibility guard (runs before the game): polyfills for older Safari/iOS, a WebGL check, and a friendly
+     error screen instead of a blank page if anything fails to start. */
+  (function () {
+    if (!AbortSignal.timeout) AbortSignal.timeout = function (ms) { var c = new AbortController(); setTimeout(function () { c.abort(); }, ms); return c.signal; };
+    if (!Array.prototype.at) Array.prototype.at = function (i) { i = Math.trunc(i) || 0; if (i < 0) i += this.length; return this[i]; };
+    if (!Object.hasOwn) Object.hasOwn = function (o, k) { return Object.prototype.hasOwnProperty.call(o, k); };
+    if (!window.structuredClone) window.structuredClone = function (v) { return JSON.parse(JSON.stringify(v)); };
+    function show(msg) {
+      var el = document.getElementById('cc-fail'); if (el) return;
+      el = document.createElement('div'); el.id = 'cc-fail';
+      el.style.cssText = 'position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#170e33;color:#fff;font:16px/1.5 system-ui,sans-serif;padding:24px;text-align:center';
+      el.innerHTML = '<div style="max-width:420px;background:#2a1a52;border:4px solid #0f0826;border-radius:18px;padding:24px;box-shadow:0 8px 0 #0f0826">'
+        + '<h2 style="margin:0 0 8px;font-size:24px">Curiosity Craft couldn’t start here</h2><p style="margin:0 0 16px;opacity:.9">' + msg + '</p>'
+        + '<p style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:0">'
+        + '<a href="?quality=low" style="background:#ffd23f;color:#170e33;padding:10px 16px;border-radius:999px;font-weight:700;text-decoration:none">Try low graphics</a>'
+        + '<a href="/" target="_top" style="background:#fff;color:#170e33;padding:10px 16px;border-radius:999px;font-weight:700;text-decoration:none">← Home</a></p>'
+        + '<p style="margin:14px 0 0;font-size:13px;opacity:.7">Works best in an up-to-date Chrome, Edge, Safari or Firefox with hardware acceleration on.</p></div>';
+      document.body.appendChild(el);
+    }
+    window.__ccShowFail = show;
+    try {
+      var c = document.createElement('canvas');
+      var gl = c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl');
+      if (!gl) { addEventListener('DOMContentLoaded', function () { show('This browser has 3D graphics (WebGL) turned off or unsupported.'); }); }
+    } catch (e) {}
+    try { if (/[?&]quality=low/.test(location.search)) localStorage.setItem('cc-quality', 'low'); } catch (e) {}
+    var started = Date.now();
+    addEventListener('error', function (e) { if (Date.now() - started < 15000 && !document.querySelector('#game canvas')) show('Something went wrong while loading (' + (e && e.message ? String(e.message).slice(0, 80) : 'error') + ').'); });
+    addEventListener('unhandledrejection', function (e) { if (Date.now() - started < 15000 && !document.querySelector('#game canvas')) show('Something went wrong while loading.'); });
+    setTimeout(function () { if (!document.querySelector('#game canvas')) show('The world took too long to load. Check your connection and try again.'); }, 25000);
+  })();
+  </script>
 </head>
 <body>
   <div id="game"></div>
