@@ -41,9 +41,16 @@ export function speak(text: string, lang: Lang, voice: string, onStart: (ms: num
     const a = new Audio(`/api/tts?voice=${encodeURIComponent(voice)}&text=${encodeURIComponent(text.slice(0, 600))}`);
     audio = a;
     let done = false;
-    const fail = () => { if (done || my !== token) return; done = true; audio = null; void browser().then(resolve); };
-    const timer = setTimeout(fail, 4500);
-    a.addEventListener('playing', () => { clearTimeout(timer); if (my !== token) return; const d = isFinite(a.duration) && a.duration > 0 ? a.duration * 1000 : est; onStart(d); }, { once: true });
+    // Kill this <audio> for good so a late-arriving Aura stream can never overlap the fallback voice.
+    const kill = () => { try { a.pause(); a.removeAttribute('src'); a.load(); } catch { /* */ } if (audio === a) audio = null; };
+    const fail = () => { if (done || my !== token) { kill(); return; } done = true; kill(); void browser().then(resolve); };
+    const timer = setTimeout(fail, 7000);
+    a.addEventListener('playing', () => {
+      clearTimeout(timer);
+      if (my !== token || done) { kill(); return; }   // superseded or already fell back: stay silent
+      try { speechSynthesis.cancel(); } catch { /* */ } // stop any filler line the moment Sam's real voice starts
+      const d = isFinite(a.duration) && a.duration > 0 ? a.duration * 1000 : est; onStart(d);
+    });
     a.addEventListener('ended', () => { if (!done) { done = true; resolve(); } });
     a.addEventListener('error', () => { clearTimeout(timer); fail(); });
     a.play().catch(() => { clearTimeout(timer); fail(); });
@@ -81,7 +88,8 @@ export class Listener {
 /** Instant short line with the browser voice (no network) — used as a filler while the answer loads. */
 export function speakQuick(text: string, lang: Lang) {
   if (muted) return;
-  stopSpeech();
+  if (audio) return;            // never talk over Sam's real voice
+  try { speechSynthesis.cancel(); } catch { /* */ }
   try { const u = new SpeechSynthesisUtterance(text); u.lang = SPEECH_LOCALE[lang]; u.rate = 1.1; speechSynthesis.speak(u); } catch { /* */ }
 }
 
