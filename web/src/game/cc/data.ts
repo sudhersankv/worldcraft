@@ -127,4 +127,13 @@ export const EGGS: Record<string, { icon: string; label: string; wonder: string 
   kite: { icon: '🪁', label: 'Kite in the wind', wonder: 'I wonder why the wind blows toward the beach?' },
   sunscreen: { icon: '🧴', label: 'Sunscreen', wonder: 'I wonder why the sand gets hotter than the sea?' },
   sun: { icon: '☀️', label: 'Sun spot', wonder: 'I wonder how the sun makes wind?' },
+  'lava-rock': { icon: '🪨', label: 'Cooled lava rock', wonder: 'I wonder why lava turns into rock when it cools?' },
+  steam: { icon: '♨️', label: 'Steam vent', wonder: 'I wonder why steam comes out of the ground here?' },
+  crystal: { icon: '💎', label: 'Shiny obsidian', wonder: 'I wonder why obsidian is so shiny and black?' },
+  icicle: { icon: '🧊', label: 'Icicles', wonder: 'I wonder how icicles grow so pointy?' },
+  snowflake: { icon: '❄️', label: 'Snowflake', wonder: 'I wonder why every snowflake has six sides?' },
+  'frozen-fish': { icon: '🐟', label: 'Frozen pond', wonder: 'I wonder how fish survive under the ice?' },
+  waterfall: { icon: '💧', label: 'Waterfall', wonder: 'I wonder why water always falls down?' },
+  butterfly: { icon: '🦋', label: 'Butterfly', wonder: 'I wonder how butterflies get their colors?' },
+  'giant-leaf': { icon: '🍃', label: 'Giant leaf', wonder: 'I wonder why jungle leaves are so huge?' },
 };

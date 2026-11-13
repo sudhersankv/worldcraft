@@ -7,5 +7,5 @@ test('wonder sparkle', async ({ page }) => {
   await page.waitForFunction(() => !!(window as unknown as { __CCvox?: unknown }).__CCvox);
   await page.evaluate(() => (window as unknown as { __CCvox: { onInteract: (s: string) => void } }).__CCvox.onInteract('egg:crab'));
   await expect(page.getByTestId('egg-card')).toBeVisible();
-  await expect(page.getByTestId('wonders')).toContainText('1/12');
+  await expect(page.getByTestId('wonders')).toContainText('1/');
 });

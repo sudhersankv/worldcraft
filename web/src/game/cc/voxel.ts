@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import type { Input } from '../core/input';
 import { fbm, hash2 } from '../core/rng';
 
-export type Block = 'grass' | 'dirt' | 'sand' | 'sand2' | 'stone' | 'wood' | 'leaves' | 'leaves2' | 'plank' | 'roofA' | 'roofB' | 'teal' | 'white' | 'red' | 'coconut';
+export type Block = 'grass' | 'dirt' | 'sand' | 'sand2' | 'stone' | 'wood' | 'leaves' | 'leaves2' | 'plank' | 'roofA' | 'roofB' | 'teal' | 'white' | 'red' | 'coconut' | 'basalt' | 'obsidian' | 'pumice' | 'snow' | 'ice' | 'moss' | 'jleaf' | 'path';
 const COLORS: Record<Block, { top: string; side: string; bottom?: string }> = {
   grass: { top: '#5fd23c', side: '#b07a3e', bottom: '#8a5a32' },
   dirt: { top: '#b07a3e', side: '#9a6838' },
@@ -24,9 +24,35 @@ const COLORS: Record<Block, { top: string; side: string; bottom?: string }> = {
   white: { top: '#ffffff', side: '#eef2f8' },
   red: { top: '#ff4d4d', side: '#e03c3c' },
   coconut: { top: '#7a4a24', side: '#6a3e1c' },
+  basalt: { top: '#4a4550', side: '#3a3540' },
+  obsidian: { top: '#2a1f3a', side: '#1e1530' },
+  pumice: { top: '#c8b8a8', side: '#b0a090' },
+  snow: { top: '#ffffff', side: '#dfeeff' },
+  ice: { top: '#bfeaff', side: '#8fd0f0' },
+  moss: { top: '#2fae4a', side: '#8a5a32', bottom: '#6a4528' },
+  jleaf: { top: '#1f9a3a', side: '#178a32' },
+  path: { top: '#e8c890', side: '#c8a060' },
 };
 
-export const W = 60, D = 60;
+export const W = 96, D = 96;
+export type Biome = 'beach' | 'volcano' | 'ice' | 'jungle';
+export const BIOMES: Record<Biome, { name: string; npc: string; cx: number; cz: number; emoji: string }> = {
+  beach: { name: 'Sunny Surf Beach', npc: 'sam', cx: 24, cz: 26, emoji: '🏄' },
+  volcano: { name: 'Ember Peak', npc: 'rocky', cx: 76, cz: 28, emoji: '🌋' },
+  ice: { name: 'Frostbite Cave', npc: 'penny', cx: 76, cz: 76, emoji: '🐧' },
+  jungle: { name: 'Whispering Jungle', npc: 'fern', cx: 36, cz: 78, emoji: '🐸' },
+};
+export function biomeAt(x: number, z: number): Biome {
+  if (Math.hypot(x - 76, z - 28) < 22) return 'volcano';
+  if (x > 56 && z > 56) return 'ice';
+  if (z > 60 && x <= 56) return 'jungle';
+  return 'beach';
+}
+export const NPC_SPOTS: Record<string, { x: number; z: number; biome: Biome }> = {
+  rocky: { x: 62.5, z: 36.5, biome: 'volcano' },
+  penny: { x: 70.5, z: 68.5, biome: 'ice' },
+  fern: { x: 42.5, z: 70.5, biome: 'jungle' },
+};
 /** Surfboard Lab dock (fixed spot by the shack, over the water). */
 export const LAB_DOCK = { x: 17.5, z: 16.5 };
 /** Wonder Board easel by Sam's shack. */
@@ -38,7 +64,17 @@ export const PLACES: Record<string, { x: number; z: number; name: string }> = {
   castle: { x: 28, z: 20.5, name: 'the sandcastle' },
   tower: { x: 20.5, z: 31.5, name: 'the lifeguard tower' },
   pool: { x: 13, z: 52.5, name: 'the tide pool' },
+  crater: { x: 70.5, z: 30.5, name: 'the crater rim' },
+  obsidian: { x: 64.5, z: 22.5, name: 'the obsidian rocks' },
+  vent: { x: 84.5, z: 38.5, name: 'the steam vent' },
+  cave: { x: 82.5, z: 82.5, name: 'the ice cave' },
+  pond: { x: 66.5, z: 84.5, name: 'the frozen pond' },
+  snowspot: { x: 86.5, z: 66.5, name: 'the snowflake spot' },
+  waterfall: { x: 26.5, z: 88.5, name: 'the waterfall' },
+  bigleaf: { x: 44.5, z: 84.5, name: 'the giant leaf' },
+  flower: { x: 30.5, z: 72.5, name: 'the big flower' },
 };
+export const BIOME_PLACES: Record<Biome, string[]> = { beach: ['pier', 'tower', 'castle', 'pool', 'dock'], volcano: ['crater', 'obsidian', 'vent'], ice: ['cave', 'pond', 'snowspot'], jungle: ['waterfall', 'bigleaf', 'flower'] };
 export const WATER_Y = 1.45;
 export const shoreAt = (z: number) => 15 + Math.sin(z * 0.35) * 1.8 + (fbm(z * 0.15, 3) - 0.5) * 3;
 
@@ -202,7 +238,7 @@ export class Voxel {
     const c = document.createElement('canvas'); c.width = 2; c.height = 256; const g = c.getContext('2d')!; const gr = g.createLinearGradient(0, 0, 0, 256);
     gr.addColorStop(0, '#1466e0'); gr.addColorStop(0.45, '#3f9cf2'); gr.addColorStop(0.75, '#9fd8ff'); gr.addColorStop(1, '#e8f8ff'); g.fillStyle = gr; g.fillRect(0, 0, 2, 256);
     const st = new THREE.CanvasTexture(c); st.colorSpace = THREE.SRGBColorSpace; this.scene.background = st;
-    this.scene.fog = new THREE.Fog('#bfe6ff', 60, 150);
+    this.scene.fog = new THREE.Fog('#bfe6ff', 70, 190);
     this.scene.add(new THREE.HemisphereLight('#e8f6ff', '#d8b878', 1.55));
     this.sun = new THREE.DirectionalLight('#fff0cc', 2.4);
     const sc = this.sun.shadow.camera; sc.left = -16; sc.right = 16; sc.top = 16; sc.bottom = -16; sc.far = 70;
@@ -240,20 +276,30 @@ export class Voxel {
       this.heights.push([]);
       for (let z = 0; z < D; z++) {
         const shore = shoreAt(z);
+        const bio = biomeAt(x, z);
         let h: number;
         if (x < shore - 3) h = 0;
         else if (x < shore) h = 1;
         else if (x < shore + 6) h = 2;
         else if (x < shore + 10) h = 3; // dune terrace
         else h = 3 + Math.floor(fbm(x * 0.1, z * 0.1, 5) * 2.2);
-        if (z > D - 9 && x < shore + 4 && x > shore - 6) h = Math.max(h, 2 + Math.floor((z - (D - 9)) * 0.6)); // rocky headland
+        const rocky = z > 50 && z < 60 && x < shore + 4 && x > shore - 6;
+        if (rocky) h = Math.max(h, 2 + Math.floor((z - 50) * 0.6)); // rocky headland
+        const dv = Math.hypot(x - 76, z - 28);
+        if (bio === 'volcano') h = Math.max(h, Math.min(15, Math.round(17 - dv * 0.95 + (fbm(x * 0.3, z * 0.3, 9) - 0.5) * 1.5)));
+        if (bio === 'volcano' && dv < 3.6) h = 12; // crater floor (lava)
+        if (bio === 'ice') h = Math.max(h, 3 + Math.floor(fbm(x * 0.09, z * 0.09, 11) * 4));
+        if (bio === 'ice' && Math.hypot(x - 66, z - 84) < 4.5) h = 3; // frozen pond
+        if (bio === 'jungle' && x < 30 && z > 84) h = Math.max(h, 7); // waterfall cliff
         this.heights[x].push(h);
-        const rocky = z > D - 9 && x < shore + 4;
         for (let y = Math.max(-1, h - 4); y < h; y++) {
           let b: Block = 'dirt';
           const isTop = y === h - 1;
           if (rocky) b = 'stone';
-          else if (x < shore + 10) b = hash2(x, z, y) < 0.35 ? 'sand2' : 'sand';
+          else if (x < shore + 10 && bio !== 'volcano') b = hash2(x, z, y) < 0.35 ? 'sand2' : 'sand';
+          else if (bio === 'volcano') b = dv < 6 ? 'obsidian' : hash2(x, z, y) < 0.15 ? 'pumice' : 'basalt';
+          else if (bio === 'ice') b = isTop ? (Math.hypot(x - 66, z - 84) < 4.5 ? 'ice' : 'snow') : hash2(x, z, y) < 0.4 ? 'ice' : 'stone';
+          else if (bio === 'jungle') b = isTop ? 'moss' : y < h - 2 ? 'stone' : 'dirt';
           else if (isTop) b = 'grass';
           else if (y < h - 2) b = 'stone';
           this.set(x, y, z, b);
@@ -278,7 +324,7 @@ export class Voxel {
     for (let i = 0; i < 120 && palms.length < 18; i++) {
       const x = Math.floor(hash2(i, 1, 9) * W), z = Math.floor(hash2(i, 2, 9) * D);
       const h = this.heights[x]?.[z] ?? 0;
-      if (h < 2 || h > 50 || x > shoreAt(z) + 14) continue;
+      if (h < 2 || h > 50 || x > shoreAt(z) + 14 || biomeAt(x, z) !== 'beach' || z > 50) continue;
       if (palms.some(([px, pz]) => Math.abs(px - x) + Math.abs(pz - z) < 5)) continue;
       if (Math.abs(x - 21) < 6 && Math.abs(z - 22) < 8) continue; // plaza
       if (Math.abs(x - 19) < 4 && Math.abs(z - 33) < 4) continue; // tower
@@ -290,7 +336,7 @@ export class Voxel {
     for (let i = 0; i < 160; i++) {
       const x = Math.floor(hash2(i, 5, 3) * W), z = Math.floor(hash2(i, 6, 3) * D);
       const h = this.heights[x]?.[z] ?? 0;
-      if (h < 3 || h > 50 || this.solid.get(this.key(x, h - 1, z)) !== 'grass') continue;
+      if (h < 3 || h > 50 || this.solid.get(this.key(x, h - 1, z)) !== 'grass' || biomeAt(x, z) !== 'beach') continue;
       const r = hash2(i, 7, 3);
       if (r < 0.25) { this.set(x, h, z, hash2(i, 8, 3) < 0.5 ? 'leaves' : 'leaves2'); this.block(x, z); }
       else for (let k = 0; k < 4; k++) this.deco.push({ x: x + 0.2 + hash2(i, k, 1) * 0.6, y: h + 0.12, z: z + 0.2 + hash2(k, i, 1) * 0.6, sx: 0.16, sy: 0.24, sz: 0.16, c: r < 0.55 ? ['#ff5d8f', '#ffd23c', '#ffffff', '#c86bfa'][k] : '#4fc03a' });
@@ -317,6 +363,7 @@ export class Voxel {
     const eggAt: [string, number, number, number][] = [
       ['under-pier', 9.5, 0.4, 26.5], ['tide-pool', 12.5, 0, 53.5], ['behind-tower', 21.5, 0, 35.5], ['bottle', 15.2, 0, 41.5], ['giant-shell', 17.5, 0, 12.5], ['crab', 18.5, 0, 29.5],
       ['sandcastle', 28.6, 0, 20.6], ['treasure', 39.5, 0, 37.5], ['dolphin-spot', 4.5, 0, 26.5], ['kite', 34.5, 0, 14.5], ['sunscreen', 25.5, 0, 28.6], ['sun', 30.5, 0, 9.5],
+      ['lava-rock', 66.5, 0, 24.5], ['steam', 84.5, 0, 36.5], ['crystal', 60.5, 0, 30.5], ['icicle', 80.5, 0, 80.5], ['snowflake', 86.5, 0, 68.5], ['frozen-fish', 66.5, 0, 82.5], ['waterfall', 28.5, 0, 85.5], ['butterfly', 40.5, 0, 76.5], ['giant-leaf', 46.5, 0, 82.5],
     ];
     for (const [id, x, yy, z] of eggAt) {
       const y = yy > 0 ? 2.25 : this.groundY(x, z);
@@ -347,11 +394,126 @@ export class Voxel {
     const sunS = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow('#fff4b0'), transparent: true, depthWrite: false, fog: false, blending: THREE.AdditiveBlending }));
     sunS.scale.setScalar(40); sunS.position.set(-60, 70, -50); this.scene.add(sunS);
     const sunB = new THREE.Mesh(new THREE.BoxGeometry(8, 8, 8), new THREE.MeshBasicMaterial({ color: '#fff7c0', fog: false })); sunB.position.copy(sunS.position); this.scene.add(sunB);
+    this.buildBiomes();
     this.buildMeshes();
     this.buildCanopies();
     this.buildWater();
     this.buildLife();
     this.buildActors();
+  }
+
+  npcs: Record<string, Actor> = {};
+  private particlesFx: { pts: THREE.Points; vel: number[]; kind: 'smoke' | 'snow' | 'fly' }[] = [];
+  currentBiome: Biome = 'beach';
+  onBiome: (b: Biome) => void = () => undefined;
+
+  private carvePath(x0: number, z0: number, x1: number, z1: number) {
+    const n = Math.ceil(Math.hypot(x1 - x0, z1 - z0) * 1.5);
+    for (let i = 0; i <= n; i++) {
+      const k = i / n; const x = Math.round(x0 + (x1 - x0) * k + Math.sin(k * 9) * 1.5), z = Math.round(z0 + (z1 - z0) * k + Math.cos(k * 7) * 1.5);
+      for (const [dx, dz] of [[0, 0], [1, 0], [0, 1]]) {
+        const xi = x + dx, zi = z + dz; if (xi < 0 || zi < 0 || xi >= W || zi >= D) continue;
+        const h = this.heights[xi][zi]; if (h >= 50 || h < 2) continue;
+        const k2 = this.key(xi, h - 1, zi); const b = this.solid.get(k2);
+        if (b && b !== 'sand' && b !== 'sand2' && b !== 'obsidian') this.solid.set(k2, 'path');
+      }
+    }
+  }
+  private sign(text: string, x: number, z: number, color = '#ffcf5a') {
+    const c = document.createElement('canvas'); c.width = 512; c.height = 128; const g = c.getContext('2d')!;
+    g.fillStyle = 'rgba(30,18,60,0.92)'; g.beginPath(); g.roundRect(4, 4, 504, 120, 18); g.fill(); g.lineWidth = 8; g.strokeStyle = color; g.stroke();
+    g.fillStyle = '#ffffff'; g.font = 'bold 60px "Jersey 10", "Atkinson Hyperlegible", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, 256, 68);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, transparent: true, depthWrite: false }));
+    sp.scale.set(5, 1.25, 1); sp.position.set(x, this.groundY(x, z) + 4.2, z); this.scene.add(sp);
+    this.deco.push({ x, y: this.groundY(x, z) + 1.6, z, sx: 0.15, sy: 3.2, sz: 0.15, c: '#8d5a30' });
+  }
+  private buildBiomes() {
+    // paths from the beach plaza to each biome
+    this.carvePath(26, 28, 62, 36); this.carvePath(26, 30, 70, 68); this.carvePath(24, 32, 42, 70); this.carvePath(62, 36, 70, 68);
+    this.sign('🌋 Ember Peak', 58, 38, '#ff8a3c'); this.sign('❄ Frostbite Cave', 64, 64, '#7fd8ff'); this.sign('🌿 Whispering Jungle', 38, 64, '#5fd23c');
+    // volcano: lava pool, glow, steam vent, obsidian spikes
+    const lava = new THREE.Mesh(new THREE.CircleGeometry(3.3, 24), new THREE.MeshBasicMaterial({ color: '#ff7a1a' }));
+    lava.rotation.x = -Math.PI / 2; lava.position.set(76.5, 12.15, 28.5); this.scene.add(lava);
+    this.anim.push({ obj: lava, fn: (t, o) => { ((o as THREE.Mesh).material as THREE.MeshBasicMaterial).color.setHSL(0.06 + Math.sin(t * 2) * 0.015, 1, 0.55 + Math.sin(t * 3) * 0.05); } });
+    const lglow = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow('#ff8a3c'), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); lglow.scale.setScalar(12); lglow.position.set(76.5, 13.5, 28.5); this.scene.add(lglow);
+    for (let i = 0; i < 6; i++) { const a = i * 1.1; this.deco.push({ x: 64.5 + Math.cos(a) * 1.5, y: this.groundY(64.5, 22.5) + 0.7, z: 22.5 + Math.sin(a) * 1.5, sx: 0.5, sy: 1.4 + (i % 3) * 0.5, sz: 0.5, c: '#2a1f3a', ry: a }); }
+    for (let i = 0; i < 4; i++) this.deco.push({ x: 84.5 + (i % 2) * 0.4, y: this.groundY(84.5, 38.5) + 0.2, z: 38.5 + (i > 1 ? 0.4 : 0), sx: 0.4, sy: 0.4, sz: 0.4, c: '#8f95a2' });
+    // ice: cave arch, icicles
+    { const cx = 82, cz = 82, h = this.heights[cx][cz];
+      this.structure((st) => {
+        for (let dx = -3; dx <= 3; dx++) for (let y = 0; y < 5; y++) { if (Math.abs(dx) < 2 && y < 3) continue; for (const dz of [0, 1, 2]) this.set(cx + dx, h + y, cz + dz, y > 3 ? 'snow' : 'ice', st); }
+        for (let dx = -3; dx <= 3; dx++) for (const dz of [0, 1, 2]) if (Math.abs(dx) >= 2) this.block(cx + dx, cz + dz);
+      });
+      for (let i = 0; i < 5; i++) this.deco.push({ x: cx - 1 + i * 0.5, y: h + 2.65, z: cz - 0.05, sx: 0.12, sy: 0.6, sz: 0.12, c: '#dff6ff' }); }
+    // jungle: tall trees with big canopies, waterfall, giant leaf, big flower
+    let n = 0;
+    for (let i = 0; i < 200 && n < 16; i++) {
+      const x = 4 + Math.floor(hash2(i, 31, 5) * 52), z = 62 + Math.floor(hash2(i, 32, 5) * 30);
+      if (biomeAt(x, z) !== 'jungle' || x < shoreAt(z) + 8) continue;
+      const h = this.heights[x]?.[z]; if (!h || h > 50) continue;
+      if (Math.hypot(x - 42.5, z - 70.5) < 4 || Math.hypot(x - 26.5, z - 88.5) < 4 || Math.hypot(x - 44.5, z - 84.5) < 3 || Math.hypot(x - 30.5, z - 72.5) < 3) continue;
+      n++;
+      this.structure((st) => {
+        const th = 6 + Math.floor(hash2(i, 33, 5) * 4);
+        for (let y = 0; y < th; y++) this.set(x, h + y, z, 'wood', st);
+        this.block(x, z);
+        for (let dx = -2; dx <= 2; dx++) for (let dz = -2; dz <= 2; dz++) for (let dy = 0; dy < 2; dy++) if (Math.abs(dx) + Math.abs(dz) < 4 - dy) this.set(x + dx, h + th + dy, z + dz, (dx + dz + dy) % 2 ? 'jleaf' : 'leaves', st);
+      });
+    }
+    for (let y = 0; y < 6; y++) this.deco.push({ x: 26.5, y: 2 + y * 0.9, z: 86.7, sx: 2.2, sy: 0.95, sz: 0.25, c: y % 2 ? '#7fd8ff' : '#bfefff' });
+    this.deco.push({ x: 26.5, y: 2.1, z: 85.6, sx: 3.2, sy: 0.2, sz: 1.6, c: '#ffffff' });
+    this.deco.push({ x: 44.5, y: this.groundY(44.5, 84.5) + 1.4, z: 84.5, sx: 2.6, sy: 0.12, sz: 1.4, c: '#2fae4a', ry: 0.5 }, { x: 44.5, y: this.groundY(44.5, 84.5) + 0.7, z: 84.5, sx: 0.12, sy: 1.4, sz: 0.12, c: '#1f7a32' });
+    { const fy = this.groundY(30.5, 72.5); for (let k = 0; k < 6; k++) { const a = (k / 6) * Math.PI * 2; this.deco.push({ x: 30.5 + Math.cos(a) * 0.55, y: fy + 1.3, z: 72.5 + Math.sin(a) * 0.55, sx: 0.6, sy: 0.12, sz: 0.6, c: '#ff5d8f', ry: a }); } this.deco.push({ x: 30.5, y: fy + 1.36, z: 72.5, sx: 0.45, sy: 0.18, sz: 0.45, c: '#ffd23c' }, { x: 30.5, y: fy + 0.65, z: 72.5, sx: 0.12, sy: 1.3, sz: 0.12, c: '#2fae4a' }); }
+    // particles: volcano smoke, snowfall, butterflies
+    const mk = (n2: number, color: string, size: number, kind: 'smoke' | 'snow' | 'fly', cx: number, cy: number, cz: number, r: number) => {
+      const g = new THREE.BufferGeometry(); const pos = new Float32Array(n2 * 3); const vel: number[] = [];
+      for (let i = 0; i < n2; i++) { pos[i * 3] = cx + (Math.random() - 0.5) * r; pos[i * 3 + 1] = cy + Math.random() * 8; pos[i * 3 + 2] = cz + (Math.random() - 0.5) * r; vel.push(cx, cy, cz, r); }
+      g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const pts = new THREE.Points(g, new THREE.PointsMaterial({ color, size, map: this.glow('#ffffff'), transparent: true, depthWrite: false, opacity: kind === 'smoke' ? 0.55 : 0.95 }));
+      pts.frustumCulled = false; this.scene.add(pts); this.particlesFx.push({ pts, vel, kind });
+    };
+    mk(40, '#9a8f98', 1.6, 'smoke', 76.5, 13, 28.5, 4);
+    mk(60, '#ffffff', 0.25, 'snow', 76, 6, 76, 34);
+    mk(14, '#ff8fd0', 0.35, 'fly', 36, 5, 78, 22);
+    // NPCs
+    this.npcs.rocky = this.actorAt(this.golem(), NPC_SPOTS.rocky.x, NPC_SPOTS.rocky.z);
+    this.npcs.penny = this.actorAt(this.penguin(), NPC_SPOTS.penny.x, NPC_SPOTS.penny.z);
+    this.npcs.fern = this.actorAt(this.frog(), NPC_SPOTS.fern.x, NPC_SPOTS.fern.z);
+  }
+  private actorAt(b: Blocky, x: number, z: number): Actor { this.scene.add(b.root); return { b, x, z, y: this.groundY(x, z), yaw: -Math.PI / 2, moving: false, talk: false }; }
+  private rigFrom(parts: { body: THREE.Object3D[]; head: THREE.Object3D[]; armL: THREE.Object3D[]; armR: THREE.Object3D[]; legL: THREE.Object3D[]; legR: THREE.Object3D[] }, headY: number, armY: number, armX: number, legY: number, legX: number, scale: number): Blocky {
+    const root = new THREE.Group(), body = new THREE.Group(); root.add(body);
+    const grp = (items: THREE.Object3D[], x: number, y: number) => { const g = new THREE.Group(); g.position.set(x, y, 0); items.forEach((m) => g.add(m)); body.add(g); return g; };
+    parts.body.forEach((m) => body.add(m));
+    const head = grp(parts.head, 0, headY), armL = grp(parts.armL, -armX, armY), armR = grp(parts.armR, armX, armY), legL = grp(parts.legL, -legX, legY), legR = grp(parts.legR, legX, legY);
+    root.scale.setScalar(scale);
+    root.traverse((o) => { if ((o as THREE.Mesh).isMesh) o.castShadow = true; });
+    const sh = new THREE.Mesh(new THREE.CircleGeometry(0.55, 18), new THREE.MeshBasicMaterial({ color: 0x1b1035, transparent: true, opacity: 0.25, depthWrite: false })); sh.rotation.x = -Math.PI / 2; sh.position.y = 0.03; root.add(sh);
+    return { root, body, head, armL, armR, legL, legR };
+  }
+  private bx(w: number, h: number, d: number, c: string, x = 0, y = 0, z = 0, emissive = false) { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), emissive ? new THREE.MeshBasicMaterial({ color: c }) : new THREE.MeshLambertMaterial({ color: c })); m.position.set(x, y, z); return m; }
+  private eyesOn(arr: THREE.Object3D[], y: number, z: number, sp: number, s = 0.12) { for (const sx of [-1, 1]) { arr.push(this.bx(s, s, 0.04, '#ffffff', sx * sp, y, z), this.bx(s * 0.55, s * 0.55, 0.05, '#1b1035', sx * sp, y - 0.01, z + 0.01)); } }
+  private golem(): Blocky {
+    const head: THREE.Object3D[] = [this.bx(0.7, 0.55, 0.6, '#5a5560')]; this.eyesOn(head, 0.05, 0.31, 0.16, 0.14); head.push(this.bx(0.5, 0.06, 0.04, '#ff8a3c', 0, -0.13, 0.31, true));
+    const body = [this.bx(0.95, 0.85, 0.6, '#4a4550', 0, 0.95, 0), this.bx(0.08, 0.6, 0.04, '#ff8a3c', -0.2, 1.0, 0.31, true), this.bx(0.3, 0.06, 0.04, '#ff8a3c', 0.1, 1.15, 0.31, true), this.bx(0.06, 0.3, 0.04, '#ffd23c', 0.25, 0.8, 0.31, true)];
+    const arm = () => [this.bx(0.3, 0.7, 0.3, '#5a5560', 0, -0.35, 0), this.bx(0.34, 0.25, 0.34, '#3a3540', 0, -0.75, 0)];
+    const leg = () => [this.bx(0.32, 0.55, 0.32, '#3a3540', 0, -0.27, 0)];
+    return this.rigFrom({ body, head, armL: arm(), armR: arm(), legL: leg(), legR: leg() }, 1.7, 1.3, 0.65, 0.55, 0.22, 0.95);
+  }
+  private penguin(): Blocky {
+    const head: THREE.Object3D[] = [this.bx(0.5, 0.45, 0.45, '#1b1b2a')]; head.push(this.bx(0.36, 0.28, 0.04, '#ffffff', 0, -0.02, 0.23)); this.eyesOn(head, 0.04, 0.26, 0.1, 0.09); head.push(this.bx(0.14, 0.08, 0.16, '#ff9a2a', 0, -0.08, 0.3)); head.push(this.bx(0.56, 0.08, 0.2, '#ff4d6a', 0, -0.2, 0.05));
+    const body = [this.bx(0.6, 0.7, 0.5, '#1b1b2a', 0, 0.55, 0), this.bx(0.42, 0.55, 0.04, '#ffffff', 0, 0.52, 0.26)];
+    const arm = () => [this.bx(0.08, 0.5, 0.3, '#1b1b2a', 0, -0.25, 0)];
+    const leg = () => [this.bx(0.18, 0.12, 0.3, '#ff9a2a', 0, -0.06, 0.06)];
+    return this.rigFrom({ body, head, armL: arm(), armR: arm(), legL: leg(), legR: leg() }, 1.12, 0.85, 0.34, 0.14, 0.12, 0.95);
+  }
+  private frog(): Blocky {
+    const head: THREE.Object3D[] = [this.bx(0.7, 0.4, 0.55, '#3fd25a')]; for (const sx of [-1, 1]) { head.push(this.bx(0.22, 0.22, 0.22, '#3fd25a', sx * 0.22, 0.25, 0.1), this.bx(0.16, 0.16, 0.04, '#ffffff', sx * 0.22, 0.27, 0.22), this.bx(0.08, 0.1, 0.05, '#1b1035', sx * 0.22, 0.26, 0.24)); } head.push(this.bx(0.4, 0.05, 0.04, '#c8304a', 0, -0.08, 0.28));
+    const body = [this.bx(0.6, 0.5, 0.45, '#2fbf4a', 0, 0.5, 0), this.bx(0.4, 0.35, 0.04, '#d8ffb0', 0, 0.48, 0.23)];
+    const arm = () => [this.bx(0.12, 0.4, 0.12, '#2fbf4a', 0, -0.2, 0), this.bx(0.18, 0.06, 0.18, '#ff8a3c', 0, -0.42, 0)];
+    const leg = () => [this.bx(0.18, 0.3, 0.3, '#2fbf4a', 0, -0.15, 0.05)];
+    return this.rigFrom({ body, head, armL: arm(), armR: arm(), legL: leg(), legR: leg() }, 0.95, 0.7, 0.36, 0.3, 0.17, 0.95);
   }
 
   private glowCache = new Map<string, THREE.Texture>();
@@ -484,7 +646,7 @@ export class Voxel {
     fm.castShadow = true; fm.matrixAutoUpdate = false; fm.computeBoundingSphere(); this.scene.add(fm); this.canopyMesh = fm;
   }
   private buildWater() {
-    const geo = new THREE.PlaneGeometry(260, 260, 130, 130); geo.rotateX(-Math.PI / 2);
+    const geo = new THREE.PlaneGeometry(320, 320, 120, 120); geo.rotateX(-Math.PI / 2);
     const mat = new THREE.ShaderMaterial({
       transparent: true, fog: false,
       uniforms: { ...this.waterU, deep: { value: new THREE.Color('#0a6fd8') }, mid: { value: new THREE.Color('#12b8e8') }, shallow: { value: new THREE.Color('#5ff2e0') } },
@@ -658,11 +820,24 @@ export class Voxel {
     // nearest interactable
     this.near = null;
     if (Math.hypot(p.x - s.x, p.z - s.z) < 2.3 && !this.samRide) this.near = 'sam';
+    else { for (const [id, a] of Object.entries(this.npcs)) if (Math.hypot(p.x - a.x, p.z - a.z) < 2.4) { this.near = `npc:${id}`; break; } }
+    if (this.near?.startsWith('npc:')) { /* keep */ }
     else if (this.labNear) this.near = 'lab';
     else if (Math.hypot(p.x - BOARD.x, p.z - BOARD.z) < 2.2) this.near = 'board';
     else for (const g of this.eggs) if (!g.found && Math.hypot(p.x - g.x, p.z - g.z) < 1.6) { this.near = `egg:${g.id}`; break; }
     for (const a of [p, s, ...this.kids]) { a.b.root.position.set(a.x, a.y, a.z); const d = Math.atan2(Math.sin(a.yaw - a.b.root.rotation.y), Math.cos(a.yaw - a.b.root.rotation.y)); a.b.root.rotation.y += d * 0.25; }
     animateBlocky(p.b, t, p.moving);
+    for (const a of Object.values(this.npcs)) { a.y = this.groundY(a.x, a.z); const dd = Math.hypot(p.x - a.x, p.z - a.z); if (dd < 7) a.yaw = Math.atan2(p.x - a.x, p.z - a.z); a.b.root.position.set(a.x, a.y, a.z); const d2 = Math.atan2(Math.sin(a.yaw - a.b.root.rotation.y), Math.cos(a.yaw - a.b.root.rotation.y)); a.b.root.rotation.y += d2 * 0.2; animateBlocky(a.b, t + a.x, false, a.talk, !!a.wave || (dd > 2.6 && dd < 9 && !a.talk)); }
+    for (const fx of this.particlesFx) {
+      const arr = fx.pts.geometry.attributes.position.array as Float32Array; const [cx, cy, cz, r] = fx.vel;
+      for (let i = 0; i < arr.length; i += 3) {
+        if (fx.kind === 'smoke') { arr[i + 1] += dt * 1.6; arr[i] += Math.sin(t + i) * dt * 0.4; if (arr[i + 1] > cy + 10) { arr[i] = cx + (Math.random() - 0.5) * r; arr[i + 1] = cy; arr[i + 2] = cz + (Math.random() - 0.5) * r; } }
+        else if (fx.kind === 'snow') { arr[i + 1] -= dt * 1.2; arr[i] += Math.sin(t + i) * dt * 0.3; if (arr[i + 1] < 2) { arr[i] = cx + (Math.random() - 0.5) * r; arr[i + 1] = cy + 8; arr[i + 2] = cz + (Math.random() - 0.5) * r; } }
+        else { arr[i] = cx + Math.sin(t * 0.4 + i) * r * 0.45; arr[i + 1] = this.groundY(arr[i], arr[i + 2]) + 1.2 + Math.abs(Math.sin(t * 6 + i)) * 0.5; arr[i + 2] = cz + Math.cos(t * 0.33 + i * 1.7) * r * 0.4; }
+      }
+      fx.pts.geometry.attributes.position.needsUpdate = true;
+    }
+    { const b = biomeAt(p.x, p.z); if (b !== this.currentBiome) { this.currentBiome = b; this.onBiome(b); } }
     this.kids.forEach((k, i) => { animateBlocky(k.b, t + i, false, true); k.y = this.groundY(k.x, k.z); });
     this.surfers.forEach((su, i) => {
       su.x = 3 + ((t * 0.9 + i * 4) % 11); su.z = 8 + i * 11 + Math.sin(t * 0.5 + i) * 2; su.y = this.waveY(su.x, su.z, t) + 0.02;

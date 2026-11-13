@@ -1,13 +1,13 @@
 /** Curiosity Craft — core loop: spawn → roam → recall → Wonder Board → 3 questions → Sam's Why Ladder → Surfboard Lab → recall → report. */
 import './cc/cc.css';
-import type { AskResponse, CuriosityWorld, Lang, Material } from '../shared/curiosity';
+import type { AskResponse, CuriosityWorld, Lang, Material, WorldTag } from '../shared/curiosity';
 import { DENSITY, LANGS } from '../shared/curiosity';
 import { Input } from './core/input';
 import { Audio } from './core/audio';
 import { BEACH, EGGS, LANG, LANG_NAMES, localAsk, localWonder, questionsForGuess, setLang, t } from './cc/data';
 import { ask, emit, fetchWorld, SESSION, startSession, wonder } from './cc/net';
 import { HandsFree, Listener, setMuted, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
-import { BOARD, LAB_DOCK, PLACES, Voxel } from './cc/voxel';
+import { BIOME_PLACES, BIOMES, BOARD, LAB_DOCK, NPC_SPOTS, PLACES, Voxel, type Biome } from './cc/voxel';
 import { createLab3D, type Lab3D } from './cc/lab3d';
 import { ART_CC } from '../shared/art';
 
@@ -39,9 +39,12 @@ const S = {
   lastFact: null as string | null,
   phase: 'roam' as 'roam' | 'board' | 'wonder' | 'sam' | 'lab' | 'end',
   pendingQ: null as string | null,
+  pendingBiome: 'beach' as Biome,
   labArrived: false,
   visited: new Set<string>(),
   lastConcepts: [] as string[],
+  biome: 'beach' as Biome,
+  askedBiomes: new Set<string>(),
   recallBefore: null as boolean | null, recallAfter: null as boolean | null,
   topicIcon: '❓',
   labDone: false,
@@ -50,6 +53,27 @@ const S = {
 (window as unknown as Record<string, unknown>).__CC = S;
 const W8 = window as unknown as { __CCboot?: number };
 W8.__CCboot = (W8.__CCboot ?? 0) + 1;
+
+// ------------------------------------------------------------------ biomes / NPCs (fact sheets come from /api/cc/worlds/<id>)
+const stub = (id: string, name: string, npc: string, npcName: string, voice: string, greeting: string, starters: { id: string; label: string; icon: string; questions: string[] }[]): CuriosityWorld =>
+  ({ ...BEACH, id: id as WorldTag, name, npc: { id: npc, name: npcName, persona: '', voice, greeting }, facts: [], concepts: [], starters });
+const WORLDS: Record<Biome, CuriosityWorld> = {
+  beach: BEACH,
+  volcano: stub('volcano', 'Ember Peak', 'rocky', 'Rocky the Lava Golem', 'aura-2-zeus-en', 'Rumble rumble! I am Rocky. Ask me about volcanoes!', [
+    { id: 'volcano', label: 'Volcano', icon: '🌋', questions: ['Why do volcanoes erupt?', 'What is lava made of?', 'Why is lava so hot?'] },
+    { id: 'lava', label: 'Lava', icon: '🔥', questions: ['Why does lava glow?', 'What happens when lava cools?', 'Why is obsidian so shiny?'] }]),
+  ice: stub('ice', 'Frostbite Cave', 'penny', 'Penny the Penguin', 'aura-2-luna-en', 'Brrr, hi! I am Penny. Ask me about ice and snow!', [
+    { id: 'snowflake', label: 'Snowflake', icon: '❄️', questions: ['Why does ice float?', 'Why do snowflakes have six sides?', 'How do penguins stay warm?'] },
+    { id: 'iceberg', label: 'Iceberg', icon: '🧊', questions: ['Why do icebergs float?', 'Why is ice slippery?', 'Why is snow white?'] }]),
+  jungle: stub('jungle', 'Whispering Jungle', 'fern', 'Fern the Tree Frog', 'aura-2-thalia-en', 'Ribbit! I am Fern. Ask me about the jungle!', [
+    { id: 'frog', label: 'Frog', icon: '🐸', questions: ['Why do frogs live near water?', 'How do tree frogs stick to leaves?', 'Why are some frogs so colorful?'] },
+    { id: 'leaf', label: 'Giant leaf', icon: '🍃', questions: ['Why are jungle leaves so big?', 'How do plants make food?', 'Why does it rain so much in the jungle?'] }]),
+};
+const tagToBiome = (tag?: string): Biome => (tag === 'volcano' || tag === 'ice' || tag === 'jungle' ? tag : 'beach');
+const npcBiome = (npc: string): Biome => (Object.keys(BIOMES) as Biome[]).find((b) => BIOMES[b].npc === npc) ?? 'beach';
+function curWorld(): CuriosityWorld { return WORLDS[S.biome] ?? BEACH; }
+function npcActor(b: Biome = S.biome) { return b === 'beach' ? vox.sam : vox.npcs[BIOMES[b].npc]; }
+function conceptName(id: string) { for (const w of Object.values(WORLDS)) { const c = w.concepts.find((x) => x.id === id); if (c) return c.name; } return id.replace(/-/g, ' '); }
 
 const ui = document.getElementById('ui')!;
 const input = new Input();
@@ -88,11 +112,15 @@ function renderHud() {
   ladder.replaceChildren(...[0, 1, 2, 3, 4].map((i) => h('div', { class: `rung${S.asked > 0 && i <= S.level ? ' on' : ''}` })), h('div', { class: 'lbl' }, t('npc.whyLevel', 'Why level {n}', { n: S.level })));
   ladder.dataset.level = String(S.level);
   wondersChip.replaceChildren('✨ ', h('span', { class: 'xp' }, `${S.wonders.size}/${Object.keys(EGGS).length}`), ` ${t('ui.wonders', 'wonders found')}`);
-  conceptsEl.replaceChildren(...[...S.concepts].map((id) => h('span', { class: 'cchip' }, S.world.concepts.find((c) => c.id === id)?.name ?? id)));
+  conceptsEl.replaceChildren(...[...S.concepts].map((id) => h('span', { class: 'cchip' }, conceptName(id))));
   (journalBtn.children[0] as HTMLElement).textContent = `${t('journal.title', 'Journal')} ${S.journal.length}`;
   lucky.textContent = t('lang.lucky8', 'Lucky 8 languages');
   hint.innerHTML = `<kbd>WASD</kbd> ${t('ui.move', 'move')} · <kbd>E</kbd> ${t('ui.talk', 'talk')} · <kbd>V</kbd> ${t('npc.holdToTalk', 'hold to talk')} · <kbd>J</kbd> ${t('journal.title', 'Journal')}`;
 }
+const bannerEl = h('div', { id: 'banner' });
+ui.append(bannerEl);
+let bannerT = 0;
+function banner(s: string) { bannerEl.textContent = s; bannerEl.classList.add('show'); clearTimeout(bannerT); bannerT = window.setTimeout(() => bannerEl.classList.remove('show'), 2600); }
 let toastT = 0;
 function toast(s: string, ms = 2600) { toastEl.textContent = s; toastEl.classList.add('show'); clearTimeout(toastT); toastT = window.setTimeout(() => toastEl.classList.remove('show'), ms); }
 function xpFly(n: number) {
@@ -132,7 +160,7 @@ async function sayLine(el: HTMLElement, text: string) {
     step();
   };
   const fallback = setTimeout(() => reveal(text.length * 30), 3800); // captions never stay empty
-  await speak(text, LANG, S.world.npc.voice, reveal);
+  await speak(text, LANG, curWorld().npc.voice, reveal);
   clearTimeout(fallback); if (!shown) reveal(text.length * 20);
 }
 
@@ -147,12 +175,13 @@ function setQuest(q: Quest, say = true) {
 }
 function placeFor(concepts: string[]): string {
   const order: [string, string][] = [['wave-breaking', 'pier'], ['waves-wind', 'pier'], ['density', 'dock'], ['buoyancy', 'dock'], ['materials', 'dock'], ['erosion', 'castle'], ['sun-wind', 'tower'], ['tides', 'pool']];
-  for (const [c, pl] of order) if (concepts.includes(c) && !S.visited.has(pl)) return pl;
-  return ['pier', 'tower', 'castle', 'pool', 'dock'].find((pl) => !S.visited.has(pl)) ?? 'pier';
+  if (S.biome === 'beach') for (const [c, pl] of order) if (concepts.includes(c) && !S.visited.has(pl)) return pl;
+  const pool = BIOME_PLACES[S.biome];
+  return pool.find((pl) => !S.visited.has(pl)) ?? pool[0];
 }
 function nextStep(res?: { suggestChallenge?: string; conceptIds?: string[]; whyHook?: string }) {
-  if (S.labDone && S.level >= 2) { setQuest(null); vox.sam.wave = true; toast(`🎉 ${t('quest.done', 'Amazing curiosity! Sam is cheering!')}`); setTimeout(() => { vox.sam.wave = false; closeSam(); finale(); }, 1800); return; }
-  if (!S.labDone && (res?.suggestChallenge || S.level >= 2)) { setQuest({ text: t('quest.lab', 'Try it! Build a surfboard at the Lab dock'), x: LAB_DOCK.x, z: LAB_DOCK.z, kind: 'lab' }); return; }
+  if ((S.labDone && S.level >= 2) || S.level >= 3) { setQuest(null); npcActor().wave = true; toast(`🎉 ${t('quest.done', 'Amazing curiosity! Sam is cheering!')}`); setTimeout(() => { npcActor().wave = false; closeSam(); finale(); }, 1800); return; }
+  if (!S.labDone && (res?.suggestChallenge === 'surfboard-lab' || (S.biome === 'beach' && S.level >= 2))) { setQuest({ text: t('quest.lab', 'Try it! Build a surfboard at the Lab dock'), x: LAB_DOCK.x, z: LAB_DOCK.z, kind: 'lab' }); return; }
   const pk = placeFor(res?.conceptIds ?? S.lastConcepts); const P = PLACES[pk];
   setQuest({ text: `${t('quest.investigate', 'Go look at')} ${P.name}${res?.whyHook ? ': ' + res.whyHook : ''}`, x: P.x, z: P.z, kind: 'place', place: pk });
 }
@@ -167,15 +196,18 @@ function arrive() {
     setTimeout(() => { vox.followPlayer(); openSam(true); void askSam(t('npc.why', 'Why?'), true); }, 1700);
   } else if (q.kind === 'lab' && vox.dist2(q.x, q.z) < 3.5 && !S.labArrived) {
     S.labArrived = true;
-    if (lab3d) { toast(`🧪 ${t('quest.labHow', 'Pick up a board (E), walk to the end of the dock and throw it in (E)!')}`, 5000); void speak(t('quest.labSam', 'Pick a board, throw it off the dock, and see what floats!'), LANG, S.world.npc.voice, () => undefined); }
+    if (lab3d) { toast(`🧪 ${t('quest.labHow', 'Pick up a board (E), walk to the end of the dock and throw it in (E)!')}`, 5000); void speak(t('quest.labSam', 'Pick a board, throw it off the dock, and see what floats!'), LANG, curWorld().npc.voice, () => undefined); }
     else openLab();
   }
 }
 function interactBoard() { if (S.phase !== 'board' && S.phase !== 'wonder') return; S.phase = 'wonder'; if (S.recallBefore === null) recall('before', () => wonderBoard()); else wonderBoard(); }
-function interactSam() {
-  if (S.phase === 'roam' || S.phase === 'board' || S.phase === 'wonder') { toast(t('quest.boardFirst', 'Sam: “Draw your wonder on the board first, dude!”')); return; }
+function interactSam(b: Biome = 'beach') {
+  if (S.phase === 'roam' || S.phase === 'board' || S.phase === 'wonder') { if (b === 'beach') { toast(t('quest.boardFirst', 'Sam: “Draw your wonder on the board first, dude!”')); return; } }
+  const pendingHere = S.pendingQ && S.pendingBiome === b;
+  S.biome = b;
   openSam();
-  if (S.pendingQ) { const q = S.pendingQ; S.pendingQ = null; setQuest(null, false); vox.sam.wave = false; void askSam(q, false); }
+  if (pendingHere) { const q = S.pendingQ!; S.pendingQ = null; setQuest(null, false); npcActor().wave = false; void askSam(q, false); }
+  else if (!S.askedBiomes.has(b)) { S.askedBiomes.add(b); if (samRefs) void sayLine(samRefs.say, curWorld().npc.greeting); }
 }
 
 // ------------------------------------------------------------------ 1) roam
@@ -191,7 +223,7 @@ function roam() {
       clearInterval(iv); timer.remove(); emit('roam_end', { seconds: ROAM_S });
       S.phase = 'board'; vox.boardGlow = true; vox.sam.wave = true;
       setQuest({ text: t('quest.board', 'Walk to the glowing Wonder Board by the surf shack'), x: BOARD.x, z: BOARD.z + 1.3, kind: 'board' });
-      void speak(t('quest.samCall', 'Hey dude! Come draw what you wonder about on my Wonder Board!'), LANG, S.world.npc.voice, () => undefined);
+      void speak(t('quest.samCall', 'Hey dude! Come draw what you wonder about on my Wonder Board!'), LANG, curWorld().npc.voice, () => undefined);
     }
   }, 1000);
 }
@@ -241,8 +273,14 @@ function wonderBoard() {
   const interim = h('div', { class: 'interim' });
   const mic = micButton((s) => { text.value = s; void submit(); }, interim);
   const status = h('div', { class: 'result' });
-  const starters = h('div', { class: 'starters' }, ...S.world.starters.map((s) => h('button', { class: 'btn', 'data-testid': `starter-${s.id}`, onclick: () => { S.topicIcon = s.icon; emit('wonder_submit', { starter: s.id, hasDrawing: drawn, source: 'starter' }); showQuestions(s.questions); } }, ART_CC.icons[s.id] ? h('img', { class: 'sicon', src: ART_CC.icons[s.id], alt: '' }) : h('span', { class: 'ic' }, s.icon), t(`starter.${s.id}`, s.label))));
+  const mixed: { s: CuriosityWorld['starters'][number]; b: Biome }[] = [
+    ...BEACH.starters.slice(0, 3).map((x) => ({ s: x, b: 'beach' as Biome })),
+    ...(['volcano', 'ice', 'jungle'] as Biome[]).flatMap((b) => WORLDS[b].starters.slice(0, 2).map((x) => ({ s: x, b }))),
+    ...BEACH.starters.slice(3, 6).map((x) => ({ s: x, b: 'beach' as Biome })),
+  ];
+  const starters = h('div', { class: 'starters' }, ...mixed.map(({ s, b }) => h('button', { class: 'btn', 'data-testid': `starter-${s.id}`, onclick: () => { S.topicIcon = s.icon; boardBiome = b; emit('wonder_submit', { starter: s.id, hasDrawing: drawn, source: 'starter', worldTag: b }); showQuestions(s.questions); } }, ART_CC.icons[s.id] ? h('img', { class: 'sicon', src: ART_CC.icons[s.id], alt: '' }) : h('span', { class: 'ic' }, s.icon), t(`starter.${s.id}`, s.label))));
   let busy = false;
+  let boardBiome: Biome = 'beach';
   const submit = async () => {
     if (busy) return;
     const txt = text.value.trim();
@@ -253,7 +291,8 @@ function wonderBoard() {
     try { res = await wonder({ image: drawn ? cv.toDataURL('image/png') : undefined, text: txt || undefined, lang: LANG, worldId: 'beach' }); if (!res?.questions?.length) throw new Error('empty'); }
     catch { res = localWonder(txt, drawn, S.world); }
     busy = false;
-    emit('wonder_submit', { text: txt, hasDrawing: drawn, guess: res.guess, confidence: res.confidence, source: res.source });
+    boardBiome = tagToBiome(res.worldTag);
+    emit('wonder_submit', { text: txt, hasDrawing: drawn, guess: res.guess, confidence: res.confidence, source: res.source, worldTag: boardBiome });
     S.topicIcon = S.world.starters.find((s) => s.label.toLowerCase() === (res.guess ?? '').toLowerCase())?.icon ?? '❓';
     if (res.confidence < 0.5 && res.guesses?.length) {
       const r = res;
@@ -265,12 +304,12 @@ function wonderBoard() {
     h('div', {}, h('div', { class: 'kicker' }, t('starters.title', 'Or pick one')), starters,
       h('div', { class: 'row', style: 'margin-top:10px' }, mic, interim), text,
       h('div', { class: 'row', style: 'margin-top:10px' }, h('button', { class: 'btn gold big', 'data-testid': 'wonder-submit', onclick: () => void submit() }, t('wonder.submit', 'I wonder!'))), status));
-  const card = h('div', { class: 'card panel', 'data-testid': 'wonder-board' }, h('div', { class: 'kicker' }, 'Wonder Board'), h('h2', {}, t('wonder.title', 'What do you wonder about?')), body);
+  const card = h('div', { class: 'card panel', 'data-testid': 'wonder-board' }, h('div', { class: 'kicker' }, 'Wonder Board'), h('h2', {}, t('wonder.titleAny', 'What do you wonder about? Draw anything!')), body);
   open(card);
-  void speak(t('wonder.title', 'What do you wonder about?'), LANG, S.world.npc.voice, () => undefined);
+  void speak(t('wonder.title', 'What do you wonder about?'), LANG, curWorld().npc.voice, () => undefined);
   function showQuestions(qs: string[]) {
     body.replaceChildren(h('div', { style: 'grid-column:1/-1' }, h('h2', {}, t('wonder.pickQuestion', 'Pick a question to explore!')),
-      h('div', { class: 'qcards' }, ...qs.slice(0, 3).map((q, i) => h('button', { class: 'btn qcard', 'data-testid': `question-${i}`, onclick: () => { emit('question_pick', { question: q, index: i }); close(); pickQuestion(q); } }, q)))));
+      h('div', { class: 'qcards' }, ...qs.slice(0, 3).map((q, i) => h('button', { class: 'btn qcard', 'data-testid': `question-${i}`, onclick: () => { emit('question_pick', { question: q, index: i, worldTag: boardBiome }); close(); pickQuestion(q, boardBiome); } }, q)))));
   }
 }
 
@@ -278,9 +317,11 @@ function wonderBoard() {
 let samBox: HTMLElement | null = null;
 let handsFree: HandsFree | null = null;
 let samRefs: { say: HTMLElement; hook: HTMLElement; kid: HTMLElement; tryBtn: HTMLButtonElement; whyBtn: HTMLButtonElement; face: HTMLImageElement; goBtn: HTMLButtonElement } | null = null;
-function pickQuestion(q: string) {
-  S.phase = 'sam'; S.pendingQ = q; vox.boardGlow = false; vox.sam.wave = true;
-  setQuest({ text: `${t('quest.ask', 'Ask Surfer Sam')}: “${q}”`, x: vox.sam.x, z: vox.sam.z + 1.2, kind: 'sam' });
+function pickQuestion(q: string, b: Biome = 'beach') {
+  S.phase = 'sam'; S.pendingQ = q; S.pendingBiome = b; vox.boardGlow = false; vox.sam.wave = false;
+  const a = npcActor(b); a.wave = true;
+  const w = WORLDS[b];
+  setQuest({ text: b === 'beach' ? `${t('quest.ask', 'Ask Surfer Sam')}: “${q}”` : `${t('quest.find', 'Find')} ${w.npc.name} ${t('quest.at', 'at')} ${BIOMES[b].name}: “${q}”`, x: a.x, z: a.z + 1.2, kind: 'sam' });
 }
 function travelToSam(q: string) { pickQuestion(q); }
 function openSam(remote = false) {
@@ -301,15 +342,17 @@ function openSam(remote = false) {
   const hfBtn = h('button', { class: 'btn', 'data-testid': 'handsfree', title: t('npc.handsFree', 'Hands-free: just talk') }, '🎧 ', t('npc.handsFree', 'Hands-free')) as HTMLButtonElement;
   handsFree = new HandsFree(LANG, (s) => (interim.textContent = s), (s) => void askSam(s, isWhyText(s)), (on) => { hfBtn.classList.toggle('gold', on); if (!on && !sttSupported) interim.textContent = t('npc.micError', 'Mic not available, type instead!'); });
   hfBtn.onclick = () => { if (handsFree?.active) handsFree.stop(); else handsFree?.start(); };
-  const face = h('img', { class: 'samface', src: ART_CC.sam.happy, alt: 'Surfer Sam' }) as HTMLImageElement;
-  samBox = h('div', { id: 'sam', class: 'panel', 'data-testid': 'sam-panel' }, face,
-    h('div', { class: 'name' }, remote ? `📻 ${S.world.npc.name}` : S.world.npc.name), kid, say, hook,
+  const face = h('img', { class: 'samface', src: ART_CC.sam.happy, alt: curWorld().npc.name }) as HTMLImageElement;
+  const badge = S.biome === 'beach' ? null : h('div', { class: 'npcbadge' }, BIOMES[S.biome].emoji);
+  if (badge) face.style.display = 'none';
+  samBox = h('div', { id: 'sam', class: 'panel', 'data-testid': 'sam-panel' }, face, badge,
+    h('div', { class: 'name' }, remote ? `📻 ${curWorld().npc.name}` : curWorld().npc.name), kid, say, hook,
     h('div', { class: 'ctrl' }, whyBtn, mic, hfBtn, interim, txt, h('button', { class: 'btn sky', onclick: send }, t('npc.ask', 'Ask')), goBtn, tryBtn, h('button', { class: 'btn ghost', 'data-testid': 'sam-close', onclick: () => closeSam() }, '✕')));
   samRefs = { say, hook, kid, tryBtn, whyBtn, face, goBtn };
   if (S.level >= 2 || S.labDone) tryBtn.style.display = '';
   ui.append(samBox);
 }
-function closeSam() { handsFree?.stop(); handsFree = null; samBox?.remove(); samBox = null; samRefs = null; stopSpeech(); vox.sam.talk = false; vox.frozen = !!modal; asking = false; }
+function closeSam() { handsFree?.stop(); handsFree = null; samBox?.remove(); samBox = null; samRefs = null; stopSpeech(); npcActor().talk = false; vox.frozen = !!modal; asking = false; }
 
 let asking = false;
 async function askSam(question: string, isWhy: boolean) {
@@ -324,15 +367,15 @@ async function askSam(question: string, isWhy: boolean) {
   emit('question_asked', { question, level: S.level, why: isWhy });
   xpFly(isWhy ? 15 : 10);
   const prev = S.history.length ? S.history[S.history.length - 1].text : '';
-  const req = { worldId: 'beach' as const, lang: LANG, sessionId: SESSION, question: isWhy && prev ? `Why? (about: ${prev})` : question, level: S.level, history: S.history.slice(-8) };
+  const req = { worldId: S.biome as WorldTag, lang: LANG, sessionId: SESSION, question: isWhy && prev ? `Why? (about: ${prev})` : question, level: S.level, history: S.history.slice(-8) };
   let res: AskResponse;
-  R.face.src = ART_CC.sam.thinking;
+  if (S.biome === 'beach') R.face.src = ART_CC.sam.thinking;
   const fillers = [t('sam.f1', 'Ooh, good one!'), t('sam.f2', 'Hmm, let me think…'), t('sam.f3', 'Gnarly question, dude!'), t('sam.f4', 'Great wondering!')];
   const filler = fillers[S.asked % fillers.length];
   R.say.textContent = `${filler} …`; R.hook.textContent = '';
   handsFree?.pause();
   speakQuick(filler, LANG);
-  const local = localAsk({ ...req, question }, S.lastFact);
+  const local = S.biome === 'beach' ? localAsk({ ...req, question }, S.lastFact) : { answer: t('npc.notSure', "Hmm, I'm not sure! Let's go look closely and find out."), whyHook: t('npc.lookHook', 'What do you notice? Why do you think it happens?'), conceptIds: [], grounded: false, source: 'local' as const, factId: '' };
   try { res = await ask(req); if (!res?.answer) throw new Error('empty'); }
   catch { res = local; }
   S.lastFact = local.factId || S.lastFact;
@@ -343,12 +386,12 @@ async function askSam(question: string, isWhy: boolean) {
   else { S.journal.push({ icon: S.topicIcon, question, level: S.level }); emit('journal_card', { question, level: S.level }); }
   renderHud();
   if (res.suggestChallenge || S.level >= 2) R.tryBtn.style.display = '';
-  R.face.src = res.grounded === false ? ART_CC.sam.laughing : ART_CC.sam.happy;
-  vox.sam.talk = true;
+  if (S.biome === 'beach') R.face.src = res.grounded === false ? ART_CC.sam.laughing : ART_CC.sam.happy;
+  npcActor().talk = true;
   R.hook.textContent = '';
   await sayLine(R.say, res.answer);
   if (samRefs === R) await sayLine(R.hook, res.whyHook);
-  vox.sam.talk = false;
+  npcActor().talk = false;
   R.whyBtn.disabled = false;
   if (samRefs === R) asking = false;
   handsFree?.resume();
@@ -438,14 +481,14 @@ function openLab() {
     h('div', { class: 'row' }, h('button', { class: 'btn gold big', 'data-testid': 'drop', onclick: drop }, '⬇ ', t('lab.drop', 'Drop it in!')), h('span', { class: 'spacer' }), h('label', { class: 'row' }, '🌊 ', t('wave.title', 'Wave maker'), waveIn)),
     h('div', { class: 'row' }, sticker, result), doneRow);
   open(card);
-  void speak(t('lab.predict', 'Pick a material and drop it in. Guess first: will it float?'), LANG, S.world.npc.voice, () => undefined);
+  void speak(t('lab.predict', 'Pick a material and drop it in. Guess first: will it float?'), LANG, curWorld().npc.voice, () => undefined);
 }
 
 function afterLab() {
   if (S.labDone) return;
   S.labDone = true; xpFly(10); labPanelBtn.style.display = 'none';
   if (S.level >= 2) nextStep();
-  else { S.pendingQ = t('quest.whyFoam', 'Why did the foam board float?'); setQuest({ text: t('quest.tellSam', 'Tell Sam what you found!'), x: vox.sam.x, z: vox.sam.z + 1.2, kind: 'sam' }); }
+  else { S.pendingQ = t('quest.whyFoam', 'Why did the foam board float?'); setQuest({ text: t('quest.tellSam', 'Tell Sam what you found!'), x: vox.sam.x, z: vox.sam.z + 1.2, kind: 'sam' }); S.pendingBiome = 'beach'; }
 }
 
 // ------------------------------------------------------------------ 5) end: recall again + report
@@ -479,7 +522,7 @@ function openEgg(id: string) {
     h('p', { style: 'font-size:18px' }, canAsk ? t('egg.ask', 'Curious? Ask Sam and climb the Why ladder!') : t('egg.saved', 'Saved to your Journal! You can ask Sam about it soon.')),
     h('div', { class: 'row' }, canAsk ? h('button', { class: 'btn gold big', onclick: () => { close(); S.topicIcon = e.icon; travelToSam(e.wonder); } }, t('egg.askBtn', 'Ask Sam!')) : '', h('button', { class: 'btn', onclick: () => close() }, t('egg.ok', 'Cool!'))));
   open(card);
-  void speak(e.wonder, LANG, S.world.npc.voice, () => undefined);
+  void speak(e.wonder, LANG, curWorld().npc.voice, () => undefined);
 }
 
 // ------------------------------------------------------------------ journal
@@ -494,15 +537,17 @@ function toggleJournal() {
 // ------------------------------------------------------------------ boot
 async function boot() {
   const [remote] = await Promise.all([fetchWorld('beach'), startSession(LANG)]);
-  if (remote?.facts?.length && remote.starters?.length) S.world = { ...BEACH, ...remote };
+  if (remote?.facts?.length && remote.starters?.length) { S.world = { ...BEACH, ...remote }; WORLDS.beach = S.world; }
+  void Promise.all((['volcano', 'ice', 'jungle'] as Biome[]).map(async (b) => { const w = await fetchWorld(b as WorldTag); if (w?.npc?.name) WORLDS[b] = { ...WORLDS[b], ...w, starters: w.starters?.length ? w.starters : WORLDS[b].starters }; }));
   vox = new Voxel(document.getElementById('game')!, input);
-  vox.onInteract = (what) => { if (what.startsWith('egg:')) openEgg(what.slice(4)); else if (what === 'sam') interactSam(); else if (what === 'board') interactBoard(); };
+  vox.onInteract = (what) => { if (what.startsWith('egg:')) openEgg(what.slice(4)); else if (what === 'sam') interactSam('beach'); else if (what.startsWith('npc:')) interactSam(npcBiome(what.slice(4))); else if (what === 'board') interactBoard(); };
   vox.onTick = () => {
     for (const a of input.take()) {
       if (a === 'book') toggleJournal();
       if (a === 'interact' && !modal && !samBox && lab3d && (() => { try { return lab3d!.interact(); } catch { return false; } })()) continue;
       if (a === 'interact' && !modal && !samBox && vox.near?.startsWith('egg:')) openEgg(vox.near.slice(4));
-      else if (a === 'interact' && !modal && !samBox && vox.near === 'sam') interactSam();
+      else if (a === 'interact' && !modal && !samBox && vox.near === 'sam') interactSam('beach');
+      else if (a === 'interact' && !modal && !samBox && vox.near?.startsWith('npc:')) interactSam(npcBiome(vox.near.slice(4)));
       else if (a === 'interact' && !modal && !samBox && vox.near === 'board') interactBoard();
       if (a === 'voice') activeMic?.start();
       if (a === 'pause' && samBox && !asking) closeSam();
@@ -513,9 +558,10 @@ async function boot() {
     if (labHint) { const pp = vox.screen(vox.player.x, vox.player.y + 2.4, vox.player.z); prompt.innerHTML = `<kbd>E</kbd> ${labHint}`; prompt.style.left = `${pp.x}px`; prompt.style.top = `${pp.y}px`; prompt.classList.add('show'); arrive(); return; }
     labPanelBtn.style.display = (quest?.kind === 'lab' || S.labArrived) && !S.labDone ? '' : 'none';
     const board = vox.near === 'board' && (S.phase === 'board' || S.phase === 'wonder');
-    if (!samBox && !modal && (egg || board || vox.near === 'sam')) {
-      const p = egg ? vox.screen(egg.x, egg.y + 1.3, egg.z) : board ? vox.screen(BOARD.x, 3.4, BOARD.z) : vox.screen(vox.sam.x, vox.sam.y + 2.1, vox.sam.z);
-      prompt.innerHTML = egg ? `<kbd>E</kbd> ✨ ${t('ui.lookCloser', 'Look closer')}` : board ? `<kbd>E</kbd> 🎨 ${t('ui.board', 'Open the Wonder Board')}` : `<kbd>E</kbd> ${t('ui.talkSam', 'Talk to Sam')}`; prompt.style.left = `${p.x}px`; prompt.style.top = `${p.y}px`; prompt.classList.add('show');
+    const npcNear = vox.near?.startsWith('npc:') ? vox.npcs[vox.near.slice(4)] : null;
+    if (!samBox && !modal && (egg || board || vox.near === 'sam' || npcNear)) {
+      const p = egg ? vox.screen(egg.x, egg.y + 1.3, egg.z) : board ? vox.screen(BOARD.x, 3.4, BOARD.z) : npcNear ? vox.screen(npcNear.x, npcNear.y + 2.3, npcNear.z) : vox.screen(vox.sam.x, vox.sam.y + 2.1, vox.sam.z);
+      prompt.innerHTML = egg ? `<kbd>E</kbd> ✨ ${t('ui.lookCloser', 'Look closer')}` : board ? `<kbd>E</kbd> 🎨 ${t('ui.board', 'Open the Wonder Board')}` : `<kbd>E</kbd> ${t('ui.talkTo', 'Talk to')} ${npcNear ? WORLDS[npcBiome(vox.near!.slice(4))].npc.name.split(' ')[0] : 'Sam'}`; prompt.style.left = `${p.x}px`; prompt.style.top = `${p.y}px`; prompt.classList.add('show');
     } else prompt.classList.remove('show');
     arrive();
     if (quest && !modal) {
@@ -535,9 +581,10 @@ async function boot() {
         emit('challenge_attempt', { ...e }); xpFly(5);
         if (e.result === 'floats' && /foam/.test(e.choice)) setTimeout(() => afterLab(), 2500);
       },
-      onSpeak: (text) => { void speak(text, LANG, S.world.npc.voice, () => undefined); } }, LAB_DOCK);
+      onSpeak: (text) => { void speak(text, LANG, curWorld().npc.voice, () => undefined); } }, LAB_DOCK);
   } catch (err) { console.warn('[curiosity-craft] lab3d unavailable, using the lab panel', err); lab3d = null; }
   vox.onFrame = (dt) => { try { lab3d?.update(dt); vox.labNear = !!lab3d?.prompt(); } catch { /* */ } };
+  vox.onBiome = (b) => { const B = BIOMES[b]; banner(`${B.emoji} ${B.name}`); emit('spawn', { worldId: b, enter: true }); };
   vox.start();
   let audioOn = false;
   const startAudio = () => { if (audioOn) return; audioOn = true; Audio.init(); Audio.setVolumes(0.45, 0.7); Audio.playMusic({ root: 62, scale: [0, 2, 4, 7, 9], tempo: 76, lead: 'triangle', pad: 'sine', mood: 'wonder' }, 7); };
@@ -554,7 +601,7 @@ async function boot() {
   (window as unknown as Record<string, unknown>).__CCvox = vox;
   (window as unknown as Record<string, unknown>).__CCgo = (where: 'board' | 'sam' | 'quest') => {
     if (where === 'board') { vox.teleport(BOARD.x, BOARD.z + 1.4); interactBoard(); }
-    else if (where === 'sam') { vox.teleport(vox.sam.x - 0.9, vox.sam.z + 1.1); interactSam(); }
+    else if (where === 'sam') { const b = S.pendingQ ? S.pendingBiome : 'beach'; const a = npcActor(b); vox.teleport(a.x - 0.9, a.z + 1.1); interactSam(b); }
     else if (quest) vox.teleport(quest.x, quest.z + 0.3);
   };
 }

@@ -121,3 +121,7 @@ h2 { font: 46px/1 var(--display); margin: 0 0 8px; letter-spacing: .5px; font-we
 .quest .qtext { font-size: 17px; font-weight: 700; line-height: 1.3; }
 #qarrow { position: absolute; display: none; font-size: 44px; color: var(--gold); text-shadow: 0 3px 0 var(--ink), 2px 0 0 var(--ink), -2px 0 0 var(--ink), 0 -2px 0 var(--ink); pointer-events: none; }
 #hud .btn { pointer-events: auto; }
+
+#banner { position: absolute; left: 50%; top: 18%; transform: translateX(-50%); font: 56px/1 var(--display); color: #fff; text-shadow: 0 4px 0 var(--ink), 0 0 20px rgba(0,0,0,.4); opacity: 0; transition: opacity .5s; pointer-events: none; white-space: nowrap; }
+#banner.show { opacity: 1; }
+.npcbadge { position: absolute; left: 14px; bottom: 100%; margin-bottom: -18px; width: 110px; height: 110px; border-radius: 12px; background: #fff; border: 4px solid var(--ink); display: grid; place-items: center; font-size: 72px; box-shadow: 0 6px 0 var(--ink); animation: bob 2.4s ease-in-out infinite; }
