@@ -344,7 +344,12 @@ export function mountWorld(canvas: HTMLCanvasElement): Diorama | null {
   // distant islands
   const far: [TemplateId, number, number, number, number][] = [['space', -16, 4, -14, .45], ['ocean', 17, -3, -12, .5], ['egypt', -11, -6, -22, .35], ['lab', 14, 6, -26, .35]];
   far.forEach(([t, x, y, z, s]) => { const i = buildIsland(t, 3); i.scale.setScalar(s); i.position.set(x, y, z); i.userData.baseY = y; scene.add(i); });
-  for (let i = 0; i < 9; i++) { const c = cloud(rnd, .9 + rnd() * 1.1); c.position.set(-26 + rnd() * 52, -2 + rnd() * 9, -18 + rnd() * 26); c.userData.drift = .004 + rnd() * .006; scene.add(c); }
+  const clouds = new THREE.Group(); clouds.userData.spin = .012; scene.add(clouds);
+  for (let i = 0; i < 12; i++) {
+    const c = cloud(rnd, .9 + rnd() * 1.2); const a = i / 12 * Math.PI * 2 + rnd() * .4;
+    const below = i % 3 === 0; const rr = below ? 8 + rnd() * 5 : 25 + rnd() * 7;
+    c.position.set(Math.cos(a) * rr, below ? -6.5 - rnd() * 2 : -1 + rnd() * 8, Math.sin(a) * rr); clouds.add(c);
+  }
 
   const cam = new THREE.PerspectiveCamera(32, 1, .1, 120);
   let soft = false, w = 0, h = 0, px = 0, py = 0, raf = 0, last = 0, angle = .6;
@@ -363,9 +368,9 @@ export function mountWorld(canvas: HTMLCanvasElement): Diorama | null {
     const dt = Math.min(.05, (now - last) / 1000); last = now;
     const t = now / 1000;
     if (!reduced) angle += dt * .06;
-    const dist = w < 700 ? 22 : 17.5;
-    cam.position.set(Math.sin(angle + px * .25) * dist, 6.5 - py * 2 + (w < 700 ? 2 : 0), Math.cos(angle + px * .25) * dist);
-    cam.lookAt(0, w < 700 ? -1.6 : .2, 0);
+    const dist = w < 700 ? 31 : 19;
+    cam.position.set(Math.sin(angle + px * .25) * dist, 6.5 - py * 2 + (w < 700 ? 3 : 0), Math.cos(angle + px * .25) * dist);
+    cam.lookAt(0, w < 700 ? -5.5 : .2, 0);
     if (!reduced) {
       animate(scene, t);
       island.position.y = Math.sin(t * .6) * .25;
@@ -392,7 +397,7 @@ export function mountCarousel(canvas: HTMLCanvasElement): { go(i: number): void;
   const GAP = 13;
   const isles = TEMPLATES.map((t, i) => { const g = buildIsland(t, 5); g.position.x = i * GAP; scene.add(g); decorateWithKit(g, t).catch(() => {}); return g; });
   const rnd = rngFrom(5);
-  for (let i = 0; i < 10; i++) { const c = cloud(rnd, .7 + rnd()); c.position.set(-6 + rnd() * 80, -5 + rnd() * 4, -8 + rnd() * 6); scene.add(c); }
+  for (let i = 0; i < 10; i++) { const c = cloud(rnd, .7 + rnd()); c.position.set(-6 + rnd() * 80, -7 + rnd() * 3, -14 + rnd() * 5); scene.add(c); }
   const cam = new THREE.PerspectiveCamera(30, 1, .1, 100);
   let target = 0, cur = 0, raf = 0, visible = true;
   const resize = () => { const w = canvas.clientWidth, h = canvas.clientHeight; r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };

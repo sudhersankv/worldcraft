@@ -9,9 +9,9 @@ import { Audio } from './core/audio';
 import type { Input } from './core/input';
 import { GameState, STAGES } from './core/state';
 import type { Telemetry } from './core/telemetry';
-import { portrait } from './art/characters';
+import { portrait } from './scene/portrait';
 import type { Kit } from './world/kits';
-import type { SceneHooks, Target, WorldScene } from './scene/WorldScene';
+import type { SceneHooks, Target, World3D } from './scene/World3D';
 import type { ZonePlace } from './world/layout';
 import { esc, figureSvg, h, UI, type VoiceBar } from './ui/ui';
 
@@ -40,7 +40,7 @@ type ExplainWaiter = { handle: (r: NpcReplyResponse) => void; criteria: string[]
 
 export class Director implements SceneHooks {
   ui = new UI();
-  scene!: WorldScene;
+  scene!: World3D;
   voice: VoiceSession;
   micAvailable = false;
   reduced = false;
@@ -77,7 +77,7 @@ export class Director implements SceneHooks {
     this.ui.hint.innerHTML = 'Move <kbd>WASD</kbd>/click · Talk <kbd>E</kbd> · Hint <kbd>C</kbd> · Book <kbd>B</kbd> · Voice <kbd>V</kbd>';
   }
 
-  attach(scene: WorldScene) { this.scene = scene; scene.reducedMotion = this.reduced; this.refresh(); }
+  attach(scene: World3D) { this.scene = scene; scene.reducedMotion = this.reduced; this.refresh(); }
 
   // ============================================================ scene hooks
   isModal() { return this.ui.modal; }
@@ -151,16 +151,16 @@ export class Director implements SceneHooks {
     // prompt above nearest target
     const t = s.nearTarget;
     if (t && !this.ui.modal) {
-      const p = s.toScreen(t.x, t.y, t.kind === 'landmark' ? 120 : t.kind === 'npc' ? 74 : 50);
+      const p = s.toScreen(t.x, t.y, t.kind === 'landmark' ? (this.scene.landmarks.get((t as {zoneId:string}).zoneId)?.height ?? 2) + 0.4 : t.kind === 'npc' ? 1.9 : 1.2);
       this.ui.showPrompt(p.x, p.y, this.input.lastDevice === 'pad' ? 'A' : 'E', this.labelFor(t));
     } else this.ui.showPrompt(0, 0, '', null);
-    const cp = s.toScreen(s.companion.gx, s.companion.gy, 46);
+    const cp = s.toScreen(s.companion.gx, s.companion.gy, 1.4);
     this.ui.placeBubble(cp.x, cp.y);
-    if (s.goat) { const gp = s.toScreen(s.goat.gx, s.goat.gy, 70); this.ui.goatCard.style.left = `${Math.max(170, Math.min(innerWidth - 170, gp.x))}px`; this.ui.goatCard.style.top = `${Math.max(200, gp.y)}px`; }
+    if (s.goat) { const gp = s.toScreen(s.goat.gx, s.goat.gy, 1.6); this.ui.goatCard.style.left = `${Math.max(170, Math.min(innerWidth - 170, gp.x))}px`; this.ui.goatCard.style.top = `${Math.max(200, gp.y)}px`; }
     // edge arrow toward current target
     const tgt = this.targetPos();
     if (tgt && !this.ui.modal) {
-      const p = s.toScreen(tgt.x, tgt.y, 30);
+      const p = s.toScreen(tgt.x, tgt.y, 0.5);
       const m = 50, W = innerWidth, H = innerHeight;
       if (p.x < m || p.y < m || p.x > W - m || p.y > H - m) {
         const cx = W / 2, cy = H / 2, ang = Math.atan2(p.y - cy, p.x - cx);
@@ -241,18 +241,18 @@ export class Director implements SceneHooks {
         const a = s.npcs.get(npc.id)!;
         const main = cur && (cur.step.kind === 'talk' || cur.step.kind === 'explain') && cur.step.targetId === npc.id;
         const side = this.world.sideQuests.some((q) => q.giverNpcId === npc.id && !this.state.sideDone.has(q.id)) && this.state.has(`talk:${npc.id}`);
-        s.setMarker(`npc:${npc.id}`, main ? 'main' : side ? 'side' : null, a.sprite.x, a.sprite.y - 96);
+        s.setMarker(`npc:${npc.id}`, main ? 'main' : side ? 'side' : null, a.gx, a.gy, a.rig.height * 1.15 + 0.45);
       }
       if (z.station) {
         const st = s.stations.get(z.zone.id)!;
         const needs = cur?.step.kind === 'study' && this.world.study.some((c) => c.id === cur.step.targetId && c.zoneId === z.zone.id);
-        s.setMarker(`st:${z.zone.id}`, needs ? 'study' : null, st.x, st.y - 50);
+        s.setMarker(`st:${z.zone.id}`, needs ? 'study' : null, st.x, st.y, 1.5);
       }
       const lm = s.landmarks.get(z.zone.id);
       if (lm) {
         const recall = this.state.recallActive() && this.world.memoryLandmarks.some((mm) => mm.zoneId === z.zone.id && !this.state.has(`recall:${z.zone.id}`));
         const pz = cur?.step.kind === 'puzzle' && this.world.puzzles.some((p) => p.id === cur.step.targetId && p.zoneId === z.zone.id);
-        s.setMarker(`lm:${z.zone.id}`, recall ? 'recall' : pz ? 'main' : null, lm.x, lm.y - 125);
+        s.setMarker(`lm:${z.zone.id}`, recall ? 'recall' : pz ? 'main' : null, lm.x, lm.y, lm.height + 0.6);
       }
     }
     if (this.state.gateOpen() && !s.gateOpen) {
@@ -405,7 +405,7 @@ export class Director implements SceneHooks {
           Audio.play('confirm');
           fb.className = 'feedback show good'; fb.textContent = q.explain || feedback || 'Yes!';
           if (opts.npcSpeaks) this.speak(q.explain || 'Yes!', opts.speakVoice);
-          const p = this.scene.player.sprite; this.scene.burst(p.x, p.y - 40, 14, '#3ddc97');
+          this.scene.cheer('#5ef0a8');
           choicesWrap.querySelectorAll('button').forEach((b) => ((b as HTMLButtonElement).disabled = true));
           extra.replaceChildren(h('button', { class: 'btn go', 'data-default': '1', onclick: () => { if (localBar) this.voice.stop(); resolve({ attempts, hints }); } }, 'Continue'));
           setTimeout(() => this.ui.focusFirst(extra), 30);
@@ -575,7 +575,7 @@ export class Director implements SceneHooks {
           if (ex.passed) {
             this.explainWaiter = null;
             Audio.play('jingle-success');
-            const p = this.scene.player.sprite; this.scene.burst(p.x, p.y - 40, 24, '#ffc93c');
+            this.scene.cheer('#ffd23c');
             if (!side) this.state.add(`explain:${npc.id}`);
             this.voice.setContext({ mode: 'chat' });
             this.dlg?.area.replaceChildren(chips, h('div', { class: 'row' }, h('button', { class: 'btn go', 'data-default': '1', onclick: () => resolve(true) }, 'Continue')));

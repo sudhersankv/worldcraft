@@ -77,8 +77,10 @@ async def chat(messages: list[dict], *, model: str | None = None, max_tokens: in
         raise NoCreditsError('LLM gateway has no credits (paid_plan_required)')
     if model in (None, 'chat', 'gen'):
         model = await resolve_model(model or 'chat')
-    body = {'model': model, 'messages': messages,
-            'max_tokens': max_tokens, 'temperature': temperature}
+    body = {'model': model, 'messages': messages, 'max_tokens': max_tokens}
+    # Newer Claude models (5.x) reject a custom temperature; only send it to older ones.
+    if not re.search(r'-(5|[6-9])(-|$)', str(model)):
+        body['temperature'] = temperature
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
             r = await client.post(f'{base}/v1/chat/completions', json=body,
