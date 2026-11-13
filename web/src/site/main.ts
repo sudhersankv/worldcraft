@@ -2,6 +2,7 @@ import '../shared/brand.css';
 import '@fontsource/lilita-one';
 import './site.css';
 import './cc.css';
+import './home.css';
 import { LANGS, type Lang } from '../shared/curiosity';
 import { I } from './art';
 import { getLang, LANG_NAMES, setLang, t } from './i18n';
@@ -69,7 +70,7 @@ function route(keepScroll = false) {
   else if (page === 'library') { key = 'library'; cleanup = renderLibrary(main); }
   else if (page === 'sessions') { key = 'sessions'; cleanup = renderReport(main, arg); }
   else if (page === 'report') { key = 'report'; cleanup = renderCCReport(main, arg); }
-  else { renderHome(main, () => route(true)); key = page === 'parents' ? 'home-parents' : 'home'; }
+  else { cleanup = renderHome(main, () => route(true)); key = page === 'parents' ? 'home-parents' : 'home'; }
   document.body.dataset.page = key.startsWith('home') ? 'home' : key;
   header(key);
   footer();
