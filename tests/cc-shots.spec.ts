@@ -1,7 +1,7 @@
 /** Captures Curiosity Craft screenshots into screenshots/ (not part of CI). Run: npx playwright test tests/cc-shots.spec.ts */
 import { test, expect } from '@playwright/test';
 const BASE = process.env.BASE_URL ?? 'http://localhost:5174';
-test.use({ channel: process.env.CC_CHANNEL || undefined, viewport: { width: 1280, height: 760 } });
+test.use({ headless: true, launchOptions: { args: ['--mute-audio'] }, channel: process.env.CC_CHANNEL || undefined, viewport: { width: 1280, height: 760 } });
 test.setTimeout(120_000);
 test('shots', async ({ page }) => {
   await page.goto(`${BASE}/play.html?demo=1&lang=en`);

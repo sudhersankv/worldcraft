@@ -6,7 +6,7 @@
 import { test, expect } from '@playwright/test';
 
 const BASE = process.env.BASE_URL ?? 'http://localhost:5174';
-test.use({ channel: process.env.CC_CHANNEL || undefined, viewport: { width: 1280, height: 800 } });
+test.use({ headless: true, launchOptions: { args: ['--mute-audio'] }, channel: process.env.CC_CHANNEL || undefined, viewport: { width: 1280, height: 800 } });
 test.setTimeout(150_000);
 
 test('curiosity loop: >=3 questions and why-level >= 2', async ({ page }) => {

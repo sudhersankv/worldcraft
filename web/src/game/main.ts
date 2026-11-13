@@ -6,7 +6,7 @@ import { Input } from './core/input';
 import { Audio } from './core/audio';
 import { BEACH, EGGS, LANG, LANG_NAMES, localAsk, localWonder, questionsForGuess, setLang, t } from './cc/data';
 import { ask, emit, fetchWorld, SESSION, startSession, wonder } from './cc/net';
-import { Listener, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
+import { HandsFree, Listener, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
 import { Voxel } from './cc/voxel';
 import { ART_CC } from '../shared/art';
 
@@ -213,6 +213,7 @@ function wonderBoard() {
 
 // ------------------------------------------------------------------ 3) Why Ladder with Sam
 let samBox: HTMLElement | null = null;
+let handsFree: HandsFree | null = null;
 let samRefs: { say: HTMLElement; hook: HTMLElement; kid: HTMLElement; tryBtn: HTMLButtonElement; whyBtn: HTMLButtonElement; face: HTMLImageElement } | null = null;
 function travelToSam(q: string) {
   S.phase = 'sam';
@@ -233,16 +234,20 @@ function openSam() {
   txt.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter') send(); });
   const whyBtn = h('button', { class: 'btn why', 'data-testid': 'why', onclick: () => void askSam(t('npc.why', 'Why?'), true) }, t('npc.why', 'Why?')) as HTMLButtonElement;
   const tryBtn = h('button', { class: 'btn mint big', 'data-testid': 'try-it', style: 'display:none', onclick: () => { closeSam(); openLab(); } }, '🧪 ', t('tryit.button', 'Try it!')) as HTMLButtonElement;
-  const mic = micButton((s) => void askSam(s, /^(why|por qu|pourquoi|waarom|为什么|क्यों|ஏன்)/i.test(s.trim()) && s.trim().split(/\s+/).length <= 3), interim);
+  const isWhyText = (s: string) => /^(why|por qu|pourquoi|waarom|为什么|क्यों|ஏன்)/i.test(s.trim()) && s.trim().split(/\s+/).length <= 3;
+  const mic = micButton((s) => void askSam(s, isWhyText(s)), interim);
+  const hfBtn = h('button', { class: 'btn', 'data-testid': 'handsfree', title: t('npc.handsFree', 'Hands-free: just talk') }, '🎧 ', t('npc.handsFree', 'Hands-free')) as HTMLButtonElement;
+  handsFree = new HandsFree(LANG, (s) => (interim.textContent = s), (s) => void askSam(s, isWhyText(s)), (on) => { hfBtn.classList.toggle('gold', on); if (!on && !sttSupported) interim.textContent = t('npc.micError', 'Mic not available, type instead!'); });
+  hfBtn.onclick = () => { if (handsFree?.active) handsFree.stop(); else handsFree?.start(); };
   const face = h('img', { class: 'samface', src: ART_CC.sam.happy, alt: 'Surfer Sam' }) as HTMLImageElement;
   samBox = h('div', { id: 'sam', class: 'panel', 'data-testid': 'sam-panel' }, face,
     h('div', { class: 'name' }, S.world.npc.name), kid, say, hook,
-    h('div', { class: 'ctrl' }, whyBtn, mic, interim, txt, h('button', { class: 'btn sky', onclick: send }, t('npc.ask', 'Ask')), tryBtn, h('button', { class: 'btn ghost', 'data-testid': 'sam-close', onclick: () => closeSam() }, '✕')));
+    h('div', { class: 'ctrl' }, whyBtn, mic, hfBtn, interim, txt, h('button', { class: 'btn sky', onclick: send }, t('npc.ask', 'Ask')), tryBtn, h('button', { class: 'btn ghost', 'data-testid': 'sam-close', onclick: () => closeSam() }, '✕')));
   samRefs = { say, hook, kid, tryBtn, whyBtn, face };
   if (S.level >= 2 || S.labDone) tryBtn.style.display = '';
   ui.append(samBox);
 }
-function closeSam() { samBox?.remove(); samBox = null; samRefs = null; stopSpeech(); vox.sam.talk = false; vox.frozen = !!modal; asking = false; }
+function closeSam() { handsFree?.stop(); handsFree = null; samBox?.remove(); samBox = null; samRefs = null; stopSpeech(); vox.sam.talk = false; vox.frozen = !!modal; asking = false; }
 
 let asking = false;
 async function askSam(question: string, isWhy: boolean) {
@@ -263,6 +268,7 @@ async function askSam(question: string, isWhy: boolean) {
   const fillers = [t('sam.f1', 'Ooh, good one!'), t('sam.f2', 'Hmm, let me think…'), t('sam.f3', 'Gnarly question, dude!'), t('sam.f4', 'Great wondering!')];
   const filler = fillers[S.asked % fillers.length];
   R.say.textContent = `${filler} …`; R.hook.textContent = '';
+  handsFree?.pause();
   speakQuick(filler, LANG);
   const local = localAsk({ ...req, question }, S.lastFact);
   try { res = await ask(req); if (!res?.answer) throw new Error('empty'); }
@@ -282,6 +288,7 @@ async function askSam(question: string, isWhy: boolean) {
   vox.sam.talk = false;
   R.whyBtn.disabled = false;
   if (samRefs === R) asking = false;
+  handsFree?.resume();
 }
 
 // ------------------------------------------------------------------ 4) Surfboard Lab (pure client buoyancy sim)

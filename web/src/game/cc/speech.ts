@@ -84,3 +84,35 @@ export function speakQuick(text: string, lang: Lang) {
   stopSpeech();
   try { const u = new SpeechSynthesisUtterance(text); u.lang = SPEECH_LOCALE[lang]; u.rate = 1.1; speechSynthesis.speak(u); } catch { /* */ }
 }
+
+/** Hands-free: keeps listening, sends each finished sentence (on a pause). Paused while Sam talks. */
+export class HandsFree {
+  private rec: Rec | null = null;
+  active = false;
+  private paused = false;
+  constructor(private lang: Lang, private onInterim: (t: string) => void, private onUtterance: (t: string) => void, private onState: (on: boolean) => void) {}
+  start() { if (!Ctor) { this.onState(false); return; } this.active = true; this.paused = false; this.open(); this.onState(true); }
+  stop() { this.active = false; try { this.rec?.abort(); } catch { /* */ } this.rec = null; this.onState(false); }
+  pause() { this.paused = true; try { this.rec?.abort(); } catch { /* */ } this.rec = null; }
+  resume() { if (!this.active) return; this.paused = false; if (!this.rec) this.open(); }
+  private open() {
+    if (!Ctor || !this.active || this.paused) return;
+    try {
+      const r = new Ctor(); this.rec = r;
+      r.lang = SPEECH_LOCALE[this.lang]; r.interimResults = true; r.continuous = true;
+      let sent = 0;
+      r.onresult = (e) => {
+        let interim = '';
+        for (let i = sent; i < e.results.length; i++) {
+          const res = e.results[i];
+          if (res.isFinal) { sent = i + 1; const tx = res[0].transcript.trim(); if (tx) { this.onInterim(tx); this.onUtterance(tx); } }
+          else interim += res[0].transcript;
+        }
+        if (interim) this.onInterim(interim);
+      };
+      r.onerror = () => undefined;
+      r.onend = () => { this.rec = null; if (this.active && !this.paused) setTimeout(() => this.open(), 250); };
+      r.start();
+    } catch { /* */ }
+  }
+}
