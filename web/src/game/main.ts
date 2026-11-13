@@ -73,7 +73,9 @@ const tagToBiome = (tag?: string): Biome => (tag === 'volcano' || tag === 'ice' 
 const npcBiome = (npc: string): Biome => (Object.keys(BIOMES) as Biome[]).find((b) => BIOMES[b].npc === npc) ?? 'beach';
 function curWorld(): CuriosityWorld { return WORLDS[S.biome] ?? BEACH; }
 function npcActor(b: Biome = S.biome) { return b === 'beach' ? vox.sam : vox.npcs[BIOMES[b].npc]; }
-function conceptName(id: string) { for (const w of Object.values(WORLDS)) { const c = w.concepts.find((x) => x.id === id); if (c) return c.name; } return id.replace(/-/g, ' '); }
+const CONCEPT_NAMES = new Map<string, string>();
+function conceptName(id: string) {
+  const n = CONCEPT_NAMES.get(id); if (n) return n; for (const w of Object.values(WORLDS)) { const c = w.concepts.find((x) => x.id === id); if (c) return c.name; } return id.replace(/-/g, ' '); }
 
 const ui = document.getElementById('ui')!;
 const input = new Input();
@@ -407,6 +409,7 @@ async function askSam(question: string, isWhy: boolean) {
   S.history.push({ role: 'kid', text: question }, { role: 'npc', text: `${res.answer} ${res.whyHook}` });
   for (const c of res.conceptIds ?? []) if (!S.concepts.has(c)) { S.concepts.add(c); emit('concept', { id: c }); }
   if (res.conceptIds?.length) S.lastConcepts = res.conceptIds;
+  for (const c of (res as AskResponse & { concepts?: { id: string; name: string }[] }).concepts ?? []) if (c?.id && c.name) { CONCEPT_NAMES.set(c.id, c.name); if (!S.concepts.has(c.id)) { S.concepts.add(c.id); emit('concept', { id: c.id }); } }
   if (isWhy && S.journal.length) S.journal[S.journal.length - 1].level = S.level;
   else { S.journal.push({ icon: S.topicIcon, question, level: S.level }); emit('journal_card', { question, level: S.level }); }
   renderHud();
