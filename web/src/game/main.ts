@@ -9,6 +9,8 @@ import { ask, emit, fetchWorld, SESSION, startSession, wonder } from './cc/net';
 import { HandsFree, Listener, setMuted, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
 import { BIOME_PLACES, BIOMES, BOARD, LAB_DOCK, NPC_SPOTS, PLACES, Voxel, type Biome } from './cc/voxel';
 import { createLab3D, type Lab3D } from './cc/lab3d';
+import { openWonderBoard, type WonderStarter } from './cc/wonderboard';
+import { openLabPanel } from './cc/labpanel';
 import { ART_CC } from '../shared/art';
 
 const params = new URLSearchParams(location.search);
@@ -147,6 +149,7 @@ function open(card: HTMLElement, onBack?: () => void): HTMLElement {
 let modalBack: (() => void) | null = null;
 /** Esc / gamepad B: close the top-most overlay, never losing progress. */
 function back(): boolean {
+  if (extPanel) { const pnl = extPanel; extPanel = null; pnl.close(); vox.frozen = !!samBox || !!modal; return true; }
   if (modal) { close(); const f = modalBack; modalBack = null; f?.(); return true; }
   if (journalEl) { toggleJournal(); return true; }
   if (samBox) { closeSam(); return true; }
@@ -272,7 +275,31 @@ function recall(when: 'before' | 'after', then: () => void) {
 }
 
 // ------------------------------------------------------------------ 2) Wonder Board
+let extPanel: { close(): void } | null = null;
 function wonderBoard() {
+  S.phase = 'wonder';
+  try {
+    vox.frozen = true;
+    extPanel = openWonderBoard({
+      root: ui, t: (k, fb) => t(k, fb),
+      starters: async () => {
+        try { const r = await fetch(`/api/cc/starters?lang=${LANG}`, { signal: AbortSignal.timeout(2500) }); if (r.ok) { const a = await r.json(); if (Array.isArray(a) && a.length) return a as WonderStarter[]; } } catch { /* fallback below */ }
+        return [...BEACH.starters.slice(0, 3).map((x) => ({ id: x.id, label: x.label, emoji: x.icon, questions: x.questions, area: 'beach' })), ...(['volcano', 'ice', 'jungle'] as Biome[]).map((b) => { const x = WORLDS[b].starters[0]; return { id: x.id, label: x.label, emoji: x.icon, questions: x.questions, area: b }; })];
+      },
+      submit: async (input) => {
+        try { const r = await wonder({ image: input.image, text: input.text, lang: LANG, worldId: 'beach' }); if (r?.questions?.length) { emit('wonder_submit', { text: input.text ?? '', hasDrawing: !!input.image, guess: r.guess, confidence: r.confidence, source: r.source, worldTag: r.worldTag }); return r; } } catch { /* local */ }
+        const r = localWonder(input.text, !!input.image, S.world); emit('wonder_submit', { text: input.text ?? '', hasDrawing: !!input.image, guess: r.guess, confidence: r.confidence, source: 'local' }); return r;
+      },
+      listen: sttSupported ? (onText) => new Promise<string>((res) => { const L = new Listener(LANG, onText, (txt) => res(txt), (st) => { if (st === 'error') res(''); }); L.start(); setTimeout(() => L.stop(), 7000); }) : undefined,
+      onPick: ({ question, area, guess }) => { if (guess) emit('wonder_guess', { guess }); emit('question_pick', { question, worldTag: tagToBiome(area) }); extPanel = null; vox.frozen = !!samBox; S.topicIcon = BIOMES[tagToBiome(area)].emoji; pickQuestion(question, tagToBiome(area)); },
+      onClose: () => { extPanel = null; vox.frozen = !!samBox || !!modal; },
+      onEvent: (name, data) => { if (name === 'wonder_guess' || name === 'wonder_submit') return; void name; void data; },
+    });
+    return;
+  } catch (err) { console.warn('[curiosity-craft] new Wonder Board failed, using the classic one', err); extPanel = null; }
+  legacyWonderBoard();
+}
+function legacyWonderBoard() {
   S.phase = 'wonder';
   const cv = h('canvas', { width: 640, height: 480, 'data-testid': 'wonder-canvas' }) as HTMLCanvasElement;
   const g = cv.getContext('2d')!;
@@ -426,6 +453,21 @@ async function askSam(question: string, isWhy: boolean) {
 
 // ------------------------------------------------------------------ 4) Surfboard Lab (pure client buoyancy sim)
 function openLab() {
+  S.phase = 'lab';
+  try {
+    let ok = false;
+    vox.frozen = true;
+    extPanel = openLabPanel({
+      root: ui, t: (k, fb) => t(k, fb),
+      onAttempt: (e) => { emit('challenge_attempt', { ...e }); xpFly(5); if (e.result === 'floats' && /foam/.test(e.choice)) ok = true; },
+      speak: (text) => { void speak(text, LANG, curWorld().npc.voice, () => undefined); },
+      onClose: () => { extPanel = null; vox.frozen = !!samBox || !!modal; if (ok) afterLab(); },
+    });
+    return;
+  } catch (err) { console.warn('[curiosity-craft] new Lab panel failed, using the classic one', err); extPanel = null; }
+  legacyLab();
+}
+function legacyLab() {
   S.phase = 'lab';
   let material: Material = 'stone', shape: 'short' | 'long' = 'short';
   const cv = h('canvas', { width: 720, height: 300, 'data-testid': 'lab-canvas' }) as HTMLCanvasElement;
@@ -620,6 +662,7 @@ async function boot() {
   vox = new Voxel(document.getElementById('game')!, input);
   vox.onInteract = (what) => { if (what.startsWith('egg:')) openEgg(what.slice(4)); else if (what === 'sam') interactSam('beach'); else if (what.startsWith('npc:')) interactSam(npcBiome(what.slice(4))); else if (what === 'board') interactBoard(); };
   vox.onTick = () => {
+    document.body.classList.toggle('overlay', !!(modal || samBox || extPanel || journalEl || document.querySelector('.ccx-ov')));
     for (const a of input.take()) {
       if (a === 'book') toggleJournal();
       if (a === 'interact' && !modal && !samBox && lab3d && (() => { try { return lab3d!.interact(); } catch { return false; } })()) continue;

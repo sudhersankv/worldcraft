@@ -15,7 +15,7 @@ test('mobile overlays closable', async ({ page }) => {
   await page.evaluate(() => (window as unknown as { __CCgo: (w: string) => void }).__CCgo('board'));
   await page.getByTestId('recall-choice-0').click();
   await expect(page.getByTestId('wonder-board')).toBeVisible();
-  await expect(page.getByTestId('close').first()).toBeInViewport();
+  await expect(page.getByTestId('wonder-close')).toBeInViewport();
   await page.screenshot({ path: 'screenshots/cc-11-mobile-board.png' });
   await page.keyboard.press('Escape');
   await expect(page.getByTestId('wonder-board')).toHaveCount(0);

@@ -191,3 +191,10 @@ h2 { font-family: var(--display); color: #fff; text-shadow: 2px 2px 0 #170e33, 3
   #toast { top: auto; bottom: 64px; right: 50%; transform: translateX(50%); max-width: 80vw; }
   #toast.show { transform: translateX(50%); }
 }
+
+/* ---- opaque overlays + dim backdrop */
+.veil { background: rgba(16, 9, 40, .6) !important; }
+.card.panel, #sam.panel, #journal.panel, .quest.panel { background: #2a1a52 !important; }
+body.overlay #hint { display: none; }
+#sam { max-height: calc(100dvh - 24px); overflow: auto; }
+#journal { max-height: 100dvh; }
