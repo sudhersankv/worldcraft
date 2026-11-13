@@ -88,7 +88,10 @@ const conceptsEl = h('div', { id: 'concepts' });
 const wondersChip = h('div', { class: 'chip panel', 'data-testid': 'wonders' });
 const questEl = h('div', { class: 'quest panel', 'data-testid': 'quest', style: 'display:none' });
 const qArrow = h('div', { id: 'qarrow' }, '➤');
-const hud = h('div', { id: 'hud' }, questEl, labPanelBtn, xpChip, wondersChip, ladder, conceptsEl);
+const exitBtn = h('button', { class: 'btn exit', 'data-testid': 'exit', title: 'Leave the island' }, '← ', t('ui.exit', 'Exit'));
+exitBtn.onclick = () => { if (!confirm(t('ui.leave', 'Leave the island? Your journal is saved.'))) return; if (window.top !== window) window.open('/', '_top'); else location.href = '/'; };
+const logo = h('img', { class: 'logo-mark', src: '/art/cc/logo-mark.webp', alt: 'Curiosity Craft' });
+const hud = h('div', { id: 'hud' }, h('div', { class: 'row hudtop' }, exitBtn, logo), questEl, labPanelBtn, xpChip, wondersChip, ladder, conceptsEl);
 const timer = h('div', { id: 'timer', class: 'panel passive', 'data-testid': 'timer' });
 const toastEl = h('div', { id: 'toast', class: 'panel' });
 const prompt = h('div', { id: 'prompt', class: 'panel' });
@@ -115,7 +118,7 @@ function renderHud() {
   conceptsEl.replaceChildren(...[...S.concepts].map((id) => h('span', { class: 'cchip' }, conceptName(id))));
   (journalBtn.children[0] as HTMLElement).textContent = `${t('journal.title', 'Journal')} ${S.journal.length}`;
   lucky.textContent = t('lang.lucky8', 'Lucky 8 languages');
-  hint.innerHTML = `<kbd>WASD</kbd> ${t('ui.move', 'move')} · <kbd>E</kbd> ${t('ui.talk', 'talk')} · <kbd>V</kbd> ${t('npc.holdToTalk', 'hold to talk')} · <kbd>J</kbd> ${t('journal.title', 'Journal')}`;
+  if (matchMedia('(pointer: coarse)').matches) { hint.textContent = `👆 ${t('ui.tapWalk', 'Tap to walk · drag to look around')}`; } else hint.innerHTML = `<kbd>WASD</kbd> ${t('ui.move', 'move')} · <kbd>E</kbd> ${t('ui.talk', 'talk')} · <kbd>V</kbd> ${t('npc.holdToTalk', 'hold to talk')} · <kbd>J</kbd> ${t('journal.title', 'Journal')}`;
 }
 const bannerEl = h('div', { id: 'banner' });
 ui.append(bannerEl);
@@ -134,7 +137,23 @@ langSel.addEventListener('change', async () => { await setLang(langSel.value as 
 
 // ------------------------------------------------------------------ modal helpers
 let modal: HTMLElement | null = null;
-function open(card: HTMLElement): HTMLElement { close(); modal = h('div', { class: 'veil' }, card); ui.append(modal); vox.frozen = true; return modal; }
+function open(card: HTMLElement, onBack?: () => void): HTMLElement {
+  close();
+  const x = h('button', { class: 'xclose', 'aria-label': t('ui.back', 'Back'), title: t('ui.back', 'Back (Esc)'), 'data-testid': 'close' }, '✕');
+  x.onclick = () => { close(); onBack?.(); };
+  card.prepend(x);
+  modal = h('div', { class: 'veil' }, card); ui.append(modal); vox.frozen = true;
+  modalBack = onBack ?? null;
+  return modal;
+}
+let modalBack: (() => void) | null = null;
+/** Esc / gamepad B: close the top-most overlay, never losing progress. */
+function back(): boolean {
+  if (modal) { close(); const f = modalBack; modalBack = null; f?.(); return true; }
+  if (journalEl) { toggleJournal(); return true; }
+  if (samBox) { closeSam(); return true; }
+  return false;
+}
 function close() { modal?.remove(); modal = null; if (vox) vox.frozen = !!samBox; }
 
 let activeMic: { start: () => void; stop: () => void } | null = null;
@@ -278,6 +297,10 @@ function wonderBoard() {
     ...(['volcano', 'ice', 'jungle'] as Biome[]).flatMap((b) => WORLDS[b].starters.slice(0, 2).map((x) => ({ s: x, b }))),
     ...BEACH.starters.slice(3, 6).map((x) => ({ s: x, b: 'beach' as Biome })),
   ];
+  void fetch(`/api/cc/starters?lang=${LANG}`, { signal: AbortSignal.timeout(2500) }).then((r) => (r.ok ? r.json() : null)).then((arr: { id: string; label: string; emoji: string; questions: string[]; area?: string }[] | null) => {
+    if (!Array.isArray(arr) || !arr.length || !starters.isConnected) return;
+    starters.replaceChildren(...arr.slice(0, 8).map((x) => { const b = tagToBiome(x.area); return h('button', { class: 'btn', 'data-testid': `starter-${x.id}`, onclick: () => { S.topicIcon = x.emoji; boardBiome = b; emit('wonder_submit', { starter: x.id, hasDrawing: drawn, source: 'starter', worldTag: b }); showQuestions(x.questions); } }, ART_CC.icons[x.id] ? h('img', { class: 'sicon', src: ART_CC.icons[x.id], alt: '' }) : h('span', { class: 'ic' }, x.emoji), x.label); }));
+  }).catch(() => undefined);
   const starters = h('div', { class: 'starters' }, ...mixed.map(({ s, b }) => h('button', { class: 'btn', 'data-testid': `starter-${s.id}`, onclick: () => { S.topicIcon = s.icon; boardBiome = b; emit('wonder_submit', { starter: s.id, hasDrawing: drawn, source: 'starter', worldTag: b }); showQuestions(s.questions); } }, ART_CC.icons[s.id] ? h('img', { class: 'sicon', src: ART_CC.icons[s.id], alt: '' }) : h('span', { class: 'ic' }, s.icon), t(`starter.${s.id}`, s.label))));
   let busy = false;
   let boardBiome: Biome = 'beach';
@@ -347,7 +370,7 @@ function openSam(remote = false) {
   if (badge) face.style.display = 'none';
   samBox = h('div', { id: 'sam', class: 'panel', 'data-testid': 'sam-panel' }, face, badge,
     h('div', { class: 'name' }, remote ? `📻 ${curWorld().npc.name}` : curWorld().npc.name), kid, say, hook,
-    h('div', { class: 'ctrl' }, whyBtn, mic, hfBtn, interim, txt, h('button', { class: 'btn sky', onclick: send }, t('npc.ask', 'Ask')), goBtn, tryBtn, h('button', { class: 'btn ghost', 'data-testid': 'sam-close', onclick: () => closeSam() }, '✕')));
+    h('div', { class: 'ctrl' }, whyBtn, mic, hfBtn, interim, txt, h('button', { class: 'btn sky', onclick: send }, t('npc.ask', 'Ask')), goBtn, tryBtn, h('button', { class: 'xclose', 'data-testid': 'sam-close', 'aria-label': 'Back', onclick: () => closeSam() }, '✕')));
   samRefs = { say, hook, kid, tryBtn, whyBtn, face, goBtn };
   if (S.level >= 2 || S.labDone) tryBtn.style.display = '';
   ui.append(samBox);
@@ -480,7 +503,7 @@ function openLab() {
     h('div', { style: 'margin:8px 0' }, cv),
     h('div', { class: 'row' }, h('button', { class: 'btn gold big', 'data-testid': 'drop', onclick: drop }, '⬇ ', t('lab.drop', 'Drop it in!')), h('span', { class: 'spacer' }), h('label', { class: 'row' }, '🌊 ', t('wave.title', 'Wave maker'), waveIn)),
     h('div', { class: 'row' }, sticker, result), doneRow);
-  open(card);
+  open(card, () => { cancelAnimationFrame(raf); });
   void speak(t('lab.predict', 'Pick a material and drop it in. Guess first: will it float?'), LANG, curWorld().npc.voice, () => undefined);
 }
 
@@ -550,7 +573,7 @@ async function boot() {
       else if (a === 'interact' && !modal && !samBox && vox.near?.startsWith('npc:')) interactSam(npcBiome(vox.near.slice(4)));
       else if (a === 'interact' && !modal && !samBox && vox.near === 'board') interactBoard();
       if (a === 'voice') activeMic?.start();
-      if (a === 'pause' && samBox && !asking) closeSam();
+      if (a === 'pause' || a === 'back') back();
     }
     for (const r of input.takeReleased()) if (r === 'voice') activeMic?.stop();
     const egg = vox.near?.startsWith('egg:') ? vox.eggs.find((g) => `egg:${g.id}` === vox.near) : null;

@@ -1,11 +1,12 @@
 @import '@fontsource/jersey-10';
+@import '@fontsource/lilita-one';
 @import '@fontsource/atkinson-hyperlegible/400.css';
 @import '@fontsource/atkinson-hyperlegible/700.css';
 
 :root {
-  --ink: #1b1035; --panel: rgb(30, 18, 60); --edge: #8f7bd8; --txt: #fff; --dim: rgba(255,255,255,.75);
+  --ink: #1d1a3a; --panel: #2a1a52; --edge: #8f7bd8; --txt: #fff; --dim: rgba(255,255,255,.75);
   --gold: #ffcf5a; --mint: #5ef0a8; --sky: #5fd0ff; --pink: #ff7aa8; --orange: #ff9a3c;
-  --display: 'Jersey 10', system-ui, sans-serif; --body: 'Atkinson Hyperlegible', 'Noto Sans', 'Noto Sans Tamil', 'Noto Sans Devanagari', 'Noto Sans SC', system-ui, sans-serif;
+  --display: 'Lilita One', 'Noto Sans Devanagari', 'Noto Sans Tamil', system-ui, sans-serif; --body: 'Atkinson Hyperlegible', 'Noto Sans', 'Noto Sans Tamil', 'Noto Sans Devanagari', 'Noto Sans SC', system-ui, sans-serif;
 }
 html, body { margin: 0; height: 100%; overflow: hidden; background: #8fd3ff; font-family: var(--body); color: var(--txt); -webkit-font-smoothing: antialiased; touch-action: none; }
 #game { position: fixed; inset: 0; }
@@ -125,3 +126,38 @@ h2 { font: 46px/1 var(--display); margin: 0 0 8px; letter-spacing: .5px; font-we
 #banner { position: absolute; left: 50%; top: 18%; transform: translateX(-50%); font: 56px/1 var(--display); color: #fff; text-shadow: 0 4px 0 var(--ink), 0 0 20px rgba(0,0,0,.4); opacity: 0; transition: opacity .5s; pointer-events: none; white-space: nowrap; }
 #banner.show { opacity: 1; }
 .npcbadge { position: absolute; left: 14px; bottom: 100%; margin-bottom: -18px; width: 110px; height: 110px; border-radius: 12px; background: #fff; border: 4px solid var(--ink); display: grid; place-items: center; font-size: 72px; box-shadow: 0 6px 0 var(--ink); animation: bob 2.4s ease-in-out infinite; }
+
+/* ---- site-consistent chrome (tokens from web/src/site/platform.css) */
+:root { --stick: 6px 6px 0 #170e33; --stick-sm: 4px 4px 0 #1d1a3a; --sun: #ffc928; }
+.panel { background: #2a1a52; border: 4px solid #170e33; border-radius: 8px; box-shadow: var(--stick); }
+.btn { border: 3px solid var(--ink); border-radius: 6px; box-shadow: var(--stick-sm); min-height: 44px; }
+.btn:hover { box-shadow: 5px 5px 0 var(--ink); }
+.btn:active { box-shadow: 1px 1px 0 var(--ink); transform: translate(3px, 3px); }
+.btn.gold { background: var(--sun); }
+h2 { font-family: var(--display); color: #fff; text-shadow: 2px 2px 0 #170e33, 3px 3px 0 #170e33; }
+.card h2 { padding-right: 56px; }
+.chip, #ladder .lbl, .jcard .lv, .stat b, #banner, #timer { font-family: var(--display); }
+.xclose { position: sticky; top: 0; float: right; z-index: 5; width: 48px; height: 48px; margin: -6px -8px 0 8px; border-radius: 8px; border: 3px solid var(--ink); background: #fff; color: var(--ink); font: 700 24px/1 var(--body); box-shadow: var(--stick-sm); cursor: pointer; }
+#sam .xclose { position: absolute; top: 8px; right: 8px; float: none; margin: 0; }
+#sam .ctrl { padding-right: 0; }
+.xclose:focus-visible { outline: 4px solid var(--gold); }
+.hudtop { pointer-events: auto; gap: 8px; }
+.btn.exit { pointer-events: auto; padding: 6px 12px; font-size: 15px; background: #fff; }
+.logo-mark { width: 44px; height: 44px; object-fit: contain; filter: drop-shadow(2px 2px 0 #170e33); }
+.veil { height: 100dvh; overflow: auto; }
+.card { max-height: calc(100dvh - 24px); overscroll-behavior: contain; }
+@media (pointer: coarse) {
+  #hint { font-size: 15px; background: rgba(42,26,82,.85); padding: 6px 10px; border-radius: 8px; }
+  .btn { min-height: 48px; }
+  #sam { bottom: 6px; max-height: 60dvh; overflow: auto; }
+}
+@media (max-width: 700px) {
+  #hud { gap: 6px; } #ladder { width: 96px; } .chip { font-size: 18px; }
+  #topright { flex-wrap: wrap; justify-content: flex-end; max-width: 50vw; }
+  #lucky { display: none; }
+  .wb { grid-template-columns: 1fr; }
+  .card { padding: 12px; }
+  h2 { font-size: 30px; }
+  #sam .say { font-size: 19px; } #sam .hook { font-size: 18px; }
+  .samface, .npcbadge { width: 80px; height: 80px; font-size: 48px; }
+}

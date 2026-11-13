@@ -437,6 +437,7 @@ export class Voxel {
     const lava = new THREE.Mesh(new THREE.CircleGeometry(3.3, 24), new THREE.MeshBasicMaterial({ color: '#ff7a1a' }));
     lava.rotation.x = -Math.PI / 2; lava.position.set(76.5, 12.15, 28.5); this.scene.add(lava);
     this.anim.push({ obj: lava, fn: (t, o) => { ((o as THREE.Mesh).material as THREE.MeshBasicMaterial).color.setHSL(0.06 + Math.sin(t * 2) * 0.015, 1, 0.55 + Math.sin(t * 3) * 0.05); } });
+    for (const ang of [2.3, 3.6, 5.2]) for (let r = 3.4; r < 15; r += 0.5) { const x = 76.5 + Math.cos(ang + Math.sin(r * 0.4) * 0.15) * r, z = 28.5 + Math.sin(ang + Math.sin(r * 0.4) * 0.15) * r; this.deco.push({ x, y: this.groundY(x, z) + 0.04, z, sx: 0.7, sy: 0.08, sz: 0.7, c: r < 8 ? '#ffb03a' : '#ff6a1a', glow: true }); }
     const lglow = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow('#ff8a3c'), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); lglow.scale.setScalar(12); lglow.position.set(76.5, 13.5, 28.5); this.scene.add(lglow);
     for (let i = 0; i < 6; i++) { const a = i * 1.1; this.deco.push({ x: 64.5 + Math.cos(a) * 1.5, y: this.groundY(64.5, 22.5) + 0.7, z: 22.5 + Math.sin(a) * 1.5, sx: 0.5, sy: 1.4 + (i % 3) * 0.5, sz: 0.5, c: '#2a1f3a', ry: a }); }
     for (let i = 0; i < 4; i++) this.deco.push({ x: 84.5 + (i % 2) * 0.4, y: this.groundY(84.5, 38.5) + 0.2, z: 38.5 + (i > 1 ? 0.4 : 0), sx: 0.4, sy: 0.4, sz: 0.4, c: '#8f95a2' });
