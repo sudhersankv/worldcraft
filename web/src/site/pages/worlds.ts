@@ -28,9 +28,9 @@ export function renderWorlds(main: HTMLElement) {
 
     <section class="pf-card beta" aria-labelledby="beta-h">
       <div class="beta-head">
-        <h2 id="beta-h" class="pf-h2">${t('worlds.beta.title', 'Add a new world from your lesson')}</h2><span class="beta-tag">${t('worlds.beta', 'Beta, optional')}</span>
+        <h2 id="beta-h" class="pf-h2">${t('worlds.beta.title2', 'Turn your own lesson into a world like this')}</h2><span class="beta-tag">${t('worlds.beta', 'Beta, optional')}</span>
       </div>
-      <p>${t('worlds.beta.sub', 'Teachers and parents: share a one or two page lesson. We pull out what kids should learn, with the sentence each goal comes from, and add it to our build list.')}</p>
+      <p>${t('worlds.beta.sub2', 'Teachers and parents: drop in your own PDF or paste a lesson. The AI turns it into the island’s syllabus, so the guides teach YOUR lesson and kids explore it as an interactive world. You decide what is on the island.')}</p>
       <div class="beta-tabs" role="tablist" aria-label="${t('worlds.beta.how', 'How to share it')}">
         <button role="tab" aria-selected="true" aria-controls="bt-pdf" id="bt-pdf-t" data-t="pdf">${I.upload}<span>${t('worlds.beta.pdf', 'Upload a PDF')}</span></button>
         <button role="tab" aria-selected="false" aria-controls="bt-text" id="bt-text-t" data-t="text" tabindex="-1">${I.text}<span>${t('worlds.beta.text', 'Paste text')}</span></button>

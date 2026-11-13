@@ -368,8 +368,21 @@ def build_report(s: dict) -> dict:
         'journal': journal, 'tryAtHome': w.get('tryAtHome', ''), 'realWorld': w.get('realWorld', {}),
         'wonder': [{'guess': e['data'].get('guess'), 'text': e['data'].get('text')} for e in by('wonder_submit')][:5],
         'profile': _profile(s, evs, asked, levels, cids, cmap, minutes),
-        'label': s.get('label') or f'Explorer #{abs(hash(s["sessionId"])) % 9000 + 1000}',
+        'label': _title(s, asked),
     }
+
+
+def _title(s: dict, asked: list) -> str:
+    """Session title = the first thing the child wondered about (much more meaningful than a code)."""
+    for e in asked:
+        q = str(e['data'].get('question', '')).strip()
+        if q:
+            return q if len(q) <= 70 else q[:67].rsplit(' ', 1)[0] + '...'
+    for e in [e for e in s.get('events', []) if e['name'] == 'wonder_submit']:
+        g = e['data'].get('guess') or e['data'].get('text')
+        if g:
+            return f'Wondered about {g}'
+    return s.get('label') or 'A curious explorer'
 
 
 def _profile(s, evs, asked, levels, cids, cmap, minutes) -> dict:
@@ -450,6 +463,8 @@ async def reports():
             if len(s.get('events', [])) < 4:
                 continue  # skip sessions that never got going
             r = build_report(s)
+            if not r['questionsAsked']:
+                continue  # only show sessions where the child actually wondered about something
             row = {k: r.get(k) for k in ('sessionId', 'startedAt', 'questionsAsked', 'deepestWhyLevel', 'worldName', 'minutes',
                                          'lang', 'label')}
             row['style'] = r['profile']['style']
