@@ -3,7 +3,7 @@
 @import '@fontsource/atkinson-hyperlegible/700.css';
 
 :root {
-  --ink: #1b1035; --panel: rgba(27, 16, 53, 0.92); --edge: #8f7bd8; --txt: #fff; --dim: rgba(255,255,255,.75);
+  --ink: #1b1035; --panel: rgb(30, 18, 60); --edge: #8f7bd8; --txt: #fff; --dim: rgba(255,255,255,.75);
   --gold: #ffcf5a; --mint: #5ef0a8; --sky: #5fd0ff; --pink: #ff7aa8; --orange: #ff9a3c;
   --display: 'Jersey 10', system-ui, sans-serif; --body: 'Atkinson Hyperlegible', 'Noto Sans', 'Noto Sans Tamil', 'Noto Sans Devanagari', 'Noto Sans SC', system-ui, sans-serif;
 }
@@ -53,7 +53,7 @@ h2 { font: 46px/1 var(--display); margin: 0 0 8px; letter-spacing: .5px; font-we
 #hint { position: absolute; left: 14px; bottom: 12px; font-size: 13px; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.8); pointer-events: none; }
 
 /* overlays */
-.veil { position: absolute; inset: 0; background: rgba(27,16,53,.35); display: grid; place-items: center; animation: fade .2s; }
+.veil { position: absolute; inset: 0; background: rgba(27,16,53,.5); display: grid; place-items: center; animation: fade .2s; }
 @keyframes fade { from { opacity: 0; } }
 .card { width: min(860px, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow: auto; padding: 18px 22px; box-sizing: border-box; animation: rise .3s cubic-bezier(.2,.8,.2,1); }
 @keyframes rise { from { transform: translateY(30px); opacity: 0; } }

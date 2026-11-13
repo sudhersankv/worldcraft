@@ -31,8 +31,12 @@ test('curiosity loop: >=3 questions and why-level >= 2', async ({ page }) => {
   }
   await expect(page.getByTestId('why')).toBeEnabled({ timeout: 40_000 });
   await expect(page.getByTestId('ladder')).toHaveAttribute('data-level', '2');
+  const boots = await page.evaluate(() => (window as unknown as { __CCboot: number }).__CCboot);
+  const url = page.url();
   await page.getByTestId('try-it').click();
   await expect(page.getByTestId('lab')).toBeVisible();
+  expect(page.url()).toBe(url);
+  expect(await page.evaluate(() => (window as unknown as { __CCboot: number }).__CCboot)).toBe(boots);
   await page.getByTestId('mat-stone').click();
   await page.getByTestId('drop').click();
   await expect(page.getByTestId('lab-result')).toHaveAttribute('data-outcome', 'sank', { timeout: 15_000 });

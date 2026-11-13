@@ -42,7 +42,7 @@ export function speak(text: string, lang: Lang, voice: string, onStart: (ms: num
     audio = a;
     let done = false;
     const fail = () => { if (done || my !== token) return; done = true; audio = null; void browser().then(resolve); };
-    const timer = setTimeout(fail, 3500);
+    const timer = setTimeout(fail, 4500);
     a.addEventListener('playing', () => { clearTimeout(timer); if (my !== token) return; const d = isFinite(a.duration) && a.duration > 0 ? a.duration * 1000 : est; onStart(d); }, { once: true });
     a.addEventListener('ended', () => { if (!done) { done = true; resolve(); } });
     a.addEventListener('error', () => { clearTimeout(timer); fail(); });
@@ -76,4 +76,11 @@ export class Listener {
     } catch { this.onState('error'); }
   }
   stop() { try { this.rec?.stop(); } catch { /* */ } }
+}
+
+/** Instant short line with the browser voice (no network) — used as a filler while the answer loads. */
+export function speakQuick(text: string, lang: Lang) {
+  if (muted) return;
+  stopSpeech();
+  try { const u = new SpeechSynthesisUtterance(text); u.lang = SPEECH_LOCALE[lang]; u.rate = 1.1; speechSynthesis.speak(u); } catch { /* */ }
 }

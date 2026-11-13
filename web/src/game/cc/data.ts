@@ -112,3 +112,19 @@ export function localAsk(req: AskRequest, lastFactId: string | null): AskRespons
   if (!fact) return { answer: "Whoa, I'm not sure about that one, dude! Let's test it and find out.", whyHook: 'Want to see what floats and what sinks? Why do you think?', conceptIds: [], grounded: false, suggestChallenge: 'surfboard-lab', source: 'local', factId: lastFactId ?? '' };
   return { answer: fact.text, whyHook: fact.hook, conceptIds: fact.conceptIds, grounded: true, suggestChallenge: fact.challenge, source: 'local', factId: fact.id };
 }
+
+// ------------------------------------------------------------------ wonder sparkles (curiosity Easter eggs)
+export const EGGS: Record<string, { icon: string; label: string; wonder: string }> = {
+  'under-pier': { icon: '🪵', label: 'Under the pier', wonder: 'I wonder why the pier posts don’t float away?' },
+  'tide-pool': { icon: '⭐', label: 'Tide pool', wonder: 'I wonder why water stays in the tide pool?' },
+  'behind-tower': { icon: '🚩', label: 'Lifeguard flags', wonder: 'I wonder why the flags flap toward the beach?' },
+  bottle: { icon: '🍾', label: 'Message in a bottle', wonder: 'I wonder why a bottle floats but a rock sinks?' },
+  'giant-shell': { icon: '🐚', label: 'Giant shell', wonder: 'I wonder why sand is made of tiny shells and rocks?' },
+  crab: { icon: '🦀', label: 'Waving crab', wonder: 'I wonder why waves crash when they reach the beach?' },
+  sandcastle: { icon: '🏰', label: 'Sandcastle', wonder: 'I wonder why wet sand sticks but dry sand falls?' },
+  treasure: { icon: '🧭', label: 'Buried treasure', wonder: 'I wonder why heavy treasure sinks to the sea floor?' },
+  'dolphin-spot': { icon: '🐬', label: 'Dolphin spot', wonder: 'I wonder how fish float without sinking?' },
+  kite: { icon: '🪁', label: 'Kite in the wind', wonder: 'I wonder why the wind blows toward the beach?' },
+  sunscreen: { icon: '🧴', label: 'Sunscreen', wonder: 'I wonder why the sand gets hotter than the sea?' },
+  sun: { icon: '☀️', label: 'Sun spot', wonder: 'I wonder how the sun makes wind?' },
+};

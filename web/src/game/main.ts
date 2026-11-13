@@ -4,9 +4,9 @@ import type { AskResponse, CuriosityWorld, Lang, Material } from '../shared/curi
 import { DENSITY, LANGS } from '../shared/curiosity';
 import { Input } from './core/input';
 import { Audio } from './core/audio';
-import { BEACH, LANG, LANG_NAMES, localAsk, localWonder, questionsForGuess, setLang, t } from './cc/data';
+import { BEACH, EGGS, LANG, LANG_NAMES, localAsk, localWonder, questionsForGuess, setLang, t } from './cc/data';
 import { ask, emit, fetchWorld, SESSION, startSession, wonder } from './cc/net';
-import { Listener, speak, stopSpeech, sttSupported } from './cc/speech';
+import { Listener, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
 import { Voxel } from './cc/voxel';
 import { ART_CC } from '../shared/art';
 
@@ -17,6 +17,7 @@ const ROAM_S = DEMO ? 3 : 30;
 type Child = Node | string | null | undefined | false;
 function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, unknown> = {}, ...kids: Child[]): HTMLElementTagNameMap[K] {
   const el = document.createElement(tag);
+  if (tag === 'button') (el as HTMLButtonElement).type = 'button';
   for (const [k, v] of Object.entries(attrs)) {
     if (v === undefined || v === null || v === false) continue;
     if (k === 'class') el.className = String(v);
@@ -39,8 +40,11 @@ const S = {
   recallBefore: null as boolean | null, recallAfter: null as boolean | null,
   topicIcon: '❓',
   labDone: false,
+  wonders: new Set<string>(),
 };
 (window as unknown as Record<string, unknown>).__CC = S;
+const W8 = window as unknown as { __CCboot?: number };
+W8.__CCboot = (W8.__CCboot ?? 0) + 1;
 
 const ui = document.getElementById('ui')!;
 const input = new Input();
@@ -50,7 +54,8 @@ let vox!: Voxel;
 const xpChip = h('div', { class: 'chip panel', 'data-testid': 'xp' });
 const ladder = h('div', { id: 'ladder', class: 'panel', 'data-testid': 'ladder' });
 const conceptsEl = h('div', { id: 'concepts' });
-const hud = h('div', { id: 'hud' }, xpChip, ladder, conceptsEl);
+const wondersChip = h('div', { class: 'chip panel', 'data-testid': 'wonders' });
+const hud = h('div', { id: 'hud' }, xpChip, wondersChip, ladder, conceptsEl);
 const timer = h('div', { id: 'timer', class: 'panel passive', 'data-testid': 'timer' });
 const toastEl = h('div', { id: 'toast', class: 'panel' });
 const prompt = h('div', { id: 'prompt', class: 'panel' });
@@ -67,6 +72,7 @@ function renderHud() {
   xpChip.replaceChildren('✦ ', h('span', { class: 'xp' }, `${S.xp}`), ' curiosity XP');
   ladder.replaceChildren(...[0, 1, 2, 3, 4].map((i) => h('div', { class: `rung${S.asked > 0 && i <= S.level ? ' on' : ''}` })), h('div', { class: 'lbl' }, t('npc.whyLevel', 'Why level {n}', { n: S.level })));
   ladder.dataset.level = String(S.level);
+  wondersChip.replaceChildren('✨ ', h('span', { class: 'xp' }, `${S.wonders.size}/${Object.keys(EGGS).length}`), ` ${t('ui.wonders', 'wonders found')}`);
   conceptsEl.replaceChildren(...[...S.concepts].map((id) => h('span', { class: 'cchip' }, S.world.concepts.find((c) => c.id === id)?.name ?? id)));
   (journalBtn.children[0] as HTMLElement).textContent = `${t('journal.title', 'Journal')} ${S.journal.length}`;
   lucky.textContent = t('lang.lucky8', 'Lucky 8 languages');
@@ -254,6 +260,10 @@ async function askSam(question: string, isWhy: boolean) {
   const req = { worldId: 'beach' as const, lang: LANG, sessionId: SESSION, question: isWhy && prev ? `Why? (about: ${prev})` : question, level: S.level, history: S.history.slice(-8) };
   let res: AskResponse;
   R.face.src = ART_CC.sam.thinking;
+  const fillers = [t('sam.f1', 'Ooh, good one!'), t('sam.f2', 'Hmm, let me think…'), t('sam.f3', 'Gnarly question, dude!'), t('sam.f4', 'Great wondering!')];
+  const filler = fillers[S.asked % fillers.length];
+  R.say.textContent = `${filler} …`; R.hook.textContent = '';
+  speakQuick(filler, LANG);
   const local = localAsk({ ...req, question }, S.lastFact);
   try { res = await ask(req); if (!res?.answer) throw new Error('empty'); }
   catch { res = local; }
@@ -376,6 +386,24 @@ function finale() {
   });
 }
 
+// ------------------------------------------------------------------ wonder sparkles (Easter eggs)
+function openEgg(id: string) {
+  const e = EGGS[id]; if (!e || S.wonders.has(id)) return;
+  S.wonders.add(id); vox.markEgg(id);
+  xpFly(5);
+  S.journal.push({ icon: e.icon, question: e.wonder, level: 0 });
+  emit('journal_card', { question: e.wonder, level: 0, egg: id });
+  renderHud();
+  Audio.play('jingle-item', { volume: 0.7 });
+  const canAsk = S.phase === 'sam' || S.phase === 'end';
+  const card = h('div', { class: 'card panel egg', 'data-testid': 'egg-card' },
+    h('div', { class: 'kicker' }, `✨ ${e.label}`), h('h2', {}, e.wonder),
+    h('p', { style: 'font-size:18px' }, canAsk ? t('egg.ask', 'Curious? Ask Sam and climb the Why ladder!') : t('egg.saved', 'Saved to your Journal! You can ask Sam about it soon.')),
+    h('div', { class: 'row' }, canAsk ? h('button', { class: 'btn gold big', onclick: () => { close(); S.topicIcon = e.icon; travelToSam(e.wonder); } }, t('egg.askBtn', 'Ask Sam!')) : '', h('button', { class: 'btn', onclick: () => close() }, t('egg.ok', 'Cool!'))));
+  open(card);
+  void speak(e.wonder, LANG, S.world.npc.voice, () => undefined);
+}
+
 // ------------------------------------------------------------------ journal
 let journalEl: HTMLElement | null = null;
 function toggleJournal() {
@@ -389,19 +417,21 @@ function toggleJournal() {
 async function boot() {
   const [remote] = await Promise.all([fetchWorld('beach'), startSession(LANG)]);
   if (remote?.facts?.length && remote.starters?.length) S.world = { ...BEACH, ...remote };
-  vox = new Voxel(document.getElementById('game')!, input, 'beach');
-  vox.onInteract = () => { if (S.phase === 'sam' || S.phase === 'end') openSam(); };
+  vox = new Voxel(document.getElementById('game')!, input);
+  vox.onInteract = (what) => { if (what.startsWith('egg:')) openEgg(what.slice(4)); else if (S.phase === 'sam' || S.phase === 'end') openSam(); };
   vox.onTick = () => {
     for (const a of input.take()) {
       if (a === 'book') toggleJournal();
-      if (a === 'interact' && !modal && !samBox && vox.near === 'sam' && (S.phase === 'sam' || S.phase === 'end')) openSam();
+      if (a === 'interact' && !modal && !samBox && vox.near?.startsWith('egg:')) openEgg(vox.near.slice(4));
+      else if (a === 'interact' && !modal && !samBox && vox.near === 'sam' && (S.phase === 'sam' || S.phase === 'end')) openSam();
       if (a === 'voice') activeMic?.start();
       if (a === 'pause' && samBox && !asking) closeSam();
     }
     for (const r of input.takeReleased()) if (r === 'voice') activeMic?.stop();
-    if (vox.near === 'sam' && !samBox && !modal && (S.phase === 'sam' || S.phase === 'end')) {
-      const p = vox.screen(vox.sam.x, vox.sam.y + 1.45, vox.sam.z);
-      prompt.innerHTML = `<kbd>E</kbd> ${t('ui.talkSam', 'Talk to Sam')}`; prompt.style.left = `${p.x}px`; prompt.style.top = `${p.y}px`; prompt.classList.add('show');
+    const egg = vox.near?.startsWith('egg:') ? vox.eggs.find((g) => `egg:${g.id}` === vox.near) : null;
+    if (!samBox && !modal && (egg || (vox.near === 'sam' && (S.phase === 'sam' || S.phase === 'end')))) {
+      const p = egg ? vox.screen(egg.x, egg.y + 1.3, egg.z) : vox.screen(vox.sam.x, vox.sam.y + 2.1, vox.sam.z);
+      prompt.innerHTML = egg ? `<kbd>E</kbd> ✨ ${t('ui.wonder', 'Wonder')}` : `<kbd>E</kbd> ${t('ui.talkSam', 'Talk to Sam')}`; prompt.style.left = `${p.x}px`; prompt.style.top = `${p.y}px`; prompt.classList.add('show');
     } else prompt.classList.remove('show');
   };
   vox.start();
