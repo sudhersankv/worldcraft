@@ -6,7 +6,7 @@ import { Input } from './core/input';
 import { Audio } from './core/audio';
 import { BEACH, EGGS, LANG, LANG_NAMES, localAsk, localWonder, questionsForGuess, setLang, t } from './cc/data';
 import { ask, emit, fetchWorld, SESSION, startSession, wonder } from './cc/net';
-import { HandsFree, Listener, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
+import { HandsFree, Listener, setMuted, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
 import { Voxel } from './cc/voxel';
 import { ART_CC } from '../shared/art';
 
@@ -64,7 +64,13 @@ for (const l of LANGS) langSel.append(h('option', { value: l }, LANG_NAMES[l]));
 langSel.value = LANG;
 const lucky = h('div', { id: 'lucky' });
 const journalBtn = h('button', { class: 'btn', 'data-testid': 'journal-btn', onclick: () => toggleJournal() }, '📔 ', h('span', {}), h('kbd', {}, 'J'));
-const topright = h('div', { id: 'topright' }, journalBtn, h('div', {}, langSel, lucky));
+const qualSel = h('select', { id: 'lang', 'aria-label': 'Graphics', title: 'Graphics quality', 'data-testid': 'quality' }) as HTMLSelectElement;
+for (const [v, l] of [['auto', '⚙ Auto'], ['high', '⚙ High'], ['medium', '⚙ Medium'], ['low', '⚙ Low']]) qualSel.append(h('option', { value: v }, l));
+try { qualSel.value = localStorage.getItem('cc-quality') ?? 'auto'; } catch { /* */ }
+qualSel.addEventListener('change', () => vox?.setQuality(qualSel.value as 'auto'));
+const muteBtn = h('button', { class: 'btn', title: 'Sound', 'aria-label': 'Sound on/off' }, '🔊') as HTMLButtonElement;
+muteBtn.onclick = () => { const m = muteBtn.textContent === '🔊'; muteBtn.textContent = m ? '🔇' : '🔊'; setMuted(m); Audio.setVolumes(m ? 0 : 0.5, m ? 0 : 0.7); };
+const topright = h('div', { id: 'topright' }, journalBtn, muteBtn, h('div', {}, langSel, lucky), qualSel);
 const hint = h('div', { id: 'hint' });
 ui.append(hud, timer, toastEl, prompt, topright, hint);
 
@@ -128,6 +134,7 @@ function roam() {
   const render = () => (timer.textContent = `🧭 ${t('roam.title', 'Explore!')} ${Math.max(0, left)}s`);
   render();
   const iv = setInterval(() => {
+    if (left <= 0 && (modal || samBox)) return; // let the kid finish what they are reading
     left--; render();
     if (left <= 0) { clearInterval(iv); timer.remove(); emit('roam_end', { seconds: ROAM_S }); recall('before', () => wonderBoard()); }
   }, 1000);
@@ -442,8 +449,10 @@ async function boot() {
     } else prompt.classList.remove('show');
   };
   vox.start();
-  addEventListener('pointerdown', () => Audio.init(), { once: true });
-  addEventListener('keydown', () => Audio.init(), { once: true });
+  let audioOn = false;
+  const startAudio = () => { if (audioOn) return; audioOn = true; Audio.init(); Audio.setVolumes(0.45, 0.7); Audio.playMusic({ root: 62, scale: [0, 2, 4, 7, 9], tempo: 76, lead: 'triangle', pad: 'sine', mood: 'wonder' }, 7); };
+  addEventListener('pointerdown', startAudio, { once: true });
+  addEventListener('keydown', startAudio, { once: true });
   renderHud();
   document.getElementById('loading')?.classList.add('gone');
   setTimeout(() => document.getElementById('loading')?.remove(), 500);

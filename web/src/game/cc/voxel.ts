@@ -162,7 +162,7 @@ export class Voxel {
   private canopies: Deco[] = [];
   private canopyMesh: THREE.InstancedMesh | null = null;
   private anim: { obj: THREE.Object3D; fn: (t: number, o: THREE.Object3D) => void }[] = [];
-  private fpsT = 0; private fpsN = 0; fps = 60; private settle = 0;
+  private fpsT = 0; private fpsN = 0; fps = 60; private settle = 0; private lastNow = 0;
   private samRide: { t: number } | null = null;
   private v = new THREE.Vector3(); private v2 = new THREE.Vector3();
   private ray = new THREE.Raycaster();
@@ -579,8 +579,8 @@ export class Voxel {
   start() { const loop = () => { requestAnimationFrame(loop); try { this.frame(); } catch (err) { console.error(err); } }; loop(); }
   private frame() {
     const dt = Math.min(0.05, this.clock.getDelta()), t = this.clock.elapsedTime;
-    this.fpsT += dt; this.fpsN++;
-    if (this.fpsT > 2) { this.fps = this.fpsN / this.fpsT; this.fpsT = 0; this.fpsN = 0; this.settle += 2; if (this.quality === 'auto' && this.settle > 4 && this.fps < 45 && this.level !== 'low') { this.level = this.level === 'high' ? 'medium' : 'low'; console.info('[curiosity-craft] fps', this.fps.toFixed(0), '->', this.level); this.applyLevel(); this.settle = 0; } }
+    const now = performance.now(); this.fpsT += (now - (this.lastNow || now)) / 1000; this.lastNow = now; this.fpsN++;
+    if (this.fpsT > 2) { this.fps = this.fpsN / this.fpsT; this.fpsT = 0; this.fpsN = 0; this.settle += 2; if (this.quality === 'auto' && this.settle >= 4 && this.fps < 45 && this.level !== 'low') { this.level = this.level === 'high' ? 'medium' : 'low'; console.info('[curiosity-craft] fps', this.fps.toFixed(0), '->', this.level); this.applyLevel(); this.settle = 0; } }
     this.waterU.uTime.value = t;
     // gamepad right stick orbit + triggers zoom
     try { const pad = [...(navigator.getGamepads?.() ?? [])].find((p) => p && p.connected); if (pad) { const rx = pad.axes[2] ?? 0, ry = pad.axes[3] ?? 0; if (Math.abs(rx) > 0.2) this.yaw -= rx * dt * 2.4; if (Math.abs(ry) > 0.2) this.pitch = Math.min(1.25, Math.max(0.12, this.pitch + ry * dt * 1.5)); const lt = pad.buttons[6]?.value ?? 0, rt = pad.buttons[7]?.value ?? 0; this.dist = Math.min(12, Math.max(4, this.dist + (lt - rt) * dt * 6)); } } catch { /* */ }
