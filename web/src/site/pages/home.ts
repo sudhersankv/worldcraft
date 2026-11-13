@@ -2,7 +2,7 @@ import { LANGS, type Lang } from '../../shared/curiosity';
 import { I } from '../art';
 import { getLang, LANG_NAMES, setLang, t } from '../i18n';
 import { blip } from '../sfx';
-import { beachSVG, blockIcon } from '../voxel';
+import { blockIcon } from '../voxel';
 import { $, $$ } from '../ui';
 
 export const PLAY_URL = '/play.html?world=beach';
@@ -27,7 +27,9 @@ export function renderHome(main: HTMLElement, rerender: () => void) {
       </div>
     </div>
     <div class="cc-hero-art" aria-hidden="true">
-      ${beachSVG()}
+      <img class="cc-keyart" src="/art/cc/keyart.webp" width="1536" height="1024" alt="" decoding="async" fetchpriority="high"
+>
+      <img class="cc-sam" src="/art/cc/sam-full.webp" alt="" decoding="async">
       <p class="speech"><b>Surfer Sam</b>${t('site.sam', 'Waves are energy moving through water. But why does a board float on top?')}</p>
     </div>
   </section>

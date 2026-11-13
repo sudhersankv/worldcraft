@@ -30,6 +30,9 @@ body[data-page="home"]:not(.soft) .topbar .brand { visibility: visible; opacity:
 .cc-hero .lede { font-size: 1.25rem; color: var(--ink2); background: rgba(255, 255, 255, .88); padding: .8rem 1rem; border-radius: var(--blk); box-shadow: 0 5px 0 rgba(23, 14, 51, .15); max-width: 34rem; }
 .cc .cta-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.4rem; }
 .cc-hero-art { position: relative; }
+.cc-keyart { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 22px; box-shadow: 0 10px 0 rgba(23, 14, 51, .28), 0 0 0 6px #fff; transform: rotate(-1.2deg); }
+.cc-sam { position: absolute; width: 34%; right: -4%; bottom: -10%; filter: drop-shadow(0 8px 0 rgba(23, 14, 51, .25)); animation: qbob 2.6s ease-in-out infinite; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .cc-sam { animation: none; } }
 .beach { width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 18px 0 rgba(23, 14, 51, .18)); }
 .wv { animation: wave-b 2.4s ease-in-out infinite; }
 .wv1 { animation-delay: -.6s; } .wv2 { animation-delay: -1.2s; } .wv3 { animation-delay: -1.8s; }
