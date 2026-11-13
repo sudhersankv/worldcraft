@@ -40,5 +40,6 @@ Licence texts: CC0 1.0 Universal, https://creativecommons.org/publicdomain/zero/
 |---|---|---|
 | `web/public/art/cc/**` | Curiosity Craft beach world (blocky voxel toy style): Surfer Sam (full, surfing, happy/thinking/laughing portraits), beach key art with "WHY?", 6 starter icons (512 px), Surfboard Lab stickers (stone/wood/foam), Why Ladder, journal-card frame | Generated with OpenAI gpt-image-1.5 (transparent cutouts) and gpt-image-2 (opaque scenes) via the Neon AI Gateway. Original designs, owned by the project. |
 | `web/public/art/plants/**` | Verdant Hollow plants world (glossy chibi toy diorama): 9 characters (full + portrait, player back view), 7 zone key arts, 8 landmarks (incl. wilted/blooming Great Bloom), 6 science illustrations, title art | Same pipeline as above. Original, owned by the project. |
+| `web/public/art/cc/logo.*`, `logo-mark.*`, `web/public/favicon.png`, `web/public/apple-touch-icon.png` | "CURIOSITY CRAFT" voxel wordmark and the glowing "?" cube mark, plus favicons made from the mark | gpt-image-1.5 via the Neon AI Gateway (`tools/art/logo.py`). Original, owned by the project. |
 
 Prompts and the generator are in `tools/art/` (`gen.py`, `jobs.py`, `cc.py`, `zones.py`, `sci.py`). The style rules are in `docs/ART_BIBLE.md`. The raw PNGs are kept out of git (`tools/art/raw/`).

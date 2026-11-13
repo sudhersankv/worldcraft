@@ -73,6 +73,10 @@ export const ART_CC = {
     surfing: `${C}/sam-surf.webp`,
     height: 72,
   },
+  /** "CURIOSITY CRAFT" wordmark, transparent, trimmed, about 1139x463 (also logo.png) */
+  logo: `${C}/logo.webp`,
+  /** glowing voxel '?' cube app mark, 512x512 transparent (favicons derive from it) */
+  logoMark: `${C}/logo-mark.webp`,
   /** 1536x1024, beach + surfers + glowing 'WHY?' in the sky (site hero + title screen) */
   keyart: `${C}/keyart.webp`,
   icons: {
