@@ -371,7 +371,7 @@ def build_report(s: dict) -> dict:
         'recall': {'before': rec('recall_before'), 'after': rec('recall_after'), 'prompt': w.get('recall', {}).get('prompt', '')},
         'journal': journal, 'tryAtHome': w.get('tryAtHome', ''), 'realWorld': w.get('realWorld', {}),
         'wonder': [{'guess': e['data'].get('guess'), 'text': e['data'].get('text'), 'drawing': e['data'].get('drawing'),
-                    'questions': e['data'].get('questions') or [], 'area': e['data'].get('worldTag')} for e in by('wonder_submit')][:6],
+                    'questions': list(dict.fromkeys(q for q in (e['data'].get('questions') or []) if q)), 'area': e['data'].get('worldTag')} for e in by('wonder_submit')][:6],
         'profile': _profile(s, evs, asked, levels, cids, cmap, minutes),
         'label': _title(s, asked),
     }

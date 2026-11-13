@@ -77,8 +77,8 @@ export function renderParents(main: HTMLElement) {
         <div class="tile t-c"><b>${avg.toFixed(1)}</b><span>${t('parents.tiles.avgWhy', 'average why-depth')}</span>${miniLadder(Math.round(avg))}</div>
         <div class="tile t-d"><b class="tile-word">${top ? esc(styleName(top)) : '–'}</b><span>${t('parents.tiles.style', 'most common curiosity style')}</span></div>
       </section>
-      ${mine.length || unknownMine.length ? `<section aria-labelledby="mine-h"><h2 id="mine-h" class="pf-h2 on-sky">${t('parents.mine', 'Played on this device')}</h2>
-        <ul class="scards">${mine.map((r) => card(r, true)).join('')}${unknownMine.map((id) => `<li><a class="scard sc-pending" href="#report/${encodeURIComponent(id)}"><b class="sc-label">${esc(id)}</b><span class="sc-when">${t('parents.pending', 'Report not ready yet. Open to check.')}</span></a></li>`).join('')}</ul></section>` : ''}
+      ${mine.length ? `<section aria-labelledby="mine-h"><h2 id="mine-h" class="pf-h2 on-sky">${t('parents.mine', 'Played on this device')}</h2>
+        <ul class="scards">${mine.map((r) => card(r, true)).join('')}</ul></section>` : ''}
       <section aria-labelledby="all-h"><h2 id="all-h" class="pf-h2 on-sky">${t('parents.all', 'All sessions')}</h2>
         ${rows.length ? `<ul class="scards">${rows.map((r) => card(r, mineIds.has(r.sessionId))).join('')}</ul>` : `<div class="pf-card"><p>${t('parents.empty', 'No sessions yet. Play once and the report appears here.')}</p></div>`}
       </section>`;
