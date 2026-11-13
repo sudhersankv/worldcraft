@@ -678,5 +678,15 @@
   "worlds.island.d": "Une île, quatre coins à explorer. Les enfants se posent des questions sur n’importe quoi sur le Tableau des Curiosités et sont envoyés au bon endroit, auprès du bon guide. Demande pourquoi, teste des idées, remplis le Carnet de Curiosité.",
   "worlds.play2": "Jouer à l’Île de la Curiosité",
   "worlds.playable": "Jouable maintenant",
-  "worlds.title": "Mondes"
+  "worlds.title": "Mondes",
+  "quest.openBoard": "Ouvrir le Tableau des Merveilles",
+  "quest.takeMe": "Emmène-moi là-bas",
+  "quest.timeText": "Dessine tout ce qui t'intrigue sur le Tableau des Merveilles.",
+  "quest.timeTitle": "C'est l'heure de s'émerveiller !",
+  "quest.tipSparkles": "Trouve les blocs ? lumineux pour découvrir des merveilles !",
+  "ui.clickToPlay": "Clique pour jouer",
+  "ui.welcomeBack": "Content de te revoir ! Ton aventure continue.",
+  "ui.wonderSpot": "Coin des merveilles ✨",
+  "worlds.beta.sub2": "Enseignants et parents : déposez votre propre PDF ou collez une leçon. L'IA la transforme en programme de l'île : les guides enseignent VOTRE leçon et les enfants l'explorent comme un monde interactif. C'est vous qui décidez de ce qu'il y a sur l'île.",
+  "worlds.beta.title2": "Transformez votre propre leçon en un monde comme celui-ci"
 }

@@ -678,5 +678,15 @@
   "worlds.island.d": "Eén eiland met vier hoeken om te ontdekken. Kinderen verwonderen zich over alles op het Wonderbord en worden naar de juiste plek en gids gestuurd. Vraag waarom, test ideeën en vul het Nieuwsgierigheidsdagboek.",
   "worlds.play2": "Speel Nieuwsgierig Eiland",
   "worlds.playable": "Nu speelbaar",
-  "worlds.title": "Werelden"
+  "worlds.title": "Werelden",
+  "quest.openBoard": "Open het Wonderbord",
+  "quest.takeMe": "Breng me erheen",
+  "quest.timeText": "Teken op het Wonderbord alles waar jij je over verwondert.",
+  "quest.timeTitle": "Tijd om je te verwonderen!",
+  "quest.tipSparkles": "Zoek de gloeiende ?-blokken en ontdek wonderen!",
+  "ui.clickToPlay": "Klik om te spelen",
+  "ui.welcomeBack": "Welkom terug! Je avontuur gaat verder.",
+  "ui.wonderSpot": "Wonderplek ✨",
+  "worlds.beta.sub2": "Leraren en ouders: upload je eigen pdf of plak een les. De AI maakt er het lesprogramma van het eiland van, zodat de gidsen JOUW les geven en kinderen die ontdekken als een interactieve wereld. Jij bepaalt wat er op het eiland te vinden is.",
+  "worlds.beta.title2": "Maak van je eigen les een wereld zoals deze"
 }

@@ -678,5 +678,15 @@
   "worlds.island.d": "Uma ilha, quatro cantos para explorar. As crianças perguntam qualquer coisa no Quadro das Curiosidades e são levadas ao lugar e ao guia certos. Pergunte por quê, teste ideias e preencha o Diário da Curiosidade.",
   "worlds.play2": "Jogar Ilha da Curiosidade",
   "worlds.playable": "Disponível para jogar",
-  "worlds.title": "Mundos"
+  "worlds.title": "Mundos",
+  "quest.openBoard": "Abrir o Quadro das Curiosidades",
+  "quest.takeMe": "Me leve até lá",
+  "quest.timeText": "Desenhe no Quadro das Curiosidades tudo o que você tem curiosidade de saber.",
+  "quest.timeTitle": "Hora de se perguntar!",
+  "quest.tipSparkles": "Encontre blocos ? brilhantes para descobrir novas curiosidades!",
+  "ui.clickToPlay": "Clique para jogar",
+  "ui.welcomeBack": "Que bom ter você de volta! Sua aventura continua.",
+  "ui.wonderSpot": "Cantinho das curiosidades ✨",
+  "worlds.beta.sub2": "Professores e pais: adicionem seu próprio PDF ou colem uma lição. A IA transforma o conteúdo no programa de estudos da ilha, para que os guias ensinem a SUA lição e as crianças a explorem como um mundo interativo. Vocês decidem o que vai estar na ilha.",
+  "worlds.beta.title2": "Transforme sua própria lição em um mundo como este"
 }

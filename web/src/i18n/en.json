@@ -678,5 +678,15 @@
   "worlds.island.d": "One island, four corners to explore. Kids wonder about anything on the Wonder Board and get sent to the right place and guide. Ask why, test ideas, fill the Curiosity Journal.",
   "worlds.play2": "Play Curiosity Island",
   "worlds.playable": "Playable now",
-  "worlds.title": "Worlds"
+  "worlds.title": "Worlds",
+  "quest.openBoard": "Open Wonder Board",
+  "quest.takeMe": "Take me there",
+  "quest.timeText": "Draw anything you wonder about on the Wonder Board.",
+  "quest.timeTitle": "Time to wonder!",
+  "quest.tipSparkles": "Find glowing ? blocks to discover wonders!",
+  "ui.clickToPlay": "Click to play",
+  "ui.welcomeBack": "Welcome back! Your adventure continues.",
+  "ui.wonderSpot": "Wonder spot ✨",
+  "worlds.beta.sub2": "Teachers and parents: drop in your own PDF or paste a lesson. The AI turns it into the island’s syllabus, so the guides teach YOUR lesson and kids explore it as an interactive world. You decide what is on the island.",
+  "worlds.beta.title2": "Turn your own lesson into a world like this"
 }

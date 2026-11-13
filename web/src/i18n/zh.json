@@ -678,5 +678,15 @@
   "worlds.island.d": "一座岛,四个角落等你探索。孩子可以在好奇板上问任何事,然后被送到合适的地方和向导那里。问为什么,试试各种想法,把好奇日记填满。",
   "worlds.play2": "玩好奇岛",
   "worlds.playable": "现在就能玩",
-  "worlds.title": "世界"
+  "worlds.title": "世界",
+  "quest.openBoard": "打开奇思板",
+  "quest.takeMe": "带我去吧",
+  "quest.timeText": "把你好奇的任何东西画在奇思板上吧。",
+  "quest.timeTitle": "好奇时间到!",
+  "quest.tipSparkles": "找找闪闪发光的 ? 方块,发现奇妙的秘密吧!",
+  "ui.clickToPlay": "点击开始玩",
+  "ui.welcomeBack": "欢迎回来!你的冒险继续啦。",
+  "ui.wonderSpot": "奇思点 ✨",
+  "worlds.beta.sub2": "老师和家长们:上传你自己的 PDF,或粘贴一段课文内容。AI 会把它变成小岛的课程,让向导们讲解你的课程,孩子们则在互动世界里自由探索。小岛上有什么,由你来决定。",
+  "worlds.beta.title2": "把你自己的课程变成这样的世界"
 }

@@ -678,5 +678,15 @@
   "worlds.island.d": "Una isla, cuatro rincones por explorar. Los niños se preguntan lo que quieran en el Tablón de Maravillas y los enviamos al lugar y al guía indicados. Pregunta por qué, prueba ideas y llena el Diario de Curiosidad.",
   "worlds.play2": "Jugar a la Isla Curiosidad",
   "worlds.playable": "Disponible ahora",
-  "worlds.title": "Mundos"
+  "worlds.title": "Mundos",
+  "quest.openBoard": "Abrir el Tablero de las Maravillas",
+  "quest.takeMe": "Llévame allí",
+  "quest.timeText": "Dibuja en el Tablero de las Maravillas lo que quieras descubrir.",
+  "quest.timeTitle": "¡Hora de maravillarse!",
+  "quest.tipSparkles": "¡Busca los bloques ? brillantes para descubrir maravillas!",
+  "ui.clickToPlay": "Haz clic para jugar",
+  "ui.welcomeBack": "¡Qué bueno verte de nuevo! Tu aventura continúa.",
+  "ui.wonderSpot": "Rincón de maravillas ✨",
+  "worlds.beta.sub2": "Docentes y familias: suban su propio PDF o peguen una lección. La IA la convierte en el plan de estudios de la isla, así los guías enseñan SU lección y los niños la exploran como un mundo interactivo. Ustedes deciden qué hay en la isla.",
+  "worlds.beta.title2": "Convierte tu propia lección en un mundo como este"
 }
