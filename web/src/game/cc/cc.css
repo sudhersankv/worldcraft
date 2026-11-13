@@ -198,3 +198,13 @@ h2 { font-family: var(--display); color: #fff; text-shadow: 2px 2px 0 #170e33, 3
 body.overlay #hint { display: none; }
 #sam { max-height: calc(100dvh - 24px); overflow: auto; }
 #journal { max-height: 100dvh; }
+
+.actbtn { position: absolute; right: 16px; bottom: 56px; font-size: 20px; padding: 12px 18px; z-index: 6; }
+.actbtn kbd { margin-right: 6px; }
+.btn.skip, #hud .btn.sky { pointer-events: auto; width: fit-content; font-size: 15px; padding: 8px 12px; }
+.playveil { z-index: 40; background: rgba(16, 9, 40, .55) !important; }
+.timecard { max-width: 560px; text-align: center; }
+.timecard .row { justify-content: center; }
+body.overlay .actbtn { display: none !important; }
+@media (pointer: coarse) { .actbtn { bottom: 72px; font-size: 22px; padding: 14px 22px; } }
+#topright { z-index: 30; } .playveil { z-index: 40; }

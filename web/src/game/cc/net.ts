@@ -8,6 +8,7 @@ async function post<T>(url: string, body: unknown, ms: number): Promise<T> {
 }
 
 export let SESSION = new URLSearchParams(location.search).get('session') || `cc-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
+export function setSession(id: string) { SESSION = id; }
 export async function startSession(lang: string) {
   try { const r = await post<{ sessionId: string }>('/api/cc/sessions', { worldId: 'beach', lang }, 2500); if (r?.sessionId) SESSION = r.sessionId; } catch { /* offline: local id */ }
 }

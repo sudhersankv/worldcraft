@@ -369,9 +369,11 @@ export class Voxel {
     for (const [id, x, yy, z] of eggAt) {
       const y = yy > 0 ? 2.25 : this.groundY(x, z);
       const g = new THREE.Group();
-      const core = new THREE.Mesh(new THREE.OctahedronGeometry(0.16), new THREE.MeshBasicMaterial({ color: '#fffbe0' }));
+      const core = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), new THREE.MeshBasicMaterial({ map: this.qTex() }));
       const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glow('#ffe27a'), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
-      halo.scale.setScalar(1.1); g.add(core, halo);
+      halo.scale.setScalar(1.6);
+      const label = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.labelTex(), transparent: true, depthWrite: false, depthTest: false })); label.scale.set(2.4, 0.6, 1); label.position.y = 0.85; label.renderOrder = 15; label.name = 'label'; label.visible = false;
+      g.add(core, halo, label);
       g.position.set(x, y + 0.7, z); this.scene.add(g);
       this.eggs.push({ id, x, y, z, found: false, obj: g });
     }
@@ -551,6 +553,25 @@ export class Voxel {
     const leg = () => [this.bx(0.18, 0.3, 0.3, '#2fbf4a', 0, -0.15, 0.05)];
     return this.rigFrom({ body, head, armL: arm(), armR: arm(), legL: leg(), legR: leg() }, 0.95, 0.7, 0.36, 0.3, 0.17, 0.95);
   }
+
+  private qTexture: THREE.Texture | null = null;
+  private qTex() {
+    if (this.qTexture) return this.qTexture;
+    const c = document.createElement('canvas'); c.width = c.height = 32; const g = c.getContext('2d')!;
+    g.fillStyle = '#ffd23c'; g.fillRect(0, 0, 32, 32); g.fillStyle = '#ffe98a'; g.fillRect(0, 0, 32, 3); g.fillRect(0, 0, 3, 32); g.fillStyle = '#c88a00'; g.fillRect(0, 29, 32, 3); g.fillRect(29, 0, 3, 32);
+    g.fillStyle = '#ffffff'; g.font = 'bold 26px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('?', 16, 17);
+    const t = new THREE.CanvasTexture(c); t.magFilter = THREE.NearestFilter; t.colorSpace = THREE.SRGBColorSpace; this.qTexture = t; return t;
+  }
+  eggLabel = 'Wonder spot ✨';
+  private labelCache: THREE.Texture | null = null;
+  private labelTex() {
+    if (this.labelCache) return this.labelCache;
+    const c = document.createElement('canvas'); c.width = 384; c.height = 96; const g = c.getContext('2d')!;
+    g.fillStyle = 'rgba(42,26,82,0.92)'; g.beginPath(); g.roundRect(4, 4, 376, 88, 20); g.fill(); g.lineWidth = 6; g.strokeStyle = '#ffd23c'; g.stroke();
+    g.fillStyle = '#ffffff'; g.font = 'bold 44px "Lilita One", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(this.eggLabel, 192, 50);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; this.labelCache = t; return t;
+  }
+  setEggLabel(text: string) { this.eggLabel = text; this.labelCache?.dispose(); this.labelCache = null; const tex = this.labelTex(); for (const e of this.eggs) { const l = e.obj.getObjectByName('label') as THREE.Sprite | undefined; if (l) { l.material.map = tex; l.material.needsUpdate = true; } } }
 
   private glowCache = new Map<string, THREE.Texture>();
   private glow(color: string) {
@@ -909,7 +930,7 @@ export class Voxel {
       su.b.root.position.set(su.x, su.y, su.z); su.b.root.rotation.set(Math.sin(t * 2 + i) * 0.08, Math.PI / 2, Math.cos(t * 1.7 + i) * 0.06);
     });
     for (const a of this.anim) a.fn(t, a.obj);
-    for (const g of this.eggs) if (!g.found) { g.obj.rotation.y = t * 1.5; g.obj.position.y = g.y + 0.7 + Math.sin(t * 2.5 + g.x) * 0.1; }
+    for (const g of this.eggs) if (!g.found) { g.obj.children[0].rotation.y = t * 1.5; g.obj.position.y = g.y + 0.75 + Math.sin(t * 2.5 + g.x) * 0.1; const l = g.obj.getObjectByName('label'); if (l) l.visible = Math.hypot(p.x - g.x, p.z - g.z) < 6; }
     for (const c of this.clouds) { c.position.x += dt * 0.5; if (c.position.x > W + 45) c.position.x = -45; }
     const qa = (t % 40) / 40; (this.qCloud.userData.mat as THREE.MeshLambertMaterial).opacity = qa > 0.6 && qa < 0.95 ? Math.min(1, (qa - 0.6) * 10, (0.95 - qa) * 10) * 0.9 : 0;
     // ---- third-person camera with spring arm

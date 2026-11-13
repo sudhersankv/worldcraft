@@ -5,7 +5,7 @@ import { DENSITY, LANGS } from '../shared/curiosity';
 import { Input } from './core/input';
 import { Audio } from './core/audio';
 import { BEACH, EGGS, LANG, LANG_NAMES, localAsk, localWonder, questionsForGuess, setLang, t } from './cc/data';
-import { ask, emit, fetchWorld, SESSION, startSession, wonder } from './cc/net';
+import { ask, emit, fetchWorld, SESSION, setSession, startSession, wonder } from './cc/net';
 import { HandsFree, Listener, setMuted, speak, speakQuick, stopSpeech, sttSupported } from './cc/speech';
 import { BIOME_PLACES, BIOMES, BOARD, LAB_DOCK, NPC_SPOTS, PLACES, Voxel, type Biome } from './cc/voxel';
 import { createLab3D, type Lab3D } from './cc/lab3d';
@@ -92,10 +92,14 @@ const conceptsEl = h('div', { id: 'concepts' });
 const wondersChip = h('div', { class: 'chip panel', 'data-testid': 'wonders' });
 const questEl = h('div', { class: 'quest panel', 'data-testid': 'quest', style: 'display:none' });
 const qArrow = h('div', { id: 'qarrow' }, '➤');
+const actBtn = h('button', { class: 'btn gold actbtn', 'data-testid': 'action', style: 'display:none' }) as HTMLButtonElement;
+actBtn.onclick = () => doInteract();
+const skipBtn = h('button', { class: 'btn gold skip', 'data-testid': 'skip-roam', style: 'display:none' }) as HTMLButtonElement;
+const goBtnHud = h('button', { class: 'btn sky', 'data-testid': 'take-me', style: 'display:none' }) as HTMLButtonElement;
 const exitBtn = h('button', { class: 'btn exit', 'data-testid': 'exit', title: 'Leave the island' }, '← ', t('ui.exit', 'Exit'));
 exitBtn.onclick = () => exitHome();
 const logo = h('img', { class: 'logo-mark', src: '/art/cc/logo-mark.webp', alt: 'Curiosity Craft' });
-const hud = h('div', { id: 'hud' }, h('div', { class: 'row hudtop' }, exitBtn, logo), questEl, labPanelBtn, xpChip, wondersChip, ladder, conceptsEl);
+const hud = h('div', { id: 'hud' }, h('div', { class: 'row hudtop' }, exitBtn, logo), questEl, skipBtn, goBtnHud, labPanelBtn, xpChip, wondersChip, ladder, conceptsEl);
 const timer = h('div', { id: 'timer', class: 'panel passive', 'data-testid': 'timer' });
 const toastEl = h('div', { id: 'toast', class: 'panel' });
 const prompt = h('div', { id: 'prompt', class: 'panel' });
@@ -107,7 +111,7 @@ const settingsBtn = h('button', { class: 'btn', 'data-testid': 'settings-btn', o
 const muteBtn = h('button', { class: 'btn icon', 'data-testid': 'mute', 'aria-label': 'Sound on/off', onclick: () => { soundOn = !soundOn; applySound(); } }, '🔊') as HTMLButtonElement;
 const topright = h('div', { id: 'topright' }, journalBtn, settingsBtn, muteBtn);
 const hint = h('div', { id: 'hint' });
-ui.append(hud, timer, toastEl, prompt, topright, hint, qArrow);
+ui.append(hud, timer, toastEl, prompt, topright, hint, qArrow, actBtn);
 
 function renderHud() {
   xpChip.replaceChildren('✦ ', h('span', { class: 'xp' }, `${S.xp}`), ` ${t('ui.xp', 'curiosity XP')}`);
@@ -188,11 +192,17 @@ async function sayLine(el: HTMLElement, text: string) {
 type Quest = { text: () => string; x: number; z: number; kind: 'board' | 'sam' | 'place' | 'lab'; place?: string } | null;
 let quest: Quest = null;
 function renderQuest() { if (quest) questEl.replaceChildren(h('div', { class: 'kicker' }, t('quest.title', 'Quest')), h('div', { class: 'qtext' }, quest.text())); }
+goBtnHud.onclick = () => { if (!quest) return; vox.teleport(quest.x - 1.2, quest.z + 1.2); updateTakeMe(); toast(`✈ ${BIOMES[S.pendingBiome].name}`, 1800); };
+function updateTakeMe() {
+  const show = !!quest && quest.kind === 'sam' && !!S.pendingQ && S.pendingBiome !== 'beach' && vox.dist2(quest.x, quest.z) > 8;
+  goBtnHud.style.display = show ? '' : 'none';
+  goBtnHud.textContent = `✈ ${t('quest.takeMe', 'Take me there')}`;
+}
 function setQuest(q: Quest, say = true) {
   quest = q;
   vox.setBeacon(q ? q.x : null, q ? q.z : 0);
   questEl.style.display = q ? '' : 'none';
-  renderQuest();
+  renderQuest(); updateTakeMe();
   if (q && say) toast(`🧭 ${t('quest.new', 'New quest!')}`, 2500);
 }
 function placeFor(concepts: string[]): string {
@@ -222,6 +232,16 @@ function arrive() {
     else openLab();
   }
 }
+function doInteract() {
+  if (modal || samBox || extPanel) return;
+  try { if (lab3d && lab3d.interact()) return; } catch { /* */ }
+  const n = vox.near;
+  if (!n) return;
+  if (n.startsWith('egg:')) openEgg(n.slice(4));
+  else if (n === 'sam') interactSam('beach');
+  else if (n.startsWith('npc:')) interactSam(npcBiome(n.slice(4)));
+  else if (n === 'board') interactBoard();
+}
 function interactBoard() { if (S.phase !== 'board' && S.phase !== 'wonder') return; S.phase = 'wonder'; if (S.recallBefore === null) recall('before', () => wonderBoard()); else wonderBoard(); }
 function interactSam(b: Biome = 'beach') {
   if (S.phase === 'roam' || S.phase === 'board' || S.phase === 'wonder') { if (b === 'beach') { toast(t('quest.boardFirst', 'Sam: “Draw your wonder on the board first, dude!”')); return; } }
@@ -233,21 +253,35 @@ function interactSam(b: Biome = 'beach') {
 }
 
 // ------------------------------------------------------------------ 1) roam
+let endRoam: (() => void) | null = null;
 function roam() {
   S.phase = 'roam';
   let left = ROAM_S;
+  skipBtn.style.display = '';
+  skipBtn.textContent = `${t('roam.skip', 'Skip')} → ${t('wb.kicker', 'Wonder Board')}`;
+  skipBtn.onclick = () => { left = 0; endRoam?.(); };
   const render = () => (timer.textContent = `🧭 ${t('roam.title', 'Explore!')} ${Math.max(0, left)}s`);
   render();
   const iv = setInterval(() => {
     if (left <= 0 && (modal || samBox)) return; // let the kid finish what they are reading
     left--; render();
-    if (left <= 0) {
+    if (left <= 0) endRoam?.();
+  }, 1000);
+  endRoam = () => {
+    if (S.phase !== 'roam') return;
+    {
+      endRoam = null; skipBtn.style.display = 'none';
       clearInterval(iv); timer.remove(); emit('roam_end', { seconds: ROAM_S });
       S.phase = 'board'; vox.boardGlow = true; vox.sam.wave = true;
       setQuest({ text: () => t('quest.board', 'Walk to the glowing Wonder Board by the surf shack'), x: BOARD.x, z: BOARD.z + 1.3, kind: 'board' });
       void speak(t('quest.samCall', 'Hey dude! Come draw what you wonder about on my Wonder Board!'), LANG, curWorld().npc.voice, () => undefined);
+      if (!modal && !samBox && !extPanel) {
+        const card = h('div', { class: 'card panel timecard', 'data-testid': 'time-to-wonder' }, h('h2', {}, `✨ ${t('quest.timeTitle', 'Time to wonder!')}`), h('p', { style: 'font-size:20px' }, t('quest.timeText', 'Draw anything you wonder about on the Wonder Board.')),
+          h('div', { class: 'row' }, h('button', { class: 'btn gold big', 'data-testid': 'open-board', onclick: () => { close(); interactBoard(); } }, `🎨 ${t('quest.openBoard', 'Open Wonder Board')}`), h('button', { class: 'btn', onclick: () => close() }, `🚶 ${t('quest.walkThere', "I'll walk there")}`)));
+        open(card);
+      }
     }
-  }, 1000);
+  };
 }
 
 // ------------------------------------------------------------------ recall (before / after)
@@ -654,6 +688,30 @@ function toggleJournal() {
   ui.append(journalEl);
 }
 
+// ------------------------------------------------------------------ save / restore (localStorage 'cc.state')
+interface Saved { v: 1; sessionId: string; phase: string; quest: { kind: string; x: number; z: number; place?: string; label: string } | null; pendingQ: string | null; pendingBiome: Biome; pos: [number, number]; xp: number; level: number; deepest: number; asked: number; concepts: string[]; journal: { icon: string; question: string; level: number }[]; wonders: string[]; recallBefore: boolean | null; recallAfter: boolean | null; biome: Biome; labDone: boolean; visited: string[]; history: { role: 'kid' | 'npc'; text: string }[]; lastFact: string | null; t: number }
+function saveState() {
+  try {
+    const st: Saved = { v: 1, sessionId: SESSION, phase: S.phase, quest: quest ? { kind: quest.kind, x: quest.x, z: quest.z, place: quest.place, label: quest.text() } : null, pendingQ: S.pendingQ, pendingBiome: S.pendingBiome, pos: [vox.player.x, vox.player.z], xp: S.xp, level: S.level, deepest: S.deepest, asked: S.asked, concepts: [...S.concepts], journal: S.journal, wonders: [...S.wonders], recallBefore: S.recallBefore, recallAfter: S.recallAfter, biome: S.biome, labDone: S.labDone, visited: [...S.visited], history: S.history.slice(-8), lastFact: S.lastFact, t: Date.now() };
+    localStorage.setItem('cc.state', JSON.stringify(st));
+  } catch { /* storage blocked */ }
+}
+function restoreState(): boolean {
+  let st: Saved | null = null;
+  try { st = JSON.parse(localStorage.getItem('cc.state') ?? 'null'); } catch { st = null; }
+  if (!st || st.v !== 1 || Date.now() - st.t > 6 * 3600_000 || st.phase === 'roam') return false;
+  setSession(st.sessionId);
+  Object.assign(S, { phase: st.phase === 'wonder' ? 'board' : st.phase, pendingQ: st.pendingQ, pendingBiome: st.pendingBiome, xp: st.xp, level: st.level, deepest: st.deepest, asked: st.asked, journal: st.journal, recallBefore: st.recallBefore, recallAfter: st.recallAfter, biome: st.biome, labDone: st.labDone, history: st.history, lastFact: st.lastFact });
+  st.concepts.forEach((c) => S.concepts.add(c)); st.wonders.forEach((w) => { S.wonders.add(w); vox.markEgg(w); }); st.visited.forEach((v) => S.visited.add(v));
+  vox.teleport(st.pos[0], st.pos[1]);
+  timer.remove();
+  if (S.phase === 'board') { vox.boardGlow = true; }
+  if (st.quest) { const lbl = st.quest.label; setQuest({ text: () => lbl, x: st.quest.x, z: st.quest.z, kind: st.quest.kind as 'board', place: st.quest.place }, false); }
+  renderHud();
+  toast(`👋 ${t('ui.welcomeBack', 'Welcome back! Your adventure continues.')}`, 2500);
+  return true;
+}
+
 // ------------------------------------------------------------------ boot
 async function boot() {
   const [remote] = await Promise.all([fetchWorld('beach'), startSession(LANG)]);
@@ -665,25 +723,22 @@ async function boot() {
     document.body.classList.toggle('overlay', !!(modal || samBox || extPanel || journalEl || document.querySelector('.ccx-ov')));
     for (const a of input.take()) {
       if (a === 'book') toggleJournal();
-      if (a === 'interact' && !modal && !samBox && lab3d && (() => { try { return lab3d!.interact(); } catch { return false; } })()) continue;
-      if (a === 'interact' && !modal && !samBox && vox.near?.startsWith('egg:')) openEgg(vox.near.slice(4));
-      else if (a === 'interact' && !modal && !samBox && vox.near === 'sam') interactSam('beach');
-      else if (a === 'interact' && !modal && !samBox && vox.near?.startsWith('npc:')) interactSam(npcBiome(vox.near.slice(4)));
-      else if (a === 'interact' && !modal && !samBox && vox.near === 'board') interactBoard();
+      if (a === 'interact') { doInteract(); continue; }
       if (a === 'voice') activeMic?.start();
       if (a === 'pause' || a === 'back') back();
     }
     for (const r of input.takeReleased()) if (r === 'voice') activeMic?.stop();
     const egg = vox.near?.startsWith('egg:') ? vox.eggs.find((g) => `egg:${g.id}` === vox.near) : null;
     const labHint = !modal && !samBox && lab3d ? lab3d.prompt() : null;
-    if (labHint) { const pp = vox.screen(vox.player.x, vox.player.y + 2.4, vox.player.z); prompt.innerHTML = `<kbd>E</kbd> ${labHint}`; prompt.style.left = `${pp.x}px`; prompt.style.top = `${pp.y}px`; prompt.classList.add('show'); arrive(); return; }
+    if (labHint) { const pp = vox.screen(vox.player.x, vox.player.y + 2.4, vox.player.z); prompt.innerHTML = `<kbd>E</kbd> ${labHint}`; prompt.style.left = `${pp.x}px`; prompt.style.top = `${pp.y}px`; prompt.classList.add('show'); actBtn.style.display = ''; actBtn.innerHTML = prompt.innerHTML; arrive(); return; }
     labPanelBtn.style.display = (quest?.kind === 'lab' || S.labArrived) && !S.labDone ? '' : 'none';
     const board = vox.near === 'board' && (S.phase === 'board' || S.phase === 'wonder');
     const npcNear = vox.near?.startsWith('npc:') ? vox.npcs[vox.near.slice(4)] : null;
     if (!samBox && !modal && (egg || board || vox.near === 'sam' || npcNear)) {
       const p = egg ? vox.screen(egg.x, egg.y + 1.3, egg.z) : board ? vox.screen(BOARD.x, 3.4, BOARD.z) : npcNear ? vox.screen(npcNear.x, npcNear.y + 2.3, npcNear.z) : vox.screen(vox.sam.x, vox.sam.y + 2.1, vox.sam.z);
-      prompt.innerHTML = egg ? `<kbd>E</kbd> ✨ ${t('ui.lookCloser', 'Look closer')}` : board ? `<kbd>E</kbd> 🎨 ${t('ui.board', 'Open the Wonder Board')}` : `<kbd>E</kbd> ${t('ui.talkTo', 'Talk to')} ${npcNear ? WORLDS[npcBiome(vox.near!.slice(4))].npc.name.split(' ')[0] : 'Sam'}`; prompt.style.left = `${p.x}px`; prompt.style.top = `${p.y}px`; prompt.classList.add('show');
-    } else prompt.classList.remove('show');
+      prompt.innerHTML = egg ? `<kbd>E</kbd> ✨ ${t('ui.lookCloser', 'Look closer')}` : board ? `<kbd>E</kbd> 🎨 ${t('ui.board', 'Open the Wonder Board')}` : `<kbd>E</kbd> ${t('ui.talkTo', 'Talk to')} ${npcNear ? WORLDS[npcBiome(vox.near!.slice(4))].npc.name.split(' ')[0] : 'Sam'}`; prompt.style.left = `${p.x}px`; prompt.style.top = `${p.y}px`; prompt.classList.add('show'); actBtn.style.display = ''; actBtn.innerHTML = prompt.innerHTML.replace('<kbd>E</kbd>', '<kbd>E</kbd> ');
+    } else { prompt.classList.remove('show'); actBtn.style.display = 'none'; }
+    if (S.phase === 'sam') updateTakeMe();
     arrive();
     if (quest && !modal) {
       const sp = vox.screen(quest.x, vox.groundY(quest.x, quest.z) + 1, quest.z);
@@ -720,7 +775,24 @@ async function boot() {
   emit('session_start', { lang: LANG, worldId: 'beach', demo: DEMO });
   emit('spawn', { worldId: 'beach' });
   emit('lang', { lang: LANG });
-  roam();
+  // ---- keyboard focus (iframes on Safari need it) + "Click to play"
+  const cv = vox.renderer.domElement; cv.tabIndex = 0; cv.setAttribute('aria-label', 'Curiosity Craft world');
+  const grab = () => { try { window.focus(); cv.focus({ preventScroll: true }); } catch { /* */ } };
+  grab();
+  cv.addEventListener('pointerdown', grab);
+  if (window.top !== window) {
+    const play = h('div', { class: 'veil playveil', 'data-testid': 'click-to-play' }, h('button', { class: 'btn gold big', style: 'font-size:32px;padding:20px 36px' }, `▶ ${t('ui.clickToPlay', 'Click to play')}`));
+    play.addEventListener('click', () => { play.remove(); grab(); });
+    ui.append(play);
+  }
+  // ---- live language switching from the wrapper
+  window.addEventListener('message', (e) => { const d = e.data as { type?: string; lang?: string } | null; if (d?.type === 'cc_lang' && d.lang && (LANGS as string[]).includes(d.lang)) void changeLang(d.lang as Lang); });
+  // ---- persist + restore progress (a reload with a new ?lang= continues the same play)
+  const restored = !params.has('fresh') && restoreState();
+  setInterval(saveState, 1500);
+  addEventListener('pagehide', saveState);
+  if (!restored) { roam(); setTimeout(() => toast(`✨ ${t('quest.tipSparkles', 'Find glowing ? blocks to discover wonders!')}`, 4500), 1200); }
+  vox.setEggLabel(t('ui.wonderSpot', 'Wonder spot ✨'));
   (window as unknown as Record<string, unknown>).__CCvox = vox;
   (window as unknown as Record<string, unknown>).__CCgo = (where: 'board' | 'sam' | 'quest') => {
     if (where === 'board') { vox.teleport(BOARD.x, BOARD.z + 1.4); interactBoard(); }
