@@ -89,7 +89,7 @@ function route(keepScroll = false) {
   else if (page === 'report') { key = 'parents'; cleanup = renderCCReport(main, arg); }
   else if (page === 'parents') { key = 'parents'; cleanup = renderParents(main); }
   else if (page === 'worlds') { key = 'worlds'; cleanup = renderWorlds(main); }
-  else if (page === 'about') { key = 'about'; renderAbout(main); }
+  else if (page === 'about' || page === 'pitch') { key = 'about'; renderAbout(main); }
   else { cleanup = renderHome(main, () => route(true)); }
   document.body.dataset.page = key === 'parents' && page === 'report' ? 'report' : key;
   header(key);

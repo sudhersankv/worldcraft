@@ -68,5 +68,66 @@ export function renderAbout(main: HTMLElement) {
       <h2 id="next-h" class="pf-h2">${t('about.next.h', 'Where it goes next')}</h2>
       <p>${t('about.next.p', 'Any lesson or picture book becomes a new corner of the island: upload it, and the guides learn its syllabus. Every story a child reads can become a world they can walk into and question.')}</p>
       <p><a class="btn btn-gold btn-xl" href="/play.html?world=beach">${t('about.cta', 'Start exploring')}</a></p>
-    </section>`;
+    </section>
+    <p style="text-align:right;margin:8px 4px 24px"><button type="button" id="pitch-toggle" aria-expanded="false" aria-controls="pitch-notes"
+      style="background:none;border:0;color:inherit;opacity:.35;font:600 12px/1 inherit;cursor:pointer;padding:6px">✦ notes</button></p>
+    <section id="pitch-notes" class="pf-card pitch-notes" hidden aria-label="Pitch notes">${PITCH}</section>`;
+  const btn = main.querySelector<HTMLButtonElement>('#pitch-toggle')!;
+  const box = main.querySelector<HTMLElement>('#pitch-notes')!;
+  const open = (on: boolean) => { box.hidden = !on; btn.setAttribute('aria-expanded', String(on)); if (on) box.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  btn.addEventListener('click', () => open(Boolean(box.hidden)));
+  if (/pitch/.test(location.hash) || new URLSearchParams(location.search).has('pitch')) setTimeout(() => open(true), 50);
 }
+
+/** Pitch notes for the 2-minute demo (English, intentionally not translated). Hidden behind the "✦ notes" button. */
+const PITCH = `
+<style>
+.pitch-notes h2{margin:0 0 6px}.pitch-notes h3{margin:18px 0 6px;font-size:1.05rem}
+.pitch-notes ul,.pitch-notes ol{margin:0;padding-left:1.2em;display:grid;gap:4px}.pitch-notes li{line-height:1.45}
+.pitch-notes .hook{font-size:1.15rem;font-weight:700}
+</style>
+<h2 class="pf-h2">Curiosity Craft: the pitch</h2>
+<p class="hook">Ask why. Fail freely. Learn by teaching.</p>
+<h3>The problem</h3>
+<ul>
+<li>Kids ask hundreds of questions a day, until school teaches them the right answer matters more than the question.</li>
+<li>Most learning apps reward correct answers, which trains kids to avoid risk.</li>
+</ul>
+<h3>What it is</h3>
+<ul>
+<li>A blocky island where kids score by asking “why?”, not by being right.</li>
+<li><b>Wonder Board:</b> draw anything (a wave, a dinosaur, a rocket). Vision AI reads the scribble and turns it into 3 real questions.</li>
+<li><b>Talk to guides:</b> Surfer Sam, Rocky the Lava Golem, Penny the Penguin and Fern the Tree Frog answer out loud. Every answer ends with “but why?”, and each follow-up climbs the <b>Why Ladder</b>.</li>
+<li><b>Try it:</b> drop stone, wood or foam boards in the water. Predict first. Stone sinks with a funny <i>bloop</i> and a hint, so failure becomes content.</li>
+<li><b>Curiosity Journal:</b> every question becomes a card.</li>
+</ul>
+<h3>Multi-modal, as the brief requires</h3>
+<ul>
+<li><b>Drawing</b> (vision), <b>voice</b> (speech in and out), <b>text</b>, and a <b>3D world</b> you explore with your hands.</li>
+<li><b>8 home languages</b> (en, es, zh, fr, pt, nl, hi, ta) in voice and text. 8 is lucky.</li>
+</ul>
+<h3>Learning you can measure (what parents see)</h3>
+<ul>
+<li>Questions asked, deepest why-level, ideas explored, try-again after a fail, and <b>the same recall question before and after</b>.</li>
+<li>A Curiosity Profile per child: Deep Diver, Explorer or Experimenter.</li>
+<li>A “talk about it tonight” conversation starter, plus a try-at-home experiment.</li>
+<li>Every number comes from what the child actually did, not from the AI’s opinion.</li>
+</ul>
+<h3>Built for families and teachers to trust</h3>
+<ul>
+<li>Parents and teachers <b>write the syllabus</b>: drop in a PDF and the guides teach that lesson.</li>
+<li>Guides answer only from it. No open web, no accounts, voice never stored.</li>
+<li>The game, not the AI, awards progress.</li>
+</ul>
+<h3>Where it goes</h3>
+<ul><li>Any lesson or picture book becomes a new corner of the island that kids can walk into and question. Epic’s 40,000 books become 40,000 worlds.</li></ul>
+<h3>Demo in 2 minutes</h3>
+<ol>
+<li>Draw a wave, which gives you questions.</li>
+<li>Ask Sam out loud and go 3 whys deep.</li>
+<li>The stone sinks, the foam floats (“aha!”).</li>
+<li>Open the parent report: recall goes from ✗ to ✓.</li>
+</ol>
+<h3>Close</h3>
+<p class="hook">“More why, less because.”</p>
+`;
