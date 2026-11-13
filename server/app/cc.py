@@ -296,7 +296,7 @@ def build_report(s: dict) -> dict:
         'startedAt': t0, 'minutes': max(0, minutes),
         'questionsAsked': len(asked), 'deepestWhyLevel': max(levels) if levels else 0,
         'concepts': [cmap[c] for c in cids if c in cmap],
-        'challengeAttempts': [{'challenge': str(e['data'].get('challenge', '')), 'choice': str(e['data'].get('choice', '')),
+        'challengeAttempts': [{'challenge': {'surfboard-lab': 'Surfboard Lab', 'wave-maker': 'Wave Maker'}.get(str(e['data'].get('challenge', '')), str(e['data'].get('challenge', ''))), 'choice': str(e['data'].get('choice', '')),
                                'result': str(e['data'].get('result', ''))} for e in by('challenge_attempt')],
         'recall': {'before': rec('recall_before'), 'after': rec('recall_after'), 'prompt': w.get('recall', {}).get('prompt', '')},
         'journal': journal, 'tryAtHome': w.get('tryAtHome', ''), 'realWorld': w.get('realWorld', {}),

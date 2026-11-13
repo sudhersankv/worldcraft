@@ -1,6 +1,5 @@
 import type { TemplateId } from '../shared/contracts';
 import { islandSVG } from './art';
-import { islandThumbs } from './diorama';
 
 export const esc = (s: unknown): string =>
   String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -11,8 +10,9 @@ export const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNod
 export const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export interface WorldMeta { id: TemplateId; name: string; blurb: string; npcs: string; companion: string; accent: string }
+export const DEMO_URL = '/play.html?world=forest-plants';
 export const WORLDS: WorldMeta[] = [
-  { id: 'forest', name: 'Enchanted Forest', blurb: 'Mushroom huts, a sunlight tower and a bloom that needs saving.', npcs: 'Sunny, Wally, Oakley', companion: 'Sprout', accent: 'var(--w-forest)' },
+  { id: 'forest', name: 'Verdant Hollow', blurb: 'Playable now. The hollow has dried up: learn how plants drink, breathe and make rain, then bring the rain back.', npcs: 'Forest creatures who teach by voice', companion: 'Sprout', accent: 'var(--w-forest)' },
   { id: 'space', name: 'Space Station', blurb: 'Docking bays, hologram planets and a console waiting for power.', npcs: 'Captain Nova, Orbit, Zig', companion: 'Beep', accent: 'var(--w-space)' },
   { id: 'math', name: 'Math Kingdom', blurb: 'A castle town of towers, markets and puzzle gates.', npcs: 'Professor Pi, Sir Fraction, Mira', companion: 'Digit', accent: 'var(--w-math)' },
   { id: 'egypt', name: 'Ancient Egypt', blurb: 'Sandstone streets, an oasis and an archive to open.', npcs: 'Nefru, Khepri, Amina', companion: 'Scarab', accent: 'var(--w-egypt)' },
@@ -82,13 +82,21 @@ export function tilt(el: HTMLElement, max = 10) {
 }
 
 /** <img> placeholder for a 3D island portrait; call hydrateThumbs(root) after inserting. */
-export const thumb = (t: TemplateId, alt = '') => `<img class="thumb" data-thumb="${t}" alt="${esc(alt)}" width="420" height="360" decoding="async"/>`;
+export const thumb = (t: TemplateId, alt = '') => `<img class="thumb" data-thumb="${t}" alt="${esc(alt)}" width="400" height="380" decoding="async"/>`;
+const urlCache = new Map<TemplateId, string>();
+export function islandDataUrl(t: TemplateId): string {
+  let u = urlCache.get(t);
+  if (!u) {
+    // CSS variables don't resolve inside an <img>, so bake the brand colours in.
+    const svg = islandSVG(t).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ')
+      .replace(/var\(--([a-z0-9-]+)\)/g, (_, k: string) => getComputedStyle(document.documentElement).getPropertyValue(`--${k}`).trim() || '#888');
+    u = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    urlCache.set(t, u);
+  }
+  return u;
+}
 export function hydrateThumbs(root: ParentNode = document) {
   const imgs = $$<HTMLImageElement>('img[data-thumb]:not([src])', root);
   if (!imgs.length) return;
-  const svgFallback = (t: TemplateId) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(islandSVG(t).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" '))}`;
-  islandThumbs().then(
-    (m) => imgs.forEach((i) => { i.src = m[i.dataset.thumb as TemplateId] ?? svgFallback(i.dataset.thumb as TemplateId); }),
-    () => imgs.forEach((i) => { i.src = svgFallback(i.dataset.thumb as TemplateId); }),
-  );
+  imgs.forEach((i) => { i.src = islandDataUrl(i.dataset.thumb as TemplateId); });
 }

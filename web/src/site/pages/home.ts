@@ -1,189 +1,84 @@
-import { goatSVG, I } from '../art';
-import { mountCarousel, TEMPLATES } from '../diorama';
+import { LANGS, type Lang } from '../../shared/curiosity';
+import { I } from '../art';
+import { getLang, LANG_NAMES, setLang, t } from '../i18n';
 import { blip } from '../sfx';
-import { $, $$, esc, WORLDS, worldMeta } from '../ui';
+import { beachSVG, blockIcon } from '../voxel';
+import { $, $$ } from '../ui';
 
-const DEMO = '/play.html?world=forest-photosynthesis';
+export const PLAY_URL = '/play.html?world=beach';
 
-const MENU = [
-  { href: '#lab', label: 'Start a lesson', sub: 'Turn a PDF or text into a world' },
-  { href: DEMO, label: 'Play demo world', sub: 'The Enchanted Forest: how plants make food' },
-  { href: '#library', label: 'World library', sub: 'Every world built so far' },
-  { href: '#report', label: 'Grown-ups', sub: 'See what was studied and recalled' },
-];
-
-const LOOP = [
-  { key: 'study', name: 'Study', icon: I.book, line: 'Read a short card at the place.', body: `
-      <article class="parchment">
-        <h4>What a plant needs</h4>
-        <p>A plant makes its own food. It needs <mark>sunlight</mark>, <mark>water</mark> from the soil and <mark>carbon dioxide</mark> from the air.</p>
-        <p class="src">From your lesson: section 2</p>
-      </article>` },
-  { key: 'check', name: 'Check', icon: I.check, line: 'One or two quick questions.', body: `
-      <div class="mini-q"><p>Which one is NOT something a plant needs?</p>
-      <ul><li>Sunlight</li><li class="right">Sand ${I.check}</li><li>Water</li></ul></div>` },
-  { key: 'explain', name: 'Explain', icon: I.chat, line: 'Say it back to a character, out loud.', body: `
-      <div class="talk"><p class="bub npc"><b>Oakley the Tree</b>You read the sunlight card. Can you explain how I make my food?</p>
-      <p class="bub kid">You take in water and air, and the sun gives you energy to make sugar.</p>
-      <p class="bub npc"><b>Oakley the Tree</b>Yes! One more thing: which gas do I let out?</p></div>` },
-  { key: 'practise', name: 'Practise', icon: I.hint, line: 'Use the idea to fix something.', body: `
-      <ol class="mini-seq"><li>Leaf catches sunlight</li><li>Roots bring up water</li><li>Leaf makes sugar</li><li>Oxygen goes into the air</li></ol>
-      <p class="caption">Put the steps in order to light the Sunlight Tower.</p>` },
-  { key: 'recall', name: 'Recall', icon: I.pin, line: 'Walk back and answer from memory.', body: `
-      <div class="mini-q"><p><span class="pinlabel">${I.pin} Water Well</span> No cards now. What three things does a plant need?</p>
-      <p class="caption">The place is the reminder. Hints come one at a time if they get stuck.</p></div>` },
-];
-
-export function renderHome(main: HTMLElement) {
-  main.className = 'home';
+export function renderHome(main: HTMLElement, rerender: () => void) {
+  main.className = 'home cc';
+  const lang = getLang();
+  const play = `${PLAY_URL}${lang !== 'en' ? `&lang=${lang}` : ''}`;
   main.innerHTML = `
-  <section class="title" aria-labelledby="logo">
-    <div class="title-inner">
-      <h1 id="logo" class="logo"><span class="l1">Curiosity</span><span class="l2">Craft</span></h1>
-      <p class="tagline">Study inside a world you can explore.</p>
-      <nav class="menu panel-dark" aria-label="Start menu">
-        <ul>
-          ${MENU.map((m, i) => `<li><a href="${m.href}" class="${i === 0 ? 'sel' : ''}" data-i="${i}">
-            <span class="cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4l14 8-14 8 4-8z"/></svg></span>
-            <span class="m-label">${m.label}</span><span class="m-sub">${m.sub}</span></a></li>`).join('')}
-        </ul>
-        <p class="menu-keys" aria-hidden="true"><kbd>&uarr;</kbd><kbd>&darr;</kbd> choose <kbd>Enter</kbd> go</p>
-      </nav>
-    </div>
-    <button class="scroll-hint" type="button">How learning works <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-  </section>
-
-  <section class="band" aria-labelledby="loop-h">
-    <div class="panel-dark questlog">
-      <header class="ql-head">
-        <h2 id="loop-h" class="disp">Quest log</h2>
-        <p>Every goal in a lesson is learned the same five ways, at a real place on the island.</p>
-      </header>
-      <div class="ql-body">
-        <div class="pills pills-col" role="tablist" aria-label="Learning steps">
-          ${LOOP.map((s, i) => `<button role="tab" id="lt-${s.key}" aria-controls="lp" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-i="${i}">
-            <span class="q-ico">${s.icon}</span><span class="q-txt"><b>${i + 1}. ${s.name}</b><small>${s.line}</small></span></button>`).join('')}
-        </div>
-        <div class="ql-detail" id="lp" role="tabpanel" aria-live="polite"></div>
+  <section class="cc-hero" aria-labelledby="cc-h">
+    <div class="cc-hero-copy">
+      <p class="kicker">${t('site.kicker', 'Sunny Surf Beach: a blocky world for curious kids, ages 6 to 12')}</p>
+      <h1 id="cc-h" class="cc-hook">
+        <span class="hk hk1">${t('site.hook.ask', 'Ask why.')}</span>
+        <span class="hk hk2">${t('site.hook.fail', 'Fail freely.')}</span>
+        <span class="hk hk3">${t('site.hook.teach', 'Learn by teaching.')}</span>
+      </h1>
+      <p class="lede">${t('site.lede', 'Kids roam a blocky beach, wonder about what they see, and ask Surfer Sam why. Every "why?" goes one level deeper. Curiosity is the score, not being right.')}</p>
+      <div class="cta-row">
+        <a class="btn btn-gold btn-xl" href="${play}">${I.play}<span>${t('site.cta.start', 'Start exploring')}</span></a>
+        <a class="btn btn-soft btn-lg" href="#parents">${t('site.cta.parents', 'What parents see')}</a>
       </div>
     </div>
+    <div class="cc-hero-art" aria-hidden="true">
+      ${beachSVG()}
+      <p class="speech"><b>Surfer Sam</b>${t('site.sam', 'Waves are energy moving through water. But why does a board float on top?')}</p>
+    </div>
+  </section>
+  <div class="cc-ground" aria-hidden="true"></div>
+
+  <section class="cc-band" aria-labelledby="how-h">
+    <h2 id="how-h" class="cc-h2">${t('site.how.title', 'How it works')}</h2>
+    <ol class="cc-steps">
+      <li style="--c:#ffcf3a">${blockIcon('#ffcf3a', '1')}<h3>${t('site.how.wonder.t', 'Wonder Board')}</h3><p>${t('site.how.wonder.d', 'Draw, type or say what you wonder about. A wave? A surfboard? It becomes three questions to explore.')}</p></li>
+      <li style="--c:#3ec6ff">${blockIcon('#3ec6ff', '2')}<h3>${t('site.how.ask.t', 'Ask why')}</h3><p>${t('site.how.ask.d', 'Talk to Surfer Sam. Every answer ends with a new "why?" and each follow-up climbs the Why Ladder.')}</p></li>
+      <li style="--c:#ff6fa8">${blockIcon('#ff6fa8', '3')}<h3>${t('site.how.try.t', 'Try it')}</h3><p>${t('site.how.try.d', 'Build a surfboard from stone, wood or foam and see what floats. Sinking is funny, and it comes with a hint.')}</p></li>
+      <li style="--c:#6ee07a">${blockIcon('#6ee07a', '4')}<h3>${t('site.how.journal.t', 'Journal')}</h3><p>${t('site.how.journal.d', 'Every question becomes a card in the Curiosity Journal, with a try-at-home experiment.')}</p></li>
+    </ol>
   </section>
 
-  <section class="band" aria-labelledby="worlds-h">
-    <div class="panel-dark worlds-panel">
-      <header class="ql-head"><h2 id="worlds-h" class="disp">Choose an island</h2><p>Every lesson becomes a quest on one of six islands.</p></header>
-      <div class="carousel">
-        <canvas id="carousel" aria-hidden="true"></canvas>
-        <div class="car-fallback" aria-hidden="true"></div>
-        <button class="car-arrow prev" aria-label="Previous island">${I.back}</button>
-        <button class="car-arrow next" aria-label="Next island">${I.arrow}</button>
-      </div>
-      <div class="world-pick">
-        <div class="pills pills-grid" role="tablist" aria-label="Islands">
-          ${WORLDS.map((w, i) => `<button role="tab" aria-selected="${i === 0}" aria-controls="wd" tabindex="${i === 0 ? 0 : -1}" data-w="${i}" style="--accent:${w.accent}"><i></i>${esc(w.name)}</button>`).join('')}
-        </div>
-        <div class="world-detail" id="wd" role="tabpanel" aria-live="polite"></div>
-      </div>
+  <section class="cc-band cc-parents" id="parents" aria-labelledby="par-h">
+    <div class="cc-panel">
+      <h2 id="par-h" class="cc-h2">${t('site.parents.title', 'What parents see')}</h2>
+      <p class="sub">${t('site.parents.sub', 'After each session you get a short report. Every number comes from what your child actually did in the game.')}</p>
+      <ul class="cc-metrics">
+        <li><span class="mi">${I.chat}</span><b>${t('site.parents.q', 'Questions asked')}</b><span>${t('site.parents.q.d', 'How often they asked, not how often they were right.')}</span></li>
+        <li><span class="mi ladder-mini"><i></i><i></i><i></i></span><b>${t('site.parents.why', 'Deepest why-level')}</b><span>${t('site.parents.why.d', 'How far up the Why Ladder they climbed.')}</span></li>
+        <li><span class="mi">${I.book}</span><b>${t('site.parents.concepts', 'Concepts touched')}</b><span>${t('site.parents.concepts.d', 'Each one explained in plain words for you.')}</span></li>
+        <li><span class="mi">${I.hint}</span><b>${t('site.parents.attempts', 'Attempts')}</b><span>${t('site.parents.attempts.d', 'What they tried in the challenges, sinking boards included.')}</span></li>
+        <li><span class="mi">${I.check}</span><b>${t('site.parents.recall', 'Before and after')}</b><span>${t('site.parents.recall.d', 'One question asked at the start and again at the end.')}</span></li>
+      </ul>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="voice-h">
-    <div class="panel-dark voice-panel">
-      <div>
-        <h2 id="voice-h" class="disp">Just talk to the characters</h2>
-        <p>Kids hold the talk button and explain what they learned. Characters answer only from your lesson and nudge with questions instead of giving it away. When a question goes beyond the lesson, Exa the goat fetches a clue.</p>
-        <ul class="ticks"><li>${I.check} Characters only teach what is in your lesson</li><li>${I.check} Wrong answers get a hint and another try</li><li>${I.check} Typing works too, for quiet classrooms</li></ul>
-      </div>
-      <div class="talkcard">
-        <p class="bub npc"><b>Wally the Water Guardian</b>Where does a plant get its water?</p>
-        <p class="bub kid">From the soil, through its roots.</p>
-        <div class="talkbar"><span class="micbtn">${I.mic}</span>
-          <span class="wave" aria-hidden="true">${Array.from({ length: 24 }, (_, i) => `<i style="--d:${(i * 0.07).toFixed(2)}s;--h:${0.3 + ((i * 37) % 10) / 14}"></i>`).join('')}</span>
-          <span class="live">Listening</span></div>
-        <div class="talk-goat">${goatSVG('sm')}</div>
-      </div>
-    </div>
+  <section class="cc-band" aria-labelledby="safe-h">
+    <h2 id="safe-h" class="cc-h2">${t('site.safe.title', 'Safe by design')}</h2>
+    <ul class="cc-safe">
+      <li><span class="lock">${I.eye}</span><b>${t('site.safe.web', 'No open web')}</b><span>${t('site.safe.web.d', 'Kids never see search results or links out.')}</span></li>
+      <li><span class="lock">${I.x}</span><b>${t('site.safe.data', 'No kid data')}</b><span>${t('site.safe.data.d', 'No accounts, no names. Voice is processed live and never stored.')}</span></li>
+      <li><span class="lock">${I.book}</span><b>${t('site.safe.facts', 'Answers from a fact sheet')}</b><span>${t('site.safe.facts.d', 'Surfer Sam only answers from a checked fact sheet about the beach. The game, not the AI, awards progress.')}</span></li>
+    </ul>
   </section>
 
-  <section class="band" aria-labelledby="grown-h">
-    <div class="panel-dark grown">
-      <header class="ql-head"><h2 id="grown-h" class="disp">For teachers and parents</h2><p>About a minute of setup. Every word kids read comes from your lesson, and you can change any of it.</p></header>
-      <ol class="grid4">
-        <li><span class="q-ico">${I.upload}</span><b>Upload a lesson</b><span>A PDF or pasted text. One or two pages works best.</span></li>
-        <li><span class="q-ico">${I.pencil}</span><b>Review the study cards</b><span>Three goals, each tied to a sentence in your lesson. Edit cards, questions and answers.</span></li>
-        <li><span class="q-ico">${I.link}</span><b>Share one link</b><span>No accounts. Kids open it and start exploring.</span></li>
-        <li><span class="q-ico">${I.eye}</span><b>See progress per goal</b><span>Studied, checked, explained, practised, recalled. Evidence from one session, not a grade.</span></li>
-      </ol>
-      <a class="btn btn-gold btn-lg" href="#lab">${I.upload}<span>Start a lesson</span></a>
+  <section class="cc-band cc-langs" aria-labelledby="lang-h">
+    <h2 id="lang-h" class="cc-h2">${t('site.langs.title', 'Plays in 8 languages')}</h2>
+    <p class="sub">${t('site.langs.sub', 'Kids can talk and listen in their own language.')}</p>
+    <div class="lang-grid" role="group" aria-label="${t('site.langs.title', 'Plays in 8 languages')}">
+      ${LANGS.map((l) => `<button class="lang ${l === lang ? 'on' : ''}" data-lang="${l}" lang="${l}" aria-pressed="${l === lang}">${LANG_NAMES[l]}</button>`).join('')}
     </div>
+    <a class="btn btn-gold btn-lg" href="${play}">${I.play}<span>${t('site.cta.start', 'Start exploring')}</span></a>
   </section>`;
 
-  // ---------------- title menu: hover / arrow keys move the cursor
-  const items = $$<HTMLAnchorElement>('.menu a', main);
-  let sel = 0;
-  const select = (i: number, focus = false) => {
-    if (i === sel && !focus) return;
-    sel = (i + items.length) % items.length;
-    items.forEach((a, k) => a.classList.toggle('sel', k === sel));
-    if (focus) items[sel].focus();
-    blip(520 + sel * 60);
-  };
-  items.forEach((a, i) => { a.addEventListener('mouseenter', () => select(i)); a.addEventListener('focus', () => select(i)); a.addEventListener('click', () => blip(880, .09)); });
-  const onKey = (e: KeyboardEvent) => {
-    const tag = (e.target as HTMLElement).tagName;
-    if (/INPUT|TEXTAREA|SELECT/.test(tag) || (e.target as HTMLElement).closest('[role=tablist]')) return;
-    if (scrollY > innerHeight * .6) return;
-    if (e.key === 'ArrowDown') { e.preventDefault(); select(sel + 1, true); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); select(sel - 1, true); }
-    else if (e.key === 'Enter' && document.activeElement === document.body) { items[sel].click(); }
-  };
-  addEventListener('keydown', onKey);
-
-  // ---------------- tabs helper (pill tabs with arrow keys)
-  const tabs = (list: HTMLElement, onPick: (i: number) => void) => {
-    const btns = $$<HTMLButtonElement>('[role=tab]', list);
-    const pick = (i: number, focus = false) => {
-      btns.forEach((b, k) => { b.setAttribute('aria-selected', String(k === i)); b.tabIndex = k === i ? 0 : -1; });
-      if (focus) btns[i].focus();
-      onPick(i);
-    };
-    btns.forEach((b, i) => {
-      b.addEventListener('click', () => { pick(i); blip(660); });
-      b.addEventListener('keydown', (e) => {
-        const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
-        if (!d) return; e.preventDefault(); pick((i + d + btns.length) % btns.length, true);
-      });
-    });
-    return pick;
-  };
-
-  const lp = $('#lp', main)!;
-  tabs($('.questlog [role=tablist]', main)!, (i) => {
-    const s = LOOP[i];
-    lp.setAttribute('aria-labelledby', `lt-${s.key}`);
-    lp.innerHTML = `<h3 class="disp">${s.name}</h3>${s.body}`;
-  })(0);
-
-  // ---------------- worlds carousel
-  const car = mountCarousel($<HTMLCanvasElement>('#carousel', main)!);
-  if (!car) main.querySelector('.carousel')!.classList.add('no-gl');
-  const wd = $('#wd', main)!;
-  const pickWorld = tabs($('.world-pick [role=tablist]', main)!, (i) => {
-    const w = worldMeta(TEMPLATES[i]);
-    car?.go(i);
-    main.querySelector<HTMLElement>('.car-fallback')!.style.setProperty('--accent', w.accent);
-    wd.innerHTML = `<h3 class="disp">${esc(w.name)}</h3><p>${esc(w.blurb)}</p>
-      <dl><div><dt>Characters</dt><dd>${esc(w.npcs)}</dd></div><div><dt>Sidekick</dt><dd>${esc(w.companion)}</dd></div></dl>
-      <div class="row-gap">${w.id === 'forest' ? `<a class="btn btn-gold" href="${DEMO}">${I.play}<span>Play the demo</span></a>` : ''}
-      <a class="btn ${w.id === 'forest' ? 'btn-soft' : 'btn-gold'}" href="#lab">${I.upload}<span>Use with my lesson</span></a></div>`;
-  });
-  let wi = 0;
-  pickWorld(0);
-  $('.car-arrow.prev', main)!.addEventListener('click', () => { wi = (wi + 5) % 6; pickWorld(wi); blip(600); });
-  $('.car-arrow.next', main)!.addEventListener('click', () => { wi = (wi + 1) % 6; pickWorld(wi); blip(700); });
-  $$<HTMLButtonElement>('.world-pick [role=tab]', main).forEach((b) => b.addEventListener('click', () => { wi = Number(b.dataset.w); }));
-
-  $('.scroll-hint', main)!.addEventListener('click', () => $('#loop-h', main)!.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
-
-  return () => { removeEventListener('keydown', onKey); car?.dispose(); };
+  $$<HTMLButtonElement>('.lang', main).forEach((b) => b.addEventListener('click', async () => {
+    blip(700);
+    await setLang(b.dataset.lang as Lang);
+    rerender();
+    $<HTMLButtonElement>(`.lang[data-lang="${b.dataset.lang}"]`, main)?.focus();
+  }));
 }

@@ -41,7 +41,7 @@ export function renderLibrary(main: HTMLElement) {
   }, (e) => {
     if (!alive) return;
     box.removeAttribute('aria-busy');
-    box.innerHTML = `<div class="err" role="alert"><p>Couldn't load the worlds. ${esc(friendly(e))}</p><a class="btn btn-paper btn-sm" href="/play.html?world=forest-photosynthesis">${I.play}<span>Play the demo</span></a></div>`;
+    box.innerHTML = `<div class="err" role="alert"><p>Couldn't load the worlds. ${esc(friendly(e))}</p><a class="btn btn-paper btn-sm" href="/play.html?world=forest-plants">${I.play}<span>Play the demo</span></a></div>`;
   });
   return () => { alive = false; };
 }

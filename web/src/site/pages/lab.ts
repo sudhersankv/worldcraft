@@ -167,7 +167,7 @@ export function renderLab(main: HTMLElement, worldId?: string) {
 
   function samplesView() {
     if (samples === null && !samplesErr) return `<p class="muted">Loading samples…</p>`;
-    if (samplesErr) return `<div class="err soft"><p>Couldn't load samples. ${esc(samplesErr)}</p><a class="btn btn-paper btn-sm" href="/play.html?world=forest-photosynthesis">${I.play}<span>Play the demo</span></a></div>`;
+    if (samplesErr) return `<div class="err soft"><p>Couldn't load samples. ${esc(samplesErr)}</p><a class="btn btn-paper btn-sm" href="/play.html?world=forest-plants">${I.play}<span>Play the demo</span></a></div>`;
     if (!samples!.length) return `<p class="muted">No sample lessons on this server.</p>`;
     return samples!.map((s) => {
       const w = worldMeta(s.templateId);
@@ -391,7 +391,7 @@ export function renderLab(main: HTMLElement, worldId?: string) {
   function draw() {
     main.innerHTML = `
       <div class="lab-head">
-        <div><h1 class="display h-lg">Lesson Lab</h1><p class="muted">Turn a lesson into a world to study in. Check every card and answer, then share one link.</p></div>
+        <div><p class="badges"><span class="badge src-sample">Coming next</span></p><h1 class="display h-lg">Make your own world</h1><p class="muted">Upload a lesson and we build a world from it. Check what the characters will teach, then share one link. This is an early preview.</p></div>
         ${S.material || S.world ? `<button class="btn btn-ghost btn-sm" data-act="over">${I.refresh}<span>Start over</span></button>` : ''}
       </div>
       ${stepper()}

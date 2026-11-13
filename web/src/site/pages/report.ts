@@ -27,7 +27,7 @@ function one(r: SessionResults) {
   const shown = r.objectives.filter((o) => o.demonstrated).length;
   return `
   <div class="page-head report-head">
-    <a class="back no-print" href="#report">${I.back}<span>All sessions</span></a>
+    <a class="back no-print" href="#sessions">${I.back}<span>All sessions</span></a>
     <h1 class="display h-lg">${esc(r.lessonTitle)}</h1>
     <p class="muted">Session ${esc(r.sessionId)}, started ${esc(when(r.startedAt))}. ${r.completed ? 'Finished the world.' : 'Did not finish the world yet.'} ${r.events} recorded actions.</p>
     <p class="honest">${I.eye} This is evidence from one play session: what was read, answered, explained and recalled. It is not a grade, and one session can't show long-term memory.</p>
@@ -58,7 +58,7 @@ function list(rs: SessionResults[]) {
   </div>
   ${rs.length ? `<ul class="sessions">${rs.map((r) => {
     const shown = r.objectives.filter((o) => o.demonstrated).length;
-    return `<li><a href="#report/${encodeURIComponent(r.sessionId)}">
+    return `<li><a href="#sessions/${encodeURIComponent(r.sessionId)}">
       <span class="s-title">${esc(r.lessonTitle)}</span>
       <span class="s-meta">${esc(when(r.startedAt))}</span>
       <span class="s-dots" aria-label="${shown} of ${r.objectives.length} goals shown">${r.objectives.map((o) => `<i class="${o.demonstrated ? 'on' : ''}"></i>`).join('')}</span>
@@ -74,7 +74,7 @@ export function renderReport(main: HTMLElement, id?: string) {
   const fail = (e: unknown) => {
     if (!alive) return;
     main.innerHTML = `<div class="page-head"><h1 class="display h-lg">${id ? 'Session report' : 'For grown-ups'}</h1></div>
-      <div class="err" role="alert"><p>${id ? `Couldn't load session “${esc(id)}”. ` : 'Couldn\'t load sessions. '}${esc(friendly(e))}</p>${id ? `<a class="btn btn-paper btn-sm" href="#report">${I.back}<span>All sessions</span></a>` : ''}</div>`;
+      <div class="err" role="alert"><p>${id ? `Couldn't load session “${esc(id)}”. ` : 'Couldn\'t load sessions. '}${esc(friendly(e))}</p>${id ? `<a class="btn btn-paper btn-sm" href="#sessions">${I.back}<span>All sessions</span></a>` : ''}</div>`;
   };
   if (id) api.results(id).then((r) => { if (alive) main.innerHTML = one(r); }, fail);
   else api.sessions().then((rs) => { if (alive) main.innerHTML = list(rs); }, fail);
