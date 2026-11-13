@@ -161,3 +161,33 @@ h2 { font-family: var(--display); color: #fff; text-shadow: 2px 2px 0 #170e33, 3
   #sam .say { font-size: 19px; } #sam .hook { font-size: 18px; }
   .samface, .npcbadge { width: 80px; height: 80px; font-size: 48px; }
 }
+
+/* ---- clean HUD layout */
+#topright { position: absolute; right: 12px; top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: nowrap; }
+#topright .btn { padding: 8px 12px; font-size: 16px; }
+#toast { left: auto; right: 12px; top: 70px; transform: none; max-width: min(360px, 60vw); }
+#toast.show { transform: none; }
+#hud { top: 12px; left: 12px; max-width: min(440px, 46vw); }
+.quest { max-width: 100%; }
+.settings .seg { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 12px; }
+.btn.pill { border-radius: 999px; padding: 8px 16px; background: #3b2470; color: #fff; border-color: #170e33; box-shadow: 3px 3px 0 #170e33; }
+.btn.pill.on { background: var(--sun); color: var(--ink); }
+.settings .lucky { color: #cbb8ff; font-size: 15px; margin: 0 0 10px; }
+.settings input[type=range] { width: min(320px, 100%); accent-color: var(--sun); margin-bottom: 12px; }
+.settings .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.settings .controls > div { background: #3b2470; border-radius: 8px; padding: 8px 12px; }
+.settings .controls p { margin: 4px 0 0; font-size: 15px; color: #e8e0ff; }
+@media (max-width: 700px) {
+  #topright .btn { padding: 6px 9px; font-size: 14px; min-height: 40px; }
+  #topright .btn kbd { display: none; }
+  #hud { max-width: 52vw; }
+  .quest .qtext { font-size: 14px; }
+  #toast { top: 60px; max-width: 44vw; font-size: 15px; }
+}
+.hudtop { width: fit-content; }
+@media (max-width: 520px) {
+  #topright .btn > span { display: none; }
+  #hud { max-width: calc(100vw - 24px); }
+  #toast { top: auto; bottom: 64px; right: 50%; transform: translateX(50%); max-width: 80vw; }
+  #toast.show { transform: translateX(50%); }
+}

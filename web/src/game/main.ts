@@ -81,7 +81,7 @@ const ui = document.getElementById('ui')!;
 const input = new Input();
 let vox!: Voxel;
 let lab3d: Lab3D | null = null;
-const labPanelBtn = h('button', { class: 'btn mint', 'data-testid': 'lab-panel', style: 'display:none', onclick: () => openLab() }, '🧪 ', 'Lab panel');
+const labPanelBtn = h('button', { class: 'btn mint', 'data-testid': 'lab-panel', style: 'display:none', onclick: () => openLab() }, '🧪 ', t('lab.panel', 'Lab panel'));
 
 // ------------------------------------------------------------------ HUD
 const xpChip = h('div', { class: 'chip panel', 'data-testid': 'xp' });
@@ -91,35 +91,32 @@ const wondersChip = h('div', { class: 'chip panel', 'data-testid': 'wonders' });
 const questEl = h('div', { class: 'quest panel', 'data-testid': 'quest', style: 'display:none' });
 const qArrow = h('div', { id: 'qarrow' }, '➤');
 const exitBtn = h('button', { class: 'btn exit', 'data-testid': 'exit', title: 'Leave the island' }, '← ', t('ui.exit', 'Exit'));
-exitBtn.onclick = () => { if (!confirm(t('ui.leave', 'Leave the island? Your journal is saved.'))) return; if (window.top !== window) window.open('/', '_top'); else location.href = '/'; };
+exitBtn.onclick = () => exitHome();
 const logo = h('img', { class: 'logo-mark', src: '/art/cc/logo-mark.webp', alt: 'Curiosity Craft' });
 const hud = h('div', { id: 'hud' }, h('div', { class: 'row hudtop' }, exitBtn, logo), questEl, labPanelBtn, xpChip, wondersChip, ladder, conceptsEl);
 const timer = h('div', { id: 'timer', class: 'panel passive', 'data-testid': 'timer' });
 const toastEl = h('div', { id: 'toast', class: 'panel' });
 const prompt = h('div', { id: 'prompt', class: 'panel' });
-const langSel = h('select', { id: 'lang', 'aria-label': 'Language', 'data-testid': 'lang' }) as HTMLSelectElement;
-for (const l of LANGS) langSel.append(h('option', { value: l }, LANG_NAMES[l]));
-langSel.value = LANG;
-const lucky = h('div', { id: 'lucky' });
 const journalBtn = h('button', { class: 'btn', 'data-testid': 'journal-btn', onclick: () => toggleJournal() }, '📔 ', h('span', {}), h('kbd', {}, 'J'));
-const qualSel = h('select', { id: 'lang', 'aria-label': 'Graphics', title: 'Graphics quality', 'data-testid': 'quality' }) as HTMLSelectElement;
-for (const [v, l] of [['auto', '⚙ Auto'], ['high', '⚙ High'], ['medium', '⚙ Medium'], ['low', '⚙ Low']]) qualSel.append(h('option', { value: v }, l));
-try { qualSel.value = localStorage.getItem('cc-quality') ?? 'auto'; } catch { /* */ }
-qualSel.addEventListener('change', () => vox?.setQuality(qualSel.value as 'auto'));
-const muteBtn = h('button', { class: 'btn', title: 'Sound', 'aria-label': 'Sound on/off' }, '🔊') as HTMLButtonElement;
-muteBtn.onclick = () => { const m = muteBtn.textContent === '🔊'; muteBtn.textContent = m ? '🔇' : '🔊'; setMuted(m); Audio.setVolumes(m ? 0 : 0.5, m ? 0 : 0.7); };
-const topright = h('div', { id: 'topright' }, journalBtn, muteBtn, h('div', {}, langSel, lucky), qualSel);
+let soundOn = true, voiceOn = true;
+try { soundOn = localStorage.getItem('cc.sound') !== '0'; voiceOn = localStorage.getItem('cc.voice') !== '0'; } catch { /* */ }
+function applySound() { setMuted(!soundOn || !voiceOn); Audio.setVolumes(soundOn ? 0.45 : 0, soundOn ? 0.7 : 0); muteBtn.textContent = soundOn ? '🔊' : '🔇'; try { localStorage.setItem('cc.sound', soundOn ? '1' : '0'); localStorage.setItem('cc.voice', voiceOn ? '1' : '0'); } catch { /* */ } }
+const settingsBtn = h('button', { class: 'btn', 'data-testid': 'settings-btn', onclick: () => openSettings() }, '⚙ ', h('span', {}));
+const muteBtn = h('button', { class: 'btn icon', 'data-testid': 'mute', 'aria-label': 'Sound on/off', onclick: () => { soundOn = !soundOn; applySound(); } }, '🔊') as HTMLButtonElement;
+const topright = h('div', { id: 'topright' }, journalBtn, settingsBtn, muteBtn);
 const hint = h('div', { id: 'hint' });
 ui.append(hud, timer, toastEl, prompt, topright, hint, qArrow);
 
 function renderHud() {
-  xpChip.replaceChildren('✦ ', h('span', { class: 'xp' }, `${S.xp}`), ' curiosity XP');
+  xpChip.replaceChildren('✦ ', h('span', { class: 'xp' }, `${S.xp}`), ` ${t('ui.xp', 'curiosity XP')}`);
   ladder.replaceChildren(...[0, 1, 2, 3, 4].map((i) => h('div', { class: `rung${S.asked > 0 && i <= S.level ? ' on' : ''}` })), h('div', { class: 'lbl' }, t('npc.whyLevel', 'Why level {n}', { n: S.level })));
   ladder.dataset.level = String(S.level);
   wondersChip.replaceChildren('✨ ', h('span', { class: 'xp' }, `${S.wonders.size}/${Object.keys(EGGS).length}`), ` ${t('ui.wonders', 'wonders found')}`);
   conceptsEl.replaceChildren(...[...S.concepts].map((id) => h('span', { class: 'cchip' }, conceptName(id))));
   (journalBtn.children[0] as HTMLElement).textContent = `${t('journal.title', 'Journal')} ${S.journal.length}`;
-  lucky.textContent = t('lang.lucky8', 'Lucky 8 languages');
+  (settingsBtn.children[0] as HTMLElement).textContent = t('ui.settings', 'Settings');
+  exitBtn.replaceChildren('← ', t('ui.exit', 'Exit'));
+  renderQuest();
   if (matchMedia('(pointer: coarse)').matches) { hint.textContent = `👆 ${t('ui.tapWalk', 'Tap to walk · drag to look around')}`; } else hint.innerHTML = `<kbd>WASD</kbd> ${t('ui.move', 'move')} · <kbd>E</kbd> ${t('ui.talk', 'talk')} · <kbd>V</kbd> ${t('npc.holdToTalk', 'hold to talk')} · <kbd>J</kbd> ${t('journal.title', 'Journal')}`;
 }
 const bannerEl = h('div', { id: 'banner' });
@@ -135,7 +132,6 @@ function xpFly(n: number) {
   ui.append(f); setTimeout(() => f.remove(), 1200);
   Audio.play('coins', { volume: 0.6 });
 }
-langSel.addEventListener('change', async () => { await setLang(langSel.value as Lang); emit('lang', { lang: langSel.value }); renderHud(); toast(LANG_NAMES[langSel.value as Lang]); });
 
 // ------------------------------------------------------------------ modal helpers
 let modal: HTMLElement | null = null;
@@ -186,13 +182,15 @@ async function sayLine(el: HTMLElement, text: string) {
 }
 
 // ------------------------------------------------------------------ quests (walk there yourself; no teleports)
-type Quest = { text: string; x: number; z: number; kind: 'board' | 'sam' | 'place' | 'lab'; place?: string } | null;
+type Quest = { text: () => string; x: number; z: number; kind: 'board' | 'sam' | 'place' | 'lab'; place?: string } | null;
 let quest: Quest = null;
+function renderQuest() { if (quest) questEl.replaceChildren(h('div', { class: 'kicker' }, t('quest.title', 'Quest')), h('div', { class: 'qtext' }, quest.text())); }
 function setQuest(q: Quest, say = true) {
   quest = q;
   vox.setBeacon(q ? q.x : null, q ? q.z : 0);
   questEl.style.display = q ? '' : 'none';
-  if (q) { questEl.replaceChildren(h('div', { class: 'kicker' }, t('quest.title', 'Quest')), h('div', { class: 'qtext' }, q.text)); if (say) toast(`🧭 ${q.text}`, 3200); }
+  renderQuest();
+  if (q && say) toast(`🧭 ${t('quest.new', 'New quest!')}`, 2500);
 }
 function placeFor(concepts: string[]): string {
   const order: [string, string][] = [['wave-breaking', 'pier'], ['waves-wind', 'pier'], ['density', 'dock'], ['buoyancy', 'dock'], ['materials', 'dock'], ['erosion', 'castle'], ['sun-wind', 'tower'], ['tides', 'pool']];
@@ -202,9 +200,9 @@ function placeFor(concepts: string[]): string {
 }
 function nextStep(res?: { suggestChallenge?: string; conceptIds?: string[]; whyHook?: string }) {
   if ((S.labDone && S.level >= 2) || S.level >= 3) { setQuest(null); npcActor().wave = true; toast(`🎉 ${t('quest.done', 'Amazing curiosity! Sam is cheering!')}`); setTimeout(() => { npcActor().wave = false; closeSam(); finale(); }, 1800); return; }
-  if (!S.labDone && (res?.suggestChallenge === 'surfboard-lab' || (S.biome === 'beach' && S.level >= 2))) { setQuest({ text: t('quest.lab', 'Try it! Build a surfboard at the Lab dock'), x: LAB_DOCK.x, z: LAB_DOCK.z, kind: 'lab' }); return; }
+  if (!S.labDone && (res?.suggestChallenge === 'surfboard-lab' || (S.biome === 'beach' && S.level >= 2))) { setQuest({ text: () => t('quest.lab', 'Try it! Build a surfboard at the Lab dock'), x: LAB_DOCK.x, z: LAB_DOCK.z, kind: 'lab' }); return; }
   const pk = placeFor(res?.conceptIds ?? S.lastConcepts); const P = PLACES[pk];
-  setQuest({ text: `${t('quest.investigate', 'Go look at')} ${P.name}${res?.whyHook ? ': ' + res.whyHook : ''}`, x: P.x, z: P.z, kind: 'place', place: pk });
+  setQuest({ text: () => `${t('quest.investigate', 'Go look at')} ${P.name}${res?.whyHook ? ': ' + res.whyHook : ''}`, x: P.x, z: P.z, kind: 'place', place: pk });
 }
 function arrive() {
   if (!quest || modal || samBox) return;
@@ -243,7 +241,7 @@ function roam() {
     if (left <= 0) {
       clearInterval(iv); timer.remove(); emit('roam_end', { seconds: ROAM_S });
       S.phase = 'board'; vox.boardGlow = true; vox.sam.wave = true;
-      setQuest({ text: t('quest.board', 'Walk to the glowing Wonder Board by the surf shack'), x: BOARD.x, z: BOARD.z + 1.3, kind: 'board' });
+      setQuest({ text: () => t('quest.board', 'Walk to the glowing Wonder Board by the surf shack'), x: BOARD.x, z: BOARD.z + 1.3, kind: 'board' });
       void speak(t('quest.samCall', 'Hey dude! Come draw what you wonder about on my Wonder Board!'), LANG, curWorld().npc.voice, () => undefined);
     }
   }, 1000);
@@ -346,7 +344,7 @@ function pickQuestion(q: string, b: Biome = 'beach') {
   S.phase = 'sam'; S.pendingQ = q; S.pendingBiome = b; vox.boardGlow = false; vox.sam.wave = false;
   const a = npcActor(b); a.wave = true;
   const w = WORLDS[b];
-  setQuest({ text: b === 'beach' ? `${t('quest.ask', 'Ask Surfer Sam')}: “${q}”` : `${t('quest.find', 'Find')} ${w.npc.name} ${t('quest.at', 'at')} ${BIOMES[b].name}: “${q}”`, x: a.x, z: a.z + 1.2, kind: 'sam' });
+  setQuest({ text: () => b === 'beach' ? `${t('quest.ask', 'Ask Surfer Sam')}: “${q}”` : `${t('quest.find', 'Find')} ${w.npc.name} ${t('quest.at', 'at')} ${BIOMES[b].name}: “${q}”`, x: a.x, z: a.z + 1.2, kind: 'sam' });
 }
 function travelToSam(q: string) { pickQuestion(q); }
 function openSam(remote = false) {
@@ -360,7 +358,7 @@ function openSam(remote = false) {
   const send = () => { const v = txt.value.trim(); if (v) { txt.value = ''; void askSam(v, /^(why|por qu|pourquoi|waarom|为什么|क्यों|ஏன்)/i.test(v) && v.split(/\s+/).length <= 3); } };
   txt.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter') send(); });
   const whyBtn = h('button', { class: 'btn why', 'data-testid': 'why', onclick: () => void askSam(t('npc.why', 'Why?'), true) }, t('npc.why', 'Why?')) as HTMLButtonElement;
-  const tryBtn = h('button', { class: 'btn mint big', 'data-testid': 'try-it', style: 'display:none', onclick: () => { closeSam(); setQuest({ text: t('quest.lab', 'Try it! Build a surfboard at the Lab dock'), x: LAB_DOCK.x, z: LAB_DOCK.z, kind: 'lab' }); } }, '🧪 ', t('tryit.button', 'Try it!')) as HTMLButtonElement;
+  const tryBtn = h('button', { class: 'btn mint big', 'data-testid': 'try-it', style: 'display:none', onclick: () => { closeSam(); setQuest({ text: () => t('quest.lab', 'Try it! Build a surfboard at the Lab dock'), x: LAB_DOCK.x, z: LAB_DOCK.z, kind: 'lab' }); } }, '🧪 ', t('tryit.button', 'Try it!')) as HTMLButtonElement;
   const goBtn = h('button', { class: 'btn gold', 'data-testid': 'go-investigate', style: 'display:none', onclick: () => closeSam() }, '🧭 ', t('quest.go', 'Go investigate!')) as HTMLButtonElement;
   const isWhyText = (s: string) => /^(why|por qu|pourquoi|waarom|为什么|क्यों|ஏன்)/i.test(s.trim()) && s.trim().split(/\s+/).length <= 3;
   const mic = micButton((s) => void askSam(s, isWhyText(s)), interim);
@@ -516,7 +514,7 @@ function afterLab() {
   if (S.labDone) return;
   S.labDone = true; xpFly(10); labPanelBtn.style.display = 'none';
   if (S.level >= 2) nextStep();
-  else { S.pendingQ = t('quest.whyFoam', 'Why did the foam board float?'); setQuest({ text: t('quest.tellSam', 'Tell Sam what you found!'), x: vox.sam.x, z: vox.sam.z + 1.2, kind: 'sam' }); S.pendingBiome = 'beach'; }
+  else { S.pendingQ = t('quest.whyFoam', 'Why did the foam board float?'); setQuest({ text: () => t('quest.tellSam', 'Tell Sam what you found!'), x: vox.sam.x, z: vox.sam.z + 1.2, kind: 'sam' }); S.pendingBiome = 'beach'; }
 }
 
 // ------------------------------------------------------------------ 5) end: recall again + report
@@ -551,6 +549,58 @@ function openEgg(id: string) {
     h('div', { class: 'row' }, canAsk ? h('button', { class: 'btn gold big', onclick: () => { close(); S.topicIcon = e.icon; travelToSam(e.wonder); } }, t('egg.askBtn', 'Ask Sam!')) : '', h('button', { class: 'btn', onclick: () => close() }, t('egg.ok', 'Cool!'))));
   open(card);
   void speak(e.wonder, LANG, curWorld().npc.voice, () => undefined);
+}
+
+// ------------------------------------------------------------------ settings (themed, no native selects)
+let settingsOpen = false;
+function openSettings() {
+  const card = h('div', { class: 'card panel settings', 'data-testid': 'settings' });
+  const seg = (items: [string, string][], cur: string, on: (v: string) => void, testid: string) => h('div', { class: 'seg', 'data-testid': testid }, ...items.map(([v, label]) => h('button', { class: `btn pill${v === cur ? ' on' : ''}`, 'data-v': v, onclick: (e: Event) => { (e.currentTarget as HTMLElement).parentElement!.querySelectorAll('.pill').forEach((b) => b.classList.remove('on')); (e.currentTarget as HTMLElement).classList.add('on'); on(v); } }, label)));
+  const render = () => {
+    let q = 'auto'; try { q = localStorage.getItem('cc-quality') ?? 'auto'; } catch { /* */ }
+    const zoom = h('input', { type: 'range', min: '4', max: '12', step: '0.5', value: String((vox as unknown as { dist: number }).dist), 'aria-label': t('settings.zoom', 'Camera distance') }) as HTMLInputElement;
+    zoom.oninput = () => { (vox as unknown as { dist: number }).dist = Number(zoom.value); try { localStorage.setItem('cc.zoom', zoom.value); } catch { /* */ } };
+    card.replaceChildren(
+      h('h2', {}, t('ui.settings', 'Settings')),
+      h('div', { class: 'kicker' }, t('settings.language', 'Language')),
+      seg(LANGS.map((l) => [l, LANG_NAMES[l]] as [string, string]), LANG, (v) => void changeLang(v as Lang), 'lang-pills'),
+      h('p', { class: 'lucky' }, t('lang.lucky8', '8 languages, because 8 is lucky!')),
+      h('div', { class: 'kicker' }, t('settings.sound', 'Sound')),
+      seg([['on', `🔊 ${t('settings.on', 'On')}`], ['off', `🔇 ${t('settings.off', 'Off')}`]], soundOn ? 'on' : 'off', (v) => { soundOn = v === 'on'; applySound(); }, 'sound'),
+      h('div', { class: 'kicker' }, t('settings.voice', 'Characters talk out loud')),
+      seg([['on', `🗣 ${t('settings.on', 'On')}`], ['off', `💬 ${t('settings.captions', 'Captions only')}`]], voiceOn ? 'on' : 'off', (v) => { voiceOn = v === 'on'; applySound(); }, 'voice'),
+      h('div', { class: 'kicker' }, t('settings.graphics', 'Graphics')),
+      seg([['auto', t('settings.auto', 'Auto')], ['high', t('settings.high', 'High')], ['medium', t('settings.medium', 'Medium')], ['low', t('settings.low', 'Low')]], q, (v) => vox.setQuality(v as 'auto'), 'quality'),
+      h('div', { class: 'kicker' }, t('settings.zoom', 'Camera distance')), zoom,
+      h('div', { class: 'kicker' }, t('settings.controls', 'Controls')),
+      h('div', { class: 'controls' },
+        h('div', {}, h('b', {}, `⌨ ${t('settings.keyboard', 'Keyboard')}`), h('p', {}, t('settings.keys', 'WASD or arrows: walk · E: talk / look · V: hold to talk · J: journal · Esc: back · mouse drag: look around'))),
+        h('div', {}, h('b', {}, `🎮 ${t('settings.gamepad', 'Gamepad')}`), h('p', {}, t('settings.pad', 'Left stick: walk · Right stick: look · A: talk · X: hold to talk · B: back · triggers: zoom'))),
+        h('div', {}, h('b', {}, `👆 ${t('settings.touch', 'Touch')}`), h('p', {}, t('settings.tap', 'Tap to walk · tap a character to talk · drag to look around')))),
+      h('div', { class: 'row', style: 'margin-top:14px' }, h('button', { class: 'btn', 'data-testid': 'exit-home', onclick: () => exitHome() }, '← ', t('settings.exitHome', 'Exit to home'))));
+  };
+  render();
+  settingsOpen = true;
+  open(card, () => { settingsOpen = false; });
+  rerenderSettings = render;
+}
+let rerenderSettings: (() => void) | null = null;
+function exitHome() { if (!confirm(t('ui.leave', 'Leave the island? Your journal is saved.'))) return; if (window.top !== window) window.open('/', '_top'); else location.href = '/'; }
+async function changeLang(l: Lang) {
+  await setLang(l);
+  emit('lang', { lang: l });
+  renderHud();
+  if (settingsOpen) rerenderSettings?.();
+  if (journalEl) { toggleJournal(); toggleJournal(); }
+  if (samBox && samRefs) {
+    const keep = { say: samRefs.say.textContent, hook: samRefs.hook.textContent, kid: samRefs.kid.textContent, tryOn: samRefs.tryBtn.style.display, goOn: samRefs.goBtn.style.display };
+    const remote = samBox.querySelector('.name')?.textContent?.startsWith('📻') ?? false;
+    handsFree?.stop(); handsFree = null; samBox.remove(); samBox = null; samRefs = null;
+    openSam(remote);
+    const R = samRefs as unknown as { say: HTMLElement; hook: HTMLElement; kid: HTMLElement; tryBtn: HTMLElement; goBtn: HTMLElement } | null;
+    if (R) { R.say.textContent = keep.say; R.hook.textContent = keep.hook; R.kid.textContent = keep.kid; R.tryBtn.style.display = keep.tryOn; R.goBtn.style.display = keep.goOn; }
+  }
+  toast(LANG_NAMES[l], 1600);
 }
 
 // ------------------------------------------------------------------ journal
@@ -618,6 +668,8 @@ async function boot() {
   const startAudio = () => { if (audioOn) return; audioOn = true; Audio.init(); Audio.setVolumes(0.45, 0.7); Audio.playMusic({ root: 62, scale: [0, 2, 4, 7, 9], tempo: 76, lead: 'triangle', pad: 'sine', mood: 'wonder' }, 7); };
   addEventListener('pointerdown', startAudio, { once: true });
   addEventListener('keydown', startAudio, { once: true });
+  applySound();
+  try { const z = localStorage.getItem('cc.zoom'); if (z) (vox as unknown as { dist: number }).dist = Number(z); } catch { /* */ }
   renderHud();
   document.getElementById('loading')?.classList.add('gone');
   setTimeout(() => document.getElementById('loading')?.remove(), 500);
