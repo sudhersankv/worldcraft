@@ -36,6 +36,7 @@ function playHref() { const l = getLang(); return `${PLAY_URL}${l !== 'en' ? `&l
 function header(active: string) {
   const lang = getLang();
   const nav = [
+    { href: '#/', key: 'home', label: t('site.nav.home', 'Home') },
     { href: playHref(), key: 'play', label: t('site.nav.play', 'Play') },
     { href: '#parents', key: 'parents', label: t('site.nav.parents', 'Parents') },
     { href: '#worlds', key: 'worlds', label: t('site.nav.worlds', 'Worlds') },

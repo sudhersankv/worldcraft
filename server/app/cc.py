@@ -316,9 +316,13 @@ async def event(ev: CCEvent):
     if not re.fullmatch(r'[A-Za-z0-9_-]{3,64}', ev.sessionId):
         raise HTTPException(422, 'bad sessionId')
     s = _session(ev.sessionId)
-    data = ev.data or {}
+    data = dict(ev.data or {})
+    drawing = data.pop('drawing', None)
     if len(json.dumps(data)) > 4000:
-        data = {k: v for k, v in data.items() if isinstance(v, (int, float, bool)) or (isinstance(v, str) and len(v) < 300)}
+        data = {k: v for k, v in data.items() if isinstance(v, (int, float, bool)) or (isinstance(v, str) and len(v) < 300)
+                or (isinstance(v, list) and len(json.dumps(v)) < 1200)}
+    if isinstance(drawing, str) and drawing.startswith('data:image/') and len(drawing) < 60000:
+        data['drawing'] = drawing   # small thumbnail of the kid's Wonder Board drawing, shown only in the parent report
     if len(s['events']) < 2000:
         s['events'].append({'name': ev.name[:40], 'data': data, 'ts': ev.ts or _now()})
     _posthog(ev.sessionId, ev.name, data)
@@ -366,7 +370,8 @@ def build_report(s: dict) -> dict:
                                'result': str(e['data'].get('result', ''))} for e in by('challenge_attempt')],
         'recall': {'before': rec('recall_before'), 'after': rec('recall_after'), 'prompt': w.get('recall', {}).get('prompt', '')},
         'journal': journal, 'tryAtHome': w.get('tryAtHome', ''), 'realWorld': w.get('realWorld', {}),
-        'wonder': [{'guess': e['data'].get('guess'), 'text': e['data'].get('text')} for e in by('wonder_submit')][:5],
+        'wonder': [{'guess': e['data'].get('guess'), 'text': e['data'].get('text'), 'drawing': e['data'].get('drawing'),
+                    'questions': e['data'].get('questions') or [], 'area': e['data'].get('worldTag')} for e in by('wonder_submit')][:6],
         'profile': _profile(s, evs, asked, levels, cids, cmap, minutes),
         'label': _title(s, asked),
     }

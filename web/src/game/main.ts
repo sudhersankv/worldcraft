@@ -321,8 +321,9 @@ function wonderBoard() {
         return [...BEACH.starters.slice(0, 3).map((x) => ({ id: x.id, label: x.label, emoji: x.icon, questions: x.questions, area: 'beach' })), ...(['volcano', 'ice', 'jungle'] as Biome[]).map((b) => { const x = WORLDS[b].starters[0]; return { id: x.id, label: x.label, emoji: x.icon, questions: x.questions, area: b }; })];
       },
       submit: async (input) => {
-        try { const r = await wonder({ image: input.image, text: input.text, lang: LANG, worldId: 'beach' }); if (r?.questions?.length) { emit('wonder_submit', { text: input.text ?? '', hasDrawing: !!input.image, guess: r.guess, confidence: r.confidence, source: r.source, worldTag: r.worldTag }); return r; } } catch { /* local */ }
-        const r = localWonder(input.text, !!input.image, S.world); emit('wonder_submit', { text: input.text ?? '', hasDrawing: !!input.image, guess: r.guess, confidence: r.confidence, source: 'local' }); return r;
+        const drawing = input.image ? await drawingThumb(input.image) : '';
+        try { const r = await wonder({ image: input.image, text: input.text, lang: LANG, worldId: 'beach' }); if (r?.questions?.length) { emit('wonder_submit', { text: input.text ?? '', hasDrawing: !!input.image, guess: r.guess, confidence: r.confidence, source: r.source, worldTag: r.worldTag, questions: r.questions.slice(0, 3), drawing }); return r; } } catch { /* local */ }
+        const r = localWonder(input.text, !!input.image, S.world); emit('wonder_submit', { text: input.text ?? '', hasDrawing: !!input.image, guess: r.guess, confidence: r.confidence, source: 'local', questions: r.questions.slice(0, 3), drawing }); return r;
       },
       listen: sttSupported ? (onText) => new Promise<string>((res) => { const L = new Listener(LANG, onText, (txt) => res(txt), (st) => { if (st === 'error') res(''); }); L.start(); setTimeout(() => L.stop(), 7000); }) : undefined,
       onPick: ({ question, area, guess }) => { if (guess) emit('wonder_guess', { guess }); emit('question_pick', { question, worldTag: tagToBiome(area) }); extPanel = null; vox.frozen = !!samBox; S.topicIcon = BIOMES[tagToBiome(area)].emoji; pickQuestion(question, tagToBiome(area)); },
@@ -801,3 +802,22 @@ async function boot() {
   };
 }
 boot().catch((e) => { console.error(e); const l = document.getElementById('loading'); if (l) l.textContent = 'Oops! Reload to try again.'; });
+
+
+/** Small JPEG thumbnail of the kid's Wonder Board drawing for the parent report (about 6-15 KB). */
+function drawingThumb(dataUrl: string): Promise<string> {
+  return new Promise((resolve) => {
+    try {
+      const img = new Image();
+      img.onload = () => {
+        const w = 240, h = Math.round(240 * (img.height / Math.max(1, img.width)));
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
+        const g = c.getContext('2d')!; g.fillStyle = '#fffdf5'; g.fillRect(0, 0, w, h); g.drawImage(img, 0, 0, w, h);
+        resolve(c.toDataURL('image/jpeg', 0.6));
+      };
+      img.onerror = () => resolve('');
+      img.src = dataUrl;
+      setTimeout(() => resolve(''), 1500);
+    } catch { resolve(''); }
+  });
+}

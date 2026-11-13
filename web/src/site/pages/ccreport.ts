@@ -107,6 +107,28 @@ function view(r: Report) {
     </section>
   </div>
 
+  ${(() => {
+    const ws = ((r as any).wonder || []) as { guess?: string; text?: string; drawing?: string; questions?: string[]; area?: string }[];
+    const shown = ws.filter((w) => w.drawing || w.guess || w.text);
+    if (!shown.length) return '';
+    return `<section class="cc-panel rep-sec wonder-gallery" aria-labelledby="wg-h">
+      <style>
+        .wonder-gallery .wg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:10px}
+        .wonder-gallery .wgc{background:#fffdf5;border:3px solid #170e33;border-radius:16px;box-shadow:0 5px 0 #170e33;overflow:hidden}
+        .wonder-gallery .wgc img{display:block;width:100%;aspect-ratio:8/5;object-fit:cover;background:#fffdf5;border-bottom:3px solid #170e33}
+        .wonder-gallery .wgc .nod{display:grid;place-items:center;aspect-ratio:8/5;font-size:44px;border-bottom:3px solid #170e33;background:#eaf6ff}
+        .wonder-gallery .wgb{padding:10px 12px}.wonder-gallery .wgb b{display:block;margin-bottom:4px}
+        .wonder-gallery .wgb ul{margin:4px 0 0;padding-left:1.1em;font-size:.92em}
+      </style>
+      <h2 id="wg-h" class="cc-h2s">✏️ ${t('report.wonder.title', 'What they wondered about')}</h2>
+      <p class="small muted">${t('report.wonder.note', 'Drawings and words from the Wonder Board, with what the AI saw and the questions it opened up.')}</p>
+      <div class="wg">${shown.map((w) => `<figure class="wgc" style="margin:0">
+        ${w.drawing ? `<img src="${w.drawing}" alt="${esc(t('report.wonder.alt', 'Child’s drawing'))}" loading="lazy"/>` : `<div class="nod" aria-hidden="true">💭</div>`}
+        <figcaption class="wgb"><b>${esc(w.guess ? t('report.wonder.looks', 'Looks like: {g}', { g: w.guess }) : (w.text || ''))}</b>
+        ${w.questions && w.questions.length ? `<ul>${w.questions.slice(0, 3).map((q) => `<li>${esc(q)}</li>`).join('')}</ul>` : ''}</figcaption></figure>`).join('')}</div>
+    </section>`;
+  })()}
+
   <section class="cc-panel rep-sec">
     <h2 class="cc-h2s">${I.chat} ${t('report.journal', 'Curiosity Journal')}</h2>
     ${r.journal.length ? `<ul class="journal">${r.journal.map((j) => `<li class="jcard"><span class="jlvl">${t('report.journal.level', 'Why level {n}', { n: j.level })}</span><p class="jq">${esc(j.question)}</p>${j.kidWords ? `<p class="jk">“${esc(j.kidWords)}”</p>` : ''}</li>`).join('')}</ul>` : `<p class="muted">${t('report.journal.none', 'No journal cards yet.')}</p>`}
