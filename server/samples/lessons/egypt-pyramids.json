@@ -1,0 +1,130 @@
+{
+ "schemaVersion": "1",
+ "lessonId": "lesson-pyramids",
+ "title": "The Pyramids of Ancient Egypt",
+ "summary": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs. They believed a pharaoh needed a safe resting place and treasures for the afterlife.",
+ "ageBand": "7-9",
+ "sourceId": "sample-pyramids",
+ "sections": [
+  {
+   "id": "s1",
+   "heading": "Tombs for Kings",
+   "text": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs. They believed a pharaoh needed a safe resting place and treasures for the afterlife. The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago."
+  },
+  {
+   "id": "s2",
+   "heading": "Building with Stone",
+   "text": "Workers cut huge blocks of limestone from quarries. They dragged the blocks on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull. They built long ramps of mud brick to raise the blocks higher and higher."
+  },
+  {
+   "id": "s3",
+   "heading": "Writing in Pictures",
+   "text": "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas. Scribes painted hieroglyphs on walls and wrote on paper made from the papyrus plant. The Rosetta Stone helped modern people learn to read hieroglyphs again."
+  }
+ ],
+ "concepts": [
+  {
+   "id": "c-1",
+   "name": "Pharaoh",
+   "description": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+   "prerequisites": []
+  },
+  {
+   "id": "c-2",
+   "name": "Blocks",
+   "description": "They built long ramps of mud brick to raise the blocks higher and higher.",
+   "prerequisites": [
+    "c-1"
+   ]
+  },
+  {
+   "id": "c-3",
+   "name": "Hieroglyphs",
+   "description": "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas.",
+   "prerequisites": [
+    "c-2"
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "obj-1",
+   "text": "Explain tombs for kings, including pharaoh",
+   "conceptIds": [
+    "c-1"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s1",
+     "quote": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs."
+    },
+    {
+     "sectionId": "s1",
+     "quote": "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions pharaoh",
+     "Mentions built",
+     "Mentions tombs",
+     "Gets the main idea: The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  },
+  {
+   "id": "obj-2",
+   "text": "Explain building with stone, including blocks",
+   "conceptIds": [
+    "c-2"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s2",
+     "quote": "They built long ramps of mud brick to raise the blocks higher and higher."
+    },
+    {
+     "sectionId": "s2",
+     "quote": "They dragged the blocks on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions blocks",
+     "Mentions higher",
+     "Mentions built",
+     "Gets the main idea: They built long ramps of mud brick to raise the blocks higher and higher."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  },
+  {
+   "id": "obj-3",
+   "text": "Explain writing in pictures, including hieroglyphs",
+   "conceptIds": [
+    "c-3"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s3",
+     "quote": "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas."
+    },
+    {
+     "sectionId": "s3",
+     "quote": "Scribes painted hieroglyphs on walls and wrote on paper made from the papyrus plant."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions hieroglyphs",
+     "Mentions wrote",
+     "Mentions pictures",
+     "Gets the main idea: The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  }
+ ],
+ "suggestedTemplate": "egypt"
+}

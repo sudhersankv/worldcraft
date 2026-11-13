@@ -1,0 +1,152 @@
+{
+ "lessonId": "lesson-solar-system",
+ "title": "Our Solar System",
+ "summary": "The Sun is a star at the centre of our solar system. Eight planets orbit it: four small rocky planets and four giant planets, all held in their orbits by the Sun's gravity.",
+ "suggestedTemplate": "space",
+ "concepts": [
+  {
+   "id": "c-sun",
+   "name": "The Sun is a star",
+   "description": "The Sun is a giant ball of hot gas at the centre of the solar system.",
+   "prerequisites": []
+  },
+  {
+   "id": "c-order",
+   "name": "The eight planets in order",
+   "description": "Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune.",
+   "prerequisites": [
+    "c-sun"
+   ]
+  },
+  {
+   "id": "c-kinds",
+   "name": "Rocky planets and giants",
+   "description": "Four inner rocky planets, two gas giants and two ice giants.",
+   "prerequisites": [
+    "c-order"
+   ]
+  },
+  {
+   "id": "c-gravity",
+   "name": "Gravity and orbits",
+   "description": "The Sun's gravity pulls on the planets and bends their paths into orbits.",
+   "prerequisites": [
+    "c-sun"
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "obj-1",
+   "text": "Explain that the Sun is a star at the centre of our solar system",
+   "conceptIds": [
+    "c-sun"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s1",
+     "quote": "The Sun is a star."
+    },
+    {
+     "sectionId": "s1",
+     "quote": "The Sun sits at the centre of our solar system."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Says the Sun is a star",
+     "Says it is at the centre of the solar system",
+     "Mentions it is a huge ball of hot gas or gives us light and heat"
+    ],
+    "passingRule": "Says the Sun is a star and that it is at the centre"
+   }
+  },
+  {
+   "id": "obj-2",
+   "text": "Name the eight planets in order from the Sun",
+   "conceptIds": [
+    "c-order"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s2",
+     "quote": "In order from the Sun, they are Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune."
+    },
+    {
+     "sectionId": "s2",
+     "quote": "Mercury is the closest planet to the Sun, and Neptune is the farthest."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Starts with Mercury (closest)",
+     "Ends with Neptune (farthest)",
+     "Puts Earth third",
+     "Gets most of the eight in the right order"
+    ],
+    "passingRule": "Gets at least six planets in the right order"
+   }
+  },
+  {
+   "id": "obj-3",
+   "text": "Tell rocky planets from gas and ice giants, and explain how gravity keeps planets in orbit",
+   "conceptIds": [
+    "c-kinds",
+    "c-gravity"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s3",
+     "quote": "The four inner planets, Mercury, Venus, Earth and Mars, are small rocky planets."
+    },
+    {
+     "sectionId": "s3",
+     "quote": "Jupiter and Saturn are gas giants"
+    },
+    {
+     "sectionId": "s4",
+     "quote": "Each planet is moving very fast, and the Sun's gravity bends its path into a curved loop called an orbit."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Says the inner planets are small and rocky",
+     "Says the outer planets are giants (gas or ice)",
+     "Says gravity is a pulling force from the Sun",
+     "Says gravity keeps the planets moving in orbits"
+    ],
+    "passingRule": "Covers rocky vs giant planets and that gravity keeps planets in orbit"
+   }
+  }
+ ],
+ "schemaVersion": "1",
+ "ageBand": "7-9",
+ "sourceId": "sample-solar-system",
+ "sections": [
+  {
+   "id": "s1",
+   "heading": "A Star at the Centre",
+   "text": "The Sun is a star. It is a giant, glowing ball of hot gas, and it is the closest star to Earth. The Sun sits at the centre of our solar system. It gives us light and heat, and without it, life on Earth could not survive. The Sun is so big that more than one million Earths could fit inside it."
+  },
+  {
+   "id": "s2",
+   "heading": "The Eight Planets in Order",
+   "text": "Eight planets travel around the Sun. In order from the Sun, they are Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune. A fun way to remember the order is the sentence: My Very Excellent Mother Just Served Us Noodles. Mercury is the closest planet to the Sun, and Neptune is the farthest."
+  },
+  {
+   "id": "s3",
+   "heading": "Rocky Planets and Giant Planets",
+   "text": "The four inner planets, Mercury, Venus, Earth and Mars, are small rocky planets. They have hard, solid surfaces made of rock and metal. The four outer planets are giants. Jupiter and Saturn are gas giants, made mostly of hydrogen and helium gas. Uranus and Neptune are ice giants, made of icy materials like water, ammonia and methane. Jupiter is the largest planet of all."
+  },
+  {
+   "id": "s4",
+   "heading": "Gravity Keeps Planets in Orbit",
+   "text": "Why don't the planets fly off into space? The answer is gravity. Gravity is a pulling force. The Sun is so massive that its gravity pulls on every planet. Each planet is moving very fast, and the Sun's gravity bends its path into a curved loop called an orbit. Planets closer to the Sun take less time to go around it. Earth takes one year to orbit the Sun once."
+  },
+  {
+   "id": "s5",
+   "heading": "Moons and More",
+   "text": "Many planets have moons that orbit them, held by the planet's own gravity. Earth has one Moon, but Saturn and Jupiter each have dozens. Our solar system also has dwarf planets like Pluto, rocky asteroids, and icy comets."
+  }
+ ]
+}

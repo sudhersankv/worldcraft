@@ -1,0 +1,35 @@
+{
+  "name": "curiositycraft",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "cd server && python -m uvicorn app.main:app --reload --port 8000",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "preview": "vite preview",
+    "ship": "flyctl deploy -a curiositycraft --remote-only --ha=false --yes"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "description": "CuriosityCraft: upload a lesson, explore it as a 2.5D voice-driven world",
+  "dependencies": {
+    "@fontsource/atkinson-hyperlegible": "^5.3.0",
+    "@fontsource/jersey-10": "^5.3.0",
+    "@fontsource/lilita-one": "^5.3.0",
+    "@fontsource/silkscreen": "^5.3.0",
+    "phaser": "^3.90.0",
+    "three": "^0.170.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@types/three": "^0.170.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  },
+  "type": "module",
+  "private": true
+}

@@ -1,0 +1,11 @@
+node_modules
+dist
+_vendor
+legacy
+assets-original
+screenshots
+test-results
+.git
+.env*
+server/data
+**/__pycache__

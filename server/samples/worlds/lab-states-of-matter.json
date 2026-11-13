@@ -1,0 +1,1099 @@
+{
+ "schemaVersion": "1",
+ "worldId": "lab-states-of-matter",
+ "lessonId": "lesson-states-of-matter",
+ "templateId": "lab",
+ "title": "The Melting Mystery",
+ "subject": "States of Matter",
+ "seed": 1016,
+ "story": {
+  "intro": [
+   "Something in the lab keeps melting, boiling and freezing. Solve the mystery!",
+   "To fix it, we need to really learn about Solids, Liquids and Gases.",
+   "Study at each place, talk to my friends, and explain what you learn!"
+  ],
+  "goal": "Learn the three big ideas of Solids, Liquids and Gases to wake The Big Experiment.",
+  "finale": "You remembered it all! The Big Experiment shines again thanks to you."
+ },
+ "companion": {
+  "name": "Fizz",
+  "greeting": "Hi, I'm Fizz! I'll help you if you get stuck. Let's explore!"
+ },
+ "zones": [
+  {
+   "id": "hub",
+   "name": "Main Lab",
+   "kind": "hub",
+   "landmark": "fountain",
+   "description": "Where every adventure starts."
+  },
+  {
+   "id": "z-test-station",
+   "name": "Test Station",
+   "kind": "landmark",
+   "landmark": "console",
+   "objectiveId": "obj-1",
+   "description": "A place to learn about three states of matter."
+  },
+  {
+   "id": "z-tesla-tower",
+   "name": "Tesla Tower",
+   "kind": "landmark",
+   "landmark": "tower",
+   "objectiveId": "obj-2",
+   "description": "A place to learn about heating and cooling."
+  },
+  {
+   "id": "z-bubbling-fou",
+   "name": "Bubbling Fountain",
+   "kind": "landmark",
+   "landmark": "fountain",
+   "objectiveId": "obj-3",
+   "description": "A place to learn about tiny particles."
+  },
+  {
+   "id": "goal",
+   "name": "The Big Experiment",
+   "kind": "goal",
+   "landmark": "console",
+   "description": "It wakes up when you master Solids, Liquids and Gases."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "npc-1",
+   "name": "Dr. Ada",
+   "title": "the Scientist",
+   "archetype": "scientist",
+   "persona": "Enthusiastic scientist who loves experiments and asking \"what do you predict?\". Teaches \"Three States of Matter\" from the lesson \"Solids, Liquids and Gases\".",
+   "voice": "aura-2-helena-en",
+   "zoneId": "z-test-station",
+   "objectiveId": "obj-1",
+   "greeting": "Hello there! I'm Dr. Ada. Want to learn about matter with me?",
+   "teach": [
+    "Matter can be a solid, a liquid or a gas.",
+    "A liquid flows and takes the shape of its container.",
+    "Everything around you is made of matter."
+   ],
+   "knowledge": [
+    "Everything around you is made of matter.",
+    "Matter can be a solid, a liquid or a gas.",
+    "A solid keeps its own shape.",
+    "A liquid flows and takes the shape of its container.",
+    "A gas spreads out to fill all the space it can."
+   ],
+   "check": {
+    "id": "check-1",
+    "prompt": "Fill the gap: _____ can be a solid, a liquid or a gas.",
+    "choices": [
+     "shape",
+     "takes",
+     "spreads",
+     "matter"
+    ],
+    "answerIndex": 3,
+    "accept": [
+     "matter",
+     "matters"
+    ],
+    "explain": "Matter can be a solid, a liquid or a gas.",
+    "hints": [
+     "Think back to the part called \"Three States of Matter\".",
+     "It is one of the key words in this lesson. It starts with \"M\".",
+     "The missing word begins \"mat...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-2",
+   "name": "Bolt",
+   "title": "the Lab Robot",
+   "archetype": "robot",
+   "persona": "Friendly, precise robot who loves facts and lists. Occasionally says \"beep-boop\". Teaches \"Heating and Cooling\" from the lesson \"Solids, Liquids and Gases\".",
+   "voice": "aura-2-orpheus-en",
+   "zoneId": "z-tesla-tower",
+   "objectiveId": "obj-2",
+   "greeting": "Hello there! I'm Bolt. Want to learn about water with me?",
+   "teach": [
+    "When water is heated more it boils and turns into a gas called water vapour.",
+    "When ice is heated it melts into liquid water.",
+    "When water vapour cools it condenses back into liquid drops."
+   ],
+   "knowledge": [
+    "Heating and cooling can change matter from one state to another.",
+    "When ice is heated it melts into liquid water.",
+    "When water is heated more it boils and turns into a gas called water vapour.",
+    "When water vapour cools it condenses back into liquid drops."
+   ],
+   "check": {
+    "id": "check-2",
+    "prompt": "Fill the gap: When _____ is heated more it boils and turns into a gas called water vapour.",
+    "choices": [
+     "space",
+     "cooling",
+     "water",
+     "particles"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "water",
+     "waters"
+    ],
+    "explain": "When water is heated more it boils and turns into a gas called water vapour.",
+    "hints": [
+     "Think back to the part called \"Heating and Cooling\".",
+     "It is one of the key words in this lesson. It starts with \"W\".",
+     "The missing word begins \"wa...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-3",
+   "name": "Max",
+   "title": "the Junior Scientist",
+   "archetype": "kid",
+   "persona": "Curious young helper who learns alongside the player. Teaches \"Tiny Particles\" from the lesson \"Solids, Liquids and Gases\".",
+   "voice": "aura-2-thalia-en",
+   "zoneId": "z-bubbling-fou",
+   "objectiveId": "obj-3",
+   "greeting": "Hello there! I'm Max. Want to learn about particles with me?",
+   "teach": [
+    "Matter is made of tiny particles.",
+    "In a solid, the particles are packed tightly and only wiggle in place.",
+    "In a liquid, they are close together but slide past each other."
+   ],
+   "knowledge": [
+    "Matter is made of tiny particles.",
+    "In a solid, the particles are packed tightly and only wiggle in place.",
+    "In a liquid, they are close together but slide past each other.",
+    "In a gas, the particles are far apart and zoom around quickly."
+   ],
+   "check": {
+    "id": "check-3",
+    "prompt": "Fill the gap: Matter is made of tiny _____.",
+    "choices": [
+     "solid",
+     "cooling",
+     "container",
+     "particles"
+    ],
+    "answerIndex": 3,
+    "accept": [
+     "particle",
+     "particles"
+    ],
+    "explain": "Matter is made of tiny particles.",
+    "hints": [
+     "Think back to the part called \"Tiny Particles\".",
+     "It is one of the key words in this lesson. It starts with \"P\".",
+     "The missing word begins \"part...\""
+    ]
+   }
+  }
+ ],
+ "collectibles": [
+  {
+   "id": "token",
+   "name": "Energy Cell",
+   "zoneId": "z-test-station",
+   "count": 3,
+   "icon": "battery"
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "pz-1",
+   "objectiveId": "obj-1",
+   "zoneId": "z-test-station",
+   "kind": "match",
+   "title": "Match the Words",
+   "prompt": "Match each word to what it means.",
+   "pairs": [
+    {
+     "left": "Matter",
+     "right": "Everything around you is made of it."
+    },
+    {
+     "left": "Liquid",
+     "right": "Matter can be a solid, a it or a gas."
+    },
+    {
+     "left": "Solid",
+     "right": "A it keeps its own shape."
+    },
+    {
+     "left": "Shape",
+     "right": "A solid keeps its own it."
+    }
+   ],
+   "hints": [
+    "Read each meaning slowly.",
+    "Start with the word you are surest about.",
+    "Matter goes with: \"Everything around you is made of it.\""
+   ],
+   "success": "Perfect match! Those words are yours now.",
+   "evidenceSectionIds": [
+    "s1"
+   ]
+  },
+  {
+   "id": "pz-2",
+   "objectiveId": "obj-2",
+   "zoneId": "z-tesla-tower",
+   "kind": "sequence",
+   "title": "Put It in Order",
+   "prompt": "Put these ideas in the same order as the lesson.",
+   "items": [
+    "Heating and cooling can change matter from one state to another.",
+    "When ice is heated it melts into liquid water.",
+    "When water is heated more it boils and turns into a gas called water vapour.",
+    "When water vapour cools it condenses back into liquid drops."
+   ],
+   "hints": [
+    "Which idea starts the story?",
+    "Each idea leads to the next one.",
+    "The first one is: \"Heating and cooling can change matter from one state to...\""
+   ],
+   "success": "Great ordering! You followed the whole idea.",
+   "evidenceSectionIds": [
+    "s2"
+   ]
+  },
+  {
+   "id": "pz-3",
+   "objectiveId": "obj-3",
+   "zoneId": "z-bubbling-fou",
+   "kind": "choice",
+   "title": "Quick Quiz",
+   "prompt": "Answer the quiz to light the way!",
+   "questions": [
+    {
+     "id": "pz-3-q1",
+     "prompt": "Fill the gap: In a _____, they are close together but slide past each other.",
+     "choices": [
+      "shape",
+      "liquid",
+      "particles",
+      "space"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "liquid",
+      "liquids"
+     ],
+     "explain": "In a liquid, they are close together but slide past each other.",
+     "hints": [
+      "Think back to the part called \"Tiny Particles\".",
+      "It is one of the key words in this lesson. It starts with \"L\".",
+      "The missing word begins \"liq...\""
+     ]
+    },
+    {
+     "id": "pz-3-q2",
+     "prompt": "Fill the gap: In a gas, the _____ are far apart and zoom around quickly.",
+     "choices": [
+      "solid",
+      "particles",
+      "container",
+      "matter"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "particle",
+      "particles"
+     ],
+     "explain": "In a gas, the particles are far apart and zoom around quickly.",
+     "hints": [
+      "Think back to the part called \"Tiny Particles\".",
+      "It is one of the key words in this lesson. It starts with \"P\".",
+      "The missing word begins \"part...\""
+     ]
+    }
+   ],
+   "hints": [
+    "Think about what you studied here.",
+    "Look for the key word.",
+    "Ask the companion for help if you are stuck."
+   ],
+   "success": "Quiz complete! Brilliant thinking.",
+   "evidenceSectionIds": [
+    "s3"
+   ]
+  }
+ ],
+ "quests": [
+  {
+   "id": "q1",
+   "title": "Dr. Ada's Lesson",
+   "objectiveId": "obj-1",
+   "prerequisiteIds": [],
+   "steps": [
+    {
+     "id": "q1-s1",
+     "kind": "study",
+     "targetId": "study-1a",
+     "text": "Study \"Three States of Matter\" at the Test Station"
+    },
+    {
+     "id": "q1-s2",
+     "kind": "study",
+     "targetId": "study-1b",
+     "text": "Study \"Three States of Matter: part 2\" at the Test Station"
+    },
+    {
+     "id": "q1-s3",
+     "kind": "talk",
+     "targetId": "npc-1",
+     "text": "Talk to Dr. Ada at the Test Station"
+    },
+    {
+     "id": "q1-s4",
+     "kind": "explain",
+     "targetId": "npc-1",
+     "text": "Explain it to Dr. Ada in your own words"
+    },
+    {
+     "id": "q1-s5",
+     "kind": "collect",
+     "targetId": "token",
+     "text": "Collect 3 Energy Cells around the Test Station",
+     "count": 3
+    },
+    {
+     "id": "q1-s6",
+     "kind": "puzzle",
+     "targetId": "pz-1",
+     "text": "Solve \"Match the Words\""
+    }
+   ],
+   "rewardEffectId": "fx-1"
+  },
+  {
+   "id": "q2",
+   "title": "Bolt's Lesson",
+   "objectiveId": "obj-2",
+   "prerequisiteIds": [
+    "q1"
+   ],
+   "steps": [
+    {
+     "id": "q2-s1",
+     "kind": "study",
+     "targetId": "study-2a",
+     "text": "Study \"Heating and Cooling\" at the Tesla Tower"
+    },
+    {
+     "id": "q2-s2",
+     "kind": "study",
+     "targetId": "study-2b",
+     "text": "Study \"Heating and Cooling: part 2\" at the Tesla Tower"
+    },
+    {
+     "id": "q2-s3",
+     "kind": "talk",
+     "targetId": "npc-2",
+     "text": "Talk to Bolt at the Tesla Tower"
+    },
+    {
+     "id": "q2-s4",
+     "kind": "explain",
+     "targetId": "npc-2",
+     "text": "Explain it to Bolt in your own words"
+    },
+    {
+     "id": "q2-s5",
+     "kind": "puzzle",
+     "targetId": "pz-2",
+     "text": "Solve \"Put It in Order\""
+    }
+   ],
+   "rewardEffectId": "fx-2"
+  },
+  {
+   "id": "q3",
+   "title": "Max's Lesson",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q2"
+   ],
+   "steps": [
+    {
+     "id": "q3-s1",
+     "kind": "study",
+     "targetId": "study-3a",
+     "text": "Study \"Tiny Particles\" at the Bubbling Fountain"
+    },
+    {
+     "id": "q3-s2",
+     "kind": "study",
+     "targetId": "study-3b",
+     "text": "Study \"Tiny Particles: part 2\" at the Bubbling Fountain"
+    },
+    {
+     "id": "q3-s3",
+     "kind": "talk",
+     "targetId": "npc-3",
+     "text": "Talk to Max at the Bubbling Fountain"
+    },
+    {
+     "id": "q3-s4",
+     "kind": "explain",
+     "targetId": "npc-3",
+     "text": "Explain it to Max in your own words"
+    },
+    {
+     "id": "q3-s5",
+     "kind": "puzzle",
+     "targetId": "pz-3",
+     "text": "Solve \"Quick Quiz\""
+    }
+   ],
+   "rewardEffectId": "fx-3"
+  },
+  {
+   "id": "q-final",
+   "title": "Wake the The Big Experiment",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q3"
+   ],
+   "steps": [
+    {
+     "id": "qf-s1",
+     "kind": "visit",
+     "targetId": "goal",
+     "text": "Go to The Big Experiment"
+    },
+    {
+     "id": "qf-s2",
+     "kind": "recall",
+     "targetId": "memory",
+     "text": "Memory walk: visit each landmark and remember what you learned there"
+    }
+   ],
+   "rewardEffectId": "fx-final"
+  }
+ ],
+ "memoryLandmarks": [
+  {
+   "zoneId": "z-test-station",
+   "objectiveId": "obj-1",
+   "question": {
+    "id": "recall-1",
+    "prompt": "Fill the gap: A _____ flows and takes the shape of its container.",
+    "choices": [
+     "liquid",
+     "states",
+     "everything",
+     "particles"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "liquid",
+     "liquids"
+    ],
+    "explain": "A liquid flows and takes the shape of its container.",
+    "hints": [
+     "Think back to the part called \"Three States of Matter\".",
+     "It is one of the key words in this lesson. It starts with \"L\".",
+     "The missing word begins \"liq...\""
+    ]
+   }
+  },
+  {
+   "zoneId": "z-tesla-tower",
+   "objectiveId": "obj-2",
+   "question": {
+    "id": "recall-2",
+    "prompt": "Fill the gap: When ice is heated it melts into liquid _____.",
+    "choices": [
+     "water",
+     "everything",
+     "tiny particles",
+     "flows"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "water",
+     "waters"
+    ],
+    "explain": "When ice is heated it melts into liquid water.",
+    "hints": [
+     "Think back to the part called \"Heating and Cooling\".",
+     "It is one of the key words in this lesson. It starts with \"W\".",
+     "The missing word begins \"wa...\""
+    ]
+   }
+  },
+  {
+   "zoneId": "z-bubbling-fou",
+   "objectiveId": "obj-3",
+   "question": {
+    "id": "recall-3",
+    "prompt": "Fill the gap: In a solid, the _____ are packed tightly and only wiggle in place.",
+    "choices": [
+     "heated",
+     "fill",
+     "particles",
+     "water vapour"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "particle",
+     "particles"
+    ],
+    "explain": "In a solid, the particles are packed tightly and only wiggle in place.",
+    "hints": [
+     "Think back to the part called \"Tiny Particles\".",
+     "It is one of the key words in this lesson. It starts with \"P\".",
+     "The missing word begins \"part...\""
+    ]
+   }
+  }
+ ],
+ "rewardEffects": [
+  {
+   "id": "fx-1",
+   "kind": "power",
+   "zoneId": "z-test-station",
+   "text": "The Test Station glows brightly!"
+  },
+  {
+   "id": "fx-2",
+   "kind": "power",
+   "zoneId": "z-tesla-tower",
+   "text": "The Tesla Tower comes back to life!"
+  },
+  {
+   "id": "fx-3",
+   "kind": "light",
+   "zoneId": "z-bubbling-fou",
+   "text": "The Bubbling Fountain lights up!"
+  },
+  {
+   "id": "fx-final",
+   "kind": "restore",
+   "zoneId": "goal",
+   "text": "The Big Experiment is fully restored!"
+  }
+ ],
+ "study": [
+  {
+   "id": "study-1a",
+   "objectiveId": "obj-1",
+   "zoneId": "z-test-station",
+   "title": "Three States of Matter",
+   "body": [
+    "Everything around you is made of matter.",
+    "Matter can be a solid, a liquid or a gas.",
+    "A solid keeps its own shape."
+   ],
+   "keyTerms": [
+    {
+     "term": "matter",
+     "meaning": "Everything around you is made of matter."
+    },
+    {
+     "term": "liquid",
+     "meaning": "Matter can be a solid, a liquid or a gas."
+    },
+    {
+     "term": "solid",
+     "meaning": "A solid keeps its own shape."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1a-q1",
+     "prompt": "Fill the gap: Everything around you is made of _____.",
+     "choices": [
+      "container",
+      "liquid",
+      "matter",
+      "tiny particles"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "matter",
+      "matters"
+     ],
+     "explain": "Everything around you is made of matter.",
+     "hints": [
+      "Think back to the part called \"Three States of Matter\".",
+      "It is one of the key words in this lesson. It starts with \"M\".",
+      "The missing word begins \"mat...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-1b",
+   "objectiveId": "obj-1",
+   "zoneId": "z-test-station",
+   "title": "Three States of Matter: part 2",
+   "body": [
+    "A liquid flows and takes the shape of its container.",
+    "A gas spreads out to fill all the space it can."
+   ],
+   "keyTerms": [
+    {
+     "term": "liquid",
+     "meaning": "Matter can be a solid, a liquid or a gas."
+    },
+    {
+     "term": "shape",
+     "meaning": "A solid keeps its own shape."
+    },
+    {
+     "term": "takes",
+     "meaning": "A liquid flows and takes the shape of its container."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1b-q1",
+     "prompt": "Fill the gap: A _____ flows and takes the shape of its container.",
+     "choices": [
+      "states",
+      "water",
+      "liquid",
+      "heated"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "liquid",
+      "liquids"
+     ],
+     "explain": "A liquid flows and takes the shape of its container.",
+     "hints": [
+      "Think back to the part called \"Three States of Matter\".",
+      "It is one of the key words in this lesson. It starts with \"L\".",
+      "The missing word begins \"liq...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2a",
+   "objectiveId": "obj-2",
+   "zoneId": "z-tesla-tower",
+   "title": "Heating and Cooling",
+   "body": [
+    "Heating and cooling can change matter from one state to another.",
+    "When ice is heated it melts into liquid water."
+   ],
+   "keyTerms": [
+    {
+     "term": "matter",
+     "meaning": "Everything around you is made of matter."
+    },
+    {
+     "term": "liquid",
+     "meaning": "Matter can be a solid, a liquid or a gas."
+    },
+    {
+     "term": "water",
+     "meaning": "When water is heated more it boils and turns into a gas called water vapour."
+    }
+   ],
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2a-q1",
+     "prompt": "Fill the gap: Heating and cooling can change _____ from one state to another.",
+     "choices": [
+      "liquid",
+      "shape",
+      "container",
+      "matter"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "matter",
+      "matters"
+     ],
+     "explain": "Heating and cooling can change matter from one state to another.",
+     "hints": [
+      "Think back to the part called \"Heating and Cooling\".",
+      "It is one of the key words in this lesson. It starts with \"M\".",
+      "The missing word begins \"mat...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2b",
+   "objectiveId": "obj-2",
+   "zoneId": "z-tesla-tower",
+   "title": "Heating and Cooling: part 2",
+   "body": [
+    "When water is heated more it boils and turns into a gas called water vapour.",
+    "When water vapour cools it condenses back into liquid drops."
+   ],
+   "keyTerms": [
+    {
+     "term": "liquid",
+     "meaning": "Matter can be a solid, a liquid or a gas."
+    },
+    {
+     "term": "water",
+     "meaning": "When water is heated more it boils and turns into a gas called water vapour."
+    },
+    {
+     "term": "heated",
+     "meaning": "When ice is heated it melts into liquid water."
+    }
+   ],
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2b-q1",
+     "prompt": "Fill the gap: When _____ is heated more it boils and turns into a gas called water vapour.",
+     "choices": [
+      "water",
+      "cooling",
+      "everything",
+      "takes"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "water",
+      "waters"
+     ],
+     "explain": "When water is heated more it boils and turns into a gas called water vapour.",
+     "hints": [
+      "Think back to the part called \"Heating and Cooling\".",
+      "It is one of the key words in this lesson. It starts with \"W\".",
+      "The missing word begins \"wa...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3a",
+   "objectiveId": "obj-3",
+   "zoneId": "z-bubbling-fou",
+   "title": "Tiny Particles",
+   "body": [
+    "Matter is made of tiny particles.",
+    "In a solid, the particles are packed tightly and only wiggle in place."
+   ],
+   "keyTerms": [
+    {
+     "term": "matter",
+     "meaning": "Everything around you is made of matter."
+    },
+    {
+     "term": "solid",
+     "meaning": "A solid keeps its own shape."
+    },
+    {
+     "term": "particles",
+     "meaning": "In a gas, the particles are far apart and zoom around quickly."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3a-q1",
+     "prompt": "Fill the gap: _____ is made of tiny particles.",
+     "choices": [
+      "takes",
+      "everything",
+      "heated",
+      "matter"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "matter",
+      "matters"
+     ],
+     "explain": "Matter is made of tiny particles.",
+     "hints": [
+      "Think back to the part called \"Tiny Particles\".",
+      "It is one of the key words in this lesson. It starts with \"M\".",
+      "The missing word begins \"mat...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3b",
+   "objectiveId": "obj-3",
+   "zoneId": "z-bubbling-fou",
+   "title": "Tiny Particles: part 2",
+   "body": [
+    "In a liquid, they are close together but slide past each other.",
+    "In a gas, the particles are far apart and zoom around quickly."
+   ],
+   "keyTerms": [
+    {
+     "term": "liquid",
+     "meaning": "Matter can be a solid, a liquid or a gas."
+    },
+    {
+     "term": "particles",
+     "meaning": "In a gas, the particles are far apart and zoom around quickly."
+    },
+    {
+     "term": "zoom",
+     "meaning": "In a gas, the particles are far apart and zoom around quickly."
+    }
+   ],
+   "figure": "compare",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3b-q1",
+     "prompt": "Fill the gap: In a _____, they are close together but slide past each other.",
+     "choices": [
+      "states",
+      "water",
+      "takes",
+      "liquid"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "liquid",
+      "liquids"
+     ],
+     "explain": "In a liquid, they are close together but slide past each other.",
+     "hints": [
+      "Think back to the part called \"Tiny Particles\".",
+      "It is one of the key words in this lesson. It starts with \"L\".",
+      "The missing word begins \"liq...\""
+     ]
+    }
+   ]
+  }
+ ],
+ "sideQuests": [
+  {
+   "id": "side-1",
+   "title": "Max's Challenge",
+   "giverNpcId": "npc-3",
+   "zoneId": "z-bubbling-fou",
+   "objectiveId": "obj-1",
+   "kind": "explain",
+   "prompt": "Can you teach me this in your own words? Explain three states of matter, including liquid.",
+   "rubric": [
+    "Mentions matter",
+    "Mentions liquid",
+    "Mentions solid"
+   ],
+   "reward": "a shiny Teacher badge"
+  },
+  {
+   "id": "side-2",
+   "title": "Bolt's Bonus Quiz",
+   "giverNpcId": "npc-2",
+   "zoneId": "z-tesla-tower",
+   "objectiveId": "obj-2",
+   "kind": "quiz",
+   "prompt": "Try my bonus questions!",
+   "questions": [
+    {
+     "id": "side-2-q1",
+     "prompt": "Fill the gap: Heating and cooling can change _____ from one state to another.",
+     "choices": [
+      "matter",
+      "heated",
+      "space",
+      "fill"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "matter",
+      "matters"
+     ],
+     "explain": "Heating and cooling can change matter from one state to another.",
+     "hints": [
+      "Think back to the part called \"Heating and Cooling\".",
+      "It is one of the key words in this lesson. It starts with \"M\".",
+      "The missing word begins \"mat...\""
+     ]
+    },
+    {
+     "id": "side-2-q2",
+     "prompt": "Fill the gap: When _____ is heated more it boils and turns into a gas called water vapour.",
+     "choices": [
+      "water",
+      "heating",
+      "solid",
+      "fill"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "water",
+      "waters"
+     ],
+     "explain": "When water is heated more it boils and turns into a gas called water vapour.",
+     "hints": [
+      "Think back to the part called \"Heating and Cooling\".",
+      "It is one of the key words in this lesson. It starts with \"W\".",
+      "The missing word begins \"wa...\""
+     ]
+    }
+   ],
+   "reward": "a Gold Star"
+  }
+ ],
+ "glossary": [
+  {
+   "term": "matter",
+   "meaning": "Everything around you is made of matter.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "liquid",
+   "meaning": "Matter can be a solid, a liquid or a gas.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "solid",
+   "meaning": "A solid keeps its own shape.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "shape",
+   "meaning": "A solid keeps its own shape.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "takes",
+   "meaning": "A liquid flows and takes the shape of its container.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "water",
+   "meaning": "When water is heated more it boils and turns into a gas called water vapour.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "heated",
+   "meaning": "When ice is heated it melts into liquid water.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "heating",
+   "meaning": "Heating and cooling can change matter from one state to another.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "particles",
+   "meaning": "In a gas, the particles are far apart and zoom around quickly.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "zoom",
+   "meaning": "In a gas, the particles are far apart and zoom around quickly.",
+   "sectionId": "s3"
+  }
+ ],
+ "reviewQuestions": [
+  {
+   "id": "review-1",
+   "prompt": "Fill the gap: Everything around you is made of _____.",
+   "choices": [
+    "liquid",
+    "zoom",
+    "matter",
+    "states"
+   ],
+   "answerIndex": 2,
+   "accept": [
+    "matter",
+    "matters"
+   ],
+   "explain": "Everything around you is made of matter.",
+   "hints": [
+    "Think back to the part called \"Three States of Matter\".",
+    "It is one of the key words in this lesson. It starts with \"M\".",
+    "The missing word begins \"mat...\""
+   ]
+  },
+  {
+   "id": "review-2",
+   "prompt": "Fill the gap: When _____ vapour cools it condenses back into liquid drops.",
+   "choices": [
+    "states",
+    "water",
+    "space",
+    "heated"
+   ],
+   "answerIndex": 1,
+   "accept": [
+    "water",
+    "waters"
+   ],
+   "explain": "When water vapour cools it condenses back into liquid drops.",
+   "hints": [
+    "Think back to the part called \"Heating and Cooling\".",
+    "It is one of the key words in this lesson. It starts with \"W\".",
+    "The missing word begins \"wa...\""
+   ]
+  },
+  {
+   "id": "review-3",
+   "prompt": "Fill the gap: Matter is made of tiny _____.",
+   "choices": [
+    "solid",
+    "cooling",
+    "particles",
+    "fill"
+   ],
+   "answerIndex": 2,
+   "accept": [
+    "particle",
+    "particles"
+   ],
+   "explain": "Matter is made of tiny particles.",
+   "hints": [
+    "Think back to the part called \"Tiny Particles\".",
+    "It is one of the key words in this lesson. It starts with \"P\".",
+    "The missing word begins \"part...\""
+   ]
+  },
+  {
+   "id": "review-4",
+   "prompt": "Fill the gap: A _____ keeps its own shape.",
+   "choices": [
+    "liquid",
+    "spreads",
+    "states",
+    "solid"
+   ],
+   "answerIndex": 3,
+   "accept": [
+    "solid",
+    "solids"
+   ],
+   "explain": "A solid keeps its own shape.",
+   "hints": [
+    "Think back to the part called \"Three States of Matter\".",
+    "It is one of the key words in this lesson. It starts with \"S\".",
+    "The missing word begins \"so...\""
+   ]
+  }
+ ],
+ "source": "sample"
+}

@@ -1,0 +1,130 @@
+{
+ "schemaVersion": "1",
+ "lessonId": "lesson-coral-reefs",
+ "title": "Coral Reefs: Cities Under the Sea",
+ "summary": "Coral may look like rock, but it is made of tiny animals called polyps. Each polyp builds a hard skeleton of limestone around itself.",
+ "ageBand": "7-9",
+ "sourceId": "sample-coral-reefs",
+ "sections": [
+  {
+   "id": "s1",
+   "heading": "Coral Is Alive",
+   "text": "Coral may look like rock, but it is made of tiny animals called polyps. Each polyp builds a hard skeleton of limestone around itself. Over many years, millions of skeletons pile up to make a reef."
+  },
+  {
+   "id": "s2",
+   "heading": "Partners in the Reef",
+   "text": "Tiny algae live inside coral polyps. The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home. The algae also give coral its bright colours."
+  },
+  {
+   "id": "s3",
+   "heading": "Why Reefs Need Care",
+   "text": "Coral reefs are home to about one quarter of all sea creatures. When the water gets too warm, coral pushes its algae out and turns white. This is called coral bleaching. Keeping oceans clean and cool helps reefs stay healthy."
+  }
+ ],
+ "concepts": [
+  {
+   "id": "c-1",
+   "name": "Coral",
+   "description": "Coral may look like rock, but it is made of tiny animals called polyps.",
+   "prerequisites": []
+  },
+  {
+   "id": "c-2",
+   "name": "Algae",
+   "description": "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home.",
+   "prerequisites": [
+    "c-1"
+   ]
+  },
+  {
+   "id": "c-3",
+   "name": "Reefs",
+   "description": "Coral reefs are home to about one quarter of all sea creatures.",
+   "prerequisites": [
+    "c-2"
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "obj-1",
+   "text": "Explain coral is alive, including tiny",
+   "conceptIds": [
+    "c-1"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s1",
+     "quote": "Coral may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "sectionId": "s1",
+     "quote": "Over many years, millions of skeletons pile up to make a reef."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions coral",
+     "Mentions tiny",
+     "Mentions reef",
+     "Gets the main idea: Coral may look like rock, but it is made of tiny animals called polyps."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  },
+  {
+   "id": "obj-2",
+   "text": "Explain partners in the reef, including algae",
+   "conceptIds": [
+    "c-2"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s2",
+     "quote": "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home."
+    },
+    {
+     "sectionId": "s2",
+     "quote": "Tiny algae live inside coral polyps."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions algae",
+     "Mentions tiny",
+     "Mentions polyps",
+     "Gets the main idea: The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  },
+  {
+   "id": "obj-3",
+   "text": "Explain why reefs need care",
+   "conceptIds": [
+    "c-3"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s3",
+     "quote": "Coral reefs are home to about one quarter of all sea creatures."
+    },
+    {
+     "sectionId": "s3",
+     "quote": "When the water gets too warm, coral pushes its algae out and turns white."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions reefs",
+     "Mentions home",
+     "Mentions white",
+     "Gets the main idea: Coral reefs are home to about one quarter of all sea creatures."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  }
+ ],
+ "suggestedTemplate": "ocean"
+}

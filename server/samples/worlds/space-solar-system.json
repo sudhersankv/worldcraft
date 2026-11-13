@@ -1,0 +1,1081 @@
+{
+ "schemaVersion": "1",
+ "worldId": "space-solar-system",
+ "lessonId": "lesson-solar-system",
+ "templateId": "space",
+ "title": "Lost in Orbit",
+ "subject": "The Solar System",
+ "seed": 8812,
+ "story": {
+  "intro": [
+   "Welcome aboard Star Station Seven! A solar storm wiped our star maps.",
+   "Without them, the Navigation Console cannot find the way home.",
+   "Learn about the Sun, the planets and gravity, and we can rebuild the map together!"
+  ],
+  "goal": "Rebuild the star map by learning about our solar system.",
+  "finale": "Map restored! The Navigation Console lights up with all eight planets circling the Sun. Course set for home!"
+ },
+ "companion": {
+  "name": "Beep",
+  "greeting": "Beep-beep! I'm Beep, your helper drone. Captain Nova is waiting at the Solar Observatory. Let's go!"
+ },
+ "zones": [
+  {
+   "id": "hub",
+   "name": "Docking Bay",
+   "kind": "hub",
+   "landmark": "fountain",
+   "description": "The busy heart of the station, with windows full of stars."
+  },
+  {
+   "id": "z-observatory",
+   "name": "Solar Observatory",
+   "kind": "landmark",
+   "landmark": "tower",
+   "objectiveId": "obj-1",
+   "description": "A tall telescope tower pointed safely at the Sun."
+  },
+  {
+   "id": "z-pylon",
+   "name": "Planet Pylon",
+   "kind": "landmark",
+   "landmark": "obelisk",
+   "objectiveId": "obj-2",
+   "description": "A glowing pillar that shows the planets in a line."
+  },
+  {
+   "id": "z-gravity",
+   "name": "Gravity Well",
+   "kind": "landmark",
+   "landmark": "well",
+   "objectiveId": "obj-3",
+   "description": "A swirling pit where you can feel the pull of gravity."
+  },
+  {
+   "id": "goal",
+   "name": "Navigation Console",
+   "kind": "goal",
+   "landmark": "console",
+   "description": "The station's brain. It needs a complete star map to work."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "npc-1",
+   "name": "Captain Nova",
+   "title": "the Astronaut",
+   "archetype": "astronaut",
+   "persona": "Captain Nova is a brave, upbeat astronaut and the station captain. She speaks in short, confident sentences, says \"Roger that!\" and \"Mission accomplished!\", and treats the child as a fellow crew member.",
+   "voice": "aura-2-athena-en",
+   "zoneId": "z-observatory",
+   "objectiveId": "obj-1",
+   "greeting": "Welcome aboard, crew member! I'm Captain Nova. Our map is missing the most important thing of all. Can you guess what sits in the middle?",
+   "teach": [
+    "The Sun is a star. It is a giant, glowing ball of hot gas.",
+    "The Sun sits at the centre of our solar system, and it is the closest star to Earth.",
+    "It gives us light and heat. More than one million Earths could fit inside it!"
+   ],
+   "knowledge": [
+    "The Sun is a star.",
+    "It is a giant, glowing ball of hot gas, and it is the closest star to Earth.",
+    "The Sun sits at the centre of our solar system.",
+    "It gives us light and heat, and without it, life on Earth could not survive.",
+    "The Sun is so big that more than one million Earths could fit inside it."
+   ],
+   "check": {
+    "id": "check-nova",
+    "prompt": "What kind of object is the Sun?",
+    "choices": [
+     "A planet",
+     "A star",
+     "A moon",
+     "A comet"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "star",
+     "a star"
+    ],
+    "explain": "The Sun is a star: a giant, glowing ball of hot gas.",
+    "hints": [
+     "Think about the twinkling lights in the night sky.",
+     "It is a giant ball of hot gas, just like those lights.",
+     "It is the closest st... to Earth."
+    ]
+   }
+  },
+  {
+   "id": "npc-2",
+   "name": "Orbit",
+   "title": "the Robot",
+   "archetype": "robot",
+   "persona": "Orbit is a friendly, precise robot who LOVES lists and putting things in order. Orbit sometimes says \"beep-boop\" and counts on its fingers out loud.",
+   "voice": "aura-2-apollo-en",
+   "zoneId": "z-pylon",
+   "objectiveId": "obj-2",
+   "greeting": "Beep-boop! Greetings! I am Orbit. My planet list got scrambled in the storm. Will you help me sort it?",
+   "teach": [
+    "Eight planets travel around the Sun.",
+    "In order from the Sun: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune.",
+    "Remember: My Very Excellent Mother Just Served Us Noodles!"
+   ],
+   "knowledge": [
+    "Eight planets travel around the Sun.",
+    "In order from the Sun, they are Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune.",
+    "A fun way to remember the order is the sentence: My Very Excellent Mother Just Served Us Noodles.",
+    "Mercury is the closest planet to the Sun, and Neptune is the farthest.",
+    "Earth is the third planet from the Sun."
+   ],
+   "check": {
+    "id": "check-orbit",
+    "prompt": "Which planet is closest to the Sun?",
+    "choices": [
+     "Earth",
+     "Neptune",
+     "Mercury",
+     "Jupiter"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "mercury",
+     "mercurie"
+    ],
+    "explain": "Mercury is the closest planet to the Sun.",
+    "hints": [
+     "Think of the memory sentence.",
+     "\"My\" is the first word.",
+     "It starts with \"Mer...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-3",
+   "name": "Zig",
+   "title": "the Friendly Alien",
+   "archetype": "alien",
+   "persona": "Zig is a curious, giggly alien visiting from far away. Zig is amazed by everything about our solar system, asks playful questions, and says \"Zoinks!\" when surprised.",
+   "voice": "aura-2-orpheus-en",
+   "zoneId": "z-gravity",
+   "objectiveId": "obj-3",
+   "greeting": "Zoinks, a human! I'm Zig. I keep wondering: why don't your planets just float away? Want to find out with me?",
+   "teach": [
+    "The four inner planets, Mercury, Venus, Earth and Mars, are small and rocky.",
+    "The outer planets are giants. Jupiter and Saturn are gas giants. Uranus and Neptune are ice giants.",
+    "Gravity is a pulling force. The Sun's gravity bends each planet's path into a loop called an orbit."
+   ],
+   "knowledge": [
+    "The four inner planets, Mercury, Venus, Earth and Mars, are small rocky planets. They have hard, solid surfaces made of rock and metal.",
+    "The four outer planets are giants. Jupiter and Saturn are gas giants, made mostly of hydrogen and helium gas.",
+    "Uranus and Neptune are ice giants, made of icy materials like water, ammonia and methane.",
+    "Jupiter is the largest planet of all.",
+    "Gravity is a pulling force. The Sun is so massive that its gravity pulls on every planet.",
+    "Each planet is moving very fast, and the Sun's gravity bends its path into a curved loop called an orbit.",
+    "Planets closer to the Sun take less time to go around it. Earth takes one year to orbit the Sun once."
+   ],
+   "check": {
+    "id": "check-zig",
+    "prompt": "What keeps the planets moving in orbits around the Sun?",
+    "choices": [
+     "Wind",
+     "Gravity",
+     "Magnets",
+     "Rockets"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "gravity",
+     "gravitty",
+     "the suns gravity"
+    ],
+    "explain": "The Sun's gravity pulls on every planet and bends its path into an orbit.",
+    "hints": [
+     "Think about why things fall down when you drop them.",
+     "It is a pulling force.",
+     "It starts with \"grav...\""
+    ]
+   }
+  }
+ ],
+ "collectibles": [
+  {
+   "id": "shard",
+   "name": "Star Shard",
+   "zoneId": "z-observatory",
+   "count": 3,
+   "icon": "star"
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "pz-sunfacts",
+   "kind": "choice",
+   "title": "Sun Scanner",
+   "prompt": "Scan the Sun! Answer to power the observatory.",
+   "questions": [
+    {
+     "id": "pz-sun-q1",
+     "prompt": "Is the Sun a star or a planet?",
+     "choices": [
+      "A star",
+      "A planet"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "star"
+     ],
+     "explain": "The Sun is a star.",
+     "hints": [
+      "It is a ball of hot gas.",
+      "Planets travel around it.",
+      "St..."
+     ]
+    },
+    {
+     "id": "pz-sun-q2",
+     "prompt": "About how many Earths could fit inside the Sun?",
+     "choices": [
+      "Ten",
+      "One hundred",
+      "More than one million",
+      "Two"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "more than one million",
+      "a million",
+      "one million",
+      "million"
+     ],
+     "explain": "More than one million Earths could fit inside the Sun!",
+     "hints": [
+      "It is really, really big.",
+      "Bigger than a thousand.",
+      "More than one mil..."
+     ]
+    }
+   ],
+   "hints": [
+    "Remember what Captain Nova said.",
+    "The Sun is a giant ball of hot gas.",
+    "It is huge!"
+   ],
+   "success": "Mission accomplished! The observatory is online.",
+   "evidenceSectionIds": [
+    "s1"
+   ],
+   "objectiveId": "obj-1",
+   "zoneId": "z-observatory"
+  },
+  {
+   "id": "pz-order",
+   "kind": "sequence",
+   "title": "The Planet Parade",
+   "prompt": "Line up the planets in order from the Sun.",
+   "items": [
+    "Mercury",
+    "Venus",
+    "Earth",
+    "Mars",
+    "Jupiter",
+    "Saturn"
+   ],
+   "hints": [
+    "Use the sentence: My Very Excellent Mother Just Served...",
+    "Earth is third.",
+    "Mercury, Venus, Earth, Mars..."
+   ],
+   "success": "Beep-boop! Planet list sorted perfectly!",
+   "evidenceSectionIds": [
+    "s2"
+   ],
+   "objectiveId": "obj-2",
+   "zoneId": "z-pylon"
+  },
+  {
+   "id": "pz-kinds",
+   "kind": "match",
+   "title": "Planet Families",
+   "prompt": "Match each planet to its family.",
+   "pairs": [
+    {
+     "left": "Mars",
+     "right": "Small rocky planet"
+    },
+    {
+     "left": "Saturn",
+     "right": "Gas giant made mostly of hydrogen and helium"
+    },
+    {
+     "left": "Neptune",
+     "right": "Ice giant made of icy materials"
+    }
+   ],
+   "hints": [
+    "Inner planets are rocky.",
+    "Jupiter and Saturn are made mostly of gas.",
+    "Uranus and Neptune are the icy ones."
+   ],
+   "success": "Zoinks! You sorted the planet families!",
+   "evidenceSectionIds": [
+    "s3"
+   ],
+   "objectiveId": "obj-3",
+   "zoneId": "z-gravity"
+  }
+ ],
+ "quests": [
+  {
+   "id": "q1",
+   "title": "Our Star",
+   "objectiveId": "obj-1",
+   "prerequisiteIds": [],
+   "steps": [
+    {
+     "kind": "study",
+     "targetId": "study-1a",
+     "text": "Study \"The Sun is a star\" at the Solar Observatory",
+     "id": "q1-s1"
+    },
+    {
+     "kind": "study",
+     "targetId": "study-1b",
+     "text": "Study \"At the centre of it all\" at the Solar Observatory",
+     "id": "q1-s2"
+    },
+    {
+     "kind": "talk",
+     "targetId": "npc-1",
+     "text": "Talk to Captain Nova at the Solar Observatory",
+     "id": "q1-s3"
+    },
+    {
+     "kind": "explain",
+     "targetId": "npc-1",
+     "text": "Explain it to Captain Nova in your own words",
+     "id": "q1-s4"
+    },
+    {
+     "kind": "collect",
+     "targetId": "shard",
+     "count": 3,
+     "text": "Collect 3 Star Shards around the Solar Observatory",
+     "id": "q1-s5"
+    },
+    {
+     "kind": "puzzle",
+     "targetId": "pz-sunfacts",
+     "text": "Solve \"Sun Scanner\"",
+     "id": "q1-s6"
+    }
+   ],
+   "rewardEffectId": "fx-1"
+  },
+  {
+   "id": "q2",
+   "title": "The Planet Parade",
+   "objectiveId": "obj-2",
+   "prerequisiteIds": [
+    "q1"
+   ],
+   "steps": [
+    {
+     "kind": "study",
+     "targetId": "study-2a",
+     "text": "Study \"Eight planets in a row\" at the Planet Pylon",
+     "id": "q2-s1"
+    },
+    {
+     "kind": "study",
+     "targetId": "study-2b",
+     "text": "Study \"A trick to remember the order\" at the Planet Pylon",
+     "id": "q2-s2"
+    },
+    {
+     "kind": "talk",
+     "targetId": "npc-2",
+     "text": "Talk to Orbit at the Planet Pylon",
+     "id": "q2-s3"
+    },
+    {
+     "kind": "explain",
+     "targetId": "npc-2",
+     "text": "Explain it to Orbit in your own words",
+     "id": "q2-s4"
+    },
+    {
+     "kind": "puzzle",
+     "targetId": "pz-order",
+     "text": "Solve \"The Planet Parade\"",
+     "id": "q2-s5"
+    }
+   ],
+   "rewardEffectId": "fx-2"
+  },
+  {
+   "id": "q3",
+   "title": "The Invisible Pull",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q2"
+   ],
+   "steps": [
+    {
+     "kind": "study",
+     "targetId": "study-3a",
+     "text": "Study \"Rocky planets and giant planets\" at the Gravity Well",
+     "id": "q3-s1"
+    },
+    {
+     "kind": "study",
+     "targetId": "study-3b",
+     "text": "Study \"Gravity keeps planets in orbit\" at the Gravity Well",
+     "id": "q3-s2"
+    },
+    {
+     "kind": "talk",
+     "targetId": "npc-3",
+     "text": "Talk to Zig at the Gravity Well",
+     "id": "q3-s3"
+    },
+    {
+     "kind": "explain",
+     "targetId": "npc-3",
+     "text": "Explain it to Zig in your own words",
+     "id": "q3-s4"
+    },
+    {
+     "kind": "puzzle",
+     "targetId": "pz-kinds",
+     "text": "Solve \"Planet Families\"",
+     "id": "q3-s5"
+    }
+   ],
+   "rewardEffectId": "fx-3"
+  },
+  {
+   "id": "q-final",
+   "title": "Restore the Star Map",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q3"
+   ],
+   "rewardEffectId": "fx-final",
+   "steps": [
+    {
+     "id": "qf-s1",
+     "kind": "visit",
+     "targetId": "goal",
+     "text": "Go to Navigation Console"
+    },
+    {
+     "id": "qf-s2",
+     "kind": "recall",
+     "targetId": "memory",
+     "text": "Memory walk: visit each landmark and remember what you learned there"
+    }
+   ]
+  }
+ ],
+ "memoryLandmarks": [
+  {
+   "zoneId": "z-observatory",
+   "objectiveId": "obj-1",
+   "question": {
+    "id": "recall-observatory",
+    "prompt": "Back at the Solar Observatory: what is the Sun, and where is it in our solar system?",
+    "choices": [
+     "A star at the centre",
+     "A planet at the edge",
+     "A moon next to Earth",
+     "A comet far away"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "a star at the centre",
+     "star at the center",
+     "a star in the middle",
+     "star"
+    ],
+    "explain": "The Sun is a star at the centre of our solar system.",
+    "hints": [
+     "Think of the merry-go-round.",
+     "It is a ball of hot gas.",
+     "A st... at the cen..."
+    ]
+   }
+  },
+  {
+   "zoneId": "z-pylon",
+   "objectiveId": "obj-2",
+   "question": {
+    "id": "recall-pylon",
+    "prompt": "At the Planet Pylon: which planet comes right after Earth?",
+    "choices": [
+     "Venus",
+     "Mars",
+     "Jupiter",
+     "Mercury"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "mars"
+    ],
+    "explain": "Mercury, Venus, Earth, then Mars.",
+    "hints": [
+     "Say the memory sentence.",
+     "Excellent... Mother...",
+     "M for Ma..."
+    ]
+   }
+  },
+  {
+   "zoneId": "z-gravity",
+   "objectiveId": "obj-3",
+   "question": {
+    "id": "recall-gravity",
+    "prompt": "At the Gravity Well: what pulling force keeps the planets in their orbits?",
+    "choices": [
+     "Gravity",
+     "Wind",
+     "Light",
+     "Electricity"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "gravity"
+    ],
+    "explain": "The Sun's gravity bends each planet's path into an orbit.",
+    "hints": [
+     "Think of the ball on a string.",
+     "It pulls things down too.",
+     "Grav..."
+    ]
+   }
+  }
+ ],
+ "rewardEffects": [
+  {
+   "id": "fx-1",
+   "kind": "power",
+   "zoneId": "z-observatory",
+   "text": "The Solar Observatory powers up and a bright Sun appears on the map!"
+  },
+  {
+   "id": "fx-2",
+   "kind": "power",
+   "zoneId": "z-pylon",
+   "text": "The Planet Pylon lights up with all eight planets in a row!"
+  },
+  {
+   "id": "fx-3",
+   "kind": "light",
+   "zoneId": "z-gravity",
+   "text": "Orbits swirl around the Gravity Well and the planets start to circle!"
+  },
+  {
+   "id": "fx-final",
+   "kind": "restore",
+   "zoneId": "goal",
+   "text": "The Navigation Console glows. The star map is complete!"
+  }
+ ],
+ "study": [
+  {
+   "id": "study-1a",
+   "title": "The Sun is a star",
+   "figure": "none",
+   "body": [
+    "The Sun is a star! It is a giant, glowing ball of hot gas.",
+    "It is the closest star to Earth. The other stars you see at night are much, much farther away."
+   ],
+   "keyTerms": [
+    {
+     "term": "star",
+     "meaning": "A giant, glowing ball of hot gas. The Sun is one!"
+    }
+   ],
+   "example": "The Sun looks bigger and brighter than other stars only because it is so much closer to us.",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1a-q1",
+     "prompt": "The Sun is made of...",
+     "choices": [
+      "Hot gas",
+      "Ice",
+      "Rock and metal",
+      "Water"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "hot gas",
+      "gas"
+     ],
+     "explain": "The Sun is a giant, glowing ball of hot gas.",
+     "hints": [
+      "It glows!",
+      "It is not solid.",
+      "Hot g..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-1",
+   "zoneId": "z-observatory"
+  },
+  {
+   "id": "study-1b",
+   "title": "At the centre of it all",
+   "figure": "cycle",
+   "body": [
+    "The Sun sits at the centre of our solar system. Everything else travels around it.",
+    "It gives us light and heat. Without the Sun, life on Earth could not survive.",
+    "The Sun is enormous: more than one million Earths could fit inside it!"
+   ],
+   "keyTerms": [
+    {
+     "term": "solar system",
+     "meaning": "The Sun and everything that travels around it."
+    }
+   ],
+   "example": "Imagine a merry-go-round: the Sun is the pole in the middle and the planets ride around it.",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1b-q1",
+     "prompt": "Where is the Sun in our solar system?",
+     "choices": [
+      "At the edge",
+      "At the centre",
+      "Next to Mars",
+      "Behind the Moon"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "centre",
+      "center",
+      "middle"
+     ],
+     "explain": "The Sun sits at the centre of our solar system.",
+     "hints": [
+      "Everything travels around it.",
+      "Think of the merry-go-round pole.",
+      "In the cen..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-1",
+   "zoneId": "z-observatory"
+  },
+  {
+   "id": "study-2a",
+   "title": "Eight planets in a row",
+   "figure": "ordered-list",
+   "body": [
+    "Eight planets travel around the Sun.",
+    "In order from the Sun they are: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune.",
+    "Mercury is the closest to the Sun. Neptune is the farthest."
+   ],
+   "keyTerms": [
+    {
+     "term": "planet",
+     "meaning": "A large world that travels around the Sun."
+    }
+   ],
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2a-q1",
+     "prompt": "Which planet is the farthest from the Sun?",
+     "choices": [
+      "Mars",
+      "Neptune",
+      "Venus",
+      "Earth"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "neptune"
+     ],
+     "explain": "Neptune is the farthest planet from the Sun.",
+     "hints": [
+      "It is the last one in the list.",
+      "\"Noodles\" is the last word.",
+      "Nep..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-2",
+   "zoneId": "z-pylon"
+  },
+  {
+   "id": "study-2b",
+   "title": "A trick to remember the order",
+   "figure": "ordered-list",
+   "body": [
+    "Use this silly sentence: My Very Excellent Mother Just Served Us Noodles.",
+    "Each word starts with the same letter as a planet: M for Mercury, V for Venus, E for Earth, M for Mars, J for Jupiter, S for Saturn, U for Uranus and N for Neptune."
+   ],
+   "keyTerms": [
+    {
+     "term": "order",
+     "meaning": "Which one comes first, second, third, and so on."
+    }
+   ],
+   "example": "Earth is the third word, \"Excellent\", so Earth is the third planet from the Sun!",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2b-q1",
+     "prompt": "In \"My Very Excellent Mother...\", which planet does \"Very\" stand for?",
+     "choices": [
+      "Venus",
+      "Earth",
+      "Mars",
+      "Uranus"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "venus"
+     ],
+     "explain": "\"Very\" starts with V, for Venus, the second planet.",
+     "hints": [
+      "Look at the first letter.",
+      "V...",
+      "Ven..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-2",
+   "zoneId": "z-pylon"
+  },
+  {
+   "id": "study-3a",
+   "title": "Rocky planets and giant planets",
+   "figure": "compare",
+   "body": [
+    "The four inner planets, Mercury, Venus, Earth and Mars, are small rocky planets with hard, solid surfaces made of rock and metal.",
+    "The four outer planets are giants. Jupiter and Saturn are gas giants, made mostly of hydrogen and helium gas.",
+    "Uranus and Neptune are ice giants, made of icy materials like water, ammonia and methane. Jupiter is the largest planet of all."
+   ],
+   "keyTerms": [
+    {
+     "term": "rocky planets",
+     "meaning": "The four small inner planets with hard surfaces of rock and metal."
+    },
+    {
+     "term": "gas giants",
+     "meaning": "Jupiter and Saturn: huge planets made mostly of gas."
+    },
+    {
+     "term": "ice giants",
+     "meaning": "Uranus and Neptune: giant planets made of icy materials."
+    }
+   ],
+   "example": "You could stand on Mars because it is rocky. You could not stand on Jupiter, because it is mostly gas!",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3a-q1",
+     "prompt": "Which planet is a gas giant?",
+     "choices": [
+      "Mars",
+      "Earth",
+      "Jupiter",
+      "Mercury"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "jupiter",
+      "saturn"
+     ],
+     "explain": "Jupiter and Saturn are the gas giants.",
+     "hints": [
+      "Gas giants are the outer, huge planets.",
+      "It is the largest planet of all.",
+      "Jup..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-3",
+   "zoneId": "z-gravity"
+  },
+  {
+   "id": "study-3b",
+   "title": "Gravity keeps planets in orbit",
+   "figure": "cycle",
+   "body": [
+    "Why don't the planets fly off into space? The answer is gravity. Gravity is a pulling force.",
+    "The Sun is so massive that its gravity pulls on every planet.",
+    "Each planet is moving very fast, and the Sun's gravity bends its path into a curved loop called an orbit. Earth takes one year to orbit the Sun once."
+   ],
+   "keyTerms": [
+    {
+     "term": "gravity",
+     "meaning": "A pulling force. The Sun's gravity pulls on every planet."
+    },
+    {
+     "term": "orbit",
+     "meaning": "The curved loop a planet travels around the Sun."
+    }
+   ],
+   "example": "Swing a ball on a string around you. The string pulls the ball inward, so it goes round and round instead of flying away. The Sun's gravity is like that string.",
+   "sourceSectionIds": [
+    "s4"
+   ],
+   "checks": [
+    {
+     "id": "study-3b-q1",
+     "prompt": "How long does Earth take to orbit the Sun once?",
+     "choices": [
+      "One day",
+      "One week",
+      "One year",
+      "One hundred years"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "one year",
+      "a year",
+      "year"
+     ],
+     "explain": "Earth takes one year to orbit the Sun once.",
+     "hints": [
+      "Think about birthdays.",
+      "It is longer than a month.",
+      "One y..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-3",
+   "zoneId": "z-gravity"
+  }
+ ],
+ "sideQuests": [
+  {
+   "id": "side-zig-explain",
+   "title": "Zig's Big Wonder",
+   "giverNpcId": "npc-3",
+   "zoneId": "z-gravity",
+   "objectiveId": "obj-3",
+   "kind": "explain",
+   "prompt": "Zig still wonders why the planets don't fly away. Explain it in your own words!",
+   "rubric": [
+    "Says gravity is a pulling force",
+    "Says the Sun pulls on the planets",
+    "Says the planets move in orbits (loops) around the Sun"
+   ],
+   "reward": "an Alien Antenna sticker"
+  },
+  {
+   "id": "side-nova-quiz",
+   "title": "Captain's Bonus Drill",
+   "giverNpcId": "npc-1",
+   "zoneId": "z-observatory",
+   "objectiveId": "obj-1",
+   "kind": "quiz",
+   "prompt": "Captain Nova has a quick drill for you!",
+   "questions": [
+    {
+     "id": "side-nova-q1",
+     "prompt": "What does the Sun give us?",
+     "choices": [
+      "Light and heat",
+      "Rain and snow",
+      "Rocks",
+      "Moons"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "light and heat",
+      "light",
+      "heat"
+     ],
+     "explain": "The Sun gives us light and heat.",
+     "hints": [
+      "Stand in the sunshine.",
+      "It is bright and warm.",
+      "Light and h..."
+     ]
+    }
+   ],
+   "reward": "a Captain's Star badge"
+  },
+  {
+   "id": "side-find-moons",
+   "title": "Moon Spotting",
+   "giverNpcId": "npc-2",
+   "zoneId": "z-pylon",
+   "objectiveId": "obj-2",
+   "kind": "find",
+   "targetId": "z-gravity",
+   "prompt": "Fly to the Gravity Well and answer Orbit's moon question.",
+   "questions": [
+    {
+     "id": "side-moon-q1",
+     "prompt": "How many moons does Earth have?",
+     "choices": [
+      "None",
+      "One",
+      "Two",
+      "Dozens"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "one",
+      "1"
+     ],
+     "explain": "Earth has one Moon. Saturn and Jupiter each have dozens!",
+     "hints": [
+      "Look up at night.",
+      "We call it \"the\" Moon.",
+      "Just o..."
+     ]
+    }
+   ],
+   "reward": "a Moon Rock"
+  }
+ ],
+ "glossary": [
+  {
+   "term": "star",
+   "meaning": "A giant, glowing ball of hot gas. The Sun is a star.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "solar system",
+   "meaning": "The Sun and everything that travels around it.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "planet",
+   "meaning": "A large world that travels around the Sun. There are eight.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "rocky planets",
+   "meaning": "Mercury, Venus, Earth and Mars: small planets with hard surfaces.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "gas giants",
+   "meaning": "Jupiter and Saturn: huge planets made mostly of gas.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "ice giants",
+   "meaning": "Uranus and Neptune: giant planets made of icy materials.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "gravity",
+   "meaning": "A pulling force. The Sun's gravity holds the planets in their orbits.",
+   "sectionId": "s4"
+  },
+  {
+   "term": "orbit",
+   "meaning": "The curved loop a planet travels around the Sun.",
+   "sectionId": "s4"
+  },
+  {
+   "term": "moon",
+   "meaning": "A world that orbits a planet.",
+   "sectionId": "s5"
+  }
+ ],
+ "reviewQuestions": [
+  {
+   "id": "review-1",
+   "prompt": "Which is the largest planet of all?",
+   "choices": [
+    "Earth",
+    "Jupiter",
+    "Mercury",
+    "Mars"
+   ],
+   "answerIndex": 1,
+   "accept": [
+    "jupiter"
+   ],
+   "explain": "Jupiter is the largest planet.",
+   "hints": [
+    "It is a gas giant.",
+    "J in the memory sentence.",
+    "Jup..."
+   ]
+  },
+  {
+   "id": "review-2",
+   "prompt": "Earth is the ___ planet from the Sun.",
+   "choices": [
+    "First",
+    "Second",
+    "Third",
+    "Eighth"
+   ],
+   "answerIndex": 2,
+   "accept": [
+    "third",
+    "3rd",
+    "three"
+   ],
+   "explain": "Mercury, Venus, then Earth: third!",
+   "hints": [
+    "My Very Excellent...",
+    "Count the words.",
+    "Th..."
+   ]
+  },
+  {
+   "id": "review-3",
+   "prompt": "Is the Sun a planet?",
+   "choices": [
+    "Yes",
+    "No, it is a star"
+   ],
+   "answerIndex": 1,
+   "accept": [
+    "no",
+    "star",
+    "it is a star"
+   ],
+   "explain": "No! The Sun is a star.",
+   "hints": [
+    "Think of Captain Nova.",
+    "It is a ball of hot gas.",
+    "It is a st..."
+   ]
+  },
+  {
+   "id": "review-4",
+   "prompt": "What do we call the curved loop a planet travels around the Sun?",
+   "choices": [
+    "An orbit",
+    "A ring",
+    "A tail",
+    "A spin"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "orbit",
+    "an orbit"
+   ],
+   "explain": "That loop is called an orbit.",
+   "hints": [
+    "Think of Zig.",
+    "Gravity bends the path into it.",
+    "Or..."
+   ]
+  }
+ ],
+ "source": "sample"
+}

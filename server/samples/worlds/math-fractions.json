@@ -1,0 +1,1087 @@
+{
+ "schemaVersion": "1",
+ "worldId": "math-fractions",
+ "lessonId": "lesson-fractions",
+ "templateId": "math",
+ "title": "The Broken Number Bridge",
+ "subject": "Fractions",
+ "seed": 1009,
+ "story": {
+  "intro": [
+   "The bridge to the Number Gate has fallen into pieces. Only fair shares can rebuild it!",
+   "To fix it, we need to really learn about Fractions Are Fair Shares.",
+   "Study at each place, talk to my friends, and explain what you learn!"
+  ],
+  "goal": "Learn the three big ideas of Fractions Are Fair Shares to wake The Number Gate.",
+  "finale": "You remembered it all! The Number Gate shines again thanks to you."
+ },
+ "companion": {
+  "name": "Pip",
+  "greeting": "Hi, I'm Pip! I'll help you if you get stuck. Let's explore!"
+ },
+ "zones": [
+  {
+   "id": "hub",
+   "name": "Castle Courtyard",
+   "kind": "hub",
+   "landmark": "fountain",
+   "description": "Where every adventure starts."
+  },
+  {
+   "id": "z-wizard-s-tow",
+   "name": "Wizard's Tower",
+   "kind": "landmark",
+   "landmark": "tower",
+   "objectiveId": "obj-1",
+   "description": "A place to learn about what is a fraction."
+  },
+  {
+   "id": "z-knight-statu",
+   "name": "Knight Statue",
+   "kind": "landmark",
+   "landmark": "statue",
+   "objectiveId": "obj-2",
+   "description": "A place to learn about top and bottom numbers."
+  },
+  {
+   "id": "z-market-fount",
+   "name": "Market Fountain",
+   "kind": "landmark",
+   "landmark": "fountain",
+   "objectiveId": "obj-3",
+   "description": "A place to learn about comparing fractions."
+  },
+  {
+   "id": "goal",
+   "name": "The Number Gate",
+   "kind": "goal",
+   "landmark": "gate",
+   "description": "It wakes up when you master Fractions Are Fair Shares."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "npc-1",
+   "name": "Merla",
+   "title": "the Number Wizard",
+   "archetype": "wizard",
+   "persona": "Playful wizard who treats numbers like magic spells. Teaches \"What Is a Fraction\" from the lesson \"Fractions Are Fair Shares\".",
+   "voice": "aura-2-zeus-en",
+   "zoneId": "z-wizard-s-tow",
+   "objectiveId": "obj-1",
+   "greeting": "Hello there! I'm Merla. Want to learn about fraction with me?",
+   "teach": [
+    "When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+    "The pieces must be the same size for the fraction to be fair.",
+    "A fraction shows a part of a whole."
+   ],
+   "knowledge": [
+    "A fraction shows a part of a whole.",
+    "When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+    "The pieces must be the same size for the fraction to be fair."
+   ],
+   "check": {
+    "id": "check-1",
+    "prompt": "Fill the gap: When you cut a pizza into equal pieces, each piece is a _____ of the pizza.",
+    "choices": [
+     "fraction",
+     "smaller",
+     "numerator",
+     "whole"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "fraction",
+     "fractions"
+    ],
+    "explain": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+    "hints": [
+     "Think back to the part called \"What Is a Fraction?\".",
+     "It is one of the key words in this lesson. It starts with \"F\".",
+     "The missing word begins \"frac...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-2",
+   "name": "Sir Digit",
+   "title": "the Knight",
+   "archetype": "knight",
+   "persona": "Honourable, encouraging knight who loves fair play. Teaches \"Top and Bottom Numbers\" from the lesson \"Fractions Are Fair Shares\".",
+   "voice": "aura-2-thalia-en",
+   "zoneId": "z-knight-statu",
+   "objectiveId": "obj-2",
+   "greeting": "Hello there! I'm Sir Digit. Want to learn about fraction with me?",
+   "teach": [
+    "A fraction has two numbers.",
+    "It tells how many equal parts the whole is split into.",
+    "The bottom number is the denominator."
+   ],
+   "knowledge": [
+    "A fraction has two numbers.",
+    "The bottom number is the denominator.",
+    "It tells how many equal parts the whole is split into.",
+    "The top number is the numerator.",
+    "It tells how many of those parts you have.",
+    "In 3/4, you have three parts out of four."
+   ],
+   "check": {
+    "id": "check-2",
+    "prompt": "Fill the gap: A _____ has two numbers.",
+    "choices": [
+     "fraction",
+     "larger",
+     "bigger",
+     "bottom number"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "fraction",
+     "fractions"
+    ],
+    "explain": "A fraction has two numbers.",
+    "hints": [
+     "Think back to the part called \"Top and Bottom Numbers\".",
+     "It is one of the key words in this lesson. It starts with \"F\".",
+     "The missing word begins \"frac...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-3",
+   "name": "Penny",
+   "title": "the Merchant",
+   "archetype": "merchant",
+   "persona": "Chatty market trader who explains with everyday shopping examples. Teaches \"Comparing Fractions\" from the lesson \"Fractions Are Fair Shares\".",
+   "voice": "aura-2-helena-en",
+   "zoneId": "z-market-fount",
+   "objectiveId": "obj-3",
+   "greeting": "Hello there! I'm Penny. Want to learn about bigger with me?",
+   "teach": [
+    "When two fractions have the same denominator, the one with the bigger numerator is bigger.",
+    "When the numerators are both 1, the fraction with the smaller denominator is bigger, because the whole is cut into fewer, larger pieces.",
+    "So 1/2 is bigger than 1/4."
+   ],
+   "knowledge": [
+    "When two fractions have the same denominator, the one with the bigger numerator is bigger.",
+    "So 3/8 is more than 1/8.",
+    "When the numerators are both 1, the fraction with the smaller denominator is bigger, because the whole is cut into fewer, larger pieces.",
+    "So 1/2 is bigger than 1/4."
+   ],
+   "check": {
+    "id": "check-3",
+    "prompt": "Fill the gap: When two fractions have the same denominator, the one with the _____ numerator is bigger.",
+    "choices": [
+     "smaller",
+     "fair",
+     "bigger",
+     "equal"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "bigger",
+     "biggers"
+    ],
+    "explain": "When two fractions have the same denominator, the one with the bigger numerator is bigger.",
+    "hints": [
+     "Think back to the part called \"Comparing Fractions\".",
+     "It is one of the key words in this lesson. It starts with \"B\".",
+     "The missing word begins \"big...\""
+    ]
+   }
+  }
+ ],
+ "collectibles": [
+  {
+   "id": "token",
+   "name": "Number Gem",
+   "zoneId": "z-wizard-s-tow",
+   "count": 3,
+   "icon": "gem"
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "pz-1",
+   "objectiveId": "obj-1",
+   "zoneId": "z-wizard-s-tow",
+   "kind": "match",
+   "title": "Match the Words",
+   "prompt": "Match each word to what it means.",
+   "pairs": [
+    {
+     "left": "Fraction",
+     "right": "A it shows a part of a whole."
+    },
+    {
+     "left": "Pieces",
+     "right": "The it must be the same size for the fraction to be fair."
+    },
+    {
+     "left": "Pizza",
+     "right": "When you cut a it into equal pieces, each piece is a fraction of the pizza."
+    },
+    {
+     "left": "Whole",
+     "right": "A fraction shows a part of a it."
+    }
+   ],
+   "hints": [
+    "Read each meaning slowly.",
+    "Start with the word you are surest about.",
+    "Fraction goes with: \"A it shows a part of a whole.\""
+   ],
+   "success": "Perfect match! Those words are yours now.",
+   "evidenceSectionIds": [
+    "s1"
+   ]
+  },
+  {
+   "id": "pz-2",
+   "objectiveId": "obj-2",
+   "zoneId": "z-knight-statu",
+   "kind": "sequence",
+   "title": "Put It in Order",
+   "prompt": "Put these ideas in the same order as the lesson.",
+   "items": [
+    "A fraction has two numbers.",
+    "The bottom number is the denominator.",
+    "It tells how many equal parts the whole is split into.",
+    "The top number is the numerator."
+   ],
+   "hints": [
+    "Which idea starts the story?",
+    "Each idea leads to the next one.",
+    "The first one is: \"A fraction has two numbers.\""
+   ],
+   "success": "Great ordering! You followed the whole idea.",
+   "evidenceSectionIds": [
+    "s2"
+   ]
+  },
+  {
+   "id": "pz-3",
+   "objectiveId": "obj-3",
+   "zoneId": "z-market-fount",
+   "kind": "choice",
+   "title": "Quick Quiz",
+   "prompt": "Answer the quiz to light the way!",
+   "questions": [
+    {
+     "id": "pz-3-q1",
+     "prompt": "Fill the gap: So 1/2 is _____ than 1/4.",
+     "choices": [
+      "pieces",
+      "bigger",
+      "whole",
+      "fraction"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "bigger",
+      "biggers"
+     ],
+     "explain": "So 1/2 is bigger than 1/4.",
+     "hints": [
+      "Think back to the part called \"Comparing Fractions\".",
+      "It is one of the key words in this lesson. It starts with \"B\".",
+      "The missing word begins \"big...\""
+     ]
+    },
+    {
+     "id": "pz-3-q2",
+     "prompt": "Fill the gap: A _____ shows a part of a whole.",
+     "choices": [
+      "bottom",
+      "piece",
+      "equal",
+      "fraction"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "fraction",
+      "fractions"
+     ],
+     "explain": "A fraction shows a part of a whole.",
+     "hints": [
+      "Think back to the part called \"What Is a Fraction?\".",
+      "It is one of the key words in this lesson. It starts with \"F\".",
+      "The missing word begins \"frac...\""
+     ]
+    }
+   ],
+   "hints": [
+    "Think about what you studied here.",
+    "Look for the key word.",
+    "Ask the companion for help if you are stuck."
+   ],
+   "success": "Quiz complete! Brilliant thinking.",
+   "evidenceSectionIds": [
+    "s3"
+   ]
+  }
+ ],
+ "quests": [
+  {
+   "id": "q1",
+   "title": "Merla's Lesson",
+   "objectiveId": "obj-1",
+   "prerequisiteIds": [],
+   "steps": [
+    {
+     "id": "q1-s1",
+     "kind": "study",
+     "targetId": "study-1a",
+     "text": "Study \"What Is a Fraction\" at the Wizard's Tower"
+    },
+    {
+     "id": "q1-s2",
+     "kind": "study",
+     "targetId": "study-1b",
+     "text": "Study \"What Is a Fraction: part 2\" at the Wizard's Tower"
+    },
+    {
+     "id": "q1-s3",
+     "kind": "talk",
+     "targetId": "npc-1",
+     "text": "Talk to Merla at the Wizard's Tower"
+    },
+    {
+     "id": "q1-s4",
+     "kind": "explain",
+     "targetId": "npc-1",
+     "text": "Explain it to Merla in your own words"
+    },
+    {
+     "id": "q1-s5",
+     "kind": "collect",
+     "targetId": "token",
+     "text": "Collect 3 Number Gems around the Wizard's Tower",
+     "count": 3
+    },
+    {
+     "id": "q1-s6",
+     "kind": "puzzle",
+     "targetId": "pz-1",
+     "text": "Solve \"Match the Words\""
+    }
+   ],
+   "rewardEffectId": "fx-1"
+  },
+  {
+   "id": "q2",
+   "title": "Sir Digit's Lesson",
+   "objectiveId": "obj-2",
+   "prerequisiteIds": [
+    "q1"
+   ],
+   "steps": [
+    {
+     "id": "q2-s1",
+     "kind": "study",
+     "targetId": "study-2a",
+     "text": "Study \"Top and Bottom Numbers\" at the Knight Statue"
+    },
+    {
+     "id": "q2-s2",
+     "kind": "study",
+     "targetId": "study-2b",
+     "text": "Study \"Top and Bottom Numbers: part 2\" at the Knight Statue"
+    },
+    {
+     "id": "q2-s3",
+     "kind": "talk",
+     "targetId": "npc-2",
+     "text": "Talk to Sir Digit at the Knight Statue"
+    },
+    {
+     "id": "q2-s4",
+     "kind": "explain",
+     "targetId": "npc-2",
+     "text": "Explain it to Sir Digit in your own words"
+    },
+    {
+     "id": "q2-s5",
+     "kind": "puzzle",
+     "targetId": "pz-2",
+     "text": "Solve \"Put It in Order\""
+    }
+   ],
+   "rewardEffectId": "fx-2"
+  },
+  {
+   "id": "q3",
+   "title": "Penny's Lesson",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q2"
+   ],
+   "steps": [
+    {
+     "id": "q3-s1",
+     "kind": "study",
+     "targetId": "study-3a",
+     "text": "Study \"Comparing Fractions\" at the Market Fountain"
+    },
+    {
+     "id": "q3-s2",
+     "kind": "study",
+     "targetId": "study-3b",
+     "text": "Study \"Comparing Fractions: part 2\" at the Market Fountain"
+    },
+    {
+     "id": "q3-s3",
+     "kind": "talk",
+     "targetId": "npc-3",
+     "text": "Talk to Penny at the Market Fountain"
+    },
+    {
+     "id": "q3-s4",
+     "kind": "explain",
+     "targetId": "npc-3",
+     "text": "Explain it to Penny in your own words"
+    },
+    {
+     "id": "q3-s5",
+     "kind": "puzzle",
+     "targetId": "pz-3",
+     "text": "Solve \"Quick Quiz\""
+    }
+   ],
+   "rewardEffectId": "fx-3"
+  },
+  {
+   "id": "q-final",
+   "title": "Wake the The Number Gate",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q3"
+   ],
+   "steps": [
+    {
+     "id": "qf-s1",
+     "kind": "visit",
+     "targetId": "goal",
+     "text": "Go to The Number Gate"
+    },
+    {
+     "id": "qf-s2",
+     "kind": "recall",
+     "targetId": "memory",
+     "text": "Memory walk: visit each landmark and remember what you learned there"
+    }
+   ],
+   "rewardEffectId": "fx-final"
+  }
+ ],
+ "memoryLandmarks": [
+  {
+   "zoneId": "z-wizard-s-tow",
+   "objectiveId": "obj-1",
+   "question": {
+    "id": "recall-1",
+    "prompt": "Fill the gap: The pieces must be the same size for the _____ to be fair.",
+    "choices": [
+     "number",
+     "fewer",
+     "fraction",
+     "numerator"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "fraction",
+     "fractions"
+    ],
+    "explain": "The pieces must be the same size for the fraction to be fair.",
+    "hints": [
+     "Think back to the part called \"What Is a Fraction?\".",
+     "It is one of the key words in this lesson. It starts with \"F\".",
+     "The missing word begins \"frac...\""
+    ]
+   }
+  },
+  {
+   "zoneId": "z-knight-statu",
+   "objectiveId": "obj-2",
+   "question": {
+    "id": "recall-2",
+    "prompt": "Fill the gap: It tells how many equal parts the _____ is split into.",
+    "choices": [
+     "bottom number",
+     "numbers",
+     "pizza",
+     "whole"
+    ],
+    "answerIndex": 3,
+    "accept": [
+     "whole",
+     "wholes"
+    ],
+    "explain": "It tells how many equal parts the whole is split into.",
+    "hints": [
+     "Think back to the part called \"Top and Bottom Numbers\".",
+     "It is one of the key words in this lesson. It starts with \"W\".",
+     "The missing word begins \"wh...\""
+    ]
+   }
+  },
+  {
+   "zoneId": "z-market-fount",
+   "objectiveId": "obj-3",
+   "question": {
+    "id": "recall-3",
+    "prompt": "Fill the gap: When the numerators are both 1, the fraction with the smaller denominator is _____, because the whole is cut into fewer, larger pieces.",
+    "choices": [
+     "pizza",
+     "bigger",
+     "fair",
+     "equal"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "bigger",
+     "biggers"
+    ],
+    "explain": "When the numerators are both 1, the fraction with the smaller denominator is bigger, because the whole is cut into fewer, larger pieces.",
+    "hints": [
+     "Think back to the part called \"Comparing Fractions\".",
+     "It is one of the key words in this lesson. It starts with \"B\".",
+     "The missing word begins \"big...\""
+    ]
+   }
+  }
+ ],
+ "rewardEffects": [
+  {
+   "id": "fx-1",
+   "kind": "bridge",
+   "zoneId": "z-wizard-s-tow",
+   "text": "The Wizard's Tower glows brightly!"
+  },
+  {
+   "id": "fx-2",
+   "kind": "light",
+   "zoneId": "z-knight-statu",
+   "text": "The Knight Statue comes back to life!"
+  },
+  {
+   "id": "fx-3",
+   "kind": "bridge",
+   "zoneId": "z-market-fount",
+   "text": "The Market Fountain lights up!"
+  },
+  {
+   "id": "fx-final",
+   "kind": "restore",
+   "zoneId": "goal",
+   "text": "The Number Gate is fully restored!"
+  }
+ ],
+ "study": [
+  {
+   "id": "study-1a",
+   "objectiveId": "obj-1",
+   "zoneId": "z-wizard-s-tow",
+   "title": "What Is a Fraction",
+   "body": [
+    "A fraction shows a part of a whole.",
+    "When you cut a pizza into equal pieces, each piece is a fraction of the pizza."
+   ],
+   "keyTerms": [
+    {
+     "term": "fraction",
+     "meaning": "A fraction shows a part of a whole."
+    },
+    {
+     "term": "pieces",
+     "meaning": "The pieces must be the same size for the fraction to be fair."
+    },
+    {
+     "term": "pizza",
+     "meaning": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza."
+    }
+   ],
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1a-q1",
+     "prompt": "Fill the gap: A _____ shows a part of a whole.",
+     "choices": [
+      "split",
+      "fair",
+      "numerators",
+      "fraction"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "fraction",
+      "fractions"
+     ],
+     "explain": "A fraction shows a part of a whole.",
+     "hints": [
+      "Think back to the part called \"What Is a Fraction?\".",
+      "It is one of the key words in this lesson. It starts with \"F\".",
+      "The missing word begins \"frac...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-1b",
+   "objectiveId": "obj-1",
+   "zoneId": "z-wizard-s-tow",
+   "title": "What Is a Fraction: part 2",
+   "body": [
+    "The pieces must be the same size for the fraction to be fair."
+   ],
+   "keyTerms": [
+    {
+     "term": "fraction",
+     "meaning": "A fraction shows a part of a whole."
+    },
+    {
+     "term": "pieces",
+     "meaning": "The pieces must be the same size for the fraction to be fair."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1b-q1",
+     "prompt": "Fill the gap: The pieces must be the same size for the _____ to be fair.",
+     "choices": [
+      "fraction",
+      "numbers",
+      "denominator",
+      "equal"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "fraction",
+      "fractions"
+     ],
+     "explain": "The pieces must be the same size for the fraction to be fair.",
+     "hints": [
+      "Think back to the part called \"What Is a Fraction?\".",
+      "It is one of the key words in this lesson. It starts with \"F\".",
+      "The missing word begins \"frac...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2a",
+   "objectiveId": "obj-2",
+   "zoneId": "z-knight-statu",
+   "title": "Top and Bottom Numbers",
+   "body": [
+    "A fraction has two numbers.",
+    "The bottom number is the denominator.",
+    "It tells how many equal parts the whole is split into."
+   ],
+   "keyTerms": [
+    {
+     "term": "fraction",
+     "meaning": "A fraction shows a part of a whole."
+    },
+    {
+     "term": "whole",
+     "meaning": "A fraction shows a part of a whole."
+    },
+    {
+     "term": "equal",
+     "meaning": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza."
+    }
+   ],
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2a-q1",
+     "prompt": "Fill the gap: A _____ has two numbers.",
+     "choices": [
+      "numerator",
+      "pieces",
+      "numerators",
+      "fraction"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "fraction",
+      "fractions"
+     ],
+     "explain": "A fraction has two numbers.",
+     "hints": [
+      "Think back to the part called \"Top and Bottom Numbers\".",
+      "It is one of the key words in this lesson. It starts with \"F\".",
+      "The missing word begins \"frac...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2b",
+   "objectiveId": "obj-2",
+   "zoneId": "z-knight-statu",
+   "title": "Top and Bottom Numbers: part 2",
+   "body": [
+    "The top number is the numerator.",
+    "It tells how many of those parts you have.",
+    "In 3/4, you have three parts out of four."
+   ],
+   "keyTerms": [
+    {
+     "term": "numerator",
+     "meaning": "When two fractions have the same denominator, the one with the bigger numerator is bigger."
+    }
+   ],
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2b-q1",
+     "prompt": "Fill the gap: The top number is the _____.",
+     "choices": [
+      "fewer",
+      "split",
+      "numerator",
+      "pieces"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "numerator",
+      "numerators"
+     ],
+     "explain": "The top number is the numerator.",
+     "hints": [
+      "Think back to the part called \"Top and Bottom Numbers\".",
+      "It is one of the key words in this lesson. It starts with \"N\".",
+      "The missing word begins \"nume...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3a",
+   "objectiveId": "obj-3",
+   "zoneId": "z-market-fount",
+   "title": "Comparing Fractions",
+   "body": [
+    "When two fractions have the same denominator, the one with the bigger numerator is bigger.",
+    "So 3/8 is more than 1/8."
+   ],
+   "keyTerms": [
+    {
+     "term": "fraction",
+     "meaning": "A fraction shows a part of a whole."
+    },
+    {
+     "term": "denominator",
+     "meaning": "The bottom number is the denominator."
+    },
+    {
+     "term": "bigger",
+     "meaning": "So 1/2 is bigger than 1/4."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3a-q1",
+     "prompt": "Fill the gap: When two _____ have the same denominator, the one with the bigger numerator is bigger.",
+     "choices": [
+      "fraction",
+      "number",
+      "whole",
+      "fair"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "fraction",
+      "fractions"
+     ],
+     "explain": "When two fractions have the same denominator, the one with the bigger numerator is bigger.",
+     "hints": [
+      "Think back to the part called \"Comparing Fractions\".",
+      "It is one of the key words in this lesson. It starts with \"F\".",
+      "The missing word begins \"frac...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3b",
+   "objectiveId": "obj-3",
+   "zoneId": "z-market-fount",
+   "title": "Comparing Fractions: part 2",
+   "body": [
+    "When the numerators are both 1, the fraction with the smaller denominator is bigger, because the whole is cut into fewer, larger pieces.",
+    "So 1/2 is bigger than 1/4."
+   ],
+   "keyTerms": [
+    {
+     "term": "fraction",
+     "meaning": "A fraction shows a part of a whole."
+    },
+    {
+     "term": "pieces",
+     "meaning": "The pieces must be the same size for the fraction to be fair."
+    },
+    {
+     "term": "whole",
+     "meaning": "A fraction shows a part of a whole."
+    }
+   ],
+   "figure": "compare",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3b-q1",
+     "prompt": "Fill the gap: When the numerators are both 1, the _____ with the smaller denominator is bigger, because the whole is cut into fewer, larger pieces.",
+     "choices": [
+      "fraction",
+      "bottom",
+      "numbers",
+      "bottom number"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "fraction",
+      "fractions"
+     ],
+     "explain": "When the numerators are both 1, the fraction with the smaller denominator is bigger, because the whole is cut into fewer, larger pieces.",
+     "hints": [
+      "Think back to the part called \"Comparing Fractions\".",
+      "It is one of the key words in this lesson. It starts with \"F\".",
+      "The missing word begins \"frac...\""
+     ]
+    }
+   ]
+  }
+ ],
+ "sideQuests": [
+  {
+   "id": "side-1",
+   "title": "Penny's Challenge",
+   "giverNpcId": "npc-3",
+   "zoneId": "z-market-fount",
+   "objectiveId": "obj-1",
+   "kind": "explain",
+   "prompt": "Can you teach me this in your own words? Explain what is a fraction.",
+   "rubric": [
+    "Mentions fraction",
+    "Mentions pieces",
+    "Mentions pizza"
+   ],
+   "reward": "a shiny Teacher badge"
+  },
+  {
+   "id": "side-2",
+   "title": "Sir Digit's Bonus Quiz",
+   "giverNpcId": "npc-2",
+   "zoneId": "z-knight-statu",
+   "objectiveId": "obj-2",
+   "kind": "quiz",
+   "prompt": "Try my bonus questions!",
+   "questions": [
+    {
+     "id": "side-2-q1",
+     "prompt": "Fill the gap: The top number is the _____.",
+     "choices": [
+      "fewer",
+      "numbers",
+      "numerator",
+      "whole"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "numerator",
+      "numerators"
+     ],
+     "explain": "The top number is the numerator.",
+     "hints": [
+      "Think back to the part called \"Top and Bottom Numbers\".",
+      "It is one of the key words in this lesson. It starts with \"N\".",
+      "The missing word begins \"nume...\""
+     ]
+    },
+    {
+     "id": "side-2-q2",
+     "prompt": "Fill the gap: A _____ has two numbers.",
+     "choices": [
+      "fraction",
+      "split",
+      "bottom",
+      "fewer"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "fraction",
+      "fractions"
+     ],
+     "explain": "A fraction has two numbers.",
+     "hints": [
+      "Think back to the part called \"Top and Bottom Numbers\".",
+      "It is one of the key words in this lesson. It starts with \"F\".",
+      "The missing word begins \"frac...\""
+     ]
+    }
+   ],
+   "reward": "a Gold Star"
+  }
+ ],
+ "glossary": [
+  {
+   "term": "fraction",
+   "meaning": "A fraction shows a part of a whole.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "pieces",
+   "meaning": "The pieces must be the same size for the fraction to be fair.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "pizza",
+   "meaning": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "whole",
+   "meaning": "A fraction shows a part of a whole.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "equal",
+   "meaning": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "denominator",
+   "meaning": "The bottom number is the denominator.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "numbers",
+   "meaning": "A fraction has two numbers.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "bottom number",
+   "meaning": "The bottom number is the denominator.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "bigger",
+   "meaning": "So 1/2 is bigger than 1/4.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "numerator",
+   "meaning": "When two fractions have the same denominator, the one with the bigger numerator is bigger.",
+   "sectionId": "s3"
+  }
+ ],
+ "reviewQuestions": [
+  {
+   "id": "review-1",
+   "prompt": "Fill the gap: When you cut a pizza into equal pieces, each piece is a _____ of the pizza.",
+   "choices": [
+    "larger",
+    "smaller",
+    "numbers",
+    "fraction"
+   ],
+   "answerIndex": 3,
+   "accept": [
+    "fraction",
+    "fractions"
+   ],
+   "explain": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+   "hints": [
+    "Think back to the part called \"What Is a Fraction?\".",
+    "It is one of the key words in this lesson. It starts with \"F\".",
+    "The missing word begins \"frac...\""
+   ]
+  },
+  {
+   "id": "review-2",
+   "prompt": "Fill the gap: The bottom number is the _____.",
+   "choices": [
+    "larger",
+    "numbers",
+    "denominator",
+    "bigger"
+   ],
+   "answerIndex": 2,
+   "accept": [
+    "denominator",
+    "denominators"
+   ],
+   "explain": "The bottom number is the denominator.",
+   "hints": [
+    "Think back to the part called \"Top and Bottom Numbers\".",
+    "It is one of the key words in this lesson. It starts with \"D\".",
+    "The missing word begins \"denom...\""
+   ]
+  },
+  {
+   "id": "review-3",
+   "prompt": "Fill the gap: When two fractions have the same denominator, the one with the _____ numerator is bigger.",
+   "choices": [
+    "numerators",
+    "fair",
+    "bigger",
+    "bottom number"
+   ],
+   "answerIndex": 2,
+   "accept": [
+    "bigger",
+    "biggers"
+   ],
+   "explain": "When two fractions have the same denominator, the one with the bigger numerator is bigger.",
+   "hints": [
+    "Think back to the part called \"Comparing Fractions\".",
+    "It is one of the key words in this lesson. It starts with \"B\".",
+    "The missing word begins \"big...\""
+   ]
+  },
+  {
+   "id": "review-4",
+   "prompt": "Fill the gap: When you cut a pizza into equal pieces, each piece is a _____ of the pizza.",
+   "choices": [
+    "bottom",
+    "smaller",
+    "fraction",
+    "fewer"
+   ],
+   "answerIndex": 2,
+   "accept": [
+    "fraction",
+    "fractions"
+   ],
+   "explain": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+   "hints": [
+    "Think back to the part called \"What Is a Fraction?\".",
+    "It is one of the key words in this lesson. It starts with \"F\".",
+    "The missing word begins \"frac...\""
+   ]
+  }
+ ],
+ "source": "sample"
+}

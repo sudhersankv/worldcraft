@@ -1,0 +1,41 @@
+/*
+ * CURIOSITYCRAFT brand tokens — shared by the website (web/src/site) and the game HUD (web/src/game/ui).
+ * Direction: "Pocket Diorama" — every lesson is a tiny floating isometric island you can hold.
+ * Chunky sticker shapes, thick ink outlines, hard offset shadows (no blur), saturated toy colours,
+ * one accent per world. Playful for 7-12, calm enough for a parent/teacher to trust.
+ */
+@import '@fontsource/jersey-10';
+@import '@fontsource/atkinson-hyperlegible/400.css';
+@import '@fontsource/atkinson-hyperlegible/700.css';
+
+:root {
+  --ink: #1f1633;            /* outlines + body text on light */
+  --paper: #fff7e8;          /* light surface */
+  --paper-2: #ffe9c7;
+  --night: #15112a;          /* deep backdrop */
+  --dusk: #2b2350;           /* dark surface */
+  --dusk-2: #3d3270;
+  --sun: #ffc93c;            /* primary action */
+  --sun-hi: #ffe27a;
+  --berry: #ff5d8f;          /* playful secondary */
+  --mint: #3ddc97;           /* correct / done */
+  --sky: #4cc9f0;            /* voice / listening */
+  --coral: #ff8a65;          /* try again (never harsh red) */
+  --muted-ink: #5d5378;
+
+  /* world accents */
+  --w-forest: #5ccf54; --w-space: #7b6cff; --w-math: #ffb627;
+  --w-egypt: #2ec4b6;  --w-ocean: #2fa4ff; --w-lab: #c86bfa;
+
+  --font-display: 'Jersey 10', system-ui, sans-serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+
+  --stroke: 3px;
+  --radius: 18px;
+  --radius-sm: 10px;
+  --lift: 0 5px 0 var(--ink);          /* hard sticker shadow */
+  --lift-sm: 0 3px 0 var(--ink);
+  --ease-pop: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+}
+@media (prefers-reduced-motion: reduce) { :root { --ease-pop: linear; } }

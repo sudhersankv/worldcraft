@@ -1,0 +1,1118 @@
+{
+ "schemaVersion": "1",
+ "worldId": "forest-photosynthesis",
+ "lessonId": "lesson-photosynthesis",
+ "templateId": "forest",
+ "title": "The Fading Bloom",
+ "subject": "Photosynthesis",
+ "seed": 4217,
+ "story": {
+  "intro": [
+   "The Enchanted Forest is losing its colour. Even the Great Bloom has closed its petals.",
+   "The plants have forgotten how to make their own food!",
+   "Learn their secret at the Water Well, the Sunlight Tower and Oakley's Grove, and the forest will bloom again."
+  ],
+  "goal": "Learn how plants make food so the Great Bloom can open again.",
+  "finale": "You remembered every step of photosynthesis! The Great Bloom opens wide and the whole forest glows green."
+ },
+ "companion": {
+  "name": "Sprout",
+  "greeting": "Hi! I'm Sprout, a tiny seedling. The forest needs us! Let's start at the Water Well with Wally."
+ },
+ "zones": [
+  {
+   "id": "hub",
+   "name": "Enchanted Glade",
+   "kind": "hub",
+   "landmark": "fountain",
+   "description": "A sunny clearing where every path in the forest begins."
+  },
+  {
+   "id": "z-well",
+   "name": "Water Well",
+   "kind": "landmark",
+   "landmark": "well",
+   "objectiveId": "obj-1",
+   "description": "A mossy stone well. Roots from every tree reach down towards it."
+  },
+  {
+   "id": "z-tower",
+   "name": "Sunlight Tower",
+   "kind": "landmark",
+   "landmark": "tower",
+   "objectiveId": "obj-2",
+   "description": "A tall tower of glass that gathers sunlight for the forest."
+  },
+  {
+   "id": "z-grove",
+   "name": "Oakley's Grove",
+   "kind": "landmark",
+   "landmark": "tree",
+   "objectiveId": "obj-3",
+   "description": "The oldest part of the forest, where the air always smells fresh."
+  },
+  {
+   "id": "goal",
+   "name": "The Great Bloom",
+   "kind": "goal",
+   "landmark": "tree",
+   "description": "A giant flower that only opens when the forest is full of life."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "npc-1",
+   "name": "Wally",
+   "title": "the Water Guardian",
+   "archetype": "water-spirit",
+   "persona": "Wally is a calm, gentle water spirit who guards the forest well. He speaks softly and slowly, loves the word \"splendid\", and makes little water jokes. He is patient and never rushes a child.",
+   "voice": "aura-2-arcas-en",
+   "zoneId": "z-well",
+   "objectiveId": "obj-1",
+   "greeting": "Splish, splash, hello! I'm Wally. The plants here are hungry, but they can't cook dinner without the right ingredients. Want to help me find them?",
+   "teach": [
+    "A plant needs three things to make food: water, carbon dioxide and sunlight.",
+    "Roots soak up water from the soil, and tiny tubes carry it up to the leaves.",
+    "Carbon dioxide is a gas in the air. It sneaks into the leaf through tiny holes called stomata."
+   ],
+   "knowledge": [
+    "To make food, a plant needs three things: water, carbon dioxide and sunlight.",
+    "The roots soak up water from the soil, and tiny tubes carry it up the stem to the leaves.",
+    "Carbon dioxide is a gas in the air. It enters the leaf through tiny holes called stomata.",
+    "Sunlight is the energy source. It powers the whole process, like a battery powers a toy.",
+    "Green plants can make their own food inside their leaves, using a process called photosynthesis.",
+    "The word photosynthesis means \"putting together with light.\""
+   ],
+   "check": {
+    "id": "check-wally",
+    "prompt": "Which of these is NOT one of the three things a plant needs to make food?",
+    "choices": [
+     "Water",
+     "Sand",
+     "Carbon dioxide",
+     "Sunlight"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "sand"
+    ],
+    "explain": "A plant needs water, carbon dioxide and sunlight. Sand is not on the list!",
+    "hints": [
+     "Think about what Wally said at the well.",
+     "Two of them come from the air and the sky, one comes from the soil through the roots.",
+     "Water, carbon dioxide and sunlight are all needed... so which one is left over?"
+    ]
+   }
+  },
+  {
+   "id": "npc-2",
+   "name": "Sunny",
+   "title": "the Sunflower",
+   "archetype": "sunflower",
+   "persona": "Sunny is a cheerful, bouncy sunflower who always turns to face the sun. She speaks brightly, loves sunny puns, and gets very excited when a child figures something out.",
+   "voice": "aura-2-thalia-en",
+   "zoneId": "z-tower",
+   "objectiveId": "obj-2",
+   "greeting": "Hello, sunshine! I'm Sunny. I catch sunlight all day long. Want to know what I do with it?",
+   "teach": [
+    "Leaves are green because they are full of chlorophyll.",
+    "Chlorophyll is like a tiny solar panel. It traps the energy in sunlight.",
+    "The leaf uses that light energy to join water and carbon dioxide together, and that makes sugar called glucose."
+   ],
+   "knowledge": [
+    "Leaves are green because they are full of chlorophyll.",
+    "Chlorophyll is a green pigment that traps the energy in sunlight.",
+    "The leaf uses this light energy to join water and carbon dioxide together. This makes a kind of sugar called glucose.",
+    "Glucose is the plant's food. The plant uses it to grow new leaves, stems, roots, flowers and fruit.",
+    "The plant can store extra sugar as starch for later.",
+    "Water plus carbon dioxide plus light energy make sugar and oxygen."
+   ],
+   "check": {
+    "id": "check-sunny",
+    "prompt": "What is the green stuff in leaves that traps the energy in sunlight?",
+    "choices": [
+     "Chlorophyll",
+     "Starch",
+     "Oxygen",
+     "Soil"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "chlorophyll",
+     "chlorophyl",
+     "chloro fill",
+     "chlorofil"
+    ],
+    "explain": "Chlorophyll is the green pigment that traps light energy. It is why leaves are green!",
+    "hints": [
+     "Look at the colour of a leaf.",
+     "It is the reason leaves are green.",
+     "It starts with \"chloro...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-3",
+   "name": "Oakley",
+   "title": "the Ancient Tree",
+   "archetype": "tree",
+   "persona": "Oakley is a very old, very wise oak tree. He speaks slowly and kindly, like a gentle grandparent, and loves telling short stories about the forest animals.",
+   "voice": "aura-2-zeus-en",
+   "zoneId": "z-grove",
+   "objectiveId": "obj-3",
+   "greeting": "Hmmm... hello, little one. I am Oakley. I have been breathing out a gift for three hundred years. Can you guess what it is?",
+   "teach": [
+    "When a plant makes sugar, it also makes oxygen.",
+    "The plant lets the extra oxygen out into the air. People and animals need oxygen to breathe.",
+    "Photosynthesis is the start of almost every food chain, so it feeds the whole forest."
+   ],
+   "knowledge": [
+    "When a plant makes sugar, it also makes oxygen.",
+    "The plant does not need all of this oxygen, so it lets it out into the air through the stomata.",
+    "People and animals need oxygen to breathe. Every time you take a breath, you are breathing oxygen that plants helped to make.",
+    "Photosynthesis is the start of almost every food chain.",
+    "A rabbit eats grass, and a fox eats the rabbit, so the energy in the fox's food first came from sunlight caught by a plant.",
+    "Plants also take carbon dioxide out of the air.",
+    "Without photosynthesis, there would be no food for animals and not enough oxygen to breathe."
+   ],
+   "check": {
+    "id": "check-oakley",
+    "prompt": "What gas do plants give out that people and animals need to breathe?",
+    "choices": [
+     "Carbon dioxide",
+     "Oxygen",
+     "Steam",
+     "Smoke"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "oxygen",
+     "o2",
+     "oxigen"
+    ],
+    "explain": "Plants give out oxygen. Every breath you take has oxygen that plants helped make!",
+    "hints": [
+     "Take a deep breath. What are you breathing in?",
+     "It is made at the same time as the sugar.",
+     "It starts with \"ox...\""
+    ]
+   }
+  }
+ ],
+ "collectibles": [
+  {
+   "id": "dew",
+   "name": "Dew Drop",
+   "zoneId": "z-well",
+   "count": 3,
+   "icon": "drop"
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "pz-sources",
+   "kind": "match",
+   "title": "Where Does It Come From?",
+   "prompt": "Match each thing a plant needs to where it comes from.",
+   "pairs": [
+    {
+     "left": "Water",
+     "right": "Soaked up from the soil by the roots"
+    },
+    {
+     "left": "Carbon dioxide",
+     "right": "A gas in the air that enters through the stomata"
+    },
+    {
+     "left": "Sunlight",
+     "right": "The energy source, from the Sun"
+    }
+   ],
+   "hints": [
+    "Think about the Water Well and the roots.",
+    "One of them is a gas, one is energy, one is a liquid.",
+    "Water goes with the roots and the soil."
+   ],
+   "success": "Splendid! You know where all three ingredients come from.",
+   "evidenceSectionIds": [
+    "s2"
+   ],
+   "objectiveId": "obj-1",
+   "zoneId": "z-well"
+  },
+  {
+   "id": "pz-steps",
+   "kind": "sequence",
+   "title": "The Sugar Recipe",
+   "prompt": "Put the steps of photosynthesis in the right order.",
+   "items": [
+    "The plant collects water and carbon dioxide",
+    "Chlorophyll catches the sunlight",
+    "The leaf joins water and carbon dioxide using light energy",
+    "Sugar is made and oxygen is let out"
+   ],
+   "hints": [
+    "What does the plant need to have first?",
+    "The light has to be caught before it can be used.",
+    "First collect, then catch the light, then join, then make sugar."
+   ],
+   "success": "Sunny-tastic! That's exactly how a leaf makes sugar.",
+   "evidenceSectionIds": [
+    "s3",
+    "s6"
+   ],
+   "objectiveId": "obj-2",
+   "zoneId": "z-tower"
+  },
+  {
+   "id": "pz-oxygen",
+   "kind": "choice",
+   "title": "Oakley's Forest Quiz",
+   "prompt": "Answer Oakley's questions to wake the grove.",
+   "questions": [
+    {
+     "id": "pz-oxygen-q1",
+     "prompt": "Plants make sugar and also make...",
+     "choices": [
+      "Oxygen",
+      "Plastic",
+      "Smoke",
+      "Sand"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "oxygen"
+     ],
+     "explain": "When a plant makes sugar, it also makes oxygen.",
+     "hints": [
+      "It is a gas.",
+      "You breathe it in.",
+      "Ox..."
+     ]
+    },
+    {
+     "id": "pz-oxygen-q2",
+     "prompt": "Why does photosynthesis matter to a fox?",
+     "choices": [
+      "Foxes eat leaves",
+      "The energy in its food first came from sunlight caught by a plant",
+      "Foxes make their own sugar",
+      "It does not matter to foxes"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "energy from sunlight",
+      "food chain",
+      "sunlight"
+     ],
+     "explain": "Grass catches sunlight, a rabbit eats the grass, and a fox eats the rabbit.",
+     "hints": [
+      "Think about the food chain.",
+      "What did the rabbit eat?",
+      "Grass, rabbit, fox: it starts with sunlight."
+     ]
+    }
+   ],
+   "hints": [
+    "Think about what Oakley breathes out.",
+    "Remember the rabbit and the fox.",
+    "Plants start almost every food chain."
+   ],
+   "success": "Wonderful! The grove fills with fresh air.",
+   "evidenceSectionIds": [
+    "s4",
+    "s5"
+   ],
+   "objectiveId": "obj-3",
+   "zoneId": "z-grove"
+  }
+ ],
+ "quests": [
+  {
+   "id": "q1",
+   "title": "The Thirsty Forest",
+   "objectiveId": "obj-1",
+   "prerequisiteIds": [],
+   "steps": [
+    {
+     "kind": "study",
+     "targetId": "study-1a",
+     "text": "Study \"A plant's three ingredients\" at the Water Well",
+     "id": "q1-s1"
+    },
+    {
+     "kind": "study",
+     "targetId": "study-1b",
+     "text": "Study \"Where each ingredient comes from\" at the Water Well",
+     "id": "q1-s2"
+    },
+    {
+     "kind": "talk",
+     "targetId": "npc-1",
+     "text": "Talk to Wally at the Water Well",
+     "id": "q1-s3"
+    },
+    {
+     "kind": "explain",
+     "targetId": "npc-1",
+     "text": "Explain it to Wally in your own words",
+     "id": "q1-s4"
+    },
+    {
+     "kind": "collect",
+     "targetId": "dew",
+     "count": 3,
+     "text": "Collect 3 Dew Drops around the Water Well",
+     "id": "q1-s5"
+    },
+    {
+     "kind": "puzzle",
+     "targetId": "pz-sources",
+     "text": "Solve \"Where Does It Come From?\"",
+     "id": "q1-s6"
+    }
+   ],
+   "rewardEffectId": "fx-1"
+  },
+  {
+   "id": "q2",
+   "title": "Catching Sunlight",
+   "objectiveId": "obj-2",
+   "prerequisiteIds": [
+    "q1"
+   ],
+   "steps": [
+    {
+     "kind": "study",
+     "targetId": "study-2a",
+     "text": "Study \"Chlorophyll: the light catcher\" at the Sunlight Tower",
+     "id": "q2-s1"
+    },
+    {
+     "kind": "study",
+     "targetId": "study-2b",
+     "text": "Study \"Turning light into sugar\" at the Sunlight Tower",
+     "id": "q2-s2"
+    },
+    {
+     "kind": "talk",
+     "targetId": "npc-2",
+     "text": "Talk to Sunny at the Sunlight Tower",
+     "id": "q2-s3"
+    },
+    {
+     "kind": "explain",
+     "targetId": "npc-2",
+     "text": "Explain it to Sunny in your own words",
+     "id": "q2-s4"
+    },
+    {
+     "kind": "puzzle",
+     "targetId": "pz-steps",
+     "text": "Solve \"The Sugar Recipe\"",
+     "id": "q2-s5"
+    }
+   ],
+   "rewardEffectId": "fx-2"
+  },
+  {
+   "id": "q3",
+   "title": "The Breath of the Forest",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q2"
+   ],
+   "steps": [
+    {
+     "kind": "study",
+     "targetId": "study-3a",
+     "text": "Study \"Oxygen: the gift plants give\" at the Oakley's Grove",
+     "id": "q3-s1"
+    },
+    {
+     "kind": "study",
+     "targetId": "study-3b",
+     "text": "Study \"Why photosynthesis matters\" at the Oakley's Grove",
+     "id": "q3-s2"
+    },
+    {
+     "kind": "talk",
+     "targetId": "npc-3",
+     "text": "Talk to Oakley at the Oakley's Grove",
+     "id": "q3-s3"
+    },
+    {
+     "kind": "explain",
+     "targetId": "npc-3",
+     "text": "Explain it to Oakley in your own words",
+     "id": "q3-s4"
+    },
+    {
+     "kind": "puzzle",
+     "targetId": "pz-oxygen",
+     "text": "Solve \"Oakley's Forest Quiz\"",
+     "id": "q3-s5"
+    }
+   ],
+   "rewardEffectId": "fx-3"
+  },
+  {
+   "id": "q-final",
+   "title": "Wake the Great Bloom",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q3"
+   ],
+   "rewardEffectId": "fx-final",
+   "steps": [
+    {
+     "id": "qf-s1",
+     "kind": "visit",
+     "targetId": "goal",
+     "text": "Go to The Great Bloom"
+    },
+    {
+     "id": "qf-s2",
+     "kind": "recall",
+     "targetId": "memory",
+     "text": "Memory walk: visit each landmark and remember what you learned there"
+    }
+   ]
+  }
+ ],
+ "memoryLandmarks": [
+  {
+   "zoneId": "z-well",
+   "objectiveId": "obj-1",
+   "question": {
+    "id": "recall-well",
+    "prompt": "You are back at the Water Well. What three things does a plant need to make food?",
+    "choices": [
+     "Water, carbon dioxide and sunlight",
+     "Sand, wind and rain",
+     "Oxygen, sugar and soil",
+     "Milk, bread and honey"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "water carbon dioxide and sunlight",
+     "water carbon dioxide sunlight",
+     "water, carbon dioxide and sunlight"
+    ],
+    "explain": "Water, carbon dioxide and sunlight!",
+    "hints": [
+     "Remember the recipe from the well.",
+     "One comes from soil, one from air, one from the Sun.",
+     "Water, carbon... and sun..."
+    ]
+   }
+  },
+  {
+   "zoneId": "z-tower",
+   "objectiveId": "obj-2",
+   "question": {
+    "id": "recall-tower",
+    "prompt": "At the Sunlight Tower: what does a leaf make with light energy, water and carbon dioxide?",
+    "choices": [
+     "Sugar (glucose)",
+     "Salt",
+     "Stone",
+     "Smoke"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "sugar",
+     "glucose"
+    ],
+    "explain": "Sugar called glucose, the plant's food.",
+    "hints": [
+     "Think of Sunny's recipe.",
+     "It is the plant's food.",
+     "It is sweet: glu..."
+    ]
+   }
+  },
+  {
+   "zoneId": "z-grove",
+   "objectiveId": "obj-3",
+   "question": {
+    "id": "recall-grove",
+    "prompt": "In Oakley's Grove: what do plants give out that we need to breathe?",
+    "choices": [
+     "Oxygen",
+     "Carbon dioxide",
+     "Water",
+     "Starch"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "oxygen"
+    ],
+    "explain": "Oxygen! Plants let it out through the stomata.",
+    "hints": [
+     "Take a deep breath.",
+     "It is made with the sugar.",
+     "Ox..."
+    ]
+   }
+  }
+ ],
+ "rewardEffects": [
+  {
+   "id": "fx-1",
+   "kind": "bloom",
+   "zoneId": "z-well",
+   "text": "Water rushes up the well and the ferns perk up!"
+  },
+  {
+   "id": "fx-2",
+   "kind": "bloom",
+   "zoneId": "z-tower",
+   "text": "The Sunlight Tower blazes back to life and the leaves turn bright green!"
+  },
+  {
+   "id": "fx-3",
+   "kind": "bloom",
+   "zoneId": "z-grove",
+   "text": "Fresh air swirls through Oakley's Grove and birds begin to sing!"
+  },
+  {
+   "id": "fx-final",
+   "kind": "restore",
+   "zoneId": "goal",
+   "text": "The Great Bloom opens its petals and the whole forest blooms!"
+  }
+ ],
+ "study": [
+  {
+   "id": "study-1a",
+   "title": "A plant's three ingredients",
+   "figure": "arrow-in-out",
+   "body": [
+    "Animals have to find their food, but green plants can make their own! They do it inside their leaves. This is called photosynthesis.",
+    "To make food, a plant needs three things: water, carbon dioxide and sunlight.",
+    "Think of it like a recipe. If one ingredient is missing, the plant cannot make its food."
+   ],
+   "keyTerms": [
+    {
+     "term": "photosynthesis",
+     "meaning": "How green plants make their own food using light. The word means \"putting together with light.\""
+    },
+    {
+     "term": "carbon dioxide",
+     "meaning": "A gas in the air that plants take in."
+    }
+   ],
+   "example": "A plant kept in a dark cupboard has water and air, but no sunlight. It cannot make food, so it slowly turns pale and weak.",
+   "sourceSectionIds": [
+    "s1",
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-1a-q1",
+     "prompt": "How many things does a plant need to make its food?",
+     "choices": [
+      "One",
+      "Two",
+      "Three",
+      "Ten"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "three",
+      "3"
+     ],
+     "explain": "Three things: water, carbon dioxide and sunlight.",
+     "hints": [
+      "Count the ingredients in the recipe.",
+      "Water is one of them...",
+      "Water, carbon dioxide and sunlight."
+     ]
+    }
+   ],
+   "objectiveId": "obj-1",
+   "zoneId": "z-well"
+  },
+  {
+   "id": "study-1b",
+   "title": "Where each ingredient comes from",
+   "figure": "compare",
+   "body": [
+    "Water comes from the soil. The roots soak it up, and tiny tubes carry it up the stem to the leaves.",
+    "Carbon dioxide is a gas in the air. It gets into the leaf through tiny holes called stomata.",
+    "Sunlight comes from the Sun. It is the energy source that powers everything, like a battery powers a toy."
+   ],
+   "keyTerms": [
+    {
+     "term": "roots",
+     "meaning": "The parts of a plant under the ground that soak up water."
+    },
+    {
+     "term": "stomata",
+     "meaning": "Tiny holes in a leaf that let gases in and out."
+    },
+    {
+     "term": "energy source",
+     "meaning": "Where the power comes from. For plants, it is sunlight."
+    }
+   ],
+   "example": "When you water a pot plant, the water soaks into the soil and the roots drink it up, all the way to the leaves.",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-1b-q1",
+     "prompt": "How does carbon dioxide get into a leaf?",
+     "choices": [
+      "Through the roots",
+      "Through tiny holes called stomata",
+      "Through the flowers",
+      "It falls in with the rain"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "stomata",
+      "tiny holes",
+      "holes"
+     ],
+     "explain": "Carbon dioxide enters through tiny holes in the leaf called stomata.",
+     "hints": [
+      "It is a gas in the air.",
+      "Leaves have tiny openings.",
+      "The tiny holes are called sto..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-1",
+   "zoneId": "z-well"
+  },
+  {
+   "id": "study-2a",
+   "title": "Chlorophyll: the light catcher",
+   "figure": "arrow-in-out",
+   "body": [
+    "Leaves are green because they are full of chlorophyll.",
+    "Chlorophyll is a green pigment that traps the energy in sunlight. You can think of it as a tiny solar panel inside the leaf."
+   ],
+   "keyTerms": [
+    {
+     "term": "chlorophyll",
+     "meaning": "The green pigment in leaves that traps the energy in sunlight."
+    },
+    {
+     "term": "pigment",
+     "meaning": "Something that gives a thing its colour."
+    }
+   ],
+   "example": "A solar panel on a roof catches sunlight to make electricity. Chlorophyll catches sunlight so the leaf can make food.",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-2a-q1",
+     "prompt": "Why are leaves green?",
+     "choices": [
+      "They are full of chlorophyll",
+      "They are painted",
+      "They drink green water",
+      "They are cold"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "chlorophyll"
+     ],
+     "explain": "Leaves are full of chlorophyll, a green pigment.",
+     "hints": [
+      "Think about the light catcher.",
+      "It is a green pigment.",
+      "Chloro..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-2",
+   "zoneId": "z-tower"
+  },
+  {
+   "id": "study-2b",
+   "title": "Turning light into sugar",
+   "figure": "ordered-list",
+   "body": [
+    "The leaf uses the trapped light energy to join water and carbon dioxide together.",
+    "This makes a kind of sugar called glucose. Glucose is the plant's food!",
+    "The plant uses glucose to grow new leaves, stems, roots, flowers and fruit. It can store extra sugar as starch for later."
+   ],
+   "keyTerms": [
+    {
+     "term": "glucose",
+     "meaning": "A kind of sugar. It is the food a plant makes."
+    },
+    {
+     "term": "starch",
+     "meaning": "Extra sugar that a plant stores for later."
+    }
+   ],
+   "example": "Water plus carbon dioxide plus light energy make sugar and oxygen. A potato is full of starch the plant saved for later!",
+   "sourceSectionIds": [
+    "s3",
+    "s6"
+   ],
+   "checks": [
+    {
+     "id": "study-2b-q1",
+     "prompt": "What does the leaf make when it joins water and carbon dioxide using light energy?",
+     "choices": [
+      "Salt",
+      "Sugar called glucose",
+      "Rocks",
+      "Rain"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "sugar",
+      "glucose"
+     ],
+     "explain": "It makes a sugar called glucose, which is the plant's food.",
+     "hints": [
+      "It is the plant's food.",
+      "It tastes sweet.",
+      "It is called glu..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-2",
+   "zoneId": "z-tower"
+  },
+  {
+   "id": "study-3a",
+   "title": "Oxygen: the gift plants give",
+   "figure": "arrow-in-out",
+   "body": [
+    "When a plant makes sugar, it also makes oxygen.",
+    "The plant does not need all of this oxygen, so it lets it out into the air through the stomata.",
+    "People and animals need oxygen to breathe. Every breath you take has oxygen that plants helped to make!"
+   ],
+   "keyTerms": [
+    {
+     "term": "oxygen",
+     "meaning": "A gas in the air that people and animals need to breathe."
+    }
+   ],
+   "example": "Take a deep breath right now. Some of that oxygen may have come from a tree near you!",
+   "sourceSectionIds": [
+    "s4"
+   ],
+   "checks": [
+    {
+     "id": "study-3a-q1",
+     "prompt": "How does oxygen get out of the leaf?",
+     "choices": [
+      "Through the stomata",
+      "Through the roots",
+      "It stays inside forever",
+      "Through the soil"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "stomata",
+      "tiny holes"
+     ],
+     "explain": "Oxygen leaves through the same tiny holes, the stomata.",
+     "hints": [
+      "It is the same way carbon dioxide gets in.",
+      "Tiny holes in the leaf.",
+      "Sto..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-3",
+   "zoneId": "z-grove"
+  },
+  {
+   "id": "study-3b",
+   "title": "Why photosynthesis matters",
+   "figure": "cycle",
+   "body": [
+    "Photosynthesis is the start of almost every food chain.",
+    "A rabbit eats grass, and a fox eats the rabbit. So the energy in the fox's food first came from sunlight caught by a plant!",
+    "Plants also take carbon dioxide out of the air. Without photosynthesis, there would be no food for animals and not enough oxygen to breathe."
+   ],
+   "keyTerms": [
+    {
+     "term": "food chain",
+     "meaning": "Who eats what, starting with a plant. Example: grass, then rabbit, then fox."
+    }
+   ],
+   "example": "Your breakfast cereal is made from plants. The energy in it started as sunlight!",
+   "sourceSectionIds": [
+    "s5"
+   ],
+   "checks": [
+    {
+     "id": "study-3b-q1",
+     "prompt": "In the food chain grass, rabbit, fox, where did the energy start?",
+     "choices": [
+      "In the fox",
+      "In the rabbit",
+      "As sunlight caught by the grass",
+      "In the soil"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "sunlight",
+      "the sun",
+      "grass",
+      "plant"
+     ],
+     "explain": "The energy first came from sunlight caught by the grass.",
+     "hints": [
+      "Who is at the start of the chain?",
+      "Plants catch something from the sky.",
+      "It started as sun..."
+     ]
+    }
+   ],
+   "objectiveId": "obj-3",
+   "zoneId": "z-grove"
+  }
+ ],
+ "sideQuests": [
+  {
+   "id": "side-teach-sprout",
+   "title": "Sprout's Big Question",
+   "giverNpcId": "npc-3",
+   "zoneId": "z-grove",
+   "objectiveId": "obj-1",
+   "kind": "explain",
+   "prompt": "Sprout wants to grow big and strong. Can you explain to Oakley what Sprout needs to make its own food?",
+   "rubric": [
+    "Names water",
+    "Names carbon dioxide",
+    "Names sunlight"
+   ],
+   "reward": "a Golden Leaf sticker"
+  },
+  {
+   "id": "side-sunny-bonus",
+   "title": "Sunny's Bonus Quiz",
+   "giverNpcId": "npc-2",
+   "zoneId": "z-tower",
+   "objectiveId": "obj-2",
+   "kind": "quiz",
+   "prompt": "Sunny has two bonus questions about sugar!",
+   "questions": [
+    {
+     "id": "side-sunny-q1",
+     "prompt": "What can a plant do with extra sugar?",
+     "choices": [
+      "Store it as starch for later",
+      "Throw it away",
+      "Turn it into rain",
+      "Give it to the Sun"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "starch",
+      "store it"
+     ],
+     "explain": "It can store extra sugar as starch for later.",
+     "hints": [
+      "Think of a potato.",
+      "It saves it for later.",
+      "St..."
+     ]
+    },
+    {
+     "id": "side-sunny-q2",
+     "prompt": "What does the word photosynthesis mean?",
+     "choices": [
+      "Putting together with light",
+      "Growing in the dark",
+      "Drinking water",
+      "Breathing out"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "putting together with light"
+     ],
+     "explain": "Photo means light, synthesis means putting together.",
+     "hints": [
+      "Photo... like a photo needs light.",
+      "Synthesis means putting together.",
+      "Putting together with..."
+     ]
+    }
+   ],
+   "reward": "a Sunbeam badge"
+  },
+  {
+   "id": "side-find-dew",
+   "title": "Wally's Dew Hunt",
+   "giverNpcId": "npc-1",
+   "zoneId": "z-well",
+   "objectiveId": "obj-1",
+   "kind": "find",
+   "targetId": "dew",
+   "prompt": "Find the Dew Drops near the well, then tell Wally which part of the plant drinks water.",
+   "questions": [
+    {
+     "id": "side-dew-q1",
+     "prompt": "Which part of the plant soaks up water from the soil?",
+     "choices": [
+      "The roots",
+      "The petals",
+      "The fruit",
+      "The stomata"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "roots",
+      "root"
+     ],
+     "explain": "The roots soak up water from the soil.",
+     "hints": [
+      "It is under the ground.",
+      "Tiny tubes carry water up from there.",
+      "Ro..."
+     ]
+    }
+   ],
+   "reward": "a Raindrop charm"
+  }
+ ],
+ "glossary": [
+  {
+   "term": "photosynthesis",
+   "meaning": "How green plants make their own food using light. It means \"putting together with light.\"",
+   "sectionId": "s1"
+  },
+  {
+   "term": "carbon dioxide",
+   "meaning": "A gas in the air that plants take in through their leaves.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "stomata",
+   "meaning": "Tiny holes in a leaf that let gases in and out.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "roots",
+   "meaning": "The parts of a plant that soak up water from the soil.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "chlorophyll",
+   "meaning": "The green pigment in leaves that traps the energy in sunlight.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "glucose",
+   "meaning": "A kind of sugar. It is the plant's food.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "starch",
+   "meaning": "Extra sugar a plant stores for later.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "oxygen",
+   "meaning": "A gas plants give out that people and animals need to breathe.",
+   "sectionId": "s4"
+  },
+  {
+   "term": "food chain",
+   "meaning": "Who eats what, starting with a plant.",
+   "sectionId": "s5"
+  }
+ ],
+ "reviewQuestions": [
+  {
+   "id": "review-1",
+   "prompt": "Quick! Which gas goes INTO a leaf to help make food?",
+   "choices": [
+    "Carbon dioxide",
+    "Oxygen",
+    "Helium",
+    "Steam"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "carbon dioxide",
+    "co2"
+   ],
+   "explain": "Carbon dioxide goes in; oxygen comes out.",
+   "hints": [
+    "Think of Wally.",
+    "It is in the air.",
+    "Carbon..."
+   ]
+  },
+  {
+   "id": "review-2",
+   "prompt": "What is the energy source for photosynthesis?",
+   "choices": [
+    "Sunlight",
+    "Soil",
+    "Wind",
+    "Moonlight"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "sunlight",
+    "the sun",
+    "light"
+   ],
+   "explain": "Sunlight is the energy source.",
+   "hints": [
+    "Look up!",
+    "It powers the process like a battery.",
+    "Sun..."
+   ]
+  },
+  {
+   "id": "review-3",
+   "prompt": "What do we call the sugar a plant makes?",
+   "choices": [
+    "Glucose",
+    "Oxygen",
+    "Chlorophyll",
+    "Stomata"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "glucose"
+   ],
+   "explain": "The sugar is called glucose.",
+   "hints": [
+    "Think of Sunny.",
+    "It is the plant's food.",
+    "Glu..."
+   ]
+  },
+  {
+   "id": "review-4",
+   "prompt": "Which part of a leaf traps the energy in sunlight?",
+   "choices": [
+    "Chlorophyll",
+    "Roots",
+    "Starch",
+    "Bark"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "chlorophyll"
+   ],
+   "explain": "Chlorophyll, the green pigment.",
+   "hints": [
+    "It is green.",
+    "A tiny solar panel.",
+    "Chloro..."
+   ]
+  }
+ ],
+ "source": "sample"
+}

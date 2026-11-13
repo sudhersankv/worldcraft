@@ -1,0 +1,1080 @@
+{
+ "schemaVersion": "1",
+ "worldId": "ocean-coral-reefs",
+ "lessonId": "lesson-coral-reefs",
+ "templateId": "ocean",
+ "title": "The Fading Reef",
+ "subject": "Coral Reefs",
+ "seed": 1011,
+ "story": {
+  "intro": [
+   "The Heart Reef is losing its colour. Learn how coral lives to bring it back!",
+   "To fix it, we need to really learn about Coral Reefs.",
+   "Study at each place, talk to my friends, and explain what you learn!"
+  ],
+  "goal": "Learn the three big ideas of Coral Reefs to wake The Heart Reef.",
+  "finale": "You remembered it all! The Heart Reef shines again thanks to you."
+ },
+ "companion": {
+  "name": "Bubbles",
+  "greeting": "Hi, I'm Bubbles! I'll help you if you get stuck. Let's explore!"
+ },
+ "zones": [
+  {
+   "id": "hub",
+   "name": "Lagoon Dock",
+   "kind": "hub",
+   "landmark": "fountain",
+   "description": "Where every adventure starts."
+  },
+  {
+   "id": "z-coral-garden",
+   "name": "Coral Garden",
+   "kind": "landmark",
+   "landmark": "reef",
+   "objectiveId": "obj-1",
+   "description": "A place to learn about coral is alive."
+  },
+  {
+   "id": "z-kelp-shrine",
+   "name": "Kelp Shrine",
+   "kind": "landmark",
+   "landmark": "shrine",
+   "objectiveId": "obj-2",
+   "description": "A place to learn about partners in the reef."
+  },
+  {
+   "id": "z-bubble-fount",
+   "name": "Bubble Fountain",
+   "kind": "landmark",
+   "landmark": "fountain",
+   "objectiveId": "obj-3",
+   "description": "A place to learn about why reefs need care."
+  },
+  {
+   "id": "goal",
+   "name": "The Heart Reef",
+   "kind": "goal",
+   "landmark": "reef",
+   "description": "It wakes up when you master Coral Reefs."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "npc-1",
+   "name": "Shelly",
+   "title": "the Sea Turtle",
+   "archetype": "turtle",
+   "persona": "Old, patient sea turtle who has swum every ocean. Speaks slowly and warmly. Teaches \"Coral Is Alive\" from the lesson \"Coral Reefs: Cities Under the Sea\".",
+   "voice": "aura-2-zeus-en",
+   "zoneId": "z-coral-garden",
+   "objectiveId": "obj-1",
+   "greeting": "Hello there! I'm Shelly. Want to learn about coral with me?",
+   "teach": [
+    "Coral may look like rock, but it is made of tiny animals called polyps.",
+    "Over many years, millions of skeletons pile up to make a reef.",
+    "Each polyp builds a hard skeleton of limestone around itself."
+   ],
+   "knowledge": [
+    "Coral may look like rock, but it is made of tiny animals called polyps.",
+    "Each polyp builds a hard skeleton of limestone around itself.",
+    "Over many years, millions of skeletons pile up to make a reef."
+   ],
+   "check": {
+    "id": "check-1",
+    "prompt": "Fill the gap: _____ may look like rock, but it is made of tiny animals called polyps.",
+    "choices": [
+     "coral",
+     "limestone",
+     "alive",
+     "home"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "coral",
+     "corals"
+    ],
+    "explain": "Coral may look like rock, but it is made of tiny animals called polyps.",
+    "hints": [
+     "Think back to the part called \"Coral Is Alive\".",
+     "It is one of the key words in this lesson. It starts with \"C\".",
+     "The missing word begins \"co...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-2",
+   "name": "Coralie",
+   "title": "the Coral Keeper",
+   "archetype": "coral",
+   "persona": "Colourful, caring reef keeper who loves her tiny neighbours. Teaches \"Partners in the Reef\" from the lesson \"Coral Reefs: Cities Under the Sea\".",
+   "voice": "aura-2-helena-en",
+   "zoneId": "z-kelp-shrine",
+   "objectiveId": "obj-2",
+   "greeting": "Hello there! I'm Coralie. Want to learn about coral with me?",
+   "teach": [
+    "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home.",
+    "Tiny algae live inside coral polyps.",
+    "The algae also give coral its bright colours."
+   ],
+   "knowledge": [
+    "Tiny algae live inside coral polyps.",
+    "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home.",
+    "The algae also give coral its bright colours."
+   ],
+   "check": {
+    "id": "check-2",
+    "prompt": "Fill the gap: The algae use sunlight to make food and share it with the _____, and the coral gives the algae a safe home.",
+    "choices": [
+     "coral",
+     "look",
+     "hard",
+     "millions"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "coral",
+     "corals"
+    ],
+    "explain": "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home.",
+    "hints": [
+     "Think back to the part called \"Partners in the Reef\".",
+     "It is one of the key words in this lesson. It starts with \"C\".",
+     "The missing word begins \"co...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-3",
+   "name": "Finn",
+   "title": "the Clownfish",
+   "archetype": "fish",
+   "persona": "Zippy, excitable little fish who talks fast and loves friends. Teaches \"Why Reefs Need Care\" from the lesson \"Coral Reefs: Cities Under the Sea\".",
+   "voice": "aura-2-apollo-en",
+   "zoneId": "z-bubble-fount",
+   "objectiveId": "obj-3",
+   "greeting": "Hello there! I'm Finn. Want to learn about coral with me?",
+   "teach": [
+    "Coral reefs are home to about one quarter of all sea creatures.",
+    "When the water gets too warm, coral pushes its algae out and turns white.",
+    "This is called coral bleaching."
+   ],
+   "knowledge": [
+    "Coral reefs are home to about one quarter of all sea creatures.",
+    "When the water gets too warm, coral pushes its algae out and turns white.",
+    "This is called coral bleaching.",
+    "Keeping oceans clean and cool helps reefs stay healthy."
+   ],
+   "check": {
+    "id": "check-3",
+    "prompt": "Fill the gap: _____ reefs are home to about one quarter of all sea creatures.",
+    "choices": [
+     "alive",
+     "coral",
+     "skeletons",
+     "look"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "coral",
+     "corals"
+    ],
+    "explain": "Coral reefs are home to about one quarter of all sea creatures.",
+    "hints": [
+     "Think back to the part called \"Why Reefs Need Care\".",
+     "It is one of the key words in this lesson. It starts with \"C\".",
+     "The missing word begins \"co...\""
+    ]
+   }
+  }
+ ],
+ "collectibles": [
+  {
+   "id": "token",
+   "name": "Pearl",
+   "zoneId": "z-coral-garden",
+   "count": 3,
+   "icon": "pearl"
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "pz-1",
+   "objectiveId": "obj-1",
+   "zoneId": "z-coral-garden",
+   "kind": "match",
+   "title": "Match the Words",
+   "prompt": "Match each word to what it means.",
+   "pairs": [
+    {
+     "left": "Coral",
+     "right": "it may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "left": "Tiny",
+     "right": "Coral may look like rock, but it is made of it animals called polyps."
+    },
+    {
+     "left": "Reef",
+     "right": "Over many years, millions of skeletons pile up to make a it."
+    },
+    {
+     "left": "Polyps",
+     "right": "Coral may look like rock, but it is made of tiny animals called it."
+    }
+   ],
+   "hints": [
+    "Read each meaning slowly.",
+    "Start with the word you are surest about.",
+    "Coral goes with: \"it may look like rock, but it is made of tiny...\""
+   ],
+   "success": "Perfect match! Those words are yours now.",
+   "evidenceSectionIds": [
+    "s1"
+   ]
+  },
+  {
+   "id": "pz-2",
+   "objectiveId": "obj-2",
+   "zoneId": "z-kelp-shrine",
+   "kind": "sequence",
+   "title": "Put It in Order",
+   "prompt": "Put these ideas in the same order as the lesson.",
+   "items": [
+    "Tiny algae live inside coral polyps.",
+    "The algae use sunlight to make food and share it with the coral.",
+    "The algae also give coral its bright colours."
+   ],
+   "hints": [
+    "Which idea starts the story?",
+    "Each idea leads to the next one.",
+    "The first one is: \"Tiny algae live inside coral polyps.\""
+   ],
+   "success": "Great ordering! You followed the whole idea.",
+   "evidenceSectionIds": [
+    "s2"
+   ]
+  },
+  {
+   "id": "pz-3",
+   "objectiveId": "obj-3",
+   "zoneId": "z-bubble-fount",
+   "kind": "choice",
+   "title": "Quick Quiz",
+   "prompt": "Answer the quiz to light the way!",
+   "questions": [
+    {
+     "id": "pz-3-q1",
+     "prompt": "Fill the gap: This is called _____ bleaching.",
+     "choices": [
+      "millions",
+      "limestone",
+      "reefs",
+      "coral"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "coral",
+      "corals"
+     ],
+     "explain": "This is called coral bleaching.",
+     "hints": [
+      "Think back to the part called \"Why Reefs Need Care\".",
+      "It is one of the key words in this lesson. It starts with \"C\".",
+      "The missing word begins \"co...\""
+     ]
+    },
+    {
+     "id": "pz-3-q2",
+     "prompt": "Fill the gap: Keeping oceans clean and cool helps _____ stay healthy.",
+     "choices": [
+      "look",
+      "animals",
+      "reefs",
+      "skeletons"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "reef",
+      "reefs"
+     ],
+     "explain": "Keeping oceans clean and cool helps reefs stay healthy.",
+     "hints": [
+      "Think back to the part called \"Why Reefs Need Care\".",
+      "It is one of the key words in this lesson. It starts with \"R\".",
+      "The missing word begins \"re...\""
+     ]
+    }
+   ],
+   "hints": [
+    "Think about what you studied here.",
+    "Look for the key word.",
+    "Ask the companion for help if you are stuck."
+   ],
+   "success": "Quiz complete! Brilliant thinking.",
+   "evidenceSectionIds": [
+    "s3"
+   ]
+  }
+ ],
+ "quests": [
+  {
+   "id": "q1",
+   "title": "Shelly's Lesson",
+   "objectiveId": "obj-1",
+   "prerequisiteIds": [],
+   "steps": [
+    {
+     "id": "q1-s1",
+     "kind": "study",
+     "targetId": "study-1a",
+     "text": "Study \"Coral Is Alive\" at the Coral Garden"
+    },
+    {
+     "id": "q1-s2",
+     "kind": "study",
+     "targetId": "study-1b",
+     "text": "Study \"Coral Is Alive: part 2\" at the Coral Garden"
+    },
+    {
+     "id": "q1-s3",
+     "kind": "talk",
+     "targetId": "npc-1",
+     "text": "Talk to Shelly at the Coral Garden"
+    },
+    {
+     "id": "q1-s4",
+     "kind": "explain",
+     "targetId": "npc-1",
+     "text": "Explain it to Shelly in your own words"
+    },
+    {
+     "id": "q1-s5",
+     "kind": "collect",
+     "targetId": "token",
+     "text": "Collect 3 Pearls around the Coral Garden",
+     "count": 3
+    },
+    {
+     "id": "q1-s6",
+     "kind": "puzzle",
+     "targetId": "pz-1",
+     "text": "Solve \"Match the Words\""
+    }
+   ],
+   "rewardEffectId": "fx-1"
+  },
+  {
+   "id": "q2",
+   "title": "Coralie's Lesson",
+   "objectiveId": "obj-2",
+   "prerequisiteIds": [
+    "q1"
+   ],
+   "steps": [
+    {
+     "id": "q2-s1",
+     "kind": "study",
+     "targetId": "study-2a",
+     "text": "Study \"Partners in the Reef\" at the Kelp Shrine"
+    },
+    {
+     "id": "q2-s2",
+     "kind": "study",
+     "targetId": "study-2b",
+     "text": "Study \"Partners in the Reef: part 2\" at the Kelp Shrine"
+    },
+    {
+     "id": "q2-s3",
+     "kind": "talk",
+     "targetId": "npc-2",
+     "text": "Talk to Coralie at the Kelp Shrine"
+    },
+    {
+     "id": "q2-s4",
+     "kind": "explain",
+     "targetId": "npc-2",
+     "text": "Explain it to Coralie in your own words"
+    },
+    {
+     "id": "q2-s5",
+     "kind": "puzzle",
+     "targetId": "pz-2",
+     "text": "Solve \"Put It in Order\""
+    }
+   ],
+   "rewardEffectId": "fx-2"
+  },
+  {
+   "id": "q3",
+   "title": "Finn's Lesson",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q2"
+   ],
+   "steps": [
+    {
+     "id": "q3-s1",
+     "kind": "study",
+     "targetId": "study-3a",
+     "text": "Study \"Why Reefs Need Care\" at the Bubble Fountain"
+    },
+    {
+     "id": "q3-s2",
+     "kind": "study",
+     "targetId": "study-3b",
+     "text": "Study \"Why Reefs Need Care: part 2\" at the Bubble Fountain"
+    },
+    {
+     "id": "q3-s3",
+     "kind": "talk",
+     "targetId": "npc-3",
+     "text": "Talk to Finn at the Bubble Fountain"
+    },
+    {
+     "id": "q3-s4",
+     "kind": "explain",
+     "targetId": "npc-3",
+     "text": "Explain it to Finn in your own words"
+    },
+    {
+     "id": "q3-s5",
+     "kind": "puzzle",
+     "targetId": "pz-3",
+     "text": "Solve \"Quick Quiz\""
+    }
+   ],
+   "rewardEffectId": "fx-3"
+  },
+  {
+   "id": "q-final",
+   "title": "Wake the The Heart Reef",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q3"
+   ],
+   "steps": [
+    {
+     "id": "qf-s1",
+     "kind": "visit",
+     "targetId": "goal",
+     "text": "Go to The Heart Reef"
+    },
+    {
+     "id": "qf-s2",
+     "kind": "recall",
+     "targetId": "memory",
+     "text": "Memory walk: visit each landmark and remember what you learned there"
+    }
+   ],
+   "rewardEffectId": "fx-final"
+  }
+ ],
+ "memoryLandmarks": [
+  {
+   "zoneId": "z-coral-garden",
+   "objectiveId": "obj-1",
+   "question": {
+    "id": "recall-1",
+    "prompt": "Fill the gap: Over many years, millions of skeletons pile up to make a _____.",
+    "choices": [
+     "reef",
+     "algae",
+     "rock",
+     "polyps"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "reef",
+     "reefs"
+    ],
+    "explain": "Over many years, millions of skeletons pile up to make a reef.",
+    "hints": [
+     "Think back to the part called \"Coral Is Alive\".",
+     "It is one of the key words in this lesson. It starts with \"R\".",
+     "The missing word begins \"re...\""
+    ]
+   }
+  },
+  {
+   "zoneId": "z-kelp-shrine",
+   "objectiveId": "obj-2",
+   "question": {
+    "id": "recall-2",
+    "prompt": "Fill the gap: Tiny algae live inside _____ polyps.",
+    "choices": [
+     "animals",
+     "hard",
+     "coral",
+     "white"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "coral",
+     "corals"
+    ],
+    "explain": "Tiny algae live inside coral polyps.",
+    "hints": [
+     "Think back to the part called \"Partners in the Reef\".",
+     "It is one of the key words in this lesson. It starts with \"C\".",
+     "The missing word begins \"co...\""
+    ]
+   }
+  },
+  {
+   "zoneId": "z-bubble-fount",
+   "objectiveId": "obj-3",
+   "question": {
+    "id": "recall-3",
+    "prompt": "Fill the gap: When the water gets too warm, _____ pushes its algae out and turns white.",
+    "choices": [
+     "polyps",
+     "builds",
+     "coral",
+     "limestone"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "coral",
+     "corals"
+    ],
+    "explain": "When the water gets too warm, coral pushes its algae out and turns white.",
+    "hints": [
+     "Think back to the part called \"Why Reefs Need Care\".",
+     "It is one of the key words in this lesson. It starts with \"C\".",
+     "The missing word begins \"co...\""
+    ]
+   }
+  }
+ ],
+ "rewardEffects": [
+  {
+   "id": "fx-1",
+   "kind": "bloom",
+   "zoneId": "z-coral-garden",
+   "text": "The Coral Garden glows brightly!"
+  },
+  {
+   "id": "fx-2",
+   "kind": "light",
+   "zoneId": "z-kelp-shrine",
+   "text": "The Kelp Shrine comes back to life!"
+  },
+  {
+   "id": "fx-3",
+   "kind": "bloom",
+   "zoneId": "z-bubble-fount",
+   "text": "The Bubble Fountain lights up!"
+  },
+  {
+   "id": "fx-final",
+   "kind": "restore",
+   "zoneId": "goal",
+   "text": "The Heart Reef is fully restored!"
+  }
+ ],
+ "study": [
+  {
+   "id": "study-1a",
+   "objectiveId": "obj-1",
+   "zoneId": "z-coral-garden",
+   "title": "Coral Is Alive",
+   "body": [
+    "Coral may look like rock, but it is made of tiny animals called polyps.",
+    "Each polyp builds a hard skeleton of limestone around itself."
+   ],
+   "keyTerms": [
+    {
+     "term": "coral",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "term": "tiny",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "term": "polyps",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    }
+   ],
+   "example": "Coral may look like rock, but it is made of tiny animals called polyps.",
+   "figure": "compare",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1a-q1",
+     "prompt": "Fill the gap: _____ may look like rock, but it is made of tiny animals called polyps.",
+     "choices": [
+      "millions",
+      "coral",
+      "white",
+      "reef"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "coral",
+      "corals"
+     ],
+     "explain": "Coral may look like rock, but it is made of tiny animals called polyps.",
+     "hints": [
+      "Think back to the part called \"Coral Is Alive\".",
+      "It is one of the key words in this lesson. It starts with \"C\".",
+      "The missing word begins \"co...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-1b",
+   "objectiveId": "obj-1",
+   "zoneId": "z-coral-garden",
+   "title": "Coral Is Alive: part 2",
+   "body": [
+    "Over many years, millions of skeletons pile up to make a reef."
+   ],
+   "keyTerms": [
+    {
+     "term": "reef",
+     "meaning": "Over many years, millions of skeletons pile up to make a reef."
+    },
+    {
+     "term": "skeleton",
+     "meaning": "Each polyp builds a hard skeleton of limestone around itself."
+    }
+   ],
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1b-q1",
+     "prompt": "Fill the gap: Over many years, millions of skeletons pile up to make a _____.",
+     "choices": [
+      "reef",
+      "alive",
+      "builds",
+      "coral"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "reef",
+      "reefs"
+     ],
+     "explain": "Over many years, millions of skeletons pile up to make a reef.",
+     "hints": [
+      "Think back to the part called \"Coral Is Alive\".",
+      "It is one of the key words in this lesson. It starts with \"R\".",
+      "The missing word begins \"re...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2a",
+   "objectiveId": "obj-2",
+   "zoneId": "z-kelp-shrine",
+   "title": "Partners in the Reef",
+   "body": [
+    "Tiny algae live inside coral polyps.",
+    "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home."
+   ],
+   "keyTerms": [
+    {
+     "term": "coral",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "term": "tiny",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "term": "polyps",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    }
+   ],
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2a-q1",
+     "prompt": "Fill the gap: Tiny algae live inside _____ polyps.",
+     "choices": [
+      "home",
+      "skeletons",
+      "years",
+      "coral"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "coral",
+      "corals"
+     ],
+     "explain": "Tiny algae live inside coral polyps.",
+     "hints": [
+      "Think back to the part called \"Partners in the Reef\".",
+      "It is one of the key words in this lesson. It starts with \"C\".",
+      "The missing word begins \"co...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2b",
+   "objectiveId": "obj-2",
+   "zoneId": "z-kelp-shrine",
+   "title": "Partners in the Reef: part 2",
+   "body": [
+    "The algae also give coral its bright colours."
+   ],
+   "keyTerms": [
+    {
+     "term": "coral",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "term": "algae",
+     "meaning": "Tiny algae live inside coral polyps."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2b-q1",
+     "prompt": "Fill the gap: The algae also give _____ its bright colours.",
+     "choices": [
+      "years",
+      "home",
+      "millions",
+      "coral"
+     ],
+     "answerIndex": 3,
+     "accept": [
+      "coral",
+      "corals"
+     ],
+     "explain": "The algae also give coral its bright colours.",
+     "hints": [
+      "Think back to the part called \"Partners in the Reef\".",
+      "It is one of the key words in this lesson. It starts with \"C\".",
+      "The missing word begins \"co...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3a",
+   "objectiveId": "obj-3",
+   "zoneId": "z-bubble-fount",
+   "title": "Why Reefs Need Care",
+   "body": [
+    "Coral reefs are home to about one quarter of all sea creatures.",
+    "When the water gets too warm, coral pushes its algae out and turns white."
+   ],
+   "keyTerms": [
+    {
+     "term": "coral",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "term": "reef",
+     "meaning": "Over many years, millions of skeletons pile up to make a reef."
+    },
+    {
+     "term": "algae",
+     "meaning": "Tiny algae live inside coral polyps."
+    }
+   ],
+   "figure": "arrow-in-out",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3a-q1",
+     "prompt": "Fill the gap: _____ reefs are home to about one quarter of all sea creatures.",
+     "choices": [
+      "coral",
+      "builds",
+      "tiny",
+      "hard"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "coral",
+      "corals"
+     ],
+     "explain": "Coral reefs are home to about one quarter of all sea creatures.",
+     "hints": [
+      "Think back to the part called \"Why Reefs Need Care\".",
+      "It is one of the key words in this lesson. It starts with \"C\".",
+      "The missing word begins \"co...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3b",
+   "objectiveId": "obj-3",
+   "zoneId": "z-bubble-fount",
+   "title": "Why Reefs Need Care: part 2",
+   "body": [
+    "This is called coral bleaching.",
+    "Keeping oceans clean and cool helps reefs stay healthy."
+   ],
+   "keyTerms": [
+    {
+     "term": "coral",
+     "meaning": "Coral may look like rock, but it is made of tiny animals called polyps."
+    },
+    {
+     "term": "reef",
+     "meaning": "Over many years, millions of skeletons pile up to make a reef."
+    },
+    {
+     "term": "reefs",
+     "meaning": "Coral reefs are home to about one quarter of all sea creatures."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3b-q1",
+     "prompt": "Fill the gap: This is called _____ bleaching.",
+     "choices": [
+      "polyps",
+      "millions",
+      "coral",
+      "algae"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "coral",
+      "corals"
+     ],
+     "explain": "This is called coral bleaching.",
+     "hints": [
+      "Think back to the part called \"Why Reefs Need Care\".",
+      "It is one of the key words in this lesson. It starts with \"C\".",
+      "The missing word begins \"co...\""
+     ]
+    }
+   ]
+  }
+ ],
+ "sideQuests": [
+  {
+   "id": "side-1",
+   "title": "Finn's Challenge",
+   "giverNpcId": "npc-3",
+   "zoneId": "z-bubble-fount",
+   "objectiveId": "obj-1",
+   "kind": "explain",
+   "prompt": "Can you teach me this in your own words? Explain coral is alive, including tiny.",
+   "rubric": [
+    "Mentions coral",
+    "Mentions tiny",
+    "Mentions reef"
+   ],
+   "reward": "a shiny Teacher badge"
+  },
+  {
+   "id": "side-2",
+   "title": "Coralie's Bonus Quiz",
+   "giverNpcId": "npc-2",
+   "zoneId": "z-kelp-shrine",
+   "objectiveId": "obj-2",
+   "kind": "quiz",
+   "prompt": "Try my bonus questions!",
+   "questions": [
+    {
+     "id": "side-2-q1",
+     "prompt": "Fill the gap: The algae use sunlight to make food and share it with the _____, and the coral gives the algae a safe home.",
+     "choices": [
+      "look",
+      "animals",
+      "coral",
+      "years"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "coral",
+      "corals"
+     ],
+     "explain": "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home.",
+     "hints": [
+      "Think back to the part called \"Partners in the Reef\".",
+      "It is one of the key words in this lesson. It starts with \"C\".",
+      "The missing word begins \"co...\""
+     ]
+    },
+    {
+     "id": "side-2-q2",
+     "prompt": "Fill the gap: The algae use sunlight to make food and share it with the _____, and the coral gives the algae a safe home.",
+     "choices": [
+      "animals",
+      "hard",
+      "coral",
+      "rock"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "coral",
+      "corals"
+     ],
+     "explain": "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home.",
+     "hints": [
+      "Think back to the part called \"Partners in the Reef\".",
+      "It is one of the key words in this lesson. It starts with \"C\".",
+      "The missing word begins \"co...\""
+     ]
+    }
+   ],
+   "reward": "a Gold Star"
+  }
+ ],
+ "glossary": [
+  {
+   "term": "coral",
+   "meaning": "Coral may look like rock, but it is made of tiny animals called polyps.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "tiny",
+   "meaning": "Coral may look like rock, but it is made of tiny animals called polyps.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "reef",
+   "meaning": "Over many years, millions of skeletons pile up to make a reef.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "polyps",
+   "meaning": "Coral may look like rock, but it is made of tiny animals called polyps.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "skeleton",
+   "meaning": "Each polyp builds a hard skeleton of limestone around itself.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "algae",
+   "meaning": "Tiny algae live inside coral polyps.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "home",
+   "meaning": "The algae use sunlight to make food and share it with the coral, and the coral gives the algae a safe home.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "reefs",
+   "meaning": "Coral reefs are home to about one quarter of all sea creatures.",
+   "sectionId": "s3"
+  },
+  {
+   "term": "white",
+   "meaning": "When the water gets too warm, coral pushes its algae out and turns white.",
+   "sectionId": "s3"
+  }
+ ],
+ "reviewQuestions": [
+  {
+   "id": "review-1",
+   "prompt": "Fill the gap: Each polyp builds a hard _____ of limestone around itself.",
+   "choices": [
+    "skeleton",
+    "white",
+    "years",
+    "reefs"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "skeleton",
+    "skeletons"
+   ],
+   "explain": "Each polyp builds a hard skeleton of limestone around itself.",
+   "hints": [
+    "Think back to the part called \"Coral Is Alive\".",
+    "It is one of the key words in this lesson. It starts with \"S\".",
+    "The missing word begins \"skel...\""
+   ]
+  },
+  {
+   "id": "review-2",
+   "prompt": "Fill the gap: The algae also give _____ its bright colours.",
+   "choices": [
+    "pile",
+    "hard",
+    "reefs",
+    "coral"
+   ],
+   "answerIndex": 3,
+   "accept": [
+    "coral",
+    "corals"
+   ],
+   "explain": "The algae also give coral its bright colours.",
+   "hints": [
+    "Think back to the part called \"Partners in the Reef\".",
+    "It is one of the key words in this lesson. It starts with \"C\".",
+    "The missing word begins \"co...\""
+   ]
+  },
+  {
+   "id": "review-3",
+   "prompt": "Fill the gap: _____ reefs are home to about one quarter of all sea creatures.",
+   "choices": [
+    "coral",
+    "limestone",
+    "rock",
+    "hard"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "coral",
+    "corals"
+   ],
+   "explain": "Coral reefs are home to about one quarter of all sea creatures.",
+   "hints": [
+    "Think back to the part called \"Why Reefs Need Care\".",
+    "It is one of the key words in this lesson. It starts with \"C\".",
+    "The missing word begins \"co...\""
+   ]
+  },
+  {
+   "id": "review-4",
+   "prompt": "Fill the gap: _____ may look like rock, but it is made of tiny animals called polyps.",
+   "choices": [
+    "pile",
+    "coral",
+    "skeleton",
+    "skeletons"
+   ],
+   "answerIndex": 1,
+   "accept": [
+    "coral",
+    "corals"
+   ],
+   "explain": "Coral may look like rock, but it is made of tiny animals called polyps.",
+   "hints": [
+    "Think back to the part called \"Coral Is Alive\".",
+    "It is one of the key words in this lesson. It starts with \"C\".",
+    "The missing word begins \"co...\""
+   ]
+  }
+ ],
+ "source": "sample"
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voice Lab</title>
+  <style>
+    body { font: 14px/1.4 system-ui, sans-serif; margin: 16px; background: #111; color: #eee; }
+    input, select, button { font: inherit; padding: 4px 8px; margin: 2px; }
+    #meter { height: 10px; background: #333; width: 300px; margin: 8px 0; }
+    #meter > div { height: 100%; width: 0; background: #4c8; }
+    #interim { min-height: 1.4em; color: #9cf; font-size: 18px; }
+    #log { white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: 12px; max-height: 60vh; overflow: auto; background: #000; padding: 8px; }
+    .row { margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <h2>Voice Lab <small>(dev only)</small></h2>
+  <div class="row">
+    world <input id="world" value="sample-photosynthesis" size="22" />
+    npc <input id="npc" value="" size="14" />
+    question <input id="question" size="10" />
+    <select id="mode"><option value="chat">chat</option><option value="explain">explain</option><option value="answer">answer</option></select>
+  </div>
+  <div class="row">
+    <button id="start">Start</button><button id="stop">Stop</button>
+    <button id="hold">Hold to talk</button>
+    <label><input type="checkbox" id="mute" /> mute</label>
+    <button id="ctx">Apply context</button>
+  </div>
+  <div class="row">
+    <input id="text" size="40" placeholder="type a turn" /><button id="send">Send</button>
+    <input id="say" size="30" placeholder="scripted line" value="Hello explorer! Welcome to my garden." />
+    <input id="voice" size="18" value="aura-2-thalia-en" /><button id="speak">Speak</button><button id="cancel">Cancel speech</button>
+  </div>
+  <div>mode: <b id="vmode">?</b> · state: <b id="state">idle</b></div>
+  <div id="meter"><div></div></div>
+  <div id="interim"></div>
+  <div id="log"></div>
+  <script type="module" src="/src/voice/lab.ts"></script>
+</body>
+</html>

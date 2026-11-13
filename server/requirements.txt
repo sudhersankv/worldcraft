@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic>=2
+pymupdf
+httpx
+python-multipart
+websockets>=12
+python-dotenv
+pytest

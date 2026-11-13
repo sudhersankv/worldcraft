@@ -1,0 +1,1074 @@
+{
+ "schemaVersion": "1",
+ "worldId": "egypt-pyramids",
+ "lessonId": "lesson-pyramids",
+ "templateId": "egypt",
+ "title": "Secrets of the Sand",
+ "subject": "Ancient Egypt",
+ "seed": 1008,
+ "story": {
+  "intro": [
+   "A sandstorm has buried the secrets of the pyramids. Help the scribes uncover them!",
+   "To fix it, we need to really learn about The Pyramids of Ancient Egypt.",
+   "Study at each place, talk to my friends, and explain what you learn!"
+  ],
+  "goal": "Learn the three big ideas of The Pyramids of Ancient Egypt to wake The Great Pyramid.",
+  "finale": "You remembered it all! The Great Pyramid shines again thanks to you."
+ },
+ "companion": {
+  "name": "Scarab",
+  "greeting": "Hi, I'm Scarab! I'll help you if you get stuck. Let's explore!"
+ },
+ "zones": [
+  {
+   "id": "hub",
+   "name": "Oasis Camp",
+   "kind": "hub",
+   "landmark": "fountain",
+   "description": "Where every adventure starts."
+  },
+  {
+   "id": "z-scroll-shrin",
+   "name": "Scroll Shrine",
+   "kind": "landmark",
+   "landmark": "shrine",
+   "objectiveId": "obj-1",
+   "description": "A place to learn about tombs for kings."
+  },
+  {
+   "id": "z-sphinx-statu",
+   "name": "Sphinx Statue",
+   "kind": "landmark",
+   "landmark": "statue",
+   "objectiveId": "obj-2",
+   "description": "A place to learn about building with stone."
+  },
+  {
+   "id": "z-sun-obelisk",
+   "name": "Sun Obelisk",
+   "kind": "landmark",
+   "landmark": "obelisk",
+   "objectiveId": "obj-3",
+   "description": "A place to learn about writing in pictures."
+  },
+  {
+   "id": "goal",
+   "name": "The Great Pyramid",
+   "kind": "goal",
+   "landmark": "obelisk",
+   "description": "It wakes up when you master The Pyramids of Ancient Egypt."
+  }
+ ],
+ "npcs": [
+  {
+   "id": "npc-1",
+   "name": "Neferi",
+   "title": "the Scribe",
+   "archetype": "scribe",
+   "persona": "Careful, proud scribe who loves writing and stories. Teaches \"Tombs for Kings\" from the lesson \"The Pyramids of Ancient Egypt\".",
+   "voice": "aura-2-apollo-en",
+   "zoneId": "z-scroll-shrin",
+   "objectiveId": "obj-1",
+   "greeting": "Hello there! I'm Neferi. Want to learn about pharaoh with me?",
+   "teach": [
+    "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+    "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago.",
+    "They believed a pharaoh needed a safe resting place and treasures for the afterlife."
+   ],
+   "knowledge": [
+    "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+    "They believed a pharaoh needed a safe resting place and treasures for the afterlife.",
+    "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago."
+   ],
+   "check": {
+    "id": "check-1",
+    "prompt": "Fill the gap: The ancient Egyptians built pyramids as tombs for their kings, who were called _____.",
+    "choices": [
+     "treasures",
+     "higher",
+     "pharaoh",
+     "stone"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "pharaoh",
+     "pharaohs"
+    ],
+    "explain": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+    "hints": [
+     "Think back to the part called \"Tombs for Kings\".",
+     "It is one of the key words in this lesson. It starts with \"P\".",
+     "The missing word begins \"pha...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-2",
+   "name": "Bako",
+   "title": "the Builder",
+   "archetype": "builder",
+   "persona": "Strong, hard-working builder who explains things step by step. Teaches \"Building with Stone\" from the lesson \"The Pyramids of Ancient Egypt\".",
+   "voice": "aura-2-athena-en",
+   "zoneId": "z-sphinx-statu",
+   "objectiveId": "obj-2",
+   "greeting": "Hello there! I'm Bako. Want to learn about blocks with me?",
+   "teach": [
+    "They built long ramps of mud brick to raise the blocks higher and higher.",
+    "They dragged the blocks on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull.",
+    "Workers cut huge blocks of limestone from quarries."
+   ],
+   "knowledge": [
+    "Workers cut huge blocks of limestone from quarries.",
+    "They dragged the blocks on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull.",
+    "They built long ramps of mud brick to raise the blocks higher and higher."
+   ],
+   "check": {
+    "id": "check-2",
+    "prompt": "Fill the gap: They built long ramps of mud brick to raise the _____ higher and higher.",
+    "choices": [
+     "pictures",
+     "blocks",
+     "egyptians",
+     "stone"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "block",
+     "blocks"
+    ],
+    "explain": "They built long ramps of mud brick to raise the blocks higher and higher.",
+    "hints": [
+     "Think back to the part called \"Building with Stone\".",
+     "It is one of the key words in this lesson. It starts with \"B\".",
+     "The missing word begins \"blo...\""
+    ]
+   }
+  },
+  {
+   "id": "npc-3",
+   "name": "Dr. Dune",
+   "title": "the Explorer",
+   "archetype": "explorer",
+   "persona": "Excited explorer who loves discoveries and clues. Teaches \"Writing in Pictures\" from the lesson \"The Pyramids of Ancient Egypt\".",
+   "voice": "aura-2-zeus-en",
+   "zoneId": "z-sun-obelisk",
+   "objectiveId": "obj-3",
+   "greeting": "Hello there! I'm Dr. Dune. Want to learn about hieroglyphs with me?",
+   "teach": [
+    "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas.",
+    "Scribes painted hieroglyphs on walls and wrote on paper made from the papyrus plant.",
+    "The Rosetta Stone helped modern people learn to read hieroglyphs again."
+   ],
+   "knowledge": [
+    "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas.",
+    "Scribes painted hieroglyphs on walls and wrote on paper made from the papyrus plant.",
+    "The Rosetta Stone helped modern people learn to read hieroglyphs again."
+   ],
+   "check": {
+    "id": "check-3",
+    "prompt": "Fill the gap: The Egyptians wrote with _____, which are small pictures that stand for sounds and ideas.",
+    "choices": [
+     "sledge",
+     "tombs",
+     "workers",
+     "hieroglyphs"
+    ],
+    "answerIndex": 3,
+    "accept": [
+     "hieroglyph",
+     "hieroglyphs"
+    ],
+    "explain": "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas.",
+    "hints": [
+     "Think back to the part called \"Writing in Pictures\".",
+     "It is one of the key words in this lesson. It starts with \"H\".",
+     "The missing word begins \"hiero...\""
+    ]
+   }
+  }
+ ],
+ "collectibles": [
+  {
+   "id": "token",
+   "name": "Golden Scarab",
+   "zoneId": "z-scroll-shrin",
+   "count": 3,
+   "icon": "scarab"
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "pz-1",
+   "objectiveId": "obj-1",
+   "zoneId": "z-scroll-shrin",
+   "kind": "match",
+   "title": "Match the Words",
+   "prompt": "Match each word to what it means.",
+   "pairs": [
+    {
+     "left": "Pharaoh",
+     "right": "The ancient Egyptians built pyramids as tombs for their kings, who were called it."
+    },
+    {
+     "left": "Built",
+     "right": "The Great Pyramid of Giza was it for the pharaoh Khufu more than 4,500 years ago."
+    },
+    {
+     "left": "Tombs",
+     "right": "The ancient Egyptians built pyramids as it for their kings, who were called pharaohs."
+    },
+    {
+     "left": "Kings",
+     "right": "The ancient Egyptians built pyramids as tombs for their it, who were called pharaohs."
+    }
+   ],
+   "hints": [
+    "Read each meaning slowly.",
+    "Start with the word you are surest about.",
+    "Pharaoh goes with: \"The ancient Egyptians built pyramids as tombs for...\""
+   ],
+   "success": "Perfect match! Those words are yours now.",
+   "evidenceSectionIds": [
+    "s1"
+   ]
+  },
+  {
+   "id": "pz-2",
+   "objectiveId": "obj-2",
+   "zoneId": "z-sphinx-statu",
+   "kind": "sequence",
+   "title": "Put It in Order",
+   "prompt": "Put these ideas in the same order as the lesson.",
+   "items": [
+    "Workers cut huge blocks of limestone from quarries.",
+    "They dragged the blocks on wooden sledges, and pouring water on the sand in front of the...",
+    "They built long ramps of mud brick to raise the blocks higher and higher."
+   ],
+   "hints": [
+    "Which idea starts the story?",
+    "Each idea leads to the next one.",
+    "The first one is: \"Workers cut huge blocks of limestone from quarries.\""
+   ],
+   "success": "Great ordering! You followed the whole idea.",
+   "evidenceSectionIds": [
+    "s2"
+   ]
+  },
+  {
+   "id": "pz-3",
+   "objectiveId": "obj-3",
+   "zoneId": "z-sun-obelisk",
+   "kind": "choice",
+   "title": "Quick Quiz",
+   "prompt": "Answer the quiz to light the way!",
+   "questions": [
+    {
+     "id": "pz-3-q1",
+     "prompt": "Fill the gap: The Rosetta Stone helped modern people learn to read _____ again.",
+     "choices": [
+      "ancient",
+      "hieroglyphs",
+      "wrote",
+      "believed"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "hieroglyph",
+      "hieroglyphs"
+     ],
+     "explain": "The Rosetta Stone helped modern people learn to read hieroglyphs again.",
+     "hints": [
+      "Think back to the part called \"Writing in Pictures\".",
+      "It is one of the key words in this lesson. It starts with \"H\".",
+      "The missing word begins \"hiero...\""
+     ]
+    },
+    {
+     "id": "pz-3-q2",
+     "prompt": "Fill the gap: They believed a _____ needed a safe resting place and treasures for the afterlife.",
+     "choices": [
+      "pharaoh",
+      "higher",
+      "sledge",
+      "ancient"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "pharaoh",
+      "pharaohs"
+     ],
+     "explain": "They believed a pharaoh needed a safe resting place and treasures for the afterlife.",
+     "hints": [
+      "Think back to the part called \"Tombs for Kings\".",
+      "It is one of the key words in this lesson. It starts with \"P\".",
+      "The missing word begins \"pha...\""
+     ]
+    }
+   ],
+   "hints": [
+    "Think about what you studied here.",
+    "Look for the key word.",
+    "Ask the companion for help if you are stuck."
+   ],
+   "success": "Quiz complete! Brilliant thinking.",
+   "evidenceSectionIds": [
+    "s3"
+   ]
+  }
+ ],
+ "quests": [
+  {
+   "id": "q1",
+   "title": "Neferi's Lesson",
+   "objectiveId": "obj-1",
+   "prerequisiteIds": [],
+   "steps": [
+    {
+     "id": "q1-s1",
+     "kind": "study",
+     "targetId": "study-1a",
+     "text": "Study \"Tombs for Kings\" at the Scroll Shrine"
+    },
+    {
+     "id": "q1-s2",
+     "kind": "study",
+     "targetId": "study-1b",
+     "text": "Study \"Tombs for Kings: part 2\" at the Scroll Shrine"
+    },
+    {
+     "id": "q1-s3",
+     "kind": "talk",
+     "targetId": "npc-1",
+     "text": "Talk to Neferi at the Scroll Shrine"
+    },
+    {
+     "id": "q1-s4",
+     "kind": "explain",
+     "targetId": "npc-1",
+     "text": "Explain it to Neferi in your own words"
+    },
+    {
+     "id": "q1-s5",
+     "kind": "collect",
+     "targetId": "token",
+     "text": "Collect 3 Golden Scarabs around the Scroll Shrine",
+     "count": 3
+    },
+    {
+     "id": "q1-s6",
+     "kind": "puzzle",
+     "targetId": "pz-1",
+     "text": "Solve \"Match the Words\""
+    }
+   ],
+   "rewardEffectId": "fx-1"
+  },
+  {
+   "id": "q2",
+   "title": "Bako's Lesson",
+   "objectiveId": "obj-2",
+   "prerequisiteIds": [
+    "q1"
+   ],
+   "steps": [
+    {
+     "id": "q2-s1",
+     "kind": "study",
+     "targetId": "study-2a",
+     "text": "Study \"Building with Stone\" at the Sphinx Statue"
+    },
+    {
+     "id": "q2-s2",
+     "kind": "study",
+     "targetId": "study-2b",
+     "text": "Study \"Building with Stone: part 2\" at the Sphinx Statue"
+    },
+    {
+     "id": "q2-s3",
+     "kind": "talk",
+     "targetId": "npc-2",
+     "text": "Talk to Bako at the Sphinx Statue"
+    },
+    {
+     "id": "q2-s4",
+     "kind": "explain",
+     "targetId": "npc-2",
+     "text": "Explain it to Bako in your own words"
+    },
+    {
+     "id": "q2-s5",
+     "kind": "puzzle",
+     "targetId": "pz-2",
+     "text": "Solve \"Put It in Order\""
+    }
+   ],
+   "rewardEffectId": "fx-2"
+  },
+  {
+   "id": "q3",
+   "title": "Dr. Dune's Lesson",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q2"
+   ],
+   "steps": [
+    {
+     "id": "q3-s1",
+     "kind": "study",
+     "targetId": "study-3a",
+     "text": "Study \"Writing in Pictures\" at the Sun Obelisk"
+    },
+    {
+     "id": "q3-s2",
+     "kind": "study",
+     "targetId": "study-3b",
+     "text": "Study \"Writing in Pictures: part 2\" at the Sun Obelisk"
+    },
+    {
+     "id": "q3-s3",
+     "kind": "talk",
+     "targetId": "npc-3",
+     "text": "Talk to Dr. Dune at the Sun Obelisk"
+    },
+    {
+     "id": "q3-s4",
+     "kind": "explain",
+     "targetId": "npc-3",
+     "text": "Explain it to Dr. Dune in your own words"
+    },
+    {
+     "id": "q3-s5",
+     "kind": "puzzle",
+     "targetId": "pz-3",
+     "text": "Solve \"Quick Quiz\""
+    }
+   ],
+   "rewardEffectId": "fx-3"
+  },
+  {
+   "id": "q-final",
+   "title": "Wake the The Great Pyramid",
+   "objectiveId": "obj-3",
+   "prerequisiteIds": [
+    "q3"
+   ],
+   "steps": [
+    {
+     "id": "qf-s1",
+     "kind": "visit",
+     "targetId": "goal",
+     "text": "Go to The Great Pyramid"
+    },
+    {
+     "id": "qf-s2",
+     "kind": "recall",
+     "targetId": "memory",
+     "text": "Memory walk: visit each landmark and remember what you learned there"
+    }
+   ],
+   "rewardEffectId": "fx-final"
+  }
+ ],
+ "memoryLandmarks": [
+  {
+   "zoneId": "z-scroll-shrin",
+   "objectiveId": "obj-1",
+   "question": {
+    "id": "recall-1",
+    "prompt": "Fill the gap: The Great Pyramid of Giza was built for the _____ Khufu more than 4,500 years ago.",
+    "choices": [
+     "pharaoh",
+     "blocks",
+     "afterlife",
+     "higher"
+    ],
+    "answerIndex": 0,
+    "accept": [
+     "pharaoh",
+     "pharaohs"
+    ],
+    "explain": "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago.",
+    "hints": [
+     "Think back to the part called \"Tombs for Kings\".",
+     "It is one of the key words in this lesson. It starts with \"P\".",
+     "The missing word begins \"pha...\""
+    ]
+   }
+  },
+  {
+   "zoneId": "z-sphinx-statu",
+   "objectiveId": "obj-2",
+   "question": {
+    "id": "recall-2",
+    "prompt": "Fill the gap: They dragged the _____ on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull.",
+    "choices": [
+     "wrote",
+     "blocks",
+     "egyptians",
+     "stone"
+    ],
+    "answerIndex": 1,
+    "accept": [
+     "block",
+     "blocks"
+    ],
+    "explain": "They dragged the blocks on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull.",
+    "hints": [
+     "Think back to the part called \"Building with Stone\".",
+     "It is one of the key words in this lesson. It starts with \"B\".",
+     "The missing word begins \"blo...\""
+    ]
+   }
+  },
+  {
+   "zoneId": "z-sun-obelisk",
+   "objectiveId": "obj-3",
+   "question": {
+    "id": "recall-3",
+    "prompt": "Fill the gap: Scribes painted _____ on walls and wrote on paper made from the papyrus plant.",
+    "choices": [
+     "sledge",
+     "kings",
+     "hieroglyphs",
+     "pharaohs"
+    ],
+    "answerIndex": 2,
+    "accept": [
+     "hieroglyph",
+     "hieroglyphs"
+    ],
+    "explain": "Scribes painted hieroglyphs on walls and wrote on paper made from the papyrus plant.",
+    "hints": [
+     "Think back to the part called \"Writing in Pictures\".",
+     "It is one of the key words in this lesson. It starts with \"H\".",
+     "The missing word begins \"hiero...\""
+    ]
+   }
+  }
+ ],
+ "rewardEffects": [
+  {
+   "id": "fx-1",
+   "kind": "light",
+   "zoneId": "z-scroll-shrin",
+   "text": "The Scroll Shrine glows brightly!"
+  },
+  {
+   "id": "fx-2",
+   "kind": "restore",
+   "zoneId": "z-sphinx-statu",
+   "text": "The Sphinx Statue comes back to life!"
+  },
+  {
+   "id": "fx-3",
+   "kind": "light",
+   "zoneId": "z-sun-obelisk",
+   "text": "The Sun Obelisk lights up!"
+  },
+  {
+   "id": "fx-final",
+   "kind": "restore",
+   "zoneId": "goal",
+   "text": "The Great Pyramid is fully restored!"
+  }
+ ],
+ "study": [
+  {
+   "id": "study-1a",
+   "objectiveId": "obj-1",
+   "zoneId": "z-scroll-shrin",
+   "title": "Tombs for Kings",
+   "body": [
+    "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+    "They believed a pharaoh needed a safe resting place and treasures for the afterlife."
+   ],
+   "keyTerms": [
+    {
+     "term": "pharaoh",
+     "meaning": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs."
+    },
+    {
+     "term": "built",
+     "meaning": "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago."
+    },
+    {
+     "term": "tombs",
+     "meaning": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1a-q1",
+     "prompt": "Fill the gap: The ancient Egyptians built pyramids as tombs for their kings, who were called _____.",
+     "choices": [
+      "pharaoh",
+      "place",
+      "believed",
+      "blocks"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "pharaoh",
+      "pharaohs"
+     ],
+     "explain": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+     "hints": [
+      "Think back to the part called \"Tombs for Kings\".",
+      "It is one of the key words in this lesson. It starts with \"P\".",
+      "The missing word begins \"pha...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-1b",
+   "objectiveId": "obj-1",
+   "zoneId": "z-scroll-shrin",
+   "title": "Tombs for Kings: part 2",
+   "body": [
+    "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago."
+   ],
+   "keyTerms": [
+    {
+     "term": "pharaoh",
+     "meaning": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs."
+    },
+    {
+     "term": "built",
+     "meaning": "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s1"
+   ],
+   "checks": [
+    {
+     "id": "study-1b-q1",
+     "prompt": "Fill the gap: The Great Pyramid of Giza was built for the _____ Khufu more than 4,500 years ago.",
+     "choices": [
+      "believed",
+      "safe",
+      "pharaoh",
+      "blocks"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "pharaoh",
+      "pharaohs"
+     ],
+     "explain": "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago.",
+     "hints": [
+      "Think back to the part called \"Tombs for Kings\".",
+      "It is one of the key words in this lesson. It starts with \"P\".",
+      "The missing word begins \"pha...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2a",
+   "objectiveId": "obj-2",
+   "zoneId": "z-sphinx-statu",
+   "title": "Building with Stone",
+   "body": [
+    "Workers cut huge blocks of limestone from quarries.",
+    "They dragged the blocks on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull."
+   ],
+   "keyTerms": [
+    {
+     "term": "blocks",
+     "meaning": "Workers cut huge blocks of limestone from quarries."
+    },
+    {
+     "term": "sledge",
+     "meaning": "They dragged the blocks on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull."
+    },
+    {
+     "term": "workers",
+     "meaning": "Workers cut huge blocks of limestone from quarries."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2a-q1",
+     "prompt": "Fill the gap: Workers cut huge _____ of limestone from quarries.",
+     "choices": [
+      "afterlife",
+      "pictures",
+      "blocks",
+      "pharaoh"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "block",
+      "blocks"
+     ],
+     "explain": "Workers cut huge blocks of limestone from quarries.",
+     "hints": [
+      "Think back to the part called \"Building with Stone\".",
+      "It is one of the key words in this lesson. It starts with \"B\".",
+      "The missing word begins \"blo...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-2b",
+   "objectiveId": "obj-2",
+   "zoneId": "z-sphinx-statu",
+   "title": "Building with Stone: part 2",
+   "body": [
+    "They built long ramps of mud brick to raise the blocks higher and higher."
+   ],
+   "keyTerms": [
+    {
+     "term": "built",
+     "meaning": "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago."
+    },
+    {
+     "term": "blocks",
+     "meaning": "Workers cut huge blocks of limestone from quarries."
+    },
+    {
+     "term": "higher",
+     "meaning": "They built long ramps of mud brick to raise the blocks higher and higher."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s2"
+   ],
+   "checks": [
+    {
+     "id": "study-2b-q1",
+     "prompt": "Fill the gap: They _____ long ramps of mud brick to raise the blocks higher and higher.",
+     "choices": [
+      "built",
+      "pyramids",
+      "safe",
+      "pharaoh"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "built",
+      "builts"
+     ],
+     "explain": "They built long ramps of mud brick to raise the blocks higher and higher.",
+     "hints": [
+      "Think back to the part called \"Building with Stone\".",
+      "It is one of the key words in this lesson. It starts with \"B\".",
+      "The missing word begins \"bu...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3a",
+   "objectiveId": "obj-3",
+   "zoneId": "z-sun-obelisk",
+   "title": "Writing in Pictures",
+   "body": [
+    "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas.",
+    "Scribes painted hieroglyphs on walls and wrote on paper made from the papyrus plant."
+   ],
+   "keyTerms": [
+    {
+     "term": "egyptians",
+     "meaning": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs."
+    },
+    {
+     "term": "hieroglyphs",
+     "meaning": "The Rosetta Stone helped modern people learn to read hieroglyphs again."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3a-q1",
+     "prompt": "Fill the gap: The _____ wrote with hieroglyphs, which are small pictures that stand for sounds and ideas.",
+     "choices": [
+      "workers",
+      "afterlife",
+      "egyptians",
+      "treasures"
+     ],
+     "answerIndex": 2,
+     "accept": [
+      "egyptian",
+      "egyptians"
+     ],
+     "explain": "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas.",
+     "hints": [
+      "Think back to the part called \"Writing in Pictures\".",
+      "It is one of the key words in this lesson. It starts with \"E\".",
+      "The missing word begins \"egyp...\""
+     ]
+    }
+   ]
+  },
+  {
+   "id": "study-3b",
+   "objectiveId": "obj-3",
+   "zoneId": "z-sun-obelisk",
+   "title": "Writing in Pictures: part 2",
+   "body": [
+    "The Rosetta Stone helped modern people learn to read hieroglyphs again."
+   ],
+   "keyTerms": [
+    {
+     "term": "hieroglyphs",
+     "meaning": "The Rosetta Stone helped modern people learn to read hieroglyphs again."
+    }
+   ],
+   "figure": "none",
+   "sourceSectionIds": [
+    "s3"
+   ],
+   "checks": [
+    {
+     "id": "study-3b-q1",
+     "prompt": "Fill the gap: The Rosetta Stone helped modern people learn to read _____ again.",
+     "choices": [
+      "kings",
+      "hieroglyphs",
+      "higher",
+      "believed"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "hieroglyph",
+      "hieroglyphs"
+     ],
+     "explain": "The Rosetta Stone helped modern people learn to read hieroglyphs again.",
+     "hints": [
+      "Think back to the part called \"Writing in Pictures\".",
+      "It is one of the key words in this lesson. It starts with \"H\".",
+      "The missing word begins \"hiero...\""
+     ]
+    }
+   ]
+  }
+ ],
+ "sideQuests": [
+  {
+   "id": "side-1",
+   "title": "Dr. Dune's Challenge",
+   "giverNpcId": "npc-3",
+   "zoneId": "z-sun-obelisk",
+   "objectiveId": "obj-1",
+   "kind": "explain",
+   "prompt": "Can you teach me this in your own words? Explain tombs for kings, including pharaoh.",
+   "rubric": [
+    "Mentions pharaoh",
+    "Mentions built",
+    "Mentions tombs"
+   ],
+   "reward": "a shiny Teacher badge"
+  },
+  {
+   "id": "side-2",
+   "title": "Bako's Bonus Quiz",
+   "giverNpcId": "npc-2",
+   "zoneId": "z-sphinx-statu",
+   "objectiveId": "obj-2",
+   "kind": "quiz",
+   "prompt": "Try my bonus questions!",
+   "questions": [
+    {
+     "id": "side-2-q1",
+     "prompt": "Fill the gap: They built long ramps of mud brick to raise the _____ higher and higher.",
+     "choices": [
+      "wrote",
+      "blocks",
+      "treasures",
+      "workers"
+     ],
+     "answerIndex": 1,
+     "accept": [
+      "block",
+      "blocks"
+     ],
+     "explain": "They built long ramps of mud brick to raise the blocks higher and higher.",
+     "hints": [
+      "Think back to the part called \"Building with Stone\".",
+      "It is one of the key words in this lesson. It starts with \"B\".",
+      "The missing word begins \"blo...\""
+     ]
+    },
+    {
+     "id": "side-2-q2",
+     "prompt": "Fill the gap: They built long ramps of mud brick to raise the _____ higher and higher.",
+     "choices": [
+      "blocks",
+      "kings",
+      "safe",
+      "place"
+     ],
+     "answerIndex": 0,
+     "accept": [
+      "block",
+      "blocks"
+     ],
+     "explain": "They built long ramps of mud brick to raise the blocks higher and higher.",
+     "hints": [
+      "Think back to the part called \"Building with Stone\".",
+      "It is one of the key words in this lesson. It starts with \"B\".",
+      "The missing word begins \"blo...\""
+     ]
+    }
+   ],
+   "reward": "a Gold Star"
+  }
+ ],
+ "glossary": [
+  {
+   "term": "pharaoh",
+   "meaning": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "built",
+   "meaning": "The Great Pyramid of Giza was built for the pharaoh Khufu more than 4,500 years ago.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "tombs",
+   "meaning": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "kings",
+   "meaning": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "egyptians",
+   "meaning": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+   "sectionId": "s1"
+  },
+  {
+   "term": "blocks",
+   "meaning": "Workers cut huge blocks of limestone from quarries.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "higher",
+   "meaning": "They built long ramps of mud brick to raise the blocks higher and higher.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "sledge",
+   "meaning": "They dragged the blocks on wooden sledges, and pouring water on the sand in front of the sledge made it easier to pull.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "workers",
+   "meaning": "Workers cut huge blocks of limestone from quarries.",
+   "sectionId": "s2"
+  },
+  {
+   "term": "hieroglyphs",
+   "meaning": "The Rosetta Stone helped modern people learn to read hieroglyphs again.",
+   "sectionId": "s3"
+  }
+ ],
+ "reviewQuestions": [
+  {
+   "id": "review-1",
+   "prompt": "Fill the gap: The ancient Egyptians built pyramids as tombs for their kings, who were called _____.",
+   "choices": [
+    "pharaoh",
+    "safe",
+    "higher",
+    "sledge"
+   ],
+   "answerIndex": 0,
+   "accept": [
+    "pharaoh",
+    "pharaohs"
+   ],
+   "explain": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+   "hints": [
+    "Think back to the part called \"Tombs for Kings\".",
+    "It is one of the key words in this lesson. It starts with \"P\".",
+    "The missing word begins \"pha...\""
+   ]
+  },
+  {
+   "id": "review-2",
+   "prompt": "Fill the gap: Workers cut huge _____ of limestone from quarries.",
+   "choices": [
+    "believed",
+    "safe",
+    "afterlife",
+    "blocks"
+   ],
+   "answerIndex": 3,
+   "accept": [
+    "block",
+    "blocks"
+   ],
+   "explain": "Workers cut huge blocks of limestone from quarries.",
+   "hints": [
+    "Think back to the part called \"Building with Stone\".",
+    "It is one of the key words in this lesson. It starts with \"B\".",
+    "The missing word begins \"blo...\""
+   ]
+  },
+  {
+   "id": "review-3",
+   "prompt": "Fill the gap: The Egyptians wrote with _____, which are small pictures that stand for sounds and ideas.",
+   "choices": [
+    "blocks",
+    "treasures",
+    "built",
+    "hieroglyphs"
+   ],
+   "answerIndex": 3,
+   "accept": [
+    "hieroglyph",
+    "hieroglyphs"
+   ],
+   "explain": "The Egyptians wrote with hieroglyphs, which are small pictures that stand for sounds and ideas.",
+   "hints": [
+    "Think back to the part called \"Writing in Pictures\".",
+    "It is one of the key words in this lesson. It starts with \"H\".",
+    "The missing word begins \"hiero...\""
+   ]
+  },
+  {
+   "id": "review-4",
+   "prompt": "Fill the gap: The ancient Egyptians built pyramids as tombs for their kings, who were called _____.",
+   "choices": [
+    "safe",
+    "wrote",
+    "hieroglyphs",
+    "pharaoh"
+   ],
+   "answerIndex": 3,
+   "accept": [
+    "pharaoh",
+    "pharaohs"
+   ],
+   "explain": "The ancient Egyptians built pyramids as tombs for their kings, who were called pharaohs.",
+   "hints": [
+    "Think back to the part called \"Tombs for Kings\".",
+    "It is one of the key words in this lesson. It starts with \"P\".",
+    "The missing word begins \"pha...\""
+   ]
+  }
+ ],
+ "source": "sample"
+}

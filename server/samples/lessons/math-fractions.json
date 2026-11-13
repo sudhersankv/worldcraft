@@ -1,0 +1,130 @@
+{
+ "schemaVersion": "1",
+ "lessonId": "lesson-fractions",
+ "title": "Fractions Are Fair Shares",
+ "summary": "A fraction shows a part of a whole. When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+ "ageBand": "7-9",
+ "sourceId": "sample-fractions",
+ "sections": [
+  {
+   "id": "s1",
+   "heading": "What Is a Fraction?",
+   "text": "A fraction shows a part of a whole. When you cut a pizza into equal pieces, each piece is a fraction of the pizza. The pieces must be the same size for the fraction to be fair."
+  },
+  {
+   "id": "s2",
+   "heading": "Top and Bottom Numbers",
+   "text": "A fraction has two numbers. The bottom number is the denominator. It tells how many equal parts the whole is split into. The top number is the numerator. It tells how many of those parts you have. In 3/4, you have three parts out of four."
+  },
+  {
+   "id": "s3",
+   "heading": "Comparing Fractions",
+   "text": "When two fractions have the same denominator, the one with the bigger numerator is bigger. So 3/8 is more than 1/8. When the numerators are both 1, the fraction with the smaller denominator is bigger, because the whole is cut into fewer, larger pieces. So 1/2 is bigger than 1/4."
+  }
+ ],
+ "concepts": [
+  {
+   "id": "c-1",
+   "name": "Fraction",
+   "description": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza.",
+   "prerequisites": []
+  },
+  {
+   "id": "c-2",
+   "name": "Denominator",
+   "description": "A fraction has two numbers.",
+   "prerequisites": [
+    "c-1"
+   ]
+  },
+  {
+   "id": "c-3",
+   "name": "Bigger",
+   "description": "When two fractions have the same denominator, the one with the bigger numerator is bigger.",
+   "prerequisites": [
+    "c-2"
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "obj-1",
+   "text": "Explain what is a fraction",
+   "conceptIds": [
+    "c-1"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s1",
+     "quote": "When you cut a pizza into equal pieces, each piece is a fraction of the pizza."
+    },
+    {
+     "sectionId": "s1",
+     "quote": "The pieces must be the same size for the fraction to be fair."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions fraction",
+     "Mentions pieces",
+     "Mentions pizza",
+     "Gets the main idea: When you cut a pizza into equal pieces, each piece is a fraction of the pizza."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  },
+  {
+   "id": "obj-2",
+   "text": "Explain top and bottom numbers, including denominator",
+   "conceptIds": [
+    "c-2"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s2",
+     "quote": "A fraction has two numbers."
+    },
+    {
+     "sectionId": "s2",
+     "quote": "It tells how many equal parts the whole is split into."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions denominator",
+     "Mentions numbers",
+     "Mentions whole",
+     "Gets the main idea: A fraction has two numbers."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  },
+  {
+   "id": "obj-3",
+   "text": "Explain comparing fractions, including bigger",
+   "conceptIds": [
+    "c-3"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s3",
+     "quote": "When two fractions have the same denominator, the one with the bigger numerator is bigger."
+    },
+    {
+     "sectionId": "s3",
+     "quote": "When the numerators are both 1, the fraction with the smaller denominator is bigger, because the whole is cut into fewer, larger pieces."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions bigger",
+     "Mentions pieces",
+     "Mentions numerator",
+     "Gets the main idea: When two fractions have the same denominator, the one with the bigger numerator is bigger."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  }
+ ],
+ "suggestedTemplate": "math"
+}

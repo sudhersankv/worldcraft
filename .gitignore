@@ -1,0 +1,15 @@
+node_modules/
+dist/
+_vendor/
+test-results/
+playwright-report/
+assets-original/
+.env*
+!.env.example
+__pycache__/
+*.pyc
+.venv/
+server/data/
+screenshots/dbg-*
+legacy/
+skills-lock.json

@@ -1,0 +1,130 @@
+{
+ "schemaVersion": "1",
+ "lessonId": "lesson-states-of-matter",
+ "title": "Solids, Liquids and Gases",
+ "summary": "Everything around you is made of matter. Matter can be a solid, a liquid or a gas.",
+ "ageBand": "7-9",
+ "sourceId": "sample-states-of-matter",
+ "sections": [
+  {
+   "id": "s1",
+   "heading": "Three States of Matter",
+   "text": "Everything around you is made of matter. Matter can be a solid, a liquid or a gas. A solid keeps its own shape. A liquid flows and takes the shape of its container. A gas spreads out to fill all the space it can."
+  },
+  {
+   "id": "s2",
+   "heading": "Heating and Cooling",
+   "text": "Heating and cooling can change matter from one state to another. When ice is heated it melts into liquid water. When water is heated more it boils and turns into a gas called water vapour. When water vapour cools it condenses back into liquid drops."
+  },
+  {
+   "id": "s3",
+   "heading": "Tiny Particles",
+   "text": "Matter is made of tiny particles. In a solid, the particles are packed tightly and only wiggle in place. In a liquid, they are close together but slide past each other. In a gas, the particles are far apart and zoom around quickly."
+  }
+ ],
+ "concepts": [
+  {
+   "id": "c-1",
+   "name": "Matter",
+   "description": "Matter can be a solid, a liquid or a gas.",
+   "prerequisites": []
+  },
+  {
+   "id": "c-2",
+   "name": "Water",
+   "description": "When water is heated more it boils and turns into a gas called water vapour.",
+   "prerequisites": [
+    "c-1"
+   ]
+  },
+  {
+   "id": "c-3",
+   "name": "Particles",
+   "description": "Matter is made of tiny particles.",
+   "prerequisites": [
+    "c-2"
+   ]
+  }
+ ],
+ "objectives": [
+  {
+   "id": "obj-1",
+   "text": "Explain three states of matter, including liquid",
+   "conceptIds": [
+    "c-1"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s1",
+     "quote": "Matter can be a solid, a liquid or a gas."
+    },
+    {
+     "sectionId": "s1",
+     "quote": "A liquid flows and takes the shape of its container."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions matter",
+     "Mentions liquid",
+     "Mentions solid",
+     "Gets the main idea: Matter can be a solid, a liquid or a gas."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  },
+  {
+   "id": "obj-2",
+   "text": "Explain heating and cooling, including water",
+   "conceptIds": [
+    "c-2"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s2",
+     "quote": "When water is heated more it boils and turns into a gas called water vapour."
+    },
+    {
+     "sectionId": "s2",
+     "quote": "When ice is heated it melts into liquid water."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions water",
+     "Mentions liquid",
+     "Mentions heated",
+     "Gets the main idea: When water is heated more it boils and turns into a gas called water vapour."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  },
+  {
+   "id": "obj-3",
+   "text": "Explain tiny particles, including liquid",
+   "conceptIds": [
+    "c-3"
+   ],
+   "evidence": [
+    {
+     "sectionId": "s3",
+     "quote": "Matter is made of tiny particles."
+    },
+    {
+     "sectionId": "s3",
+     "quote": "In a solid, the particles are packed tightly and only wiggle in place."
+    }
+   ],
+   "rubric": {
+    "criteria": [
+     "Mentions particles",
+     "Mentions liquid",
+     "Mentions solid",
+     "Gets the main idea: Matter is made of tiny particles."
+    ],
+    "passingRule": "Covers at least two of the criteria in their own words"
+   }
+  }
+ ],
+ "suggestedTemplate": "lab"
+}
