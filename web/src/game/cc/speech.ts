@@ -1,4 +1,4 @@
-/** One voice at a time: Aura TTS (en) or speechSynthesis (other langs); Web Speech STT for hold-to-talk. */
+/** One voice at a time: Aura TTS only (en, es); never a browser/robot voice. Web Speech STT for hold-to-talk. */
 import { SPEECH_LOCALE, type Lang } from '../../shared/curiosity';
 
 let audio: HTMLAudioElement | null = null;
@@ -21,24 +21,16 @@ export function speak(text: string, lang: Lang, voice: string, onStart: (ms: num
   const my = ++token;
   const est = Math.max(1200, text.split(/\s+/).length * 340);
   if (muted || !text.trim()) { onStart(est); return new Promise((r) => setTimeout(r, est * 0.4)); }
+  // NO robot/browser voice ever (user request): if Sam's real voice can't play, show silent captions instead.
   const browser = () => new Promise<void>((resolve) => {
     if (my !== token) return resolve();
-    try {
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = SPEECH_LOCALE[lang]; u.rate = 1.0; u.pitch = 1.05;
-      const v = speechSynthesis.getVoices().find((x) => x.lang.toLowerCase().startsWith(SPEECH_LOCALE[lang].slice(0, 2).toLowerCase()));
-      if (v) u.voice = v;
-      let started = false;
-      u.onstart = () => { started = true; onStart(est); };
-      u.onend = () => resolve(); u.onerror = () => { if (!started) onStart(est); resolve(); };
-      speechSynthesis.speak(u);
-      setTimeout(() => { if (!started) { onStart(est); } }, 600);
-      setTimeout(resolve, est + 4000);
-    } catch { onStart(est); setTimeout(resolve, est); }
+    onStart(est); setTimeout(resolve, est);
   });
-  if (lang !== 'en') return browser();
+  // Real Aura voices exist for English and Spanish; other languages get captions only.
+  const auraVoice = lang === 'en' ? voice : lang === 'es' ? 'aura-2-nestor-es' : null;
+  if (!auraVoice) return browser();
   return new Promise<void>((resolve) => {
-    const a = new Audio(`/api/tts?voice=${encodeURIComponent(voice)}&text=${encodeURIComponent(text.slice(0, 600))}`);
+    const a = new Audio(`/api/tts?voice=${encodeURIComponent(auraVoice)}&text=${encodeURIComponent(text.slice(0, 600))}`);
     audio = a;
     let done = false;
     // Kill this <audio> for good so a late-arriving Aura stream can never overlap the fallback voice.
@@ -86,12 +78,7 @@ export class Listener {
 }
 
 /** Instant short line with the browser voice (no network) — used as a filler while the answer loads. */
-export function speakQuick(text: string, lang: Lang) {
-  if (muted) return;
-  if (audio) return;            // never talk over Sam's real voice
-  try { speechSynthesis.cancel(); } catch { /* */ }
-  try { const u = new SpeechSynthesisUtterance(text); u.lang = SPEECH_LOCALE[lang]; u.rate = 1.1; speechSynthesis.speak(u); } catch { /* */ }
-}
+export function speakQuick(_text: string, _lang: Lang) { /* disabled: no browser voice (user request) */ }
 
 /** Hands-free: keeps listening, sends each finished sentence (on a pause). Paused while Sam talks. */
 export class HandsFree {
