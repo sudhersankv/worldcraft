@@ -68,15 +68,43 @@ def no_credits() -> bool:
     return bool(_status['noCredits'])
 
 
+# If a model is over capacity / returns nothing, try the next one (keeps the live demo talking).
+FALLBACKS = {'chat': ['claude-haiku-4-5', 'claude-sonnet-4-6', 'claude-sonnet-4-5'],
+             'gen': ['claude-sonnet-4-6', 'claude-sonnet-4-5', 'claude-haiku-4-5']}
+
+
 async def chat(messages: list[dict], *, model: str | None = None, max_tokens: int = 1024,
                temperature: float = 0.4, timeout: float = 60.0) -> str:
+    kind = model if model in ('chat', 'gen') else None
+    first = await resolve_model(model or 'chat') if model in (None, 'chat', 'gen') else model
+    chain = [first] + [m for m in FALLBACKS.get(kind or 'chat', []) if m != first]
+    import time as _t
+    deadline = _t.monotonic() + timeout
+    last: Exception | None = None
+    for i, m in enumerate(chain):
+        remaining = deadline - _t.monotonic()
+        if remaining < 3:
+            break
+        try:
+            out = await _chat_once(messages, model=m, max_tokens=max_tokens, temperature=temperature,
+                                   timeout=remaining if i == len(chain) - 1 else min(remaining, max(6.0, timeout * 0.6)))
+            if out.strip():
+                return out
+            last = LLMError(f'empty response from {m}')
+        except NoCreditsError:
+            raise
+        except LLMError as e:
+            last = e
+            log.info('model %s failed (%s); trying next', m, str(e)[:120])
+    raise last or LLMError('all models failed')
+
+
+async def _chat_once(messages: list[dict], *, model: str, max_tokens: int, temperature: float, timeout: float) -> str:
     base, token = config.gateway()
     if not (base and token):
         raise LLMError('LLM gateway not configured')
     if _status['noCredits']:
         raise NoCreditsError('LLM gateway has no credits (paid_plan_required)')
-    if model in (None, 'chat', 'gen'):
-        model = await resolve_model(model or 'chat')
     body = {'model': model, 'messages': messages, 'max_tokens': max_tokens}
     # Newer Claude models (5.x) reject a custom temperature; only send it to older ones.
     if not re.search(r'-(5|[6-9])(-|$)', str(model)):
