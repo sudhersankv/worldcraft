@@ -69,14 +69,11 @@ export const ART_CC = {
     happy: `${C}/sam-happy.webp`,
     thinking: `${C}/sam-think.webp`,
     laughing: `${C}/sam-laugh.webp`,
+    /** action cutout: riding a wave on the board */
+    surfing: `${C}/sam-surf.webp`,
     height: 72,
   },
-  portraits: {
-    sam: `${C}/sam-happy.webp`,
-    penny: `${C}/penny.webp`,
-    rocky: `${C}/rocky.webp`,
-    nova: `${C}/nova.webp`,
-  } as Record<string, string>,
+  /** 1536x1024, beach + surfers + glowing 'WHY?' in the sky (site hero + title screen) */
   keyart: `${C}/keyart.webp`,
   icons: {
     wave: `${C}/icons/wave.webp`,
@@ -91,6 +88,8 @@ export const ART_CC = {
     wood: `${C}/lab/wood.webp`,
     foam: `${C}/lab/foam.webp`,
   } as Record<'stone' | 'wood' | 'foam', string>,
+  /** 1024x1536 transparent: 5 coloured rungs bottom to top */
   whyLadder: `${C}/why-ladder.webp`,
+  /** 1024x1536 transparent frame, centre is empty/transparent */
   journalFrame: `${C}/journal-frame.webp`,
 };

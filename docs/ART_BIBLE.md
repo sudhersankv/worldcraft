@@ -74,3 +74,6 @@ Shadows are warm or teal, never grey. Highlights are warm white (`#FFFBEA`).
 - Pinterest searches: https://www.pinterest.com/search/pins/?q=cozy%20isometric%20game%20art, https://www.pinterest.com/search/pins/?q=stylized%20diorama, https://www.pinterest.com/search/pins/?q=kids%20educational%20game%20ui
 - Dribbble: https://dribbble.com/search/isometric-cozy-game
 - ArtStation: https://www.artstation.com/search?query=stylized%20diorama
+
+## 9. Curiosity Craft (beach world): voxel variant
+Same palette and lighting, but the shape language is **blocky voxel toy**: cube heads (about 1/3 of the height), rectangular limbs, bevelled glossy blocks, crisp pixel textures. It is an original design and must never use Minecraft assets or likenesses. Hero colours: ocean turquoise `#2EE6D6`, sky blue `#36B5FF`, sunny yellow `#FFC93C`, coral `#FF6B57`, sand `#FFD89A`. The prompt prefix is `V` in `tools/art/cc.py`. Stickers get a thick white die-cut outline. Avoid "?"-in-a-box motifs (they read as an existing franchise's item block); use glowing question marks or the word "WHY?" instead.

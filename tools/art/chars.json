@@ -1,0 +1,39 @@
+[
+ {
+  "id": "player",
+  "back": true,
+  "desc": "The hero: a brave curious kid explorer about 9 years old, warm brown skin, fluffy dark curly hair poking out under a bright green leaf-shaped cap with a curled stem on top, sunflower-yellow short-sleeve explorer tunic with a coral neckerchief, sky-blue shorts, chunky orange hiking boots with green laces, a brown leather satchel across the body with a magnifying glass and a rolled map peeking out, small brass compass on the strap."
+ },
+ {
+  "id": "companion",
+  "desc": "ONLY ONE creature, no humans, no other characters: Sprout: a tiny glowing seedling spirit companion, a round jelly-like lime-green body with a soft inner glow, two bright leaf sprouts on top of its head like a cowlick, huge sparkling eyes, tiny stubby arms, floating slightly with little golden pollen sparkles around it, very cute."
+ },
+ {
+  "id": "goat",
+  "desc": "Exa: a cute curious young library goat standing on two legs, fluffy cream-white wool with soft caramel patches, small curled golden horns, big round tortoiseshell glasses, a tiny teal satchel overflowing with colourful little books, a red bookmark ribbon tucked behind one ear, a tiny brass bell collar, holding an open book."
+ },
+ {
+  "id": "sunny",
+  "desc": "Sunny the Sunflower: a cheerful sunflower person, a round face in the centre of a big ring of glossy golden-yellow petals like a lion mane, warm orange-brown seed-pattern freckles, a sturdy bright green stem body with two leaf arms waving, a tiny terracotta flower-pot skirt with a green ribbon, small brown root feet, beaming sunny smile."
+ },
+ {
+  "id": "chloro",
+  "desc": "Professor Chloro: a small scholarly leaf scientist, the body is a plump glossy green leaf with visible light-green veins, a white lab coat with rolled sleeves and a pocket full of coloured pencils, round brass goggles pushed up on the head, a tiny curled stem antenna on top, holding a glowing green test tube with tiny golden sparkles, kind wise eyebrows."
+ },
+ {
+  "id": "rootie",
+  "desc": "Rootie the Mole Explorer: a chubby velvety cocoa-brown mole with a pink star-shaped nose, small squinty friendly eyes behind a bright yellow mining helmet with a glowing lantern, big pink digging paws, an orange explorer vest with pockets full of seeds, a coil of golden root-rope over one shoulder."
+ },
+ {
+  "id": "misty",
+  "desc": "Misty the Water Spirit: a playful translucent water-droplet spirit girl, body made of glossy turquoise and sky-blue water with tiny bubbles inside and shimmering highlights, hair shaped like a curling splash wave, small cloud-puff wisps around her feet as she hovers, cheeky grin, a necklace of dew-drop beads."
+ },
+ {
+  "id": "oakley",
+  "desc": "Oakley the Ancient Tree: a wise friendly old oak tree character, short and stout chibi trunk body with deeply detailed warm brown bark, a big fluffy bright green leafy crown with a few acorns and a little bird nest, a long mossy beard, kind crinkly eyes with round spectacles, thick root feet, leaning on a gnarled walking stick with tiny mushrooms."
+ },
+ {
+  "id": "cloudmother",
+  "desc": "The Cloudmother: a gentle motherly cloud giantess in chibi form, body made of fluffy glossy white and soft lavender-blue cumulus puffs, rosy cheeks, a tiny rainbow tiara, holding a small watering can that drips sparkling rain drops, golden sunlight on her edges, warm caring smile."
+ }
+]
