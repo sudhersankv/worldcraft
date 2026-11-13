@@ -406,6 +406,7 @@ export class Voxel {
   npcs: Record<string, Actor> = {};
   private particlesFx: { pts: THREE.Points; vel: number[]; kind: 'smoke' | 'snow' | 'fly' }[] = [];
   currentBiome: Biome = 'beach';
+  private hotSpring: { x: number; y: number; z: number } | null = null;
   onBiome: (b: Biome) => void = () => undefined;
 
   private carvePath(x0: number, z0: number, x1: number, z1: number) {
@@ -467,6 +468,32 @@ export class Voxel {
     this.deco.push({ x: 26.5, y: 2.1, z: 85.6, sx: 3.2, sy: 0.2, sz: 1.6, c: '#ffffff' });
     this.deco.push({ x: 44.5, y: this.groundY(44.5, 84.5) + 1.4, z: 84.5, sx: 2.6, sy: 0.12, sz: 1.4, c: '#2fae4a', ry: 0.5 }, { x: 44.5, y: this.groundY(44.5, 84.5) + 0.7, z: 84.5, sx: 0.12, sy: 1.4, sz: 0.12, c: '#1f7a32' });
     { const fy = this.groundY(30.5, 72.5); for (let k = 0; k < 6; k++) { const a = (k / 6) * Math.PI * 2; this.deco.push({ x: 30.5 + Math.cos(a) * 0.55, y: fy + 1.3, z: 72.5 + Math.sin(a) * 0.55, sx: 0.6, sy: 0.12, sz: 0.6, c: '#ff5d8f', ry: a }); } this.deco.push({ x: 30.5, y: fy + 1.36, z: 72.5, sx: 0.45, sy: 0.18, sz: 0.45, c: '#ffd23c' }, { x: 30.5, y: fy + 0.65, z: 72.5, sx: 0.12, sy: 1.3, sz: 0.12, c: '#2fae4a' }); }
+    // ---- additive detail pass (all instanced deco / cheap groups)
+    { const R = (i: number, k: number) => hash2(i, k, 77);
+      const gy = (x: number, z: number) => this.groundY(x, z);
+      const free = (x: number, z: number) => { const h = this.top(x, z); return h > 1 && h < 50; };
+      // beach: shells, starfish, tide-pool rocks, towels
+      for (let i = 0; i < 40; i++) { const z = 3 + R(i, 1) * 50, x = shoreAt(z) + R(i, 2) * 7; if (!free(x, z) || biomeAt(x, z) !== 'beach') continue; const star = i % 3 === 0;
+        this.deco.push({ x, y: gy(x, z) + 0.03, z, sx: star ? 0.42 : 0.24, sy: 0.05, sz: star ? 0.12 : 0.2, c: star ? '#ff7a5a' : ['#ffe0d0', '#ffd0e8', '#fff4c8'][i % 3], ry: R(i, 3) * 6 });
+        if (star) this.deco.push({ x, y: gy(x, z) + 0.03, z, sx: 0.12, sy: 0.05, sz: 0.42, c: '#ff7a5a', ry: R(i, 3) * 6 }); }
+      for (let i = 0; i < 14; i++) { const x = 10 + R(i, 4) * 8, z = 50 + R(i, 5) * 8; if (!free(x, z)) continue; this.deco.push({ x, y: gy(x, z) + 0.2, z, sx: 0.5 + R(i, 6) * 0.4, sy: 0.4, sz: 0.5, c: i % 2 ? '#8f95a2' : '#a9adb8', ry: R(i, 7) }); if (i % 3 === 0) this.deco.push({ x: x + 0.3, y: gy(x, z) + 0.42, z, sx: 0.18, sy: 0.08, sz: 0.18, c: '#2fae4a' }); }
+      for (const [x, z, c1, c2] of [[23.5, 37.5, '#ff5d8f', '#ffffff'], [32.5, 31.5, '#2ec4b6', '#ffd23c'], [25.5, 15.5, '#c86bfa', '#ffffff']] as const) { if (!free(x, z)) continue; for (let k = 0; k < 4; k++) this.deco.push({ x, y: gy(x, z) + 0.04, z: z - 0.75 + k * 0.5, sx: 0.9, sy: 0.05, sz: 0.48, c: k % 2 ? c2 : c1 }); }
+      // volcano: cooled lava rivers (dark crust with glowing seams), pumice, vent glow, hot spring
+      for (const ang of [0.6, 1.4]) for (let r = 5; r < 18; r += 0.6) { const x = 76.5 + Math.cos(ang) * r, z = 28.5 + Math.sin(ang) * r; if (!free(x, z)) continue; this.deco.push({ x, y: gy(x, z) + 0.05, z, sx: 0.8, sy: 0.1, sz: 0.8, c: '#2a2030' }); if (Math.floor(r * 3) % 4 === 0) this.deco.push({ x: x + 0.15, y: gy(x, z) + 0.11, z, sx: 0.5, sy: 0.04, sz: 0.08, c: '#ff8a3c', glow: true, ry: ang }); }
+      for (let i = 0; i < 30; i++) { const a = R(i, 8) * 6.28, r = 6 + R(i, 9) * 14; const x = 76.5 + Math.cos(a) * r, z = 28.5 + Math.sin(a) * r; if (!free(x, z) || biomeAt(x, z) !== 'volcano') continue; this.deco.push({ x, y: gy(x, z) + 0.12, z, sx: 0.28, sy: 0.22, sz: 0.25, c: '#d8c8b8', ry: a }); }
+      { const hx = 86.5, hz = 33.5; if (free(hx, hz)) { const y = gy(hx, hz); for (let k = 0; k < 10; k++) { const a = (k / 10) * 6.28; this.deco.push({ x: hx + Math.cos(a) * 1.3, y: y + 0.15, z: hz + Math.sin(a) * 1.3, sx: 0.4, sy: 0.3, sz: 0.4, c: '#8f95a2' }); } this.deco.push({ x: hx, y: y + 0.06, z: hz, sx: 2.2, sy: 0.08, sz: 2.2, c: '#7fe0e8' }); this.hotSpring = { x: hx, y: y + 0.2, z: hz }; } }
+      // ice: icicles along ridges, snow drifts, frost sparkles, penguin chicks
+      for (let i = 0; i < 30; i++) { const x = 60 + R(i, 10) * 34, z = 60 + R(i, 11) * 34; if (!free(x, z) || biomeAt(x, z) !== 'ice') continue; this.deco.push({ x, y: gy(x, z) + 0.12, z, sx: 1.2 + R(i, 12), sy: 0.24, sz: 0.8, c: '#ffffff', ry: R(i, 13) * 3 }); }
+      for (let i = 0; i < 18; i++) { const x = 62 + R(i, 14) * 30, z = 62 + R(i, 15) * 30; if (!free(x, z) || biomeAt(x, z) !== 'ice') continue; const y = gy(x, z); this.deco.push({ x, y: y + 0.5, z, sx: 0.1, sy: 0.9, sz: 0.1, c: '#dff6ff' }, { x: x + 0.25, y: y + 0.35, z, sx: 0.08, sy: 0.6, sz: 0.08, c: '#bfeaff' }); }
+      for (let i = 0; i < 16; i++) { const x = 62 + R(i, 16) * 30, z = 62 + R(i, 17) * 30; if (!free(x, z) || biomeAt(x, z) !== 'ice') continue; this.deco.push({ x, y: gy(x, z) + 0.3, z, sx: 0.08, sy: 0.08, sz: 0.08, c: '#bff4ff', glow: true }); }
+      for (let i = 0; i < 3; i++) { const x = 72.5 + i * 0.8, z = 70 + (i % 2) * 0.6; if (!free(x, z)) continue; const y = gy(x, z); this.deco.push({ x, y: y + 0.22, z, sx: 0.3, sy: 0.4, sz: 0.28, c: '#8a8f9a' }, { x, y: y + 0.5, z: z + 0.05, sx: 0.24, sy: 0.22, sz: 0.24, c: '#1b1b2a' }, { x, y: y + 0.48, z: z + 0.18, sx: 0.08, sy: 0.05, sz: 0.06, c: '#ff9a2a' }); }
+      // jungle: vines, mushrooms, ferns, flowers
+      for (let i = 0; i < 60; i++) { const x = 4 + R(i, 18) * 52, z = 62 + R(i, 19) * 32; if (!free(x, z) || biomeAt(x, z) !== 'jungle' || x < shoreAt(z) + 8) continue; const y = gy(x, z); const k = i % 4;
+        if (k === 0) { for (let f = 0; f < 4; f++) this.deco.push({ x: x + Math.cos(f * 1.6) * 0.18, y: y + 0.2, z: z + Math.sin(f * 1.6) * 0.18, sx: 0.08, sy: 0.4, sz: 0.26, c: f % 2 ? '#2fae4a' : '#4fd26a', ry: f * 1.6 }); }
+        else if (k === 1) { this.deco.push({ x, y: y + 0.12, z, sx: 0.08, sy: 0.24, sz: 0.08, c: '#fff4e0' }, { x, y: y + 0.26, z, sx: 0.3, sy: 0.12, sz: 0.3, c: i % 8 === 1 ? '#ff5d6c' : '#c86bfa' }); }
+        else if (k === 2) { for (let f = 0; f < 3; f++) this.deco.push({ x: x + f * 0.25 - 0.25, y: y + 0.16, z: z + (f % 2) * 0.2, sx: 0.16, sy: 0.12, sz: 0.16, c: ['#ff5d8f', '#ffd23c', '#ff8a3c'][f] }); }
+        else { for (let v = 0; v < 5; v++) this.deco.push({ x, y: y + 4.8 - v * 0.55, z, sx: 0.07, sy: 0.55, sz: 0.07, c: '#2a8a3a' }); } }
+    }
     // particles: volcano smoke, snowfall, butterflies
     const mk = (n2: number, color: string, size: number, kind: 'smoke' | 'snow' | 'fly', cx: number, cy: number, cz: number, r: number) => {
       const g = new THREE.BufferGeometry(); const pos = new Float32Array(n2 * 3); const vel: number[] = [];
@@ -477,7 +504,14 @@ export class Voxel {
     };
     mk(40, '#9a8f98', 1.6, 'smoke', 76.5, 13, 28.5, 4);
     mk(60, '#ffffff', 0.25, 'snow', 76, 6, 76, 34);
-    mk(14, '#ff8fd0', 0.35, 'fly', 36, 5, 78, 22);
+    mk(26, '#ff8fd0', 0.35, 'fly', 36, 5, 78, 22);
+    mk(12, '#ffd23c', 0.3, 'fly', 30, 5, 84, 16);
+    mk(14, '#ffb03a', 0.45, 'smoke', 84.5, 4, 38.5, 1.2);
+    if (this.hotSpring) mk(16, '#f4f7ff', 1.0, 'smoke', this.hotSpring.x, this.hotSpring.y, this.hotSpring.z, 1.6);
+    // a parrot circling in the jungle
+    { const g = new THREE.Group(); const b = (w: number, h: number, d: number, c: string, x = 0, y = 0, z = 0) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color: c })); m.position.set(x, y, z); g.add(m); return m; };
+      b(0.3, 0.3, 0.6, '#ff3d3d'); b(0.25, 0.25, 0.25, '#ff3d3d', 0, 0.15, 0.35); b(0.1, 0.1, 0.12, '#ffd23c', 0, 0.12, 0.52); const w1 = b(0.6, 0.06, 0.3, '#2f8aff', -0.4, 0.05, 0); const w2 = b(0.6, 0.06, 0.3, '#2f8aff', 0.4, 0.05, 0); b(0.12, 0.06, 0.5, '#ffd23c', 0, -0.05, -0.5);
+      this.scene.add(g); this.anim.push({ obj: g, fn: (t, o) => { const a = t * 0.5; o.position.set(36 + Math.cos(a) * 7, 10 + Math.sin(t * 1.3) * 0.6, 78 + Math.sin(a) * 7); o.rotation.y = -a; w1.rotation.z = Math.sin(t * 10) * 0.6; w2.rotation.z = -Math.sin(t * 10) * 0.6; } }); }
     // NPCs
     this.npcs.rocky = this.actorAt(this.golem(), NPC_SPOTS.rocky.x, NPC_SPOTS.rocky.z);
     this.npcs.penny = this.actorAt(this.penguin(), NPC_SPOTS.penny.x, NPC_SPOTS.penny.z);
