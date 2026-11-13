@@ -130,9 +130,11 @@ async def wonder(req: WonderRequest):
     content: list[dict] = [{'type': 'text', 'text': (
         f'A child aged 8-11 is curious. They {"drew the picture below" if req.image else "did not draw"}'
         f'{" and wrote/said: " + json.dumps(req.text[:200]) if (req.text or "").strip() else ""}.\n'
-        'Guess what it is (be kind about messy drawings), then write 3 short, concrete, kid-friendly questions '
-        '(10 words or fewer each) a curious kid could ask about it, and pick the best destination world for exploring it from: '
-        + ', '.join(WORLD_TAGS) + f'. Write guess, guesses and questions in {LANG_NAMES[lang]}.\n'
+        'Guess what it is (be kind about messy drawings; at a beach, wavy or zigzag lines are usually waves). Then write 3 short, '
+        'concrete, kid-friendly WHY/HOW questions (10 words or fewer each) about it that can be answered from this '
+        'BEACH FACT SHEET (connect the drawing to the closest beach topic: waves, floating, surfboards, sand, sun, wind, fish, tides):\n'
+        + '\n'.join('- ' + f['text'] for f in w.get('facts', [])[:40]) +
+        f'\nWrite guess, guesses and questions in {LANG_NAMES[lang]}. worldTag must be "beach".\n'
         'Reply with JSON only: {"guess":str,"confidence":0-1,"guesses":[3 alternative guesses],"questions":[3],"worldTag":str}')}]
     if req.image and req.image.startswith('data:image/'):
         content.append({'type': 'image_url', 'image_url': {'url': req.image[:2_500_000]}})
@@ -204,8 +206,10 @@ async def ask(req: AskRequest):
         facts = '\n'.join(f'[{f["id"]}] ({",".join(f.get("conceptIds", []))}) {f["text"]}' for f in w.get('facts', []))
         hist = '\n'.join(f'{"Kid" if t.role == "kid" else npc.get("name", "Sam")}: {t.text}' for t in req.history[-6:])
         system = (f'You are {npc.get("name", "Surfer Sam")}. Persona: {npc.get("persona", "")}\n'
-                  'You talk with a curious child aged 8-11. RULES: answer ONLY using the FACT SHEET below; if the fact sheet '
-                  f'does not cover it, the answer must be exactly "{NOT_SURE[lang]}" and grounded=false. Max 2 short sentences. '
+                  'You talk with a curious child aged 8-11. RULES: answer ONLY using facts from the FACT SHEET below. If the '
+                  'question is partly covered, answer with the closest relevant facts (that counts as grounded). Only if NOTHING '
+                  f'in the fact sheet relates, start with "{NOT_SURE[lang]}" then connect to one related fact, and set grounded=false. '
+                  'Max 2 short sentences. '
                   'Then ALWAYS give one "why?" hook: a short question that goes one level deeper into the cause behind your answer. '
                   'Never ask for personal information. Kid-safe. Be funny and warm. '
                   f'Write answer and whyHook in {LANG_NAMES[lang]}.\nFACT SHEET:\n{facts}\n'
