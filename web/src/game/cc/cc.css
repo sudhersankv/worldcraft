@@ -208,3 +208,4 @@ body.overlay #hint { display: none; }
 body.overlay .actbtn { display: none !important; }
 @media (pointer: coarse) { .actbtn { bottom: 72px; font-size: 22px; padding: 14px 22px; } }
 #topright { z-index: 30; } .playveil { z-index: 40; }
+#timer { top: 62px; font-size: 26px; }
