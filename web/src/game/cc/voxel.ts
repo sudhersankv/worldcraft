@@ -217,6 +217,7 @@ export class Voxel {
   private silMat = new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.35, depthTest: false, depthWrite: false });
   private owned = new Set<string>();
   private occluded = false;
+  private dragging = false;
   silhouette = false;
   private marker!: THREE.Mesh;
   private beacon!: THREE.Group;
@@ -744,9 +745,9 @@ export class Voxel {
       if (!down || down.id !== e.pointerId) return;
       const dx = e.clientX - down.x, dy = e.clientY - down.y;
       if (!down.drag && Math.hypot(dx, dy) > 6) down.drag = true;
-      if (down.drag) { this.yaw -= e.movementX * 0.006; this.pitch = Math.min(1.25, Math.max(0.12, this.pitch + e.movementY * 0.004)); }
+      if (down.drag) { this.dragging = true; this.yaw -= e.movementX * 0.006; this.pitch = Math.min(1.25, Math.max(0.12, this.pitch + e.movementY * 0.004)); }
     });
-    el.addEventListener('pointerup', (e) => { if (down && !down.drag && down.btn === 0) this.click(e); down = null; });
+    el.addEventListener('pointerup', (e) => { if (down && !down.drag && down.btn === 0) this.click(e); down = null; this.dragging = false; });
     el.addEventListener('wheel', (e) => { this.dist = Math.min(12, Math.max(4, this.dist + e.deltaY * 0.006)); }, { passive: true });
   }
   private click(e: PointerEvent) {
@@ -798,6 +799,8 @@ export class Voxel {
         else if (this.walkable(p.x, nz, p.y)) p.z = nz;
         else this.path = null;
         p.yaw = Math.atan2(vx, vz);
+        const m2 = this.input.move();
+        if (!this.dragging && !this.camGoal && ((m2.y < 0 && Math.abs(m2.x) < 0.3) || !(m2.x || m2.y))) { const goal = p.yaw + Math.PI; const d = Math.atan2(Math.sin(goal - this.yaw), Math.cos(goal - this.yaw)); this.yaw += d * Math.min(1, dt * 1.1); }
       }
     }
     p.moving = !!(vx || vz);
